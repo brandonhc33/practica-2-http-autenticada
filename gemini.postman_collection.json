@@ -11,15 +11,20 @@
     {
       "name": "Consultar Gemini",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            { "key": "token", "value": "{{GEMINI_API_KEY}}", "type": "string" }
+          ]
+        },
         "method": "POST",
         "header": [
-          { "key": "Content-Type", "value": "application/json" },
-          { "key": "x-goog-api-key", "value": "{{GEMINI_API_KEY}}" }
+          { "key": "Content-Type", "value": "application/json" }
         ],
-        "url": "https://generativelanguage.googleapis.com/v1beta/models/{{GEMINI_MODEL}}:generateContent",
+        "url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"contents\": [\n    {\n      \"parts\": [\n        { \"text\": \"Hola, confirma en una frase que puedes responder esta consulta.\" }\n      ]\n    }\n  ]\n}",
+          "raw": "{\n  \"model\": \"{{GEMINI_MODEL}}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hola, ¿puedes confirmar que esta conexión funciona?\"\n    }\n  ]\n}",
           "options": { "raw": { "language": "json" } }
         }
       }

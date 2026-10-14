@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Práctica 2 - API Python con Bearer token",
+    "description": "Todas las respuestas usan error (booleano), codigo (estado HTTP), mensaje y detalles. Los errores por campo aparecen en detalles.validaciones como campo y errores (array de strings).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test('La respuesta usa el contrato común', function () {",
+          "  const cuerpo = pm.response.json();",
+          "  pm.expect(cuerpo).to.have.all.keys('error', 'codigo', 'mensaje', 'detalles');",
+          "  pm.expect(cuerpo.error).to.be.a('boolean');",
+          "  pm.expect(cuerpo.codigo).to.eql(pm.response.code);",
+          "  pm.expect(cuerpo.error).to.eql(pm.response.code >= 400);",
+          "  pm.expect(cuerpo.mensaje).to.be.a('string').and.not.empty;",
+          "  pm.expect(cuerpo.detalles).to.be.an('object');",
+          "  if (pm.response.code === 422) {",
+          "    pm.expect(cuerpo.detalles.validaciones).to.be.an('array').and.not.empty;",
+          "    cuerpo.detalles.validaciones.forEach(function (validacion) {",
+          "      pm.expect(validacion).to.have.all.keys('campo', 'errores');",
+          "      pm.expect(validacion.campo).to.be.a('string');",
+          "      pm.expect(validacion.errores).to.be.an('array').and.not.empty;",
+          "      validacion.errores.forEach(function (error) {",
+          "        pm.expect(error).to.be.a('string').and.not.empty;",
+          "      });",
+          "    });",
+          "  }",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "BASE_URL", "value": "http://127.0.0.1:8000", "type": "string" },
+    { "key": "AGENTE", "value": "gemini", "type": "string" },
+    { "key": "MODELO", "value": "flash-lite", "type": "string" },
+    { "key": "API_BEARER_TOKEN", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Estado de la API",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            { "key": "token", "value": "{{API_BEARER_TOKEN}}", "type": "string" }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": "{{BASE_URL}}/health"
+      }
+    },
+    {
+      "name": "Consultar desde la API Python",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            { "key": "token", "value": "{{API_BEARER_TOKEN}}", "type": "string" }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{BASE_URL}}/consultar",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"agente\": \"{{AGENTE}}\",\n  \"modelo\": \"{{MODELO}}\",\n  \"mensaje\": \"Hola, ¿puedes confirmar que esta conexión funciona?\"\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "Validación - campos faltantes",
+      "request": {
+        "description": "Devuelve HTTP 422: faltan agente, modelo y mensaje; pregunta no es un campo permitido.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            { "key": "token", "value": "{{API_BEARER_TOKEN}}", "type": "string" }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{BASE_URL}}/consultar",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pregunta\": \"Hola, ¿en qué puedes ayudarme?\"\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "Validación - valores inválidos",
+      "request": {
+        "description": "Devuelve HTTP 422: agente debe estar en minúsculas, modelo debe ser texto y mensaje no puede estar vacío.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            { "key": "token", "value": "{{API_BEARER_TOKEN}}", "type": "string" }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{BASE_URL}}/consultar",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"agente\": \"Gemini\",\n  \"modelo\": 42,\n  \"mensaje\": \"   \"\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "Autenticación - sin token",
+      "request": {
+        "description": "Devuelve HTTP 401 con el contrato común y la indicación del encabezado requerido.",
+        "auth": { "type": "noauth" },
+        "method": "GET",
+        "header": [],
+        "url": "{{BASE_URL}}/health"
+      }
+    }
+  ]
+}
