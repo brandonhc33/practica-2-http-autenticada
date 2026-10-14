@@ -1,0 +1,9 @@
+{
+  "fecha": "2026-10-14T20:53:05+00:00",
+  "metodo": "POST",
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+  "codigo_http": 200,
+  "modelo": "gemini-3.5-flash-lite",
+  "pregunta": "¿Para qué sirve un archivo .gitignore? Responde en una frase.",
+  "respuesta": "Un archivo `.gitignore` sirve para **indicarle a Git qué archivos o carpetas de un proyecto no debe rastrear ni subir al repositorio.**"
+}
