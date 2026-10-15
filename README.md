@@ -6,7 +6,7 @@ Cada consulta recibe un agente, un modelo y un mensaje de texto. Todas las respu
 
 ## Instalar las herramientas
 
-Para ejecutar el proyecto necesitas **uv y Python 3.12**. Para las pruebas manuales puedes usar **Yaak o Postman**; basta con instalar uno. Necesitas conexión a Internet para instalar las dependencias y consultar Gemini. Las pruebas automatizadas simulan al proveedor y no requieren conexión ni credenciales reales.
+Para ejecutar el proyecto necesitas **uv y Python 3.12**. Para las pruebas manuales puedes usar **Yaak o Postman**; basta con instalar uno. Necesitas conexión a Internet para instalar las dependencias y consultar Gemini.
 
 ### 1. Instalar uv
 
@@ -67,7 +67,7 @@ Abre una terminal en la carpeta del proyecto e instala las dependencias:
 uv sync --locked
 ```
 
-Este comando crea `.venv` e instala las dependencias de ejecución y desarrollo con las versiones de `uv.lock`, incluidas FastAPI, Uvicorn, Requests, Ruff y Basedpyright. No necesitas instalarlas globalmente ni activar el entorno: los comandos con `uv run` lo usan automáticamente.
+Este comando crea el entorno `.venv` e instala las dependencias con las versiones de `uv.lock`. Los comandos con `uv run` utilizan ese entorno automáticamente.
 
 Comprueba la versión de Python del proyecto:
 
@@ -104,7 +104,7 @@ uv run python -c "import secrets; print(secrets.token_urlsafe(32))"
 
 Copia el resultado a `API_BEARER_TOKEN`, sin el prefijo `Bearer`. Este token protege tu API local; `GEMINI_API_KEY` autentica las consultas que el servidor envía a Google. Son credenciales distintas.
 
-Los archivos `.env` y `.venv/` están excluidos de Git. El archivo `.env.example` contiene las variables necesarias con sus valores vacíos.
+El archivo `.env.example` contiene las variables necesarias con sus valores vacíos. Las credenciales se configuran en `.env`.
 
 ## Iniciar la API
 
@@ -134,7 +134,7 @@ Las rutas se usan tal como aparecen en la tabla, sin una barra final. Una ruta d
 
 En la sección [Solicitud y respuesta](#solicitud-y-respuesta) se detalla el formato de la consulta y sus validaciones.
 
-La colección configura `BASE_URL` como `http://127.0.0.1:8000`, `AGENTE` como `gemini` y `MODELO` como `flash-lite`. El token versionado queda vacío. Las credenciales de Google se configuran en el servidor. En Postman, la colección comprueba automáticamente la estructura común y que `codigo` coincida con el estado HTTP.
+La colección configura `BASE_URL` como `http://127.0.0.1:8000`, `AGENTE` como `gemini` y `MODELO` como `flash-lite`. El token de la colección está vacío y debe configurarse antes de enviar las solicitudes. Las credenciales de Google se configuran en el servidor. En Postman, la colección comprueba automáticamente la estructura común y que `codigo` coincida con el estado HTTP.
 
 ## Campos de la solicitud
 
@@ -150,17 +150,17 @@ El cuerpo JSON usa nombres de campos en español. Los códigos de agente y model
 
 La API tiene habilitadas las siguientes combinaciones en su catálogo:
 
-| Proveedor | `agente` en el body | `modelo` en el body | Modelo del proveedor | Variable de credencial |
+| Proveedor | `agente` en el JSON | `modelo` en el JSON | Modelo del proveedor | Variable de credencial |
 | --- | --- | --- | --- | --- |
 | Google Gemini | `gemini` | `flash-lite` | `gemini-3.5-flash-lite` | `GEMINI_API_KEY` |
 
 Para usar esta combinación, envía `"agente": "gemini"` y `"modelo": "flash-lite"` a `POST /consultar` y configura `GEMINI_API_KEY` en el `.env` del servidor. La petición también requiere el Bearer token de la API.
 
-La asociación se define en [src/catalogo.py](src/catalogo.py). El cliente usa los códigos cortos de las columnas `agente` y `modelo`; el servidor resuelve el nombre real del modelo. Un agente desconocido o un modelo ajeno al agente devuelve HTTP 422. Al habilitar nuevas combinaciones en el catálogo, actualiza también esta tabla.
+La solicitud utiliza los códigos de las columnas `agente` y `modelo`; el servidor resuelve el nombre del modelo del proveedor. Un agente desconocido o un modelo que no pertenece al agente elegido devuelve HTTP 422.
 
 ## Solicitud y respuesta
 
-Envía este body JSON a `POST http://127.0.0.1:8000/consultar`:
+Envía este cuerpo JSON a `POST http://127.0.0.1:8000/consultar`:
 
 ```json
 {
@@ -178,7 +178,7 @@ Los tres campos son obligatorios y deben ser cadenas de texto. No se aceptan cam
 | `modelo` | De 1 a 64 caracteres. | Mismo formato que `agente`; debe pertenecer al agente elegido. |
 | `mensaje` | De 1 a 4.000 caracteres. | Debe contener texto. Se conserva su contenido, incluidos espacios y saltos de línea. |
 
-Los límites incluyen ambos extremos y cuentan caracteres, no bytes. Se definen en `LIMITES_CONSULTA` de [src/esquemas.py](src/esquemas.py).
+Los límites incluyen ambos extremos y cuentan caracteres, no bytes.
 
 Ejemplo de respuesta HTTP 200:
 
@@ -245,26 +245,7 @@ Por ejemplo, un `modelo` de 65 letras mayúsculas devuelve dos errores para ese 
 }
 ```
 
-Los manejadores globales están en [src/respuestas.py](src/respuestas.py), siguiendo el mecanismo de [manejadores de excepciones de FastAPI](https://fastapi.tiangolo.com/tutorial/handling-errors/#override-the-default-exception-handlers). Cubren validación, autenticación, errores del proveedor, rutas inexistentes, métodos no permitidos y excepciones inesperadas. Estas últimas devuelven HTTP 500 con una indicación para el cliente; la excepción completa se registra en el servidor. Para nuevos endpoints, usa `RespuestaAPI[TipoDeDetalles]` como modelo de respuesta y `ErrorAPI` para errores previstos.
-
-## Agregar modelos o agentes
-
-La coordinación y los clientes están separados:
-
-| Módulo | Responsabilidad |
-| --- | --- |
-| [src/api.py](src/api.py) | Recibe las solicitudes HTTP y traduce los resultados y errores al contrato JSON de la API. |
-| [src/agentes.py](src/agentes.py) | Comprueba la configuración, selecciona el cliente registrado, resuelve el modelo y devuelve el resultado. |
-| [src/agente_gemini.py](src/agente_gemini.py) | Gestiona la credencial de Gemini, su petición HTTP y la extracción del texto generado. |
-| [src/catalogo.py](src/catalogo.py) | Define los códigos públicos de agentes, sus variables de credenciales y los modelos disponibles. |
-
-El flujo de una consulta es `api.py → agentes.py → agente_gemini.py`. Cada cliente recibe el nombre real del modelo y el mensaje, y devuelve el texto generado.
-
-Para agregar un modelo de Gemini, registra otro código y su nombre real en `AGENTES["gemini"]["modelos"]` de [src/catalogo.py](src/catalogo.py).
-
-Para agregar otro agente, registra su código, la variable de su clave y sus modelos en el catálogo. Implementa su cliente en un módulo `src/agente_<nombre>.py` y regístralo en `CLIENTES` de [src/agentes.py](src/agentes.py).
-
-El cliente de Gemini adapta la solicitud al [formato de chat que acepta Google](https://ai.google.dev/gemini-api/docs/openai#rest). La colección `gemini.postman_collection.json` es una herramienta de diagnóstico para llamar directamente al proveedor y usa el formato propio de Google.
+Los errores de validación, autenticación, comunicación con Gemini y rutas o métodos incorrectos utilizan la misma estructura de respuesta. Los errores inesperados devuelven HTTP 500.
 
 ## Resolver problemas
 
@@ -279,69 +260,12 @@ El cliente de Gemini adapta la solicitud al [formato de chat que acepta Google](
 | HTTP 500 | Reintenta más tarde y revisa los registros del servidor si el problema persiste. |
 | Error de conexión | Revisa que el servidor esté en ejecución y que la URL sea correcta. |
 
-## Verificar el proyecto
+## Pruebas automatizadas
 
-Las herramientas de desarrollo se instalan con `uv sync --locked`. La configuración compartida está en `pyproject.toml`:
-
-- **Basedpyright** comprueba tipos en `src` y `tests`, con Python 3.12 y el entorno `.venv`. Se usa el modo `standard`; `recommended` añade comprobaciones más exigentes sobre tipos dinámicos y otras advertencias.
-- **Ruff** revisa errores habituales, organización de imports y sintaxis moderna de Python. También mantiene un formato uniforme.
-
-```bash
-uv run basedpyright
-uv run ruff check src tests
-uv run ruff format --check src tests
-```
-
-Para aplicar correcciones automáticas de estilo y formato:
-
-```bash
-uv run ruff check src tests --fix
-uv run ruff format src tests
-```
-
-El editor puede mostrar cada diagnóstico al pasar el cursor sobre el subrayado o abrir su panel de problemas. Si marca imports que funcionan en la terminal, comprueba que use el intérprete de este proyecto: `.venv/bin/python` en Linux/macOS o `.venv/Scripts/python.exe` en Windows. Después de cambiar el entorno o la configuración, reinicia el servidor de lenguaje o recarga el editor.
-
-Estas comprobaciones analizan el código sin ejecutar las peticiones. Las pruebas verifican su comportamiento:
+Para ejecutar la suite de pruebas:
 
 ```bash
 uv run python -m tests -v
 ```
 
-El punto de entrada [tests/__main__.py](tests/__main__.py) usa el descubrimiento de `unittest` para ejecutar todos los archivos `test_*.py`. Al agregar uno nuevo, se incorpora automáticamente; cada prueba prepara y limpia su propio entorno y no depende del orden de ejecución.
-
-El ejecutor muestra resultados correctos en verde, fallos y errores en rojo y pruebas omitidas o fallos esperados en amarillo. El resumen también tiene color. Los colores se activan en una terminal compatible; al redirigir la salida a un archivo se usa texto normal. Puedes desactivarlos definiendo la variable de entorno `NO_COLOR`.
-
-Las pruebas se organizan por responsabilidad:
-
-| Archivo | Cobertura |
-| --- | --- |
-| `tests/base.py` | Preparación común, simulación de Gemini y aserciones del contrato JSON. |
-| `tests/test_autenticacion.py` | Bearer token y separación de credenciales locales y del proveedor. |
-| `tests/test_consultas.py` | Estado de la API, consultas exitosas, selección de agentes y modelos y preservación del mensaje. |
-| `tests/test_validaciones.py` | Campos, tipos, formato, longitudes y cuerpo JSON. |
-| `tests/test_errores_http.py` | Rutas, métodos y errores internos. |
-| `tests/test_gemini.py` | Timeout, indisponibilidad y respuestas inválidas del proveedor. |
-| `tests/test_configuracion.py` | Variables requeridas y configuración al iniciar. |
-
-Para ejecutar solo un grupo:
-
-```bash
-uv run python -m unittest tests.test_autenticacion -v
-```
-
-También sigue disponible el comando estándar `uv run python -m unittest discover -s tests -v`.
-
-Las pruebas verifican el contrato común, autenticación, campos faltantes, tipos, formato, longitudes límite, errores múltiples por campo, JSON mal formado, asociación de agentes y modelos, preservación del mensaje y errores HTTP e inesperados. Simulan Gemini y se ejecutan sin claves reales ni conexión.
-
-Las dependencias están en `pyproject.toml`, sus versiones en `uv.lock` y el listado de ejecución en `requirements.txt`. Si agregas dependencias, actualiza el listado con:
-
-```bash
-uv export --format requirements.txt --no-dev --no-hashes --no-header --output-file requirements.txt
-```
-
-Antes de subir cambios:
-
-```bash
-git check-ignore .env .venv/
-git status
-```
+Las pruebas comprueban la autenticación, las validaciones, las consultas y el manejo de errores. La comunicación con Gemini se simula, por lo que no requieren credenciales reales ni conexión al proveedor.
