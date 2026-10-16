@@ -1,8 +1,13 @@
 """Cliente de Gemini: autenticación, petición HTTP y lectura de la respuesta."""
 
+import argparse
 import os
+from pathlib import Path
 
 import requests
+from dotenv import load_dotenv
+
+from .catalogo import AGENTES
 
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
 
@@ -64,3 +69,34 @@ def consultar_gemini(modelo: str, mensaje: str) -> str:
     texto = texto.strip()
 
     return texto
+
+
+def obtener_dato_de_prueba(pregunta: str) -> str:
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+    modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
+    return consultar_gemini(modelo, pregunta)
+
+
+if __name__ == "__main__":
+    pregunta_por_defecto = (
+        "Estoy aprendiendo a programar en Python y quiero entender cómo se conecta una "
+        "aplicación con una inteligencia artificial. ¿Puedes explicar qué es una API, "
+        "cómo viaja una pregunta desde Python hasta Gemini y cómo vuelve la respuesta? "
+        "Incluye una analogía cotidiana, explica para qué sirve una API key y menciona "
+        "tres errores comunes al hacer la conexión con una forma de resolver cada uno. "
+        "Responde en español, con secciones breves y en unas 200 palabras."
+    )
+    parser = argparse.ArgumentParser(description="Consulta Gemini desde Python.")
+    parser.add_argument(
+        "pregunta",
+        nargs="?",
+        default=pregunta_por_defecto,
+        help="Pregunta para Gemini. Si la omites, se utiliza la pregunta de prueba.",
+    )
+    argumentos = parser.parse_args()
+    if not argumentos.pregunta.strip():
+        parser.error("La pregunta no puede estar vacía ni contener solo espacios.")
+    try:
+        print(obtener_dato_de_prueba(argumentos.pregunta))
+    except ValueError as error:
+        raise SystemExit(str(error)) from None
