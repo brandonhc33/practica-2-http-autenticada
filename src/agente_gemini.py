@@ -1,18 +1,51 @@
 """Cliente de Gemini: autenticación, petición HTTP y lectura de la respuesta."""
 
 import argparse
+import json
 import os
 from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
+from pydantic import ValidationError
 
 from .catalogo import AGENTES
+from .costos import calcular_costo_gemini
+from .esquemas import Resultado, UsoTokens
 
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
 
 
-def consultar_gemini(modelo: str, mensaje: str) -> str:
+def extraer_uso(uso: object) -> UsoTokens | None:
+    """Lee el consumo real; metadatos ausentes o inválidos no equivalen a costo cero."""
+    if not isinstance(uso, dict):
+        return None
+    detalles_entrada = uso.get("prompt_tokens_details")
+    if detalles_entrada is None:
+        detalles_entrada = {}
+    if not isinstance(detalles_entrada, dict):
+        return None
+    try:
+        tokens = UsoTokens.model_validate(
+            {
+                "entrada": uso.get("prompt_tokens"),
+                "salida": uso.get("completion_tokens"),
+                "total": uso.get("total_tokens"),
+                "entrada_cache": detalles_entrada.get("cached_tokens", 0),
+            }
+        )
+    except ValidationError:
+        return None
+    if tokens.total < tokens.entrada + tokens.salida or tokens.entrada_cache > tokens.entrada:
+        return None
+
+    # Gemini puede informar completion_tokens sin el razonamiento. El total sí lo
+    # incluye: restar la entrada conserva toda la salida sin sumarlo dos veces.
+    tokens.salida = tokens.total - tokens.entrada
+    return tokens
+
+
+def consultar_gemini(modelo: str, mensaje: str) -> Resultado:
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not api_key:
         raise ValueError("Falta GEMINI_API_KEY. Agrega tu clave en el archivo .env.")
@@ -68,16 +101,17 @@ def consultar_gemini(modelo: str, mensaje: str) -> str:
         raise ValueError("Gemini respondió HTTP 200, pero no devolvió texto generado.")
     texto = texto.strip()
 
-    return texto
+    uso = extraer_uso(datos.get("usage"))
+    return Resultado(respuesta=texto, uso=uso, costo_estimado=calcular_costo_gemini(modelo, uso))
 
 
-def obtener_dato_de_prueba(pregunta: str) -> str:
+def obtener_dato_de_prueba(pregunta: str) -> Resultado:
     load_dotenv(Path(__file__).resolve().parent.parent / ".env")
     modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
     return consultar_gemini(modelo, pregunta)
 
 
-if __name__ == "__main__":
+def main() -> None:
     pregunta_por_defecto = (
         "Estoy aprendiendo a programar en Python y quiero entender cómo se conecta una "
         "aplicación con una inteligencia artificial. ¿Puedes explicar qué es una API, "
@@ -86,7 +120,9 @@ if __name__ == "__main__":
         "tres errores comunes al hacer la conexión con una forma de resolver cada uno. "
         "Responde en español, con secciones breves y en unas 200 palabras."
     )
-    parser = argparse.ArgumentParser(description="Consulta Gemini desde Python.")
+    parser = argparse.ArgumentParser(
+        description="Consulta Gemini y muestra texto, tokens y costos en USD y CLP como JSON."
+    )
     parser.add_argument(
         "pregunta",
         nargs="?",
@@ -97,6 +133,11 @@ if __name__ == "__main__":
     if not argumentos.pregunta.strip():
         parser.error("La pregunta no puede estar vacía ni contener solo espacios.")
     try:
-        print(obtener_dato_de_prueba(argumentos.pregunta))
+        resultado = obtener_dato_de_prueba(argumentos.pregunta)
+        print(json.dumps(resultado.model_dump(mode="json"), ensure_ascii=False, indent=2))
     except ValueError as error:
         raise SystemExit(str(error)) from None
+
+
+if __name__ == "__main__":
+    main()

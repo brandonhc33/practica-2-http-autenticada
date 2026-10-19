@@ -2,7 +2,7 @@
 
 Proyecto del Bloque 4 de Skillnest que permite consultar Gemini desde Python y mediante una API local protegida con un Bearer token.
 
-La tarea incluye una función `obtener_dato_de_prueba(pregunta)` para comprobar que Gemini responde desde Python. También incluye una API con FastAPI, validaciones de entrada, manejo de errores y pruebas automatizadas.
+La tarea incluye una función `obtener_dato_de_prueba(pregunta)` para comprobar que Gemini responde desde Python. Tanto el comando como la API devuelven el texto, los tokens consumidos y el costo estimado en USD y CLP de cada consulta, con símbolos de moneda y decimales sin notación exponencial. También incluye validaciones de entrada, manejo de errores y pruebas automatizadas.
 
 ## Tecnologías
 
@@ -79,6 +79,7 @@ API_BEARER_TOKEN=tu_token_de_la_api
 | --- | --- |
 | `GEMINI_API_KEY` | Autentica la petición que Python envía a Gemini. Obtén la clave en [Google AI Studio](https://aistudio.google.com/api-keys). |
 | `API_BEARER_TOKEN` | Protege los endpoints de la API local. Tú generas este token. |
+| `USD_CLP` | Opcional: pesos chilenos por dólar, con punto decimal. Si queda vacío, se consulta automáticamente el dólar observado. |
 
 Para generar el token local:
 
@@ -100,9 +101,9 @@ Si no pasas una pregunta, el módulo llama a `obtener_dato_de_prueba(pregunta)` 
 
 > Estoy aprendiendo a programar en Python y quiero entender cómo se conecta una aplicación con una inteligencia artificial. ¿Puedes explicar qué es una API, cómo viaja una pregunta desde Python hasta Gemini y cómo vuelve la respuesta? Incluye una analogía cotidiana, explica para qué sirve una API key y menciona tres errores comunes al hacer la conexión con una forma de resolver cada uno. Responde en español, con secciones breves y en unas 200 palabras.
 
-La salida esperada es una explicación con una analogía, el recorrido de la consulta, el uso de la API key y tres errores con sus soluciones. El texto se genera en cada ejecución y su redacción puede variar.
+La salida es un JSON con `respuesta`, `uso` y `costo_estimado`. En `respuesta` aparece una explicación con una analogía, el recorrido de la consulta, el uso de la API key y tres errores con sus soluciones. El texto y el consumo se generan en cada ejecución y pueden variar.
 
-La función está en [src/agente_gemini.py](src/agente_gemini.py). Carga `.env`, obtiene el modelo `flash-lite` del catálogo, realiza la consulta autenticada y devuelve el texto generado. Al ejecutar el módulo, ese texto se imprime en la terminal.
+La función está en [src/agente_gemini.py](src/agente_gemini.py). Carga `.env`, obtiene el modelo `flash-lite` del catálogo, realiza la consulta autenticada y devuelve un objeto `Resultado` con texto, tokens y costos. Al ejecutar el módulo, ese resultado se imprime como JSON en la terminal, con la misma estructura que `detalles` en la API.
 
 Esta prueba requiere `GEMINI_API_KEY`. Puedes ejecutarla sin iniciar la API local y sin configurar `API_BEARER_TOKEN`.
 
@@ -125,11 +126,17 @@ También puedes importar la función desde otro módulo del proyecto:
 ```python
 from src.agente_gemini import obtener_dato_de_prueba
 
-respuesta = obtener_dato_de_prueba(
+resultado = obtener_dato_de_prueba(
     "Explica tres usos de la inteligencia artificial en la educación, "
     "con un ejemplo práctico y una limitación de cada uno."
 )
-print(respuesta)
+print(resultado.respuesta)
+print(resultado.uso)
+if resultado.costo_estimado is not None:
+    costos = resultado.costo_estimado.model_dump(mode="json")
+    print("Costo estimado en USD:", costos["usd"]["total"])
+    if costos["clp"] is not None:
+        print("Costo estimado en CLP:", costos["clp"]["total"])
 ```
 
 Si la consulta falla, el comando muestra un mensaje de error y termina con un código de salida distinto de cero.
@@ -155,7 +162,7 @@ Sustituye `<API_BEARER_TOKEN>` por el valor de tu `.env`.
 | Método | URL | Resultado esperado |
 | --- | --- | --- |
 | GET | `http://127.0.0.1:8000/health` | HTTP 200 con `detalles.estado` igual a `ok`. |
-| POST | `http://127.0.0.1:8000/consultar` | HTTP 200 con el texto de Gemini en `detalles.respuesta`. |
+| POST | `http://127.0.0.1:8000/consultar` | HTTP 200 con texto, tokens y costo estimado dentro de `detalles`. |
 
 Usa las rutas sin una barra final. Un token ausente o incorrecto devuelve HTTP 401. Las páginas `/docs` y `/redoc` están deshabilitadas.
 
@@ -171,7 +178,7 @@ Envía este cuerpo JSON a `POST /consultar`, con `Content-Type: application/json
 }
 ```
 
-Ejemplo abreviado de respuesta exitosa; el texto completo depende de Gemini:
+Ejemplo de respuesta exitosa con consumo ilustrativo; el texto y los tokens reales dependen de Gemini:
 
 ```json
 {
@@ -179,12 +186,91 @@ Ejemplo abreviado de respuesta exitosa; el texto completo depende de Gemini:
   "codigo": 200,
   "mensaje": "Consulta realizada correctamente.",
   "detalles": {
-    "respuesta": "Una API permite que dos aplicaciones se comuniquen. Por ejemplo, funciona como un mesero que lleva tu pedido a la cocina y trae la respuesta..."
+    "respuesta": "Una API permite que dos aplicaciones se comuniquen...",
+    "uso": {
+      "entrada": 1000,
+      "salida": 2000,
+      "total": 3000,
+      "entrada_cache": 0
+    },
+    "costo_estimado": {
+      "modelo": "gemini-3.5-flash-lite",
+      "usd": {
+        "moneda": "USD",
+        "entrada": "US$ 0.0003",
+        "salida": "US$ 0.005",
+        "total": "US$ 0.0053"
+      },
+      "clp": {
+        "moneda": "CLP",
+        "entrada": "$ 0.294495",
+        "salida": "$ 4.90825",
+        "total": "$ 5.202745"
+      },
+      "tipo_cambio": {
+        "clp_por_usd": "981.65",
+        "fecha": "2026-10-19",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "tarifas_por_millon_usd": {
+        "entrada": "US$ 0.30",
+        "entrada_cache": "US$ 0.03",
+        "salida": "US$ 2.50"
+      },
+      "tarifas_por_millon_clp": {
+        "entrada": "$ 294.495",
+        "entrada_cache": "$ 29.4495",
+        "salida": "$ 2454.125"
+      },
+      "aviso_clp": null
+    }
   }
 }
 ```
 
-Cada consulta es independiente; no se conserva un historial de conversación. `detalles.respuesta` contiene el texto generado.
+Cada consulta es independiente; no se conserva un historial de conversación ni se acumulan los costos. `detalles.respuesta` contiene el texto generado, `detalles.uso` el consumo y `detalles.costo_estimado` los importes y las tarifas aplicadas.
+
+### Tokens y costo por consulta
+
+El consumo se obtiene del objeto `usage` de Gemini. `entrada` corresponde a `prompt_tokens`, `total` a `total_tokens` y `salida` se calcula como `total - entrada`. Así se incluyen los tokens de razonamiento aunque el proveedor los omita de `completion_tokens`, sin sumarlos dos veces. Este cliente realiza consultas de texto sin herramientas. `entrada_cache` corresponde a `prompt_tokens_details.cached_tokens` y forma parte de `entrada`; si ese detalle no aparece, se utiliza cero.
+
+Las tarifas están centralizadas por modelo en [src/costos.py](src/costos.py). Para `gemini-3.5-flash-lite` se usan las [tarifas oficiales estándar de pago](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.5-flash-lite), verificadas el 19 de octubre de 2026, en USD por millón de tokens:
+
+| Consumo | USD por 1.000.000 de tokens |
+| --- | --- |
+| Entrada sin caché | 0,30 |
+| Entrada desde caché | 0,03 |
+| Salida, incluido el razonamiento | 2,50 |
+
+```text
+costo_entrada = ((entrada - entrada_cache) × tarifa_entrada
+                 + entrada_cache × tarifa_cache) / 1.000.000
+costo_salida  = salida × tarifa_salida / 1.000.000
+costo_total   = costo_entrada + costo_salida
+```
+
+Los cálculos usan `Decimal` y conservan todos los decimales significativos. Los importes se publican como **textos JSON con símbolo de moneda**, con un mínimo de dos decimales y sin notación exponencial; por ejemplo, `"US$ 0.0000003"`. Los códigos `USD` y `CLP` distinguen ambas monedas. Por ejemplo, 1.000 tokens de entrada y 2.000 de salida, sin caché, representan **US$ 0.0053**.
+
+### Conversión de USD a CLP
+
+Cada importe en CLP se calcula multiplicando su valor en USD por `tipo_cambio.clp_por_usd`, sin redondear a pesos enteros. Por defecto se obtiene el último dólar observado publicado en [indicadores.cl](https://indicadores.cl/api/), cuya fuente es el Banco Central de Chile. La respuesta incluye la fecha del dato y la fuente; cada proceso reutiliza la tasa durante un máximo de una hora. La consulta pública del dólar no recibe claves ni el mensaje enviado a Gemini.
+
+`tarifas_por_millon_clp` contiene las tarifas de entrada, entrada desde caché y salida por **1.000.000 de tokens**, convertidas con el mismo tipo de cambio de los costos de la consulta: `tarifa_clp = tarifa_usd × clp_por_usd`. Se conservan los símbolos de moneda y todos los decimales significativos.
+
+Puedes fijar tu propia tasa con la variable opcional `USD_CLP` en `.env`, sin símbolo de moneda y con punto decimal:
+
+```dotenv
+# Ejemplo de tasa manual, no una cotización vigente.
+USD_CLP=950.50
+```
+
+Con una tasa manual no se consulta la fuente pública; `tipo_cambio.fuente` indica `USD_CLP (.env)` y `fecha` queda en `null`. Para volver a la consulta automática, deja `USD_CLP` vacío. Reinicia el servidor si cambias esta variable.
+
+`aviso_clp: null` significa que la conversión a CLP se completó correctamente y no hay advertencias. Si la fuente del dólar falla o la tasa configurada es inválida, se conservan el texto, los tokens, el costo y las tarifas en USD; `clp`, `tipo_cambio` y `tarifas_por_millon_clp` quedan en `null`, y `aviso_clp` contiene un mensaje que explica cómo corregirlo.
+
+El resultado es una estimación con precios de pago: no consulta la facturación de Google ni detecta si tu cuenta usa el nivel gratuito, créditos o descuentos. No incluye impuestos ni otros servicios. Revisa las tarifas antes de actualizarlas o habilitar otro modelo.
+
+Si el consumo está ausente, incompleto o es inválido, `uso` y `costo_estimado` son `null` y se conserva el texto generado. Si el consumo es válido pero el modelo no tiene tarifas registradas, se devuelve `uso` y `costo_estimado` queda en `null`. Un importe cero se reserva para consumo cero reportado por el proveedor.
 
 ### Campos y validaciones
 
@@ -226,7 +312,7 @@ Esta colección realiza la petición directamente al proveedor.
 3. Configura `API_BEARER_TOKEN` en el cliente con el mismo valor de tu `.env`, sin el prefijo `Bearer`.
 4. Revisa **Auth → Bearer Token**. Si el importador no conserva la autenticación, selecciónala y coloca el token en ese campo.
 5. Envía **Estado de la API** y comprueba HTTP 200.
-6. Envía **Consultar desde la API Python** y comprueba el texto en `detalles.respuesta`.
+6. Envía **Consultar desde la API Python** y comprueba el texto en `detalles.respuesta`, los tokens en `detalles.uso` y el costo en `detalles.costo_estimado`.
 7. Envía **Autenticación - sin token** para comprobar HTTP 401.
 8. Envía **Validación - campos faltantes** y **Validación - valores inválidos** para comprobar HTTP 422.
 
@@ -286,7 +372,7 @@ Ejecuta la suite:
 uv run python -m tests -v
 ```
 
-Las pruebas comprueban autenticación, configuración, validaciones, consultas y manejo de errores. Simulan la comunicación con Gemini, por lo que no requieren credenciales reales ni conexión al proveedor una vez instaladas las dependencias.
+Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
 
 Para revisar el código con las herramientas de desarrollo:
 
@@ -304,8 +390,10 @@ uv run basedpyright
 │   ├── agentes.py         # Selección y ejecución del agente
 │   ├── api.py             # Endpoints y autenticación local
 │   ├── catalogo.py        # Agentes y modelos habilitados
+│   ├── costos.py          # Tarifas por modelo y costos en USD y CLP
 │   ├── esquemas.py        # Modelos de datos y validaciones
-│   └── respuestas.py      # Contrato de respuestas y manejo de errores
+│   ├── respuestas.py      # Contrato de respuestas y manejo de errores
+│   └── tipo_cambio.py     # Dólar observado y tasa manual opcional
 ├── tests/                 # Suite automatizada
 ├── docs/                  # Evidencias de las peticiones
 ├── api.postman_collection.json
@@ -322,7 +410,7 @@ uv run basedpyright
 Para verificar lo implementado:
 
 - Ejecuta la consulta directa desde el cliente HTTP con la colección de Gemini.
-- Ejecuta `uv run python -m src.agente_gemini` y comprueba la respuesta a la pregunta por defecto.
+- Ejecuta `uv run python -m src.agente_gemini` y comprueba texto, tokens y costo estimado en el JSON de salida.
 - Comprueba que `/health` y `/consultar` responden con un Bearer token válido.
 - Comprueba HTTP 401 al omitir el token y HTTP 422 al enviar campos inválidos.
 - Ejecuta la suite de pruebas automatizadas.

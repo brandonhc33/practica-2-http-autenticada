@@ -6,6 +6,7 @@ from unittest.mock import Mock, patch
 from src.agente_gemini import ENDPOINT
 from src.agentes import CLIENTES
 from src.catalogo import AGENTES
+from src.esquemas import Resultado
 from tests.base import CasoAPI
 
 
@@ -16,13 +17,10 @@ class ConsultasTests(CasoAPI):
         self.assertEqual(detalles, {"estado": "ok"})
         self.post.assert_not_called()
 
-    def test_consulta_exitosa_incluye_solo_texto_en_detalles(self):
+    def test_consulta_exitosa_incluye_texto_tokens_y_costo_en_detalles(self):
         respuesta = self.client.post("/consultar", headers=self.headers, json=self.cuerpo)
         detalles = self.assertRespuesta(respuesta, 200, "Consulta realizada correctamente.")
-        self.assertEqual(
-            detalles,
-            {"respuesta": "Respuesta simulada"},
-        )
+        self.assertEqual(detalles, self.resultado)
         self.post.assert_called_once()
         self.assertEqual(self.post.call_args.args[0], ENDPOINT)
         self.assertEqual(
@@ -39,10 +37,12 @@ class ConsultasTests(CasoAPI):
             respuesta = self.client.post("/consultar", headers=self.headers, json=cuerpo)
         detalles = self.assertRespuesta(respuesta, 200)
         self.assertEqual(self.post.call_args.kwargs["json"]["model"], "gemini-modelo-alternativo")
-        self.assertEqual(detalles, {"respuesta": "Respuesta simulada"})
+        self.assertEqual(detalles["respuesta"], "Respuesta simulada")
+        self.assertEqual(detalles["uso"], self.resultado["uso"])
+        self.assertIsNone(detalles["costo_estimado"])
 
     def test_otro_agente_usa_su_propio_cliente_y_modelo(self):
-        cliente = Mock(return_value="Respuesta de otro agente")
+        cliente = Mock(return_value=Resultado(respuesta="Respuesta de otro agente"))
         catalogo = {"otro": {"clave": "OTRO_API_KEY", "modelos": {"basico": "modelo-real"}}}
         with (
             patch.dict(AGENTES, catalogo),
@@ -56,7 +56,7 @@ class ConsultasTests(CasoAPI):
         self.post.assert_not_called()
         self.assertEqual(
             detalles,
-            {"respuesta": "Respuesta de otro agente"},
+            {"respuesta": "Respuesta de otro agente", "uso": None, "costo_estimado": None},
         )
 
     def test_mensaje_original_se_conserva(self):
@@ -66,4 +66,4 @@ class ConsultasTests(CasoAPI):
         detalles = self.assertRespuesta(respuesta, 200)
         enviado = self.post.call_args.kwargs["json"]
         self.assertEqual(enviado["messages"][0]["content"], contenido)
-        self.assertEqual(detalles, {"respuesta": "Respuesta simulada"})
+        self.assertEqual(detalles, self.resultado)

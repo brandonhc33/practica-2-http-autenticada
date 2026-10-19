@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 
 from src.agentes import CLIENTES
 from src.catalogo import AGENTES
-from src.esquemas import LIMITES_CONSULTA
+from src.esquemas import LIMITES_CONSULTA, Resultado
 from tests.base import CasoAPI
 
 
@@ -116,7 +116,7 @@ class ValidacionesTests(CasoAPI):
         cuerpo = {campo: "a" * limite for campo, limite in LIMITES_CONSULTA.items()}
         # Cada á cuenta como un carácter, aunque ocupe más de un byte en UTF-8.
         cuerpo["mensaje"] = "á" * LIMITES_CONSULTA["mensaje"]
-        cliente = Mock(return_value="Respuesta en el límite")
+        cliente = Mock(return_value=Resultado(respuesta="Respuesta en el límite"))
         catalogo = {
             cuerpo["agente"]: {
                 "clave": "GEMINI_API_KEY",
@@ -126,7 +126,10 @@ class ValidacionesTests(CasoAPI):
         with patch.dict(AGENTES, catalogo), patch.dict(CLIENTES, {cuerpo["agente"]: cliente}):
             respuesta = self.client.post("/consultar", headers=self.headers, json=cuerpo)
         detalles = self.assertRespuesta(respuesta, 200)
-        self.assertEqual(detalles, {"respuesta": "Respuesta en el límite"})
+        self.assertEqual(
+            detalles,
+            {"respuesta": "Respuesta en el límite", "uso": None, "costo_estimado": None},
+        )
         self.assertNotIn(cuerpo["mensaje"], respuesta.text)
         cliente.assert_called_once_with("modelo-real", cuerpo["mensaje"])
         self.post.assert_not_called()

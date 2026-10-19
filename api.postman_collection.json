@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Práctica 2 - API Python con Bearer token",
-    "description": "Todas las respuestas usan error (booleano), codigo (estado HTTP), mensaje y detalles. Los errores por campo aparecen en detalles.validaciones como campo y errores (array de strings).",
+    "description": "Todas las respuestas usan error (booleano), codigo (estado HTTP), mensaje y detalles. Una consulta exitosa incluye detalles.respuesta, detalles.uso y detalles.costo_estimado con bloques usd y clp, tipo de cambio y tarifas por millón. Los importes son textos decimales con símbolo de moneda y sin exponentes. Los errores por campo aparecen en detalles.validaciones como campo y errores (array de strings).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -57,7 +57,59 @@
     },
     {
       "name": "Consultar desde la API Python",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "  pm.test('La consulta incluye texto, tokens y costo estimado', function () {",
+              "    const detalles = pm.response.json().detalles;",
+              "    pm.expect(detalles).to.have.all.keys('respuesta', 'uso', 'costo_estimado');",
+              "    pm.expect(detalles.respuesta).to.be.a('string').and.not.empty;",
+              "    if (detalles.uso !== null) {",
+              "      pm.expect(detalles.uso.total).to.eql(detalles.uso.entrada + detalles.uso.salida);",
+              "      pm.expect(detalles.uso.entrada_cache).to.be.within(0, detalles.uso.entrada);",
+              "    }",
+              "    if (detalles.costo_estimado !== null) {",
+              "      const costo = detalles.costo_estimado;",
+              "      pm.expect(detalles.uso).to.be.an('object');",
+              "      ['usd', 'clp'].forEach(function (moneda) {",
+              "        const importes = costo[moneda];",
+              "        if (importes === null) return;",
+              "        pm.expect(importes.moneda).to.eql(moneda.toUpperCase());",
+              "        const prefijo = moneda === 'usd' ? 'US$ ' : '$ ';",
+              "        ['entrada', 'salida', 'total'].forEach(function (campo) {",
+              "          pm.expect(importes[campo]).to.be.a('string');",
+              "          pm.expect(importes[campo].startsWith(prefijo)).to.eql(true);",
+              "          pm.expect(importes[campo].slice(prefijo.length)).to.match(/^[0-9]+[.][0-9]{2,}$/);",
+              "        });",
+              "        const tarifas = costo['tarifas_por_millon_' + moneda];",
+              "        pm.expect(tarifas).to.have.all.keys('entrada', 'entrada_cache', 'salida');",
+              "        ['entrada', 'entrada_cache', 'salida'].forEach(function (campo) {",
+              "          pm.expect(tarifas[campo]).to.be.a('string');",
+              "          pm.expect(tarifas[campo].startsWith(prefijo)).to.eql(true);",
+              "          pm.expect(tarifas[campo].slice(prefijo.length)).to.match(/^[0-9]+[.][0-9]{2,}$/);",
+              "        });",
+              "      });",
+              "      if (costo.clp !== null) {",
+              "        pm.expect(costo.tipo_cambio.clp_por_usd).to.match(/^[0-9]+[.][0-9]{2,}$/);",
+              "        pm.expect(costo.tipo_cambio.fuente).to.be.a('string').and.not.empty;",
+              "        pm.expect(costo.aviso_clp).to.eql(null);",
+              "      } else {",
+              "        pm.expect(costo.tarifas_por_millon_clp).to.eql(null);",
+              "        pm.expect(costo.aviso_clp).to.be.a('string').and.not.empty;",
+              "      }",
+              "    }",
+              "  });",
+              "}"
+            ]
+          }
+        }
+      ],
       "request": {
+        "description": "Devuelve texto, uso real de tokens y costos estimados en USD y CLP con símbolo de moneda y todos los decimales significativos. Incluye fecha, fuente y valor del tipo de cambio. Si falla la conversión, conserva USD y devuelve aviso_clp; uso o costo pueden ser null si faltan metadatos válidos o tarifas para el modelo.",
         "auth": {
           "type": "bearer",
           "bearer": [

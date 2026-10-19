@@ -7,7 +7,7 @@ from .agente_gemini import consultar_gemini
 from .catalogo import AGENTES
 from .esquemas import Consulta, Resultado
 
-CLIENTES: dict[str, Callable[[str, str], str]] = {"gemini": consultar_gemini}
+CLIENTES: dict[str, Callable[[str, str], Resultado]] = {"gemini": consultar_gemini}
 
 
 class AgenteNoConfigurado(ValueError):
@@ -29,5 +29,4 @@ def consultar_agente(consulta: Consulta) -> Resultado:
     if cliente is None:
         raise ValueError(f"Falta implementar el cliente del agente {consulta.agente}.")
     modelo = configuracion["modelos"][consulta.modelo]
-    texto = cliente(modelo, consulta.mensaje)
-    return Resultado(respuesta=texto)
+    return cliente(modelo, consulta.mensaje)
