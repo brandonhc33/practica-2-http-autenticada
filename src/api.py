@@ -2,16 +2,16 @@
 
 import os
 import secrets
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from src.agentes import AgenteNoConfigurado, consultar_agente
+from src.agentes import AgenteNoConfigurado, consultar_agente, consultar_agente_raw
 from src.esquemas import Consulta, EstadoAPI, RespuestaAPI, Resultado
 from src.respuestas import ErrorAPI, registrar_manejadores
 
@@ -68,10 +68,9 @@ def health() -> RespuestaAPI[EstadoAPI]:
     )
 
 
-@app.post("/consultar", response_model=RespuestaAPI[Resultado])
-def consultar(consulta: Consulta) -> RespuestaAPI[Resultado]:
+def ejecutar_consulta[T](consulta: Consulta, cliente: Callable[[Consulta], T]) -> T:
     try:
-        resultado = consultar_agente(consulta)
+        return cliente(consulta)
     except AgenteNoConfigurado as error:
         raise ErrorAPI(
             codigo=503,
@@ -84,6 +83,16 @@ def consultar(consulta: Consulta) -> RespuestaAPI[Resultado]:
             mensaje="No se pudo completar la consulta al agente.",
             detalles={"agente": consulta.agente, "modelo": consulta.modelo, "causa": str(error)},
         ) from None
+
+
+@app.post("/consultar", response_model=RespuestaAPI[Resultado])
+def consultar(consulta: Consulta) -> RespuestaAPI[Resultado]:
+    resultado = ejecutar_consulta(consulta, consultar_agente)
     return RespuestaAPI(
         error=False, codigo=200, mensaje="Consulta realizada correctamente.", detalles=resultado
     )
+
+
+@app.post("/consultar/raw", response_model=None)
+def consultar_raw(consulta: Consulta) -> dict[str, Any]:
+    return ejecutar_consulta(consulta, consultar_agente_raw)

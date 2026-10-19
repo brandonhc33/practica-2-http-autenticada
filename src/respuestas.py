@@ -95,7 +95,7 @@ async def manejar_validacion(request: Request, error: Exception) -> JSONResponse
             for campo, errores in por_campo.items()
         ]
     }
-    if request.url.path == "/consultar":
+    if request.url.path in ("/consultar", "/consultar/raw"):
         detalles["campos_permitidos"] = list(Consulta.model_fields)
         detalles["ejemplo"] = EJEMPLO_CONSULTA
     return respuesta_json(422, "Revisa los campos de la solicitud.", detalles)

@@ -4,6 +4,8 @@ Proyecto del Bloque 4 de Skillnest que permite consultar Gemini desde Python y m
 
 La tarea incluye una función `obtener_dato_de_prueba(pregunta)` para comprobar que Gemini responde desde Python. Tanto el comando como la API devuelven el texto, los tokens consumidos y el costo estimado en USD y CLP de cada consulta, con símbolos de moneda y decimales sin notación exponencial. También incluye validaciones de entrada, manejo de errores y pruebas automatizadas.
 
+La API también permite inspeccionar la respuesta JSON completa del proveedor mediante `POST /consultar/raw`.
+
 ## Tecnologías
 
 - Python 3.12 y `uv` para gestionar el entorno y las dependencias.
@@ -151,7 +153,7 @@ uv run uvicorn src.api:app --host 127.0.0.1 --port 8000 --reload
 
 Mantén esa terminal abierta mientras realizas las peticiones. Si falta `API_BEARER_TOKEN`, el servidor avisa al arrancar y no inicia. Reinícialo después de cambiar ese token en `.env`.
 
-Los dos endpoints requieren este encabezado:
+Todos los endpoints requieren este encabezado:
 
 ```http
 Authorization: Bearer <API_BEARER_TOKEN>
@@ -163,6 +165,7 @@ Sustituye `<API_BEARER_TOKEN>` por el valor de tu `.env`.
 | --- | --- | --- |
 | GET | `http://127.0.0.1:8000/health` | HTTP 200 con `detalles.estado` igual a `ok`. |
 | POST | `http://127.0.0.1:8000/consultar` | HTTP 200 con texto, tokens y costo estimado dentro de `detalles`. |
+| POST | `http://127.0.0.1:8000/consultar/raw` | HTTP 200 con el JSON completo de Gemini directamente en el cuerpo. |
 
 Usa las rutas sin una barra final. Un token ausente o incorrecto devuelve HTTP 401. Las páginas `/docs` y `/redoc` están deshabilitadas.
 
@@ -229,6 +232,26 @@ Ejemplo de respuesta exitosa con consumo ilustrativo; el texto y los tokens real
 ```
 
 Cada consulta es independiente; no se conserva un historial de conversación ni se acumulan los costos. `detalles.respuesta` contiene el texto generado, `detalles.uso` el consumo y `detalles.costo_estimado` los importes y las tarifas aplicadas.
+
+### Inspeccionar la respuesta original de Gemini
+
+Envía el mismo formato de solicitud a `POST /consultar/raw`, con `Content-Type: application/json` y el Bearer token de la API local:
+
+```json
+{
+  "agente": "gemini",
+  "modelo": "flash-lite",
+  "mensaje": "Hola, responde con una frase breve."
+}
+```
+
+Cuando Gemini responde HTTP 200, este endpoint devuelve su objeto JSON completo directamente en el cuerpo: puedes inspeccionar `choices`, `usage`, el modelo y cualquier otro metadato que incluya el proveedor. Se conservan los campos originales, los valores `null` y los espacios del texto. También se permiten respuestas sin texto generado para inspeccionar el motivo de finalización u otros campos disponibles.
+
+La respuesta corresponde al endpoint compatible con OpenAI que usa este proyecto, definido en [src/agente_gemini.py](src/agente_gemini.py): `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`. Se conserva el contenido JSON; su formato de espacios y sangría puede cambiar al serializarlo.
+
+Cada petición realiza una nueva consulta a Gemini. La respuesta exitosa de esta ruta contiene únicamente el JSON del proveedor: los costos calculados por la aplicación se obtienen mediante `/consultar`. La ruta raw realiza una sola llamada a Gemini y no consulta el tipo de cambio.
+
+Los errores de autenticación, validación, configuración y comunicación conservan el contrato local `error`, `codigo`, `mensaje` y `detalles`. Por ejemplo, si Gemini devuelve HTTP 429, la API responde HTTP 502 con la causa, igual que en `/consultar`.
 
 ### Tokens y costo por consulta
 
@@ -313,16 +336,17 @@ Esta colección realiza la petición directamente al proveedor.
 4. Revisa **Auth → Bearer Token**. Si el importador no conserva la autenticación, selecciónala y coloca el token en ese campo.
 5. Envía **Estado de la API** y comprueba HTTP 200.
 6. Envía **Consultar desde la API Python** y comprueba el texto en `detalles.respuesta`, los tokens en `detalles.uso` y el costo en `detalles.costo_estimado`.
-7. Envía **Autenticación - sin token** para comprobar HTTP 401.
-8. Envía **Validación - campos faltantes** y **Validación - valores inválidos** para comprobar HTTP 422.
+7. Envía **Consultar respuesta raw de Gemini** para inspeccionar directamente el JSON completo del proveedor.
+8. Envía **Autenticación - sin token** para comprobar HTTP 401.
+9. Envía **Validación - campos faltantes** y **Validación - valores inválidos** para comprobar HTTP 422.
 
 La colección usa `BASE_URL=http://127.0.0.1:8000`, `AGENTE=gemini` y `MODELO=flash-lite`. Los tokens de ambas colecciones están vacíos: los clientes HTTP no leen el `.env` del proyecto automáticamente.
 
-En Postman, la colección de la API incluye comprobaciones del contrato común y de que `codigo` coincida con el estado HTTP.
+En Postman, la colección de la API incluye comprobaciones del contrato común y de que `codigo` coincida con el estado HTTP. Las respuestas exitosas de `/consultar/raw` se comprueban como objetos JSON del proveedor.
 
 ## Contrato común de respuestas
 
-Todas las respuestas de la API local, incluidos los errores, contienen estos campos:
+Las respuestas de `/health`, `/consultar` y todos los errores de la API local contienen estos campos. Las respuestas HTTP 200 de `/consultar/raw` contienen directamente el JSON de Gemini:
 
 | Campo | Tipo | Significado |
 | --- | --- | --- |
@@ -372,7 +396,7 @@ Ejecuta la suite:
 uv run python -m tests -v
 ```
 
-Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
+Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. También comprueban que `/consultar/raw` conserve todo el JSON del proveedor, incluso sin texto generado, y que utilice una sola petición sin consultar el dólar. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
 
 Para revisar el código con las herramientas de desarrollo:
 
@@ -411,7 +435,7 @@ Para verificar lo implementado:
 
 - Ejecuta la consulta directa desde el cliente HTTP con la colección de Gemini.
 - Ejecuta `uv run python -m src.agente_gemini` y comprueba texto, tokens y costo estimado en el JSON de salida.
-- Comprueba que `/health` y `/consultar` responden con un Bearer token válido.
+- Comprueba que `/health`, `/consultar` y `/consultar/raw` responden con un Bearer token válido.
 - Comprueba HTTP 401 al omitir el token y HTTP 422 al enviar campos inválidos.
 - Ejecuta la suite de pruebas automatizadas.
 

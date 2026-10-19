@@ -4,10 +4,14 @@ from tests.base import TOKEN, CasoAPI
 
 
 class AutenticacionTests(CasoAPI):
-    def test_ambos_endpoints_exigen_bearer_valido(self):
+    def test_todos_los_endpoints_exigen_bearer_valido(self):
         for authorization in (None, "Bearer incorrecto", "Bearer ", f"Basic {TOKEN}"):
             headers = {} if authorization is None else {"Authorization": authorization}
-            for method, endpoint in (("GET", "/health"), ("POST", "/consultar")):
+            for method, endpoint in (
+                ("GET", "/health"),
+                ("POST", "/consultar"),
+                ("POST", "/consultar/raw"),
+            ):
                 with self.subTest(authorization=authorization, endpoint=endpoint):
                     respuesta = self.client.request(
                         method,

@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Práctica 2 - API Python con Bearer token",
-    "description": "Todas las respuestas usan error (booleano), codigo (estado HTTP), mensaje y detalles. Una consulta exitosa incluye detalles.respuesta, detalles.uso y detalles.costo_estimado con bloques usd y clp, tipo de cambio y tarifas por millón. Los importes son textos decimales con símbolo de moneda y sin exponentes. Los errores por campo aparecen en detalles.validaciones como campo y errores (array de strings).",
+    "description": "Las respuestas procesadas y los errores usan error (booleano), codigo (estado HTTP), mensaje y detalles. Una consulta procesada exitosa incluye detalles.respuesta, detalles.uso y detalles.costo_estimado con bloques usd y clp, tipo de cambio y tarifas por millón. Los importes son textos decimales con símbolo de moneda y sin exponentes. POST /consultar/raw devuelve directamente el JSON completo de Gemini cuando responde HTTP 200. Los errores por campo aparecen en detalles.validaciones como campo y errores (array de strings).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -10,6 +10,8 @@
       "script": {
         "type": "text/javascript",
         "exec": [
+          "const esRespuestaRaw = pm.response.code === 200 && pm.request.url.toString().endsWith('/consultar/raw');",
+          "if (!esRespuestaRaw) {",
           "pm.test('La respuesta usa el contrato común', function () {",
           "  const cuerpo = pm.response.json();",
           "  pm.expect(cuerpo).to.have.all.keys('error', 'codigo', 'mensaje', 'detalles');",
@@ -29,7 +31,8 @@
           "      });",
           "    });",
           "  }",
-          "});"
+          "});",
+          "}"
         ]
       }
     }
@@ -124,6 +127,46 @@
         "body": {
           "mode": "raw",
           "raw": "{\n  \"agente\": \"{{AGENTE}}\",\n  \"modelo\": \"{{MODELO}}\",\n  \"mensaje\": \"Hola, ¿puedes confirmar que esta conexión funciona?\"\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "Consultar respuesta raw de Gemini",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "  pm.test('La respuesta raw es el objeto JSON del proveedor', function () {",
+              "    const cuerpo = pm.response.json();",
+              "    pm.expect(cuerpo).to.be.an('object');",
+              "    if (cuerpo.choices !== undefined) pm.expect(cuerpo.choices).to.be.an('array');",
+              "    if (cuerpo.usage !== undefined && cuerpo.usage !== null) pm.expect(cuerpo.usage).to.be.an('object');",
+              "  });",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "description": "Realiza una nueva consulta y devuelve directamente el JSON completo de Gemini, incluidos choices, usage y otros metadatos. Los errores conservan el contrato local. Usa el mismo Bearer token de la API Python.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            { "key": "token", "value": "{{API_BEARER_TOKEN}}", "type": "string" }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{BASE_URL}}/consultar/raw",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"agente\": \"{{AGENTE}}\",\n  \"modelo\": \"{{MODELO}}\",\n  \"mensaje\": \"Hola, responde con una frase breve.\"\n}",
           "options": { "raw": { "language": "json" } }
         }
       }

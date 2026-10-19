@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 import requests
 from dotenv import load_dotenv
@@ -45,7 +46,8 @@ def extraer_uso(uso: object) -> UsoTokens | None:
     return tokens
 
 
-def consultar_gemini(modelo: str, mensaje: str) -> Resultado:
+def consultar_gemini_raw(modelo: str, mensaje: str) -> dict[str, Any]:
+    """Devuelve todos los campos JSON del proveedor sin procesar el texto ni el consumo."""
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not api_key:
         raise ValueError("Falta GEMINI_API_KEY. Agrega tu clave en el archivo .env.")
@@ -90,9 +92,14 @@ def consultar_gemini(modelo: str, mensaje: str) -> Resultado:
     except requests.exceptions.RequestException:
         raise ValueError("No se pudo conectar con Gemini. Revisa tu conexión.") from None
 
-    # El endpoint de chat devuelve el texto en choices[0].message.content.
     if not isinstance(datos, dict):
         raise ValueError("Gemini no devolvió una respuesta válida.")
+    return datos
+
+
+def consultar_gemini(modelo: str, mensaje: str) -> Resultado:
+    datos = consultar_gemini_raw(modelo, mensaje)
+    # El endpoint de chat devuelve el texto en choices[0].message.content.
     opciones = datos.get("choices")
     primera = opciones[0] if isinstance(opciones, list) and opciones else None
     mensaje_generado = primera.get("message") if isinstance(primera, dict) else None
