@@ -117,6 +117,14 @@ uv run python -m src.agente_gemini "Explica la diferencia entre una API y una p�
 
 La pregunta entre comillas reemplaza la predeterminada para esa ejecución. Las comillas permiten enviar varias palabras como un solo argumento. Una pregunta vacía o compuesta solo por espacios se rechaza antes de consultar Gemini.
 
+Para inspeccionar el JSON completo de Gemini desde la terminal, agrega `--raw`:
+
+```bash
+uv run python -m src.agente_gemini --raw "Hola, responde con una frase breve."
+```
+
+También puedes usar `uv run python -m src.agente_gemini --raw` con la pregunta predeterminada. Esta opción carga `GEMINI_API_KEY` desde `.env` y consulta directamente a Gemini; puedes ejecutarla sin iniciar la API local. Imprime todos los campos del proveedor, igual que una respuesta exitosa de `/consultar/raw`, y no calcula costos ni consulta el tipo de cambio.
+
 Para ver la ayuda del comando:
 
 ```bash

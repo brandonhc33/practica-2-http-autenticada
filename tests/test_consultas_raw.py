@@ -1,15 +1,44 @@
 """Respuesta completa de Gemini mediante el endpoint autenticado de inspección."""
 
+import json
 import os
+from io import StringIO
 from unittest.mock import patch
 
 import requests
 
-from src.agente_gemini import ENDPOINT
+from src.agente_gemini import ENDPOINT, main
 from tests.base import TOKEN, CasoAPI
 
 
 class ConsultasRawTests(CasoAPI):
+    def test_comando_raw_devuelve_json_original_con_pregunta_opcional(self):
+        datos = {
+            "choices": [{"message": {"content": None}, "finish_reason": "content_filter"}],
+            "metadato_adicional": {"valores": [1, None, {"bandera": True}]},
+        }
+        self.upstream.json.return_value = datos
+        pregunta = "¿Qué es una API?"
+        for indice, argumentos in enumerate(
+            (["--raw"], ["--raw", pregunta], [pregunta, "--raw"]), start=1
+        ):
+            with (
+                self.subTest(argumentos=argumentos),
+                patch("src.agente_gemini.load_dotenv") as cargar_entorno,
+                patch("sys.argv", ["src.agente_gemini", *argumentos]),
+                patch("sys.stdout", new_callable=StringIO) as salida,
+            ):
+                main()
+                self.assertEqual(json.loads(salida.getvalue()), datos)
+                self.assertEqual(self.post.call_count, indice)
+                cargar_entorno.assert_called_once()
+                if pregunta in argumentos:
+                    self.assertEqual(
+                        self.post.call_args.kwargs["json"]["messages"],
+                        [{"role": "user", "content": pregunta}],
+                    )
+        self.get.assert_not_called()
+
     def test_devuelve_todos_los_campos_del_proveedor_sin_transformarlos(self):
         datos = {
             "id": "consulta-simulada",

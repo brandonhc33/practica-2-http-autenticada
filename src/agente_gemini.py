@@ -118,6 +118,12 @@ def obtener_dato_de_prueba(pregunta: str) -> Resultado:
     return consultar_gemini(modelo, pregunta)
 
 
+def obtener_dato_de_prueba_raw(pregunta: str) -> dict[str, Any]:
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+    modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
+    return consultar_gemini_raw(modelo, pregunta)
+
+
 def main() -> None:
     pregunta_por_defecto = (
         "Estoy aprendiendo a programar en Python y quiero entender cómo se conecta una "
@@ -131,6 +137,11 @@ def main() -> None:
         description="Consulta Gemini y muestra texto, tokens y costos en USD y CLP como JSON."
     )
     parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="Muestra el JSON completo de Gemini, tal como lo devuelve el proveedor.",
+    )
+    parser.add_argument(
         "pregunta",
         nargs="?",
         default=pregunta_por_defecto,
@@ -140,8 +151,11 @@ def main() -> None:
     if not argumentos.pregunta.strip():
         parser.error("La pregunta no puede estar vacía ni contener solo espacios.")
     try:
-        resultado = obtener_dato_de_prueba(argumentos.pregunta)
-        print(json.dumps(resultado.model_dump(mode="json"), ensure_ascii=False, indent=2))
+        if argumentos.raw:
+            datos = obtener_dato_de_prueba_raw(argumentos.pregunta)
+        else:
+            datos = obtener_dato_de_prueba(argumentos.pregunta).model_dump(mode="json")
+        print(json.dumps(datos, ensure_ascii=False, indent=2))
     except ValueError as error:
         raise SystemExit(str(error)) from None
 
