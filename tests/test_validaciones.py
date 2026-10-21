@@ -161,7 +161,11 @@ class ValidacionesTests(CasoAPI):
     def test_agente_y_modelo_desconocidos_indican_opciones_en_su_campo(self):
         casos = (
             ("agente", "desconocido", "Agente no disponible. Usa: gemini."),
-            ("modelo", "desconocido", "Modelo no disponible para gemini. Usa: flash-lite."),
+            (
+                "modelo",
+                "desconocido",
+                "Modelo no disponible para gemini. Usa: flash-lite, flash, flash-3-8.",
+            ),
         )
         for campo, valor, mensaje in casos:
             with self.subTest(campo=campo):
@@ -180,7 +184,7 @@ class ValidacionesTests(CasoAPI):
             )
         self.assertEqual(
             self.assertValidaciones(respuesta),
-            {"modelo": ["Modelo no disponible para gemini. Usa: flash-lite."]},
+            {"modelo": ["Modelo no disponible para gemini. Usa: flash-lite, flash, flash-3-8."]},
         )
         self.post.assert_not_called()
 

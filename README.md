@@ -315,13 +315,27 @@ Los tres campos son obligatorios y deben ser cadenas de texto. No se aceptan cam
 
 Los límites son inclusivos y cuentan caracteres, no bytes. En la API, el texto se envía en `mensaje`; un campo llamado `pregunta` se rechaza con HTTP 422.
 
-### Agente y modelo configurados
+### Agente y modelos habilitados
 
-El catálogo de [src/catalogo.py](src/catalogo.py) contiene esta combinación:
+El catálogo de [src/catalogo.py](src/catalogo.py) contiene estas combinaciones para `POST /consultar` y `POST /consultar/raw`:
 
 | Agente en el JSON | Modelo en el JSON | Modelo del proveedor | Credencial |
 | --- | --- | --- | --- |
 | `gemini` | `flash-lite` | `gemini-3.5-flash-lite` | `GEMINI_API_KEY` |
+| `gemini` | `flash` | `gemini-3.6-flash` | `GEMINI_API_KEY` |
+| `gemini` | `flash-3-8` | `gemini-3.8-flash` | `GEMINI_API_KEY` |
+
+Por ejemplo, para seleccionar Gemini 3.6 Flash:
+
+```json
+{
+  "agente": "gemini",
+  "modelo": "flash",
+  "mensaje": "Explica qué es RAG en un párrafo."
+}
+```
+
+La API recibe el alias de la tabla; el evaluador `--modelos` recibe el identificador del proveedor. Los tres modelos tienen tarifas registradas en `src/costos.py`. La disponibilidad y la cuota dependen de Google; los fallos observados durante la evaluación están documentados en el registro del Bloque 9.
 
 El servidor resuelve el nombre del modelo del proveedor a partir de los códigos públicos. La petición a Gemini utiliza el endpoint definido en `src/agente_gemini.py` y envía la clave en `Authorization: Bearer ...`. El token local se valida en la API y no se envía a Google.
 

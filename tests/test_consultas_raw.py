@@ -12,6 +12,24 @@ from tests.base import TOKEN, CasoAPI
 
 
 class ConsultasRawTests(CasoAPI):
+    def test_modelos_del_catalogo_se_pueden_seleccionar_en_raw(self):
+        casos = (
+            ("flash-lite", "gemini-3.5-flash-lite"),
+            ("flash", "gemini-3.6-flash"),
+            ("flash-3-8", "gemini-3.8-flash"),
+        )
+        for alias, modelo in casos:
+            with self.subTest(modelo=alias):
+                self.post.reset_mock()
+                respuesta = self.client.post(
+                    "/consultar/raw", headers=self.headers, json={**self.cuerpo, "modelo": alias}
+                )
+                self.assertEqual(respuesta.status_code, 200)
+                self.assertEqual(respuesta.json(), self.upstream.json.return_value)
+                self.post.assert_called_once()
+                self.assertEqual(self.post.call_args.kwargs["json"]["model"], modelo)
+        self.get.assert_not_called()
+
     def test_comando_raw_devuelve_json_original_con_pregunta_opcional(self):
         datos = {
             "choices": [{"message": {"content": None}, "finish_reason": "content_filter"}],
