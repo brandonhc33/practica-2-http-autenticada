@@ -5,12 +5,20 @@ from decimal import Decimal
 from .esquemas import CostoEstimado, CostosMoneda, TarifasTokens, TarifasTokensCLP, UsoTokens
 from .tipo_cambio import obtener_tipo_cambio
 
-# Tarifas por 1.000.000 de tokens, verificadas el 2026-10-19.
-# https://ai.google.dev/gemini-api/docs/pricing#gemini-3.5-flash-lite
+# Tarifas estándar por 1.000.000 de tokens, verificadas el 2026-10-20.
+# https://ai.google.dev/gemini-api/docs/pricing
 # Son una referencia de pago: no permiten conocer la facturación de la cuenta.
+# Flash 3.6 y 3.8 tienen precios promocionales hasta el 2026-12-31; el evaluador
+# exige actualizarlos después de esa fecha antes de generar nuevas evidencias.
 TARIFAS_GEMINI: dict[str, TarifasTokens] = {
     "gemini-3.5-flash-lite": TarifasTokens(
         entrada=Decimal("0.30"), entrada_cache=Decimal("0.03"), salida=Decimal("2.50")
+    ),
+    "gemini-3.8-flash": TarifasTokens(
+        entrada=Decimal("0.75"), entrada_cache=Decimal("0.075"), salida=Decimal("3.75")
+    ),
+    "gemini-3.6-flash": TarifasTokens(
+        entrada=Decimal("0.75"), entrada_cache=Decimal("0.075"), salida=Decimal("3.75")
     ),
 }
 
