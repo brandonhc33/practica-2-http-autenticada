@@ -2,6 +2,8 @@
 
 Actividad práctica del Bloque 8: recorrido de una pregunta desde el usuario hasta la respuesta, con credenciales, manejo de errores, consumo de tokens y costo estimado.
 
+La [decisión de arquitectura del Bloque 9](decision-arquitectura.md) utiliza este diagrama y documenta la comparación de modelos con mediciones reales de costo y latencia.
+
 ![Diagrama de arquitectura de POST /consultar](diagrama_arquitectura.png)
 
 El diagrama representa el código actual del repositorio. El archivo [editable de draw.io](diagrama_arquitectura.drawio) permite modificar las cajas, los textos y las conexiones. Para abrirlo, usa **Archivo → Abrir desde → Dispositivo** en diagrams.net. Después de editarlo, exporta nuevamente el PNG para mantener ambos archivos sincronizados.

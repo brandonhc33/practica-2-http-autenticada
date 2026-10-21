@@ -1,0 +1,1603 @@
+{
+  "inicio_utc": "2026-10-21T00:07:11.340098+00:00",
+  "fin_utc": "2026-10-21T00:10:12.166070+00:00",
+  "estado_ejecucion": "finalizada",
+  "endpoint_consultas": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+  "endpoint_inventario": "https://generativelanguage.googleapis.com/v1beta/models",
+  "modelos_disponibles": [
+    {
+      "name": "models/gemini-2.5-flash",
+      "displayName": "Gemini 2.5 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-pro",
+      "displayName": "Gemini 2.5 Pro",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-preview-tts",
+      "displayName": "Gemini 2.5 Flash Preview TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "generateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-pro-preview-tts",
+      "displayName": "Gemini 2.5 Pro Preview TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "generateContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemma-4-26b-a4b-it",
+      "displayName": "Gemma 4 26B A4B IT",
+      "inputTokenLimit": 262144,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemma-4-31b-it",
+      "displayName": "Gemma 4 31B IT",
+      "inputTokenLimit": 262144,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-flash-latest",
+      "displayName": "Gemini Flash Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-flash-lite-latest",
+      "displayName": "Gemini Flash-Lite Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-pro-latest",
+      "displayName": "Gemini Pro Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-lite",
+      "displayName": "Gemini 2.5 Flash-Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-image",
+      "displayName": "Nano Banana",
+      "inputTokenLimit": 32768,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-flash-preview",
+      "displayName": "Gemini 3 Flash Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-pro-preview",
+      "displayName": "Gemini 3.1 Pro Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-pro-preview-customtools",
+      "displayName": "Gemini 3.1 Pro Preview Custom Tools",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite-preview",
+      "displayName": "Gemini 3.1 Flash Lite Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite",
+      "displayName": "Gemini 3.1 Flash Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-pro-image-preview",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-pro-image",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/nano-banana-pro-preview",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-image-preview",
+      "displayName": "Nano Banana 2",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-image",
+      "displayName": "Nano Banana 2",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite-image",
+      "displayName": "Nano Banana 2 Lite",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-nano-banana-2.1",
+      "displayName": "Nano Banana 2.1",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-flash",
+      "displayName": "Gemini 3.5 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-flash-lite",
+      "displayName": "Gemini 3.5 Flash Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-omni-flash-preview",
+      "displayName": "Gemini Omni Flash Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-omni-1.1-flash",
+      "displayName": "Gemini Omni 1.1 Flash",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-transcribe",
+      "displayName": "Gemini 3.5 Transcribe",
+      "inputTokenLimit": 98304,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-3.6-flash",
+      "displayName": "Gemini 3.6 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.7-flash",
+      "displayName": "Gemini 3.7 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash",
+      "displayName": "Gemini 3.8 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-4-argon",
+      "displayName": "Gemini 4 Argon",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/lyria-3-clip-preview",
+      "displayName": "Lyria 3 Clip Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/lyria-3-pro-preview",
+      "displayName": "Lyria 3 Pro Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/lyria-3.5",
+      "displayName": "Lyria 3.5",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-tts-preview",
+      "displayName": "Gemini 3.1 Flash TTS Preview",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash-tts",
+      "displayName": "Gemini 3.8 Flash TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash-lite-tts",
+      "displayName": "Gemini 3.8 Flash Lite TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-robotics-er-2-preview",
+      "displayName": "Gemini Robotics-ER 2 Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-computer-use-preview-10-2025",
+      "displayName": "Gemini 2.5 Computer Use Preview 10-2025",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/antigravity-preview-05-2026",
+      "displayName": "Antigravity Agent Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/antigravity-preview-09-2026",
+      "displayName": "Antigravity Agent Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/antigravity-preview-latest",
+      "displayName": "Antigravity Agent Preview Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/deep-research-max-preview-04-2026",
+      "displayName": "Deep Research Max Preview (Apr-21-2026)",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/deep-research-preview-04-2026",
+      "displayName": "Deep Research Preview (Apr-21-2026)",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/deep-research-pro-preview-12-2025",
+      "displayName": "Deep Research Pro Preview (Dec-12-2025)",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-embedding-001",
+      "displayName": "Gemini Embedding 001",
+      "inputTokenLimit": 2048,
+      "outputTokenLimit": 1,
+      "supportedGenerationMethods": [
+        "embedContent",
+        "countTextTokens",
+        "countTokens",
+        "asyncBatchEmbedContent"
+      ]
+    },
+    {
+      "name": "models/gemini-embedding-2-preview",
+      "displayName": "Gemini Embedding 2 Preview",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 1,
+      "supportedGenerationMethods": [
+        "embedContent",
+        "countTextTokens",
+        "countTokens",
+        "asyncBatchEmbedContent"
+      ]
+    },
+    {
+      "name": "models/gemini-embedding-2",
+      "displayName": "Gemini Embedding 2",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 1,
+      "supportedGenerationMethods": [
+        "embedContent",
+        "countTextTokens",
+        "countTokens",
+        "asyncBatchEmbedContent"
+      ]
+    },
+    {
+      "name": "models/aqa",
+      "displayName": "Model that performs Attributed Question Answering.",
+      "inputTokenLimit": 7168,
+      "outputTokenLimit": 1024,
+      "supportedGenerationMethods": [
+        "generateAnswer"
+      ]
+    },
+    {
+      "name": "models/veo-3.1-generate-preview",
+      "displayName": "Veo 3.1",
+      "inputTokenLimit": 480,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "predictLongRunning"
+      ]
+    },
+    {
+      "name": "models/veo-3.1-fast-generate-preview",
+      "displayName": "Veo 3.1 fast",
+      "inputTokenLimit": 480,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "predictLongRunning"
+      ]
+    },
+    {
+      "name": "models/veo-3.1-lite-generate-preview",
+      "displayName": "Veo 3.1 lite",
+      "inputTokenLimit": 480,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "predictLongRunning"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-transcribe-live",
+      "displayName": "Gemini 3.5 Transcribe Live",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-native-audio-latest",
+      "displayName": "Gemini 2.5 Flash Native Audio Latest",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-native-audio-preview-09-2025",
+      "displayName": "Gemini 2.5 Flash Native Audio Preview 09-2025",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-native-audio-preview-12-2025",
+      "displayName": "Gemini 2.5 Flash Native Audio Preview 12-2025",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-live-preview",
+      "displayName": "Gemini 3.1 Flash Live Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-live",
+      "displayName": "Gemini 3.8 Live",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-live-extended-thinking",
+      "displayName": "Gemini 3.8 Live Extended Thinking",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-robotics-er-2-streaming-preview",
+      "displayName": "Gemini Robotics-ER 2 Streaming Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-live-translate-preview",
+      "displayName": "Gemini 3.5 Live Translate Preview",
+      "inputTokenLimit": 16384,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/lyria-realtime-exp",
+      "displayName": "Lyria Realtime Experimental",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateMusic"
+      ]
+    }
+  ],
+  "modelos_evaluados": [
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash"
+  ],
+  "repeticiones_por_caso": 3,
+  "casos": {
+    "explicacion_api": "Estoy aprendiendo Python. Explica qué es una API con una analogía cotidiana, cómo viaja una pregunta desde Python hasta Gemini y cómo vuelve la respuesta, y para qué sirve una API key. Responde en español, con secciones breves y entre 150 y 200 palabras.",
+    "errores_http": "Una aplicación Python consulta Gemini con requests y usa un Bearer token distinto para proteger su API local. Explica cómo diagnosticar y resolver HTTP 401 de la API local, HTTP 429 de Gemini y un timeout al consultar Gemini. Distingue las dos credenciales y evita recomendar publicar secretos. Responde en español, con secciones breves y entre 150 y 200 palabras.",
+    "calculo_costo": "Una consulta a una IA consume 1000 tokens de entrada y 2000 de salida, sin caché. La entrada cuesta USD 0.30 por millón y la salida USD 2.50 por millón. Usa un tipo de cambio hipotético de 950 CLP por USD. Calcula el costo de entrada, salida y total en USD, el total en CLP y el costo de 1000 consultas iguales. Muestra las operaciones, aclara que son estimaciones sin impuestos y no confundas tokens con palabras. Responde en español, con secciones breves y entre 150 y 200 palabras."
+  },
+  "configuracion": {
+    "parametros": "Predeterminados del proveedor; mismo cuerpo que la aplicación.",
+    "streaming": false,
+    "historial": false,
+    "reintentos": 0,
+    "timeout_conexion_segundos": 10,
+    "timeout_lectura_segundos": 60,
+    "latencia": "perf_counter alrededor de consultar_gemini_raw; excluye cálculo y dólar.",
+    "orden": "Secuencial, intercalado y rotando el primer modelo por caso y ronda."
+  },
+  "tarifas": {
+    "fuente": "https://ai.google.dev/gemini-api/docs/pricing",
+    "verificadas_el": "2026-10-20",
+    "modalidad": "Standard de pago, USD por millón; no es facturación de la cuenta.",
+    "flash_3_6_y_3_8_promocion_hasta": "2026-12-31",
+    "modelos": {
+      "gemini-3.5-flash-lite": {
+        "entrada": "US$ 0.30",
+        "entrada_cache": "US$ 0.03",
+        "salida": "US$ 2.50"
+      },
+      "gemini-3.6-flash": {
+        "entrada": "US$ 0.75",
+        "entrada_cache": "US$ 0.075",
+        "salida": "US$ 3.75"
+      }
+    }
+  },
+  "mediciones": [
+    {
+      "inicio_utc": "2026-10-21T00:07:11.340688+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "¡Bienvenido a Python! Aquí tienes los conceptos clave explicados de forma sencilla.\n\n### La analogía del mozo y el restaurante\nImagina que Python es un cliente sentado en un restaurante, y Gemini es la cocina. Como el cliente no puede entrar a cocinar, necesita un **mozo** que tome su pedido, lo lleve a la cocina y le traiga el plato preparado. Ese mozo es la **API** (Interfaz de Programación de Aplicaciones).\n\n### El viaje de los datos\nCuando escribes código en Python, empaquetas tu pregunta en un formato estándar (como JSON) y se la entregas a la API de Gemini mediante internet. La API actúa como vehículo: transporta tu pregunta hasta los servidores de Google, donde la inteligencia artificial la procesa. Una vez lista la respuesta, la API emprende el viaje de regreso y se la entrega a tu programa en Python para que la imprima en pantalla.\n\n### ¿Para qué sirve la API Key?\nLa **API Key** es como tu DNI o tarjeta VIP. Como los servidores de Google atienden a millones de usuarios, necesitan saber quién hace cada petición para controlar el uso, evitar abusos y cobrar si superas el plan gratuito. Sin esta llave, la puerta de la API estará cerrada para ti.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TskRO0QRt82PhTHG1YCmaXwV84e+9zcb9zBStebVpOHk0VbWf+DIzEjUGsAevlwsGwPuWDFyo8qwA8XxIG/YYtAWcbO349Dy7hBSiw/0x6s4aO8dz2CkGWmg="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541232,
+        "id": "LwLYaqu4JeKPytMP8IPvsAQ",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 267,
+          "prompt_tokens": 63,
+          "total_tokens": 330
+        }
+      },
+      "uso": {
+        "entrada": 63,
+        "salida": 267,
+        "total": 330,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0006864",
+      "costo_clp": "0.673948704",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 1.77711,
+      "numero": 1,
+      "ronda": 1,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:07:13.395806+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "### ¿Qué es una API?\nUna API (Interfaz de Programación de Aplicaciones) es como un mesero en un restaurante. Tú (tu código en Python) no entras a la cocina a preparar la comida; le pides al mesero lo que deseas del menú, él lleva tu pedido a la cocina (Gemini) y regresa con tu platillo listo. Es el intermediario que conecta dos sistemas.\n\n### El viaje de la información\n1. **Envío:** Creas la pregunta en Python. La API la empaqueta como una solicitud digital y la envía por internet.\n2. **Procesamiento:** La solicitud llega al servidor de Gemini, que procesa la consulta y redacta una respuesta.\n3. **Retorno:** La respuesta viaja de regreso por la red y la API se la entrega a tu programa de Python para que la muestres en pantalla.\n\n### ¿Para qué sirve la API Key?\nEs tu identificación única y contraseña secreta. Funciona como un carnet VIP: le demuestra a Gemini quién eres, confirma que tienes permiso de acceso y le ayuda a controlar cuántas consultas realizas para mantener la seguridad del servicio.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "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"
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541244,
+        "id": "MQLYatr9KJGyytMP74WdUQ",
+        "model": "gemini-3.6-flash",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 242,
+          "prompt_tokens": 63,
+          "total_tokens": 2463
+        }
+      },
+      "uso": {
+        "entrada": 63,
+        "salida": 2400,
+        "total": 2463,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.00904725",
+      "costo_clp": "8.883132885",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 11.645556,
+      "numero": 2,
+      "ronda": 1,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:07:25.042560+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "### Gestión de credenciales\nSepara las credenciales: el token **Bearer local** valida a los clientes que consumen tu propia API, mientras que la **API Key de Gemini** autentica tu aplicación Python ante Google. Guárdalas de forma segura en variables de entorno (archivo `.env`) y nunca las publiques en repositorios.\n\n### 1. HTTP 401 en la API local\n* **Diagnóstico:** El cliente envió un token Bearer ausente, expirado o incorrecto.\n* **Solución:** Revisa el encabezado `Authorization` entrante en tu servidor Python y valida que coincida exactamente con la clave secreta configurada.\n\n### 2. HTTP 429 en Gemini\n* **Diagnóstico:** Excediste la cuota o el límite de tasa (*rate limit*) de peticiones de Google.\n* **Solución:** Implementa en `requests` una estrategia de reintentos con *backoff* exponencial (usando librerías como `tenacity`), o reduce la frecuencia de consultas enviadas a la API de Gemini.\n\n### 3. Timeout al consultar Gemini\n* **Diagnóstico:** Ocurrió un bloqueo por latencia de red o alta carga en los servidores de Google.\n* **Solución:** Define explícitamente el parámetro `timeout=(5, 30)` en `requests.post()`. Captura la excepción `requests.exceptions.Timeout` para manejar la falla limpiamente y retornar un error 504 al usuario final.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "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"
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541258,
+        "id": "PgLYaqDFBeaGqtsPwOS14A0",
+        "model": "gemini-3.6-flash",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 319,
+          "prompt_tokens": 87,
+          "total_tokens": 2410
+        }
+      },
+      "uso": {
+        "entrada": 87,
+        "salida": 2323,
+        "total": 2410,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0087765",
+      "costo_clp": "8.61729429",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 13.762481,
+      "numero": 3,
+      "ronda": 1,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:07:38.806180+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "### Diagnóstico y solución de errores comunes\n\n**Distinción de credenciales:**\nTu app usa dos secretos distintos: el **Token Bearer** (protege *tu* API local, validado por ti) y la **API Key de Gemini** (autentica *tu* app ante Google, enviada en la cabecera o URL a Google). Nunca los confundas ni los expongas en logs o código fuente.\n\n**1. HTTP 401 en tu API local**\n*   **Diagnóstico:** El cliente envía un Bearer token inválido, expirado o ausente en la cabecera `Authorization`.\n*   **Solución:** Verifica que el token enviado coincida exactamente con el esperado por tu servidor local y que el formato sea `Bearer <TOKEN>`.\n\n**2. HTTP 429 de Gemini**\n*   **Diagnóstico:** Superaste la cuota o el límite de peticiones por minuto (RPM) de la API de Google.\n*   **Solución:** Implementa reintentos con espera exponencial (*exponential backoff*) en tu código usando `requests` y optimiza la frecuencia de consultas.\n\n**3. Timeout al consultar Gemini**\n*   **Diagnóstico:** La red es lenta, Google tarda en responder o no definiste un tiempo límite.\n*   **Solución:** Añade un parámetro `timeout` (ej. `timeout=10`) en tu llamada con `requests` para evitar bloqueos indefinidos y maneja la excepción `requests.exceptions.Timeout`.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T1RyrCwIJaWnGiPDTgjlAkljpfaz9ToAAjTXik9eIhzURfX5MsGjvDrc9DvNQmpUL9IFyYmk58vR+LIwNr1NdjMtw4pXi1yYGyQgVvfYoDsWSDwMxWhHoonE="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541261,
+        "id": "SwLYaoyLMLaPytMPm8S_0Qs",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 325,
+          "prompt_tokens": 87,
+          "total_tokens": 412
+        }
+      },
+      "uso": {
+        "entrada": 87,
+        "salida": 325,
+        "total": 412,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0008386",
+      "costo_clp": "0.823387796",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 2.467635,
+      "numero": 4,
+      "ronda": 1,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:07:41.274875+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "Aquí tienes el cálculo detallado para tu consulta de IA (nota: los tokens son fragmentos de texto, no palabras exactas).\n\n### Costo en USD\n* **Entrada:** 1.000 tokens × ($0,30 / 1.000.000) = **$0,000300**\n* **Salida:** 2.000 tokens × ($2,50 / 1.000.000) = **$0,005000**\n* **Costo Total por consulta:** $0,000300 + $0,005000 = **$0,005300** (USD)\n\n### Costo en CLP\n* **Total en pesos chilenos:** $0,005300 USD × 950 CLP = **5,035 CLP**\n\n### Costo de 1.000 consultas iguales\n* **En USD:** $0,005300 × 1.000 = **$5,30**\n* **En CLP:** 5,035 CLP × 1.000 = **5.035 CLP**\n\n*Nota: Esta es una estimación referencial basada en los precios base del proveedor y no incluye impuestos locales (como el IVA) ni posibles comisiones bancarias por cambio de divisa.*",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0Ttt/WmVVgIf4O8IV0+hUAeGW++LM7zUMAOAgrbfzl60H0La5uAjZ4uaG0OFU3Su+gXGAFwTJ4DjwS5sf06dRPNEhS5WNwqygtrzhi91w0II1A0VoQDfVCx8w="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541264,
+        "id": "TwLYap-vF-O3qtsPxLWw8QE",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 315,
+          "prompt_tokens": 137,
+          "total_tokens": 452
+        }
+      },
+      "uso": {
+        "entrada": 137,
+        "salida": 315,
+        "total": 452,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0008286",
+      "costo_clp": "0.813569196",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 3.355169,
+      "numero": 5,
+      "ronda": 1,
+      "caso": "calculo_costo"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:07:44.631322+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "error",
+      "error": "Gemini respondió HTTP 503. Gemini no está disponible temporalmente. Intenta nuevamente más tarde.",
+      "respuesta_proveedor": null,
+      "uso": null,
+      "costo_usd": null,
+      "costo_clp": null,
+      "tipo_cambio": null,
+      "aviso_clp": null,
+      "latencia_segundos": 8.338742,
+      "numero": 6,
+      "ronda": 1,
+      "caso": "calculo_costo"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:07:52.971994+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "### ¿Qué es una API?\nUna API es como el mesero de un restaurante. Tú (tu código en Python) eres el cliente en la mesa y la cocina es Gemini. No entras a la cocina a preparar la comida; le pides al mesero lo que deseas, él lleva la orden a la cocina y te trae el platillo listo.\n\n### El viaje de tu pregunta\n1. **Envío:** Escribes la consulta en Python. La API empaqueta el mensaje y lo envía por internet hacia los servidores de Google.\n2. **Procesamiento:** Gemini recibe la petición, procesa la información y genera la mejor respuesta.\n3. **Regreso:** La API toma esa respuesta, viaja de vuelta por la red y se la entrega a tu programa de Python para que la muestres en pantalla.\n\n### ¿Para qué sirve la API Key?\nEs como tu tarjeta de identificación o membresía personal. Al incluirla en tu código, le demuestras a Gemini quién eres, confirmas que tienes permiso para usar el servicio y le permites a Google contabilizar tus consultas para evitar abusos.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EowsCoksAWkUfRN9U1FN9LZucFT1AtvgLV5BtTptLaYekSxSJYk5eeVs3nbVKAuKDtQ2V7JEGvmCKxTmREOnb79I/u4Rll+ji1ymPC794Q6y7yPYmF8dgcNAVsH7cG5UVeB0J02chfoo4aFJFpL9co4bjBvX1NSZXbx5PddtwAi+2/o0zFU8RLDjomlQtvrqgOrj4Z+xRooJjXcWIzwKMtWID81s0NqZgPnvf5Sw496cUfj2my+I99K8eCYTIhCdT7asSoEE7jE3T/K/8pCy2Sq2EJTBPE9loLYrDxg8lvjGYxGOh61oDDY25uF54S4Bu6lDPoQKbGQx0UVnZJBTwxkncz52ccHx2+Hbh29NyAibzQPMIVBxmvDdUMy1QmSe4OUHoCHkjaFpPQ4IyNgOT/P2cs+nmJu2zZ5sefB6c+Ej4yHe/kz4cCN6H5tDhpXt27AsT/YbqR6jng+41UNYMxeMLLnQy7/L/+4l6ecxhXBHArH5QcEMycO3enqw1+n9yFwklHBs4vAcKqa7wm+C8ePm4JF2oKOCYNzs+dwbC737i6sFkoq+5H19YyAEu2evkCsakGESyH9WbpLAYHv1tMIa10mbPb56gJoJQOzhUwq53gQ4D+Wezs2m5Yg8PhiTNZRBby8EYZD3ACcW3bGAj0k7jFUco3wolhCNXUwPLJ1btOUka377bZnBMX7AjcrfRGsf5XLnowj8i/4Ymegi/BmxYqFM0aDpSEzeam7X5FHYnOV2XRSWerz+BCVMFiwKEkW36W4n15DLaGWYAufhlw8jD7o861iG2/uVtIohHMYwB5NF3AygjNakSPalOTw7cpAvHuiDp9ILqd26rwq1180tXjHEPUgfMSbAZN0H3wk1Gze9zw79pbUgJxQuOUSuyOewqz9aWuS7pX8JNbOLxM01CSJ+559UsaUzAjIVh9wLTuX6/hecDS61sT40RP5LSIKyFMQUKKUVkOBkmsZKF1OMLMRmPQbpisERVvKcJ/dqxPaxYJdlG6ylGhA1deS1Byp7MMEPG7T0f9ppiJTROOd19MUs2oV4le6U30Te2UYvHd/X4j09vTWsZmTWlNuQ/O7vRyXxo7lE/IStBf3fFn67j2ikrgtbhVe9Hd8oN3HAktz9OO/t+9l8vD4QdxeScoMCPyQ6xmJC9rfKoP4AUIpRG2SSpDb7OukT4EkOXYKluyhsqnbh1nx7ndCx7zuNYlMoau/GuUQxa34+/5sGMTqo0wI6hYKYXPr/P6l4EWAzO/+CvuX77UbpLKVCNbYvsmcUqTrSX6x0BMFPwH7/Da1egYq0K/VL1t+/CgcEGlLrKsJv3vQ8IPFNoL6OYOsFXWa7Enw4xhz/o3QRkTnkmOjpMxQ1Ns6mNxyMAbMpGc2Y3ALon1xtLSseTLkhfVt1wuz6nzEi9LohfHlNyVToZsaFgDjiK3FPcRe+j9Im5zvySdEx615H/MsEn4Fhq+U/uheHnK9QRBoh2SoFmYroK8SwcGXAVfobw+dBXmpPDbToWxeV4/Tqx4icgrPH0r02xWVMNfxjsSlCXFmSB+n3a9B7lS6uDZUTjsArylKpxe4xBN+z6j5+2j+WpGshpu0YqrLBwTc+8lr/8561EnfnLV/YWRLbt62VPSvMuKj/UHDvAlgG+BIZnHoTgW3pZhRgfW8NkstyopDpEiy9XehiQ+DHc8ZjRszmqYU4EXqh7QBnv07xZ0Dq1TmGhuAP7ADSnRS/2ooEOe/r6RX4e+AHHCJ+KBu5remw5Qvb7duDGkEtfxxtgV/L9VMrpEK0T6utmm51RQLmJt5fSqfAnVK/OOXN1fyq/Y3/15R/W95yZypm1PFb4J+WwwiKvxO/KmgifJXIJnHHmITJ5H9YRzBZQDrI/kWVFHJJN/v/SN+uE138M5uie29i0PQ+J4C7GFxgofPNnsxfcZkySBR+8j51QDIcRyqTruTAzT1jEGK9VCYFC+eZhayvgnlIXx1p2IqWoFX6LV0FOsufpk5KaKiJzAgtEw6w3F8miSXqAykupLPgVhzQGIoHaXAFzln2EBpT2syMoZMGhA7vUn/gE9au8L/7xx6HawUv1h2hpJzu7Y4Q8YqOSSFulbIXRZ5ezYsgDIIWMOrieBHG+pMM1Ysi4PZP8f4zhDTGQogW4rae3osFVEtGO+1jOWipdGof7P3+okjR3KH2G9wWx871JMtwgMXTuaU40qWOJnFhD/PVsV5ZOEU7TlWggPMoGhx9mEs2AUl/b2I4BKs/YNU0ZS87R1jMGBcnj16tlKSYZrKcD+vtcbpEaKlcBl/CS3pVr93rbNTViFEjuqiVtl0K/nANI5LanbviXofOv5M6hEiLjzNO7epbQTIwwxgRbyHrlrRkcfd3SCNZER2AlT2zpJ4qHFZoAJdoGoiK48d0qi3lmIYzpa1vhKDcHJDQ0UA9pVsAiaUQx36Nqq9hxXfnLrV3lipw6V04YzK2JcZCuza1xw7mFSukQORaFz3oUEYMT8kbl8V/GHt3GB8VWyxPIAUwIwBcm4C9PRrXqEjnsrBtt4rJjz4KqXJIYnokduxQbRoxpNlpPsTdSIL1nfRF8Yv5w5FAm+q32fxvNlO5pRXDKDlrd5MyjjpD240tZdPsnxvLXyvdvZvybhTrfdnly2mHb4syLFxrGaWo+tZAXNq1RApuL9bTu30qcrdCqX/PMm1l/CnuexVJ2ThcWgXHiWyCTNV/JFY3sHC3WxZaNc/CtP0wj/AnNjHeP2r0VGSFREX98RKlml4Xpg0JVgjVXHdivsFCtzMACZiYwOwEmWqXFEkrCfJNVxwQ7gEJYwdQ0l7C4i0TmpBQmMqrXhWjipUQmPKtkgMh7O2ZF3KRR+ndFoptU7xn7E5NeX/NxVJMHo0QaYVNnLatnHkpVDaltieaPhTnrM0kPqcQNfV9XuihyBkV2i/+AN9AiOlGUrmUo7dp12QfIB9KKlqFSVN2Vio8NsGOTmKuXubDPMKKqVkvKWN+2k2j7GisqwtMQEwLFdhQIRTnIO+b5PCbbTx+1XCd9v2Sp8ri4+IQTjCbDj/Dgq7AEXNdncFaPSmyQ8xrerqwVysP8ifjnWIMEHC5TrPvxyC5cogxnOAT+lcspw7sBZdkCrKJdMYD8CgPmCf44tCo1lz6OsbL/SJjOqFruAp2uqVE8cfeSxgLpvyY30PCxla5SkBpviFiWpBHSmyB1O/Rl3zID6QJnWgrHZ1bIA4USneKb2RYSgVnStYfw2B/CHtKl/xW2my6pExnsgbBwaVXDQoIjtfcNmC7SyDl+DaPFSBerQ0ZOI6M1NO0E1/pcxekJE18fdx0sm7npW1uUW84XRN6V40J6EJ5WUBvrdlE6GIpVtDje9tJNa5PyUPn/kWP+0aJVjFv4yDGd7J+h1+mArxYDm92gjlHcuA0SwKaIO1sT+iHk8YbIUY2EzbV/yAKWz7l0alJqPF8i1uoeKJZYlfUt20DlDn3vZcRk4zvhgs2ouRJDVPuKiww4ZPbiRF3JKyShUSNjHL+XzWaS5rfWNOxXh0t4QowsYzgYhiTq8phUtpJwa1IKoobP+Zc7CaPPFJXD4iQpDlsqtuXbFP5/7OFo55OsO6t/szhBtGFSY4oiMrMUhwETfa005EBTPLBQ/x48AHsbY+iXqEqkwPTYB8zPHgzLknBx9Hn0ETpED1Ir5nhpgDWAYZXEoK0suF7VqqTNJL0oPEO9ZmkVNlKenFsuolgayY5WANK/hzvlIdh4TbYTm6TO1+ff98NASjwsuNl64Bm1QM2M9RLT3yP6eKtYCPzyE4Dn50q0WJ5kO8RXMD3kWAIEI1exq1ofHCUC4Ggi1FjphtX9mGegwLRazJvZPlCoDp7JdQhm+mNGuDDFymKCGKmcLx0zz5xJWwyJ+Ryfhkqn06uD2Rhbc3VsZ2SiadGLp2x4KUt5VoTWx4ZUr/eOuPOl5JwntfeQlWsYIr7+5oo54Aa6RqT9YJl5SU2iQ6MWgHnGAupbrtoG4QF85OTnFF0/Wl9PElpkNddWWt7efRjPQvfNrXlsL8cYePxxN7Hw3LlX1dfAFVFZ4eWxpMCoNX7hNCr2MIPMF9HBrFGN7T1mOOj+kOODb1HR1YTYK4sG7h79WjNC/GJReeSlM3JN1mMDgifAWjRZJ6YSOmv4UhqxQko0aTsiEaGIMJwpYzufIKrfJlfB7b3F1tYeSZ+eAuobfEl3IIgL/thuhOXVJu/3GTzsBGSFvMHu6oxa3qJtmBwn2WgAIZU9WAOQzTG0TC5Qj1vmdzbEzFaPMBuvdtVTgF3vKLPgnIW3JTLzmtfM+jJW87Wz5959Ok2l0TszRTC6CyoE8DfukIMZTOQkRlRpaYn6pmz5zsGvG5ah/7s2AXSJXppbhUFMz/VoWfT4LdaVpOc1TmDT/oK/14gfkgJlSDxYLmR26vFQeT/Y0U8fzqmff4HFj/bFidqEN4tINTMQUH+uc7syV7fklJIZqnse5aoLYXR8ips8LxQiI4nggDExAQb4Aqsu5Y+JUBuofqv+0ZohRenJQHitSmz3TGguyPuP69yVOgo/ZqS+gcqIthHQUmXbJETRlVHvns/fAWsQNkHmm9wyzBU0WSnFqhNGRph3x27LjvJl70CXdmhh25vnkMWW7BDRRN1kLteyPEuXcVhP/d65wLutodsjtqka5zKbgLJJ93abjdDWbpl9l7GrqcBwXqlzvpg3LFrgi6Em4zSpwp2ZY7VTa8x+KEjAn+DnTRp6fujg3aTZwdFu6o9GxiEy/U24Xpk92tkk7wGskBxgbg+R8cMOGkwmK+B4L2ZrMW+1vrJCN8zJ26YvxER/5kxbjAij2GO+cmgTHGBoCAp3GD97OIYbW0Dff5xbW7K1IiA3Ssxk/NrzkZopFZvPIBP3czWTGzzsHWmW4TaGO6sUJrMks8amMDDc38jlEDpuv/UI5b0a8UNw8bXBn65gThoRiLqiBHBTCZw7xdc5CC4oMYnvCrj2OdS4nD94O6PyqI9NTybFxlMQ76Qq5W1r9r9L4uKLtd8AOEg4yr1AFdOmMpLMLM1h34VZ9f/vYFil1U9/r+p5afVz0ho2TynNRnOHXyhpUaESERDsBg0zewOCGq57RgVS4alMpnipUTHsJhNBsbCK7QXmIx8wGOZzoYjrhelkP/WiFhU9vnc1Oh2zWRb5YyQEicvBWR9tfvUifi1Sr2zA7jdj4QnkGYwWoqcxHhh1B2jtOQ9Ztf4cVSEnl29EZV2rnrga8yUg0poEncbS5dDbg0RV4bvEc0ziqLJRzrs4GoD1ppEAefDiT5u92QUR/5NGeuU87SCminpR94gPAwfXyOGuKRF+r4AaDAiemTdCDX1ZV7dPfdkQ0+jSxIj7FjgR0C6I9vPk4bdzZSoJkUu4g1NEzqCk3hgdFjsfaDCF2rV+mLa1ViVhY8tToj0XiO7AqQBMT6t4GNxSk25PV3t4jTk+AxVZrhhpGpx+GDVgmBv2V1NqOv6V+Xi4jBEkDmOgl3GvFWYJTNJQbC1IRtxhZHOmcF2NHPxlJQ1YiroYuKzGi5V8EsnJo+FMvPqb1p6OVuJA7S+GOFZ4gRcwlK28dhvHKoVphBBuUl9ikzYfGNNqvSiCSxJPU/8009szLFXxKqJsE697z2i2S1FnQ64fmjvTa46BnjNIisngFT25dIjQ+U9eVgQVOBMlCOVoJNHJfTJFynzhY2okfurEO+NqLOJucVOmtdAo5Pt8WJJFv0n+CFelSW1VLepHge7GG83suCh5I+k/gSqDTKhMoqhf+IfLP66zmVg+ueosdrxhre97XOG10qZ9iqOQpPRyli/rgjQFzCC7/YBce0i5ql2z3PA2AkSEMWQO8lKVZwNqhMfuIfJVmXWP/O9fnKoomFUbrENshVVVwjuZViQAIW4YrRHEtIQtzNtRQ3rvHfW6e+zqsUOdLuuGuGeGi8xB6XsSV4mxdY3Mw7UdBfd2pkA6QY5HFq+qCrJY1eOnjfiHSfdWLRvu48W7nehARhlh+ycq1nPAREPms6ZvUOd9rRa8spAcqXWR1uFJmQ/UWrXO0xILEr5Wrb57MG5x61yEdnupxLlf21QZgtnRKetyacJ/sEvmqa9jYQGavQb4oksocoHv0GDYoCjdfB1l7IpIVuEdzGBN5KUy68+5dFqI0CMSwa1HQY+RA3yivkO3LAgn/cllbQUH04sr7xh1xxSke/pOJbqM2eK7J92uzPagPutEEQDWnwEOz9a4tPkPQcTOBhi5+Y5w+ttcsR4/I/+DUDJ4IRzb7LK+HnnDwfHueV4U2BzaJROf2nZRKebG7oPOIQBUy8OtqjDlAD7LWHclx9HyHGKu03g/P7RSUVna/j3Qwn8dBKPFFekMasVQXvZCVVJzMWaO2xwUYWRtoa6i6WKWO/E6r07c7YZrFIuwcC+xg9XtkSlLC8h9rRCfSIZcbt/ndntoHuPLlXLP4tS0vmqb8FTKj6KcYfTJUwljn8SbUV4z23gxTo8eXi/8RBbdYsHwU5JVCjhhXfhyYvKsNlzY/fNJLnfkcNFMbUIHzFjMZOL7OMKFFNm6BeusMcjahaK+86t915BfHQ/hk9gvOyN1J58sMTxMOneqgv6rCei3o1om11cyckj6aAX3FhJbn2yKFv1bBgJFF+DttSmssXoNz5v3KyqwRfVIY/oPCMMwOIcxsI19a2eocjyA/84gd5N4pJ85Bb+40ShpbtsRu7FCMBr4GT87T1c3R2eu0ljeVehsHRvoR0akVJ5UeuqzWay8XKDYWKsb2ugEoui34XmKCPPAY83hE73NqmcnvN4KARo/PbOmTtnk+WM9Fh4RtBWoK+bv4ewgY88ZvQlQ1XmjFOAf+LzEdZ+VBFQL9nExjeoX6O8unHVUxl+WqXBnDeiVK30FnOYMdzrRkYc2Sg/c9fI2fCk6w3lXK/Ay40E7BFWixRKVEleiBgSsTSF25LIiUo1JAZKD0I9HK0mmuOxYrmHYTaWZQnM4gxk+Cds74/UVv1JZc6i3ZiDfNIMiOaaRy4NCbdQrGKstvkA522mKT1WWrtTjDaGWd9eDrT6XOMO9DOyh23hn9tipoY02fi2JHUUvDt8wiRjpCZ5MILcvN/7x9UnfSZrz7NDQ1Lh9QYsKMEhcWrywd1Z1jq6OtouRIk6KVfSI6sZe3UghP/Hvl5JyjgT30YxE7fY6DqqixtAy/Fd0/OyHVqgCHSwRVE96FrD5Qkc0qV+xF0rYraFjTMr7jrHjrJB4kB1T8U7yyPBqbTQBEocs0Be/ueOnpUl1X8rHRc5x0y8/Id6LBfh2cEAHInlpgptQqCHb2Tz0+LgrJBd+SKCmBRoIxFGMuBBC0AW4v7QKyoIWuYOYjN2QqMf6s93Ft/tTufvSu8xaSV/6sXFY1S56Q+GAT1x1NbrLSkhXrY7xp8+Prz1Ee9xcFIC/owA26Pnpxs968KEjtK5Le1mMH89EcQTIMEYXOKL4uIaoAJ28L7Y2P+vKUdfLnsemPFQQaIvoh+H727c3t9NkmIVSQq4+n44eBbJRnTctjc/UOHBQiXjoeshGA=="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541282,
+        "id": "WQLYauHHOuO3qtsPxLWw8QE",
+        "model": "gemini-3.6-flash",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 236,
+          "prompt_tokens": 63,
+          "total_tokens": 1804
+        }
+      },
+      "uso": {
+        "entrada": 63,
+        "salida": 1741,
+        "total": 1804,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.006576",
+      "costo_clp": "6.45671136",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 9.590955,
+      "numero": 7,
+      "ronda": 2,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:08:02.564129+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "**La analogía del mesero**\nImagina que Python es un cliente en un restaurante y Gemini es la cocina. La API es el mesero: toma tu pedido (código), va a la cocina (el modelo de IA) y te trae de vuelta el plato listo (la respuesta). Sin el mesero, no podrías comunicarte con la cocina.\n\n**El viaje de los datos**\nTú escribes una pregunta en tu código Python. Usando la librería oficial, empaquetas ese texto en un formato estándar (JSON) y lo envías mediante internet al servidor de Google. Gemini procesa la solicitud, genera el texto y lo devuelve por la misma vía. Python recibe el paquete, lo desempaqueta y tú puedes imprimirlo en pantalla.\n\n**¿Para qué sirve la API Key?**\nLa *API Key* (llave de API) es como tu identificación o tarjeta VIP. Es una contraseña alfanumérica secreta que acompaña a cada mensaje desde Python. Le dice a Google quién está haciendo la petición, sirve para llevar la cuenta de tu uso (y posibles costos) y evita que extraños usen tus cuotas de servicio sin autorización.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T2gVLgG+Uw2JMu/Z3XJ/dlp3soTNj8mA/eO+mL+6Orq8iOP+luMPnaYgledQ/q+K3mu8w9vttJPz8p6cFKotnbhgm+tVB59ANVrsQNO3MpCVo5To5HACRvcU="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541284,
+        "id": "YwLYapH_HeO3qtsPxLWw8QE",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 244,
+          "prompt_tokens": 63,
+          "total_tokens": 307
+        }
+      },
+      "uso": {
+        "entrada": 63,
+        "salida": 244,
+        "total": 307,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0006289",
+      "costo_clp": "0.617491754",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 2.634203,
+      "numero": 8,
+      "ronda": 2,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:08:05.199870+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "Para diagnosticar y resolver estos errores, es vital distinguir las dos credenciales: la **API Key de Gemini** (para autenticar tu app ante Google) y el **Bearer Token local** (para autenticar a tus usuarios ante tu API). **Nunca publiques ninguna en repositorios ni logs.**\n\n### 1. HTTP 401 en la API local\n*   **Diagnóstico:** Tu cliente envía un token incorrecto, expirado o ausente en la cabecera `Authorization: Bearer <token>`.\n*   **Solución:** Revisa que tu aplicación Python inyecte correctamente el Bearer token esperado por tu servidor local y que este coincida con la variable de entorno configurada.\n\n### 2. HTTP 429 de Gemini\n*   **Diagnóstico:** Excedes la cuota o límite de peticiones por minuto (RPM) de la API de Google.\n*   **Solución:** Implementa reintentos con retroceso exponencial (*exponential backoff*) usando la librería `tenacity` o bloques `try-except`, y controla la frecuencia de llamadas.\n\n### 3. Timeout al consultar Gemini\n*   **Diagnóstico:** La red es lenta o la respuesta del modelo es muy extensa y supera el tiempo de espera predeterminado en `requests`.\n*   **Solución:** Añade o incrementa el parámetro `timeout` en tu llamada (ej. `requests.post(..., timeout=30)`) y valida la estabilidad de tu conexión.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TRY2acF1C08OEXy+E6EIUfrcfzfCA3oOPeZsbPl7abBvuWtzm4f8oCzBgr6aWbee/Z3hsyyK0x10G6hrLyPHIdqIXEWQvCQMAgEI6cwWYsta8Z1gqljpom7o="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541287,
+        "id": "ZgLYauSGDM2jqtsP0MPk2AQ",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 313,
+          "prompt_tokens": 87,
+          "total_tokens": 400
+        }
+      },
+      "uso": {
+        "entrada": 87,
+        "salida": 313,
+        "total": 400,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0008086",
+      "costo_clp": "0.793931996",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 2.541282,
+      "numero": 9,
+      "ronda": 2,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:08:07.742625+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "error",
+      "error": "Gemini respondió HTTP 503. Gemini no está disponible temporalmente. Intenta nuevamente más tarde.",
+      "respuesta_proveedor": null,
+      "uso": null,
+      "costo_usd": null,
+      "costo_clp": null,
+      "tipo_cambio": null,
+      "aviso_clp": null,
+      "latencia_segundos": 13.660439,
+      "numero": 10,
+      "ronda": 2,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:08:21.405069+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "### Nota aclaratoria\nTenga en cuenta que los tokens son fragmentos de caracteres procesados por el modelo y **no equivalen a palabras**. Asimismo, los siguientes valores corresponden a estimaciones de costo directo y **no incluyen impuestos** ni comisiones adicionales.\n\n### 1. Costos en USD por consulta\nSe calcula el costo dividiendo los tokens consumidos entre un millón y multiplicando por la tarifa correspondiente:\n* **Entrada:** (1.000 / 1.000.000) × USD 0,30 = **USD 0,0003**\n* **Salida:** (2.000 / 1.000.000) × USD 2,50 = **USD 0,0050**\n* **Costo Total en USD:** USD 0,0003 + USD 0,0050 = **USD 0,0053**\n\n### 2. Costo en CLP por consulta\nAplicando el tipo de cambio hipotético de 950 CLP por dólar:\n* **Costo Total en CLP:** USD 0,0053 × 950 CLP/USD = **5,035 CLP**\n\n### 3. Costo por 1.000 consultas idénticas\nMultiplicamos el valor de una sola consulta por la cantidad requerida:\n* **Total en USD:** USD 0,0053 × 1.000 = **USD 5,30**\n* **Total en CLP:** 5,035 CLP × 1.000 = **5.035 CLP**",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EsZZCsNZAWkUfRM+Cg5a1PKlB1tcWLWGvOYjiO0fajSM0GYUJyiYlwPOrJKtVMzwW2Pcqo/Oeetb2HfWsDB7tMXPz3ua3LEwigJ0WyN52+2ZyIcMZ8HGMNp3hqA7IFeuu07gGiSm384xIDqNn5KpAL4domP5cZLmrpYt5CzD+WIIJljT62YUneKb0RdM6MdCX1NvfGApIPe0UUuScKvQLS4AU7r70JBFeFVjXQynOUjU8aTsNiUjm3sQaWlq2jveTgSLGjeIi2UzR9WCjhiYodmnjKejVTxi0GbJlm8h03+j1CnkBd1IaDTwGiNUZTwyc8P5AMFwYytK9HVWkbgfx8/XjNjJLdKCpQPoA9nzrq/h2qYXva/NV4fnFkDfmE1uLvy1slmGz31eh5rCA6YHWaE3pUmrjlOlcdp18l8ya3MFi3WCBq6UC+/Rh6dkpd+9JUhOoXEE85e5RceirVY3kVi5ay1lKVDa7Wv28gtfwDEjODFmzccp566NvaPUENldATVW8rc86M83r+/bRmE2d9Vhm8apg8N27G/Fm/RCKYoonl/h0LntzNCdQ/3FNURW6k8F2IJVWF+ab0irQ+sYMkxT6BdWwwo/R3PEVH5bOINAR83bzgjejgAdlJ7MC4bNFVFggTqOa2lPf6VBXbtlveYcj3ZtMJSS0IGp3t9Tw8qTey/uvBav6CHQD+zloCahtwW7HNsk1CUh0bTb7gLX5Q3sqP//j4janBnL8h1lmgCIyrdUDblKfSym/ZWOh6TBHRCh3Xk99ykwmjRSQ0+gVLYvn64i3oIUfWifxHvqHBOHUB5Gwyro7A88RQzWbQjuKtweK+P43tFFM2rzfLhSx1eEXPYZcHOQkwiAEJuBwvOrbGCXESOKGwZuq6/lIaL9pMtImvOwr/PebofKv2SjUBZTd+F4XbwyaRo/buJIJoNm6PMimbixsXwZhUVpcErwYDPVcw6w8Onn8kmg49bBVBA/u+jtrPQGjb8f7SBWnyvykwEbLVW1wDKx6oBuZNlii6Ov2i1qGEAGF/y8zmhRG3ZDSP0qvk4YVV2bX8ZHg1YmInk55JDK1CnRuO9mkTYohU94+Tyv9mq77dQGBoE+2IToQJgk/oVmiyzG6dSwo11NpUFwVMmfEPxdRm+Rqj00tt6IufRwZTAVKYpyqyFDF3Fabe0v0+SRKZXCrfMlfozsvUS6RCrhT+3kP1fnUFPbfnqzYWHP5h/CXX3vmSHT257qw+qacWl22ht56V55OKwLNTpT2hpJitnOFeLcbkzVzrDOFrhVGxz/643lSCST4hl1Xjtrkln+zdqDU7DCpShZmQ02L+whJfAXIpRSqUXQ4grxSMrRfBBz2jlu+sUaE5jxKZ11I+4HE/x/dvEc4LVHby2Ie8PP0PEjV6v1PKPy9wCY9Oauvua2WNpD4JPqJvjlHBm+QlT1alL8ZrEtw34R73g5IHzzjHuv4PTZDu3MvoMz76SU0wgeSk+fOyRXMhj1w/v5OuY4GrUbmGPhMTjkhAVfLnKkF66HgQqBsK8hZx3okm+rs4OA1u4Mes50s/pVXeapmZ5SmlmYlzUjFwY2brJ48K4usAtDihoxiwIj2XE67l3wsnh5zZbnX4VveSHGksdh243RKKqaTIn/ycWk/09MdkyWrYaAN2CnU6Wsr2nxXpOvjYtibxKXnjTIV0yMD0vUeGEwzpfyAPCoJpJ6zWRERucS9brY71oyq8+6CQQDyO52tioaxpBuYj8t0gTBrJI7Pcs596gKpbKlYsFsme8I+WvKrPEPjJqCQpWts8p3m97AIym+w28EPIY2mr08HLhyUPyo6JjNHSmRFDVDtckkAhjPXbwXi7XHEQ0S7ImL0lIg34+z1wG4RrsI47tOe44KXXxzcVmVqGBsz6HWf4VQ5aFlSb0DLUVSz5TUgZ3f9BQRaaMJH9+4TMdeh91I6ImrWaEkkZDB2dETEVtU0rjFQRT4J+s2FmYaax1cTAt4geq3G8qiRigH8jplgDBEYinhQsXVztxAM11qRF02xQvcn3mk/IY22pvc7JmfE2Z/lxAkeD+XmOsPXrCf/m+Jol8Z5jMsryTpNioNLgRIyLFKRJtE4X3CuhidbALnhRso0UjlTBBg5hTWzU7tcNXoCuuL30uDOsBlc9h+P9ToMZe1cFjoGTwcVR8pj8gWVMmuhLtbaAKTfYR2Zq0oyKpRkBjq6VerzdGouVRUUD5YNMbgnjhOix6ifcZsiK12MREL8LUWR8QF2CPOI+ODt2pljmWbQlXe3SL+dLmRyTSNNigX3dhACgLPVCPrdLxPZm1XdE/kMHooL/k6fGwAGHzkruoM1SyW+MKFtljkTgmz3uZGKdPBfiV/2LjdpKwy7gzLDaTAQtXXMRTkfqc3GB1vYEZ+MVp12+JnlixBkj/ylc16xung8YksZi1GVriWRVl6izty8O4jBVnLChHhLugsNyTBGFo/SXh16f4WUhVIXXMVfXOSWwLJNr+LIxs4uuUUozd0YScza6RGjkT/iDCEeSnBd3s5hENDPXUKxQFCu5aNGRjeA7ha/n6edouJ7vKdOgFj/GdSdfCUQ8yTOzX10R2aHe1hyzaK14avYhc1ApeWBs2Qswxa+4vVXr09syD1Dt9TQ6rFs+TTOikZSTrmyot7V63Cj3RMC5cPV1oHwL4SIzi9YDS8++2/Rx0z/H5tAv/DIasNK1NJfUhsscit/+tsz8gJC35xmbiFWUc0b9xSuKGh7p9Yp+4ly2wyi+jMPXaxGe5YZXVUdlKQkofEpgR8cO7i/5EfNS0ejKhCoR8M6unVGdyDycYTWzfATa/1v7oKKAo0nUP71ZPITaAOSbZFNNuetUxTa08r6CNztAkZrUl9XTUw2HjNuyGEFqKY/VLP2ecoY0yFqRS13SxW/hNHnGwwwNlw4HUmX/V5MM3Oob6ca8BfMn4Ulxeki3EqkiMhtWkAzMCzAiiF+yUbdt6P+P8QnoONgVzEBkxUacD8XgkvksQXE+8jAd9ylX+osp9+w2kYpzApUpqy4FIGBzoL7X2qFNdwLKF4ahwVpuYfD8cmknVRU5ujoZhtBYmWcMQUTFOnnd90sRfSIcJ028d85fEDGyx6JTUulKBRNaEKebd0Khuwtvx36EWh48YNNLxbxpcxP8+g3lh05O5pxHCIHG5Pf4/7SRC6iMzN9vpHIcO/+FLJH/153EprpXQpAZaSDtrDLVcaSKzrffFuFhT/yTqspxe41jZqrMRcquIexc/vmgRsERZ1mJn5Re6FMdRYpBpQR/lEKaWdwAeSKFWGK3p+BfZwZ9UWEotPf33kyJU4oQoftxQEvO9MDkww+FAnMNH9Ua92wiYu3eGEKYcGCAi6MkJh68Uji2igfQ1Dq0lGctY9w4EOrY3V6TND1gjnlc+9a8ZYrwm4cQpvvnY2YNWswlI08zV0sGN9pVtqAmBHYM6l9UNetrr+vIJ3MOZxxpE1713GZlj0YdKmb64jiLRieYLaI7XvcL9+DOsJ8YcNOPCIasbVod/wZuUNwrHZbis2JzV4ZzdHp4OBxUlEogwAQZX2jkr6JgLcgESSl6QMiVzErQlN4YnxWykE7turQnyCI6LiFqnk0kTpQ2c9koUHcXACo06zh6GOPeWw6F3ZnYelMwgXHT+GmqNEAuGj/XJ+sM3Ea+t9E3+kkUwJ09CFKclCgk2hDD0AqizIc2vJC/FKsm7Nni6T4MeZzhkIzcoMqhKE6cNNzWyIjKz+8AH50T4IdOFGOcUjcbc2tRUFfNRwadkyq460r5S0flQ+7df2uCteLYXxAtzez4qztWUE1mzVqrDVUEDsbaXesUZaFWPoQiCycuZonfNxqsvcbCejWwKles+4iWSSb3JKzF7Yag/sZclOXafqJSTeqD0o/f/HSFaIahPsDg8lxcJ0xtN9CoW4tSTeeGq8QvAs9C/9C4wwy6EbiOSc0ja3a+E5+f/fDe/NlWyPB6J+hz6wRQdyMDkniblgXOFXMy1Liom0IJIVYG73R8oioC2RQwyC4ZgWCKAT5Q5jw4DXG7e1qORmf1bs1wPStJYJ750e0POwmPXssYhUKuESsZNrmLjBvrhvHXEaIorZ8X+v+cHFXGEDiRtVtPIYZK6w6OfmlJ88r9DnmxqWQ81XMV8nW0VMANZZqjyGep15zJBwaX2wj6ssEXKZcT8D23FOAJAI2gPf7sPC6oXo9LKNq7I9vaiIFVjQbMiiXmyksQ5utQRedLEmdtZRmaxGNOgrh2B/5xX16dtnJbZzIQdy+KTAutWBIlHWkWDBS4HEYZH9hPPSaU9AcBw5bFhxFHmxHpfEiJ/mmwWm6hgNrT5E4jo9uxzayTtACn+kToa30b9kXFfUD7K8ks6rJHJbmwXgKwpzUMhZU084aMRjx1VMHV0A3WnVaWh9oWS1u/d4cdH9Hu7vQLaGHs0rt+CETJ3U9xiclIgN4RknO0tpMgdOT0M/y0qbDHCzKIQaBybHAF5+RHVg6MOXu5F/nkqgXRfbroy7N8Cd4KvNH495ogQAlHGHAFJ6zCxGF9W3PRG4rWyt8XyuQ7d6Eua3f2aKQ8y66qRWZebqGD+7u1erYiM3g27r66lw0L5KLbGwqm4l86lDL/c1ySR/G0W1QkIbxYQ/5wYtw+3hG5VOy7QF1fP7GgCFzvRT0GMMj9R5EYK862m8q9JqA+bxbSos9iIOMXdNxW3AMKzWX06BcBXw7vDH5lxHdj0DqylmKXq5gZ2lc5O1OJToD1s2PXbl1wRDEfhQSIP5Xp34fXHttpVZI1puqBQNHWDIdJNaudAqNhvaQgWOxOrOY4u/1KfomXNIeV5YuyimQhvyqqlQOpAMjl38hngYbPcSCU4KLl+j1unrsvOaZLuuzC6/+Bey1DULuxhCwwX0dai6UiiUu63kjtiI8kXV5TcDpW0CjAGFy/vXhhmwHeRslJaf9wvQgYKsIUuTqdyp3D7AR522qVWdZtu7ERohIHaJDII+LDa8cnmBPU/WYOR0w7kD8Rn5snjBemuFPnrmfEgXqBOU8IBg+KyfODrFV0vVpFWubD56NkhnoAKraWGldtBlmsjfcwzxA9IVRujS4hZTFFw5iht+0fkSp26Xu7zkDCnTsWiW9d2Rbk4LtyQn+fDiE4iQAXXanUbKTq1YNAO623GZKkwy6bFpbEBiIKF5oevjDKHd5wjYbLdiF+j22ozIr4F3cEeSPO8v0er50BHXDszWaYR96CwDgHBr45jDnpb/xu3HyAaaRTItB43ig8Kq0gWIXmBwfOsOMy+0hC/TKHNkSqIQa6T5dC9RypN4NIMm6gIWv11ge8uAhQNUHIIXwEPdsfnw3RhYKvGAI+PNRq+Szu02xx+t8vGsCM8hYVyDqflQJXhwxwfQqraaYXMYvZ5j+SOsP2Sgre/eRRKCYmN6Oj5p4Ly71f7WkQJXNm/Up8HxYm87r8nZdPvNohH05yrz6soH77nGJburp0coV8iNrBdMwI1G012OCc4hB8ZRzaeDgeJ7ssK9e+FklYU5eFJ/vwnye6GYcQXMmxCSYaNpB7fpQkgVTqJSZEfsD/K2oOU02OFZv1VsEPDevVaOuFMEDqKHJPTQxErdkhSnUeYRpzbbL1lBuWDBqF9BBon21Rra8hM8wkzgz47zr7QhxhSEKzPX3TrGMYRkbwf8SE5qRFjH7GruPcj2eiVg99vuNjfHXM2Vd/YrsR1sNx6/JmDSqm6bBEa04FUxWtjrvt2TjGEcmjUeeEb9AJNzIQyEnVtrkG9GGlUfYPhFAMhXsDYXERs57Jiti5Gx8UIPbnNGjNDR04lt7CwbzGLJmbi/rzlg/x2raYFqFNM35lTqLq7093wnLqn56yFQ4T8fFlBlHuaib76LNvagNNCDeD61llm0BFx0XAb8bW3On/BWFuTq69ZJiarrSQ16/3loMZzaDwiL62hzUYp5spx+4zGWTPH139wPBa2ojSlqKKhJBZ8VwwUGw5yqa5wLnENFGCZXq01I7aURwzQgEetVtEGrD6Y+mVr8LMjwCxiSfUYtDjY/k2Aw63uX60LLfFFEuMovH3/9raH8aYwsnrkVrfN+tkK7IyJkcoIh08/K4vy2WFBMDAI7TKy0AItriFqgd9QS+Zry2CWbucLPPrdIpl0v5VJ8Ajv2GTqW+Q6YZkgSooUGpAaE1BDLEvKbAy+EwA7myUPmHBupzQX0aVvrDck/FA8kOlkmS6mfE8qqYKg6+nAQgHE/q+Jv62pm3MNo93xvIjfPmacWS3XS0TfLVsztnbSP9MjETdltvFcBTkNVMaRWExzPcIqv6+ygLLqjj6Ykn6rBG5T5YdPv+GhzLPcHcVa2lPaMZETv9LkctajGaa1oc7Jd4Iqk6ligBWRZgYl6Pz4Mbgp9SH84DVKE1NJ+QpUueqOq0eUo1pEIK0QihkxaeJ9tTNqVcTXbN1rcysWSrRGlAFRW/IoYX9zJ91S/bel20I3Pp6MPUEhMIPRSY9vimnw/M369cvIFy7va+6p5vEYJd2Qgug/EzEkGuUZKKxlRW9bk1STlPWsdPUh2JaCWZCRxjUIYmFCfD6WbNgfAqVXh3gKu7LoORTd8ITtjlIbkgs6bPTF/leTKarYb2/S7uw3bbXAZZty9R8b6KRxVhLYa9aoRefipTvs1zbBEeyASBK+bToLi+Y3CwBzZ9RSsDhjV6dAZ831kcfv6ohQBpIGODV2hTFJdZg4UxyqGfZe3QA89oJIIlojRWYv6o632GIi3lQHREMgNvsrrNzFpqPtMGOY7/Zjem+avfkW8BSkNCPB/ttUI3/RE20gfAQJcia0Xv31puIGzKfdGkFnzso+/AlKDfBA7pHkJNKlMFebl30MS3cjkwOB6Zzy+Hz75i3X41F0qUUzhGHRzDneNNlj0tBQmDnAQdpQYVn10Qqn3uILNFGTjtdxSQufJvTrmP8YCL2CN0U/L9aGrVqnKsJicexzlvM898cxRi3mCXzPMxZ+bKWyq5jo5g0Ss/VpkEy7KE3f91JfPbL45n65MELhSVDijSOOliUZGG/BiVzTGgwEXk4b+j+0YszVToMk3ypo6sWgPruS63T7HmRwDKIm7y4A06z7WtZ/CTM1Si7n4jh3/lnY0NQojNEn0KgHyVTYc6yJfQ0nwTE/6l74phFklt+L6KulVf26NzDXPNcYOybkkHNBtbKY85S+9OfKaLg8XqXZ3Ngpy1b0kyuuJXK00aybWC00agkZ9tBE1LYBasizZh1cATSykw5j4LNZcGjVl3gp/hOoYku3OtBRm+IaKRFCPB+hSPcllveY2YZqlQJ7hImNJ0EcB3OuDb/AounkrEHyYxo8OUYAdax6ZWMjP7bhfqrL1H4xsMorlIlGH7AfQ9ef8lWSqBvLdRsfCqnr/lfO7eOylWLX+LvXwaS5icU3pF/LNkpDrmWdjqYJA7ZaHGke1+/cpX06+Z24JaJevCMHKxpqFXxNpJ9fWzOlk4RGvryeEAR+zZZ/OObefkNiFSLf1vjmmEzq0823xEsfWXyhSbnjMENVkEem2mWO1XYXA/AINwqGJ+EP1nXVI4eiu4OEllVLE2Jdq3v8hTiSpdV2eoaw4nKf3cL2spweNpSssnEvrp0FA/IyA1u4OBgFBAHHtDSuSowQCQTPfBSnaBAXfK14lr/10nnC5NV6K6289JUv+cu8qzUwET+tkog8rY78Hsb0LCeKS8i7Vmwps9dTBICtIxvMVpv3zP2f6CC+9iDNGDiSLkjbTry+AsEH3pZTreU21qQeReOSBd7n+FqKGaQZJl6TV3IguZ+JRx+1lI0IFjyAiGaSB9W6Ye8gUi+tO/dFBk+tMxXX1181WMdEKhBqwTySRATKH6FsXdir8Ct2JKNYwtHQbqSFUsaXdEqaO8nGPmUH4xHe1tVlSKgfiiLex6hj4iFlihjSRVDej91iYDgrdcaUn0dKvLxMvLIpj+AkgdZKdIWgcT5C8kOLobFdXIFrdzckoT8edAkXRD9TNe7B2yAw0qK/xjJEmKyPp5+esYLYM0TBRzA6AHQhhD0wbzTcfHa12b+zQxDjDgKgOV4ORMp/K07sNBodWJRVIMc4O2h5Z/Docl594xvkFUyEmOf/HxeiuJ/Ozhqo4FLxC1aPwFb8l9ZGOeOt1jGYJFLTBYj1pCZ8fIGCdB9Y1rwfVCtZdJSUC97HX4Co14AmQwidb7/13d7a5nCl+4fQEe9CkT5CTIPkVL4OyCiuQsiLEoQtaxSX46BScc1lpe893Gd82MMzrsOJFpK3lLGI6h3eGOH0PF/xm5d/He61MHOUiI2hP8Rob9213qUEnStHKyW69BfXKQQ0FKOnehqy4H3V4QDYNeM/yYNykrHOvQyC2l2fhalQFgU6+C4geT6i1JPjhKDxXBYWPzHkCsYWMoxHpnhTHfQFhnjsCra4McyKNbiAh3e/JR576x+yAYgDevKZQR2AJM5L1hyIVQEzuQ1QnkBhzvAAdrsGoYl9FoYfMZEHcytRh2zwDtbBWPQnEONfxdV98QRLrGS3qnIHBFAI82ZfP9ZgGdEdfWCNJutWQ1kclc7Ots6CbsM28bJmR6LJzyn98dM0bRmPJyb086RBEf830b67gTO/tSvA7Y/LktUJy/ZqEzi8TfNQL8LaI096Qux5G61Sn+Cd+7bW70Sz+Z6MWDgeKECF5xrZAGHnUI/0RC53pXJfk6pEPnJvDvE0iHOY7+H66d+HzM8spjEdOBii+rl3+WYKSvFH3Dv9wkbCrEqSlS8fxuZGtfLJ/aoWUsElPjWLbXE/g58UWVVId43w9ck6ZwXPuBN+/pO0kuPpke2O4qJD6D6rBVmjU1g0Z1kWLJvbh3cd6kMwhvEHBRl1vA2Y/NmrtdZyfIhQyzu2naDHf+IveIvEFFQfdTh5hjqwBmOwPePb7Uz/ObLgg+o0l7J9G0g+mZOC8OwBlLSkBQOxgyaFCzP0iQr0udffoGyV/inycwZxx5Vg1W2LYBE3CshiJSqzSxmyVOTf1jKSW55+BnjFmFrn2RsFEuw80nsmEP/eCLD7TGeE28El/JNYS58M5HatXw+JLulWTyDK4oJkcIyi5PIiYw2pCoWDlO9ERWD23xK5jNEYUP5hMYU4CQjEXHawNOXeldf9RmZnAG/0UF+zvj8bA/knqZfwgdGGRSXDDPal+8Eml14etOoSqKG2hJVpeikf/uy7ucq3I2S7aK2qmH7XXXftqZNFfgLntOXQvVhGUsPzh2mb1pvlfjuGmaEBgfSVMJbC0bSTtBhOW4dfgoOM/HcwMCFCOwsX0oZ0RagcXILeMaj/qDKRG+ysAVLiAPgLQ4xaUZuwDSjFqyBZdOtk6O5ofZKVmNGx7Q5YjzowY+zk2qh7lvvFu/iNSkiRrIKrYv8+pJaH08spzNnbQeoOI97izBNTp9VDbbpt8Qd9rPedi0UWilMOWTWp5EmH7WGI4C/XBeIk3YEf7r87VWacYXp2NBwIiUYqTZTjZZ8+O8NxzP5d1+51sdiddDpQXKIDpEgmAehcHpYSiza16kSUZhI07t92cM/U2+aF3TtVb8kP8OH6UVRG5auimIkUqpeK2vccP5N2cvsba1GdMD9MRw5V06vgqBDcA200lA09dYK94ngbrnTr2sKcopou8JCv2Tnw1663SjVefepMccIY5LR4JUYoEVpqLrgCV04G5C2Zjc/uzIEZ+nho3D1bpjNCNJaZ8IG8hSan8dYxELrM4iyNysv3XiqKkQom7Ba6B/VrfG6p7RXYmbVWtKYaE5T1N5DUhZfn06JanxNbgKjakInpUpP00pg28J/+VAnIDn/52LNAHDDSgIgysVNf4ER6A1o+gWLRjeGUGxsJxN4cc14EtFPS/U/XGDuBHnpumU1w5HHtF4I04dcQRVvEpA4dl/AriB9ozw/SHwf5yFwD0iYvgSkpgNVilt+7xir+bR6aK+8Pd9q/G4VdF7sq90dnMWLOC3gwGs1unWt+u/hKQ6EimYN9JWtXRNlw+FseyztsJimNCjuIh/F9dCLHjKpwdiVykVskw44c6j4iFlZtAGS5rPGHvJqAmRa8CZ4A3ivcLtYN2YLSKcjBFO5Lca+wgXpfOH3wKsMuNVzz+mQR/9bfJpl+t/lOiuRH3pQMKyQEJYW6UGmGTNjWNl9XJfzaprPrmGVhpHJF5bKn/nk0sLrMNmFy4x/9bKRFV7Vef7ioqxmrSOL4LQ247o8BWM/zcrb9BDk9gvBrV6Pbu1ZzpYFYFklDuDRGuSwhEVXyV372n8CrP/JH0oSaqfrOqSxq5esPebqD2DUIOX7IkMd7qOQ0W2O83TzKVU+J22k7u/2KD5QBdFaNAQaVw4B7RYgEhw8gBrEcV0Z/a7DbotEWJX1TnW8T7LFTc2E/aNGGz18ZCrmGy2KsjDBE9k/7Hb43TrRBF8aPJUtbzDrD66eLsh3kFVSLNuGhRYKglRE5YTl1sqTBYBL1kAPPeoPinuIaxG1khKRTeHpWJwZdhh+MJO29ZSCTn5kV0TsEEOgKNPfd0YGj45Q6WJow0/LKmyj7stQVIYj0VTwLu78hi72wkd63qf/tomO3ZBIQL+w0adQZTxCITepastLhP7eL6F7tr6Xch+Z9rHgxXBy2+1hM++gfu/Rpb0IYbT6TLK2t9SUna/V/cr5p5so8IvQS2BYFC0IQ8OP4UMh8HsUrsb7wCjz5fTSPszkP/jd7hvRH5M/LTCWXYO1fsUMkRovh8LVBu54x0TKGLZ4A+OphegT6jvJqXHVEuDuc/tCZoC/Qh65uA/44Dnf+Ooh/VTEMjI30Ez4dNg0uzoVvCV/jP2Bc3LGl57n1ax4A9a8y5SYnFNr2CSR0mkDpjJvw5G+DPJFMhkx+eLs6Yt5tuPO2dP6jBgADpeTN22pL4+D+gbNj+LgfgKabVvLoS5AjEE7ev6oKfe9aWw/qcNvUXU3jsEI2kkQOIg3e66fZKOV3DjXcavNUkBAh4TXuQayBRN+qWt5hBZfNQxMGl/m7V4/1Z7INRUfZw3QTh28uTWTgpi4ilAi+eWpueCKKKknnypYrXG19oNYSP4XO0WPxpYfCShv3BmfdalQ7rlIxhmdKGUInxSLxiMx3Yn6pr3L/EglnSMWJC/r3mjPFG05v+VjU455q/3nvJTKxWnEN0F1+xIftLIcQwLxcD5aNz/be1rtva2NAeOmvPrEbiShbQBRQF8ybqtw5VBrsisqe8N6udXRvANrXN4+oN85Jo3/okUE9DnATzgic7CaArHb7yKxqxu0lmcF0gWl6uJncAfzq2WnxGDXyhUTiiziGf8K+onS4+h2TFaA+laTmS7/dMq1DvkvXEZRVrDFpyZFQL8ygNj14wxpy6EiYEdizRJGMrwKLFSJAcijcZU5g4EXJplrD5QXdYlTcctnPYZlu5dmPSndIxgbsiSekcYtFxYp1BfpuFFiXYVbAFsNjd4DnQoIfz0AR2u7zn5izpGz7nnVPiCYo7t4439PcQaNOxi5ueW63+0Vb+vMfm2kZhVFMWMvrjkLefi7Wflcn8XiKwZGGIrG5QSvx84eET8X8dkhJNWH97k37L5RGizEIOAZzBn8g0zGK4R1HIYPMqCFaju8/AvyVfBC+PyAVFFDenfgdmCHE4lndPqq68e7IyP0pOFfya7OEnhYZyvyb4weyQBPUZ4sxxdwkmRr29tHfR3kg/Tg8ooEKrwqn5lRtaO9n4eFh8FV9hNFSSBKcYJfbeWwBu/KPW7uvD81lS+NOzLjAvxZdiTmC9iJ/NPWvHiTyUaJePkBZG+k5585/PHJF62PtSOKnzpJvvYIIo38fmq2FyaOKzS/ObYdmxr5MSIqHISeCaNpa0OMcDWqn6OzBoNz6K50fRFfRUA6bztf2j0uADzlNYe0hBwk7prirAyWcov5iS9/zQL1S+cb+GPsPPY2pXNY4dUE11m9IrsjWzoOxYrOLBUMk8M9XovXfaMgcbgcobZnN+kDDP2qAmyhmTzs41U8x3a3CD8lQswRCsylI0BlMy5Cu8oRCyGcqtxtuuNRdRnrBkDAQT/nXkulYKST/jPUee1f7PxDjGrLg8+gfCFus2kFdZJxvYZjGFnQavtDro7WI6BALEKQAXN9clAGIVi3R+f+QxCP118knG5BqbnLkmM/GoG0cBrkYPQVaTvoQJWJHM579XBXAq3OviOr++vo9bygg0KFkwkjLcLde+7Zgkq0iwBxaVGPFIRexWt0PGB3WAd8XX8kO/9IaBEg4hINXju+Yns84ln12rw8hFjvs6zAKION+sTdF1kEDBGFfrTYiIdEeuTdKEFL4rhh4D6ITeAEy/gmAkIyBjhvOuQ2uetxS9PrrPV4WYHCUfM54rxzqEG5bu+Bam0a5SXA6t3Zdu6hdsw2iEQmlnNgwk2Bdmtd7ZR3g7DldnTdzNpTBj4xEeYdAsgVDjESPFfRf7z410MrOBdGOLr6+tRsMhp6pmXTrmBMTO6a72/F4xsszFK4lbrkVym9oUbAErSkXoh3qWhUEUasESZwmsWpSM2qe7T+vLgcj+UX4U9AYASlGQ+Ju/Uyt7vZDMFdLjTif2KRuBRwCzs/5m6bJC9IjwBhNPnM1RwFN4ow0HxwabIMNxkux6g1fFX73HT01602uR1cmlNSn5Gu32hst1YQEK0oHoNrz2L9jrH23nVGUhk03qiAYSQg0YavVbi1+jOaQh83yRN6UhvMkpVKmZkN33jA/VdOKzDQG8uljMC8WJc0pQniHarAhfDvB23MgnfAvDddGbcsYnH+eRLh8JfS9Viu9BRmDhvOhQR9ZT7Wtc9O3mK/wRAWtXU4YKuKZmUULNp0LvDaCeScKfLesCkSknGMhZ6LJCOj4lXL+DETsBKOm+m44TqaFxElscK3f9Zrnl9GCXWu757+jZHSdLUO9PYVKLyoisEPidp+3CHDzOL4heSysE2T2nW/WZgmXuHnPLG0Ur56Wj2nMrRx7dup/6/36vSf6zDd6H16DMWfV94TWQ9AylBlLCsOi1DK7U2vohDlRPLD24njywGcN/uLWBVcDQDPDP+YaRq08bNkIMwo4UUcJ+yRh65pOCIBLOCCgArXxKEfcB07RCYpMa7fL5OaTG5a/L1jeRMVE5s4Xh7TPMoc2ClNLNTOq76WCzJuFd7XbMykGyzSpJRHsOxVX73ZcFPMlvI1c3yPXvIZ35QSuZrOZoO6wqR/kpT/J7KTKEoBJdHUBrEyA80pOKzK2+evwXt6iodE60fPX4nH4dMKWaI9epQ+YhAlXhCSoweTtW9OXvGR4RLClF4uOYr+Mk0wAgzXgppKHw0AnJTmkSki9IXq1mZ2Heq3EHhCX0SYbma5P3jJu0LbrJJFhlellzrwCiBR0pNhOLjllNbYH2iQ5Q1QbiwWjkiupQDJ/qPFADwh32lHpR09FOfST7f18LnMEmGyV1sbKY/AbS0W0wSow357Le8fREjzResbS/J2fDas1ReNT7z8blP5tjYQ0bVKDnCNfxYIO5lh+zrGzaK3b8hWcVjDSe3aa7xp/tpSwcoqWoUfvpLggGpPOP1PFSVyMv5OHwA1v3TWxcxpCWVTKtK5v8KWb+Clpx2VwpKgxNy7GpE9LgwGv2arYE3axn2cI0kJ4U9u+wA9o+cJ6KXzDIWbvd6D2tf/FWggLAabFvED2C/kTmF+WXcJytyuqLUWeM4MxBiPtZYpJqykLbx6ZDTLtEtOhmoTwGkADYYE44ySu/6PSQNO7u3uY6Reujlu7eyMS7U4ADkpuhQMGlt/S0+WJ8CiqgSAKENsCEdnAZ3L/33JMa0XqYyNCmwzWEayOzIDI9MbJXNyPa4qjJWRu1mr2HgaPxlkVY/V7k7uzibaPoIrRSaI3DUlHpCG0r+TqdMXlX9YT8RabXIpp9NzAM8G7cYBqIT/9i+83bHOlK24KL6Vx2vDTIiyWrpOJn4V/KfIG2SpwmIsWiyJAcJUuC57m2mpTaXmp+dIC2lDo646xVmZGsaesglTt+8U7VyOKB2NA6/y+VH03FC4eqfkE+awPGRUqRqjksmSTUYmly+abDkLm+6UNZHDGpnyPPKEnc4WNfJ9H5rPhb6995WOkGBh7bw2RQSqlZIhF3RvEEJK3cfIbCLQatGeVvlPYXBTyCR3iHifhtEuW7yz+smHAJgEhoGCCJ9zzgJRwqPZL7rrdjEX8/PJWhaDNBFJ+NfPd1nwv2kiPAF6r4ZX9cvMSeQin96BEGbN4MQMg25hV8ee4/1mgktY41P0OKzouu0xeqWrmIxOSxpn5aa51DVRUbVRyPAlXFXckNYjypiEHup/C6vvZdwrEjWRolgmMkqmhFRBk1BUAorW5ltnmvEFF4ulqyn+jp9qO2+ec+IpS59oKswn3mQkqS519qFikhSmVmOOSzTxWKnudj++FvMpEhL01k2I+pHhCb/CRuWJz0hmlPkCM6R+G7x/XTpLwJCSnCqxY8xfyZtYFdFMR4GjboxYsGceGJZC8vvNsSEBWqFFGFhmo6arDNN4CM4ISqot7WpJwWCAq5RRpr5OEkNOJzADqB9fgQZkHooZGds0iwFFEDM1jeoJ2zNLVJr0FId4oZooXQNgnzDYgdf5rJK+3SL8bWrQ3r4eIVI2Zj+ETmSoYnM0skPjSTNP2ZwyPxcGMk849bhXhA2+3c68/diIIr9IWpQ9CGPEsUoDNpEp9lEhkio9HwMRe2AaBKnyw5sjdxoKr3mlef4i1CdrYVDhLf9jilN/zcO68WNHMJolxjbxt3l5/qnPU1XAzxJEFlmVyxLKYEA1JH9Xp79yCw9pRXNlNsFVZlkv0eQCihKUnoioCZIyWOFLMXOahodyOdX+W3r4ZVs/OKKg2UNHIZ7iobEF4JPqZw74jdTQIVfKD3VKvC/QObFHR12hAg58EjMhGUXRRovnscoASLmvuNZ5qsZDyeZmo625J/OgZcAhJB14aEsWqbQFp3XRHocRnAmBqAe05W9b5/e4jLC5ZDWQEE1owCnxkPGLirXfU7N/+r0iFn5KdiAbvOV/PKwyBgk3QoN4PcZ9ad+LIlFItLg1alOZMWdztUxV/4scTZCE1z8m/49r7zyDIvKt/DTh6VbwPUqAOmsPXgLlAruVONNQpDQ2m3/MvqSvBIetH+6MHrHIChX/vHVfYbTNFGgcUDY8P0IxDDwX0cUnXCuMkXmDWh8WS73UJaA+IeMhuVs+VLk+hRrQIYlZfAerHz3LXPfDdR9Dc5q4Q6uH3BA7PfPG0Kh7hKnWAwXhXtJM/gNNCmFhKafyMNsP1S0YHkUlgv084PLxJ5vSRLqu3bKQxjiEREX8+kQPrBXkQqTPI="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541324,
+        "id": "dgLYarayGJH7qtsPr-TBuQ0",
+        "model": "gemini-3.6-flash",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 366,
+          "prompt_tokens": 137,
+          "total_tokens": 5674
+        }
+      },
+      "uso": {
+        "entrada": 137,
+        "salida": 5537,
+        "total": 5674,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0208665",
+      "costo_clp": "20.48798169",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 23.246177,
+      "numero": 11,
+      "ronda": 2,
+      "caso": "calculo_costo"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:08:44.652778+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "*Nota: Esta es una estimación sin impuestos. Los tokens son fragmentos de texto y no equivalen exactamente a palabras.*\n\n### Costo en USD\n* **Entrada:** 1 000 tokens a USD 0.30 por millón.  \n  Cálculo: $(1000 / 1000000) \\times 0.30 =$ **USD 0.000300**\n* **Salida:** 2 000 tokens a USD 2.50 por millón.  \n  Cálculo: $(2000 / 1000000) \\times 2.50 =$ **USD 0.005000**\n* **Total por consulta:** $0.000300 + 0.005000 =$ **USD 0.005300**\n\n### Costo en CLP (Tipo de cambio: 950)\n* **Total por consulta en CLP:**  \n  Cálculo: $0.0053 \\times 950 =$ **CLP 5.04**\n\n### Costo de 1 000 consultas\n* **En USD:** $0.0053 \\times 1000 =$ **USD 5.30**\n* **En CLP:** $5.04 \\times 1000 =$ **CLP 5 040**",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TAWRQnRqvwCnflAcSOOzUuxMElo1mBsX9G6f1IrznznwEySJZvvSoZ1sMdEg39Uqiatdh1PXhYb9S5eojLmpiIl2t77KY58U2ssefPw9QLPp9Pod5ynM70TM="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541326,
+        "id": "jQLYavb7Kea3uMYP3MTkeQ",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 326,
+          "prompt_tokens": 137,
+          "total_tokens": 463
+        }
+      },
+      "uso": {
+        "entrada": 137,
+        "salida": 326,
+        "total": 463,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0008561",
+      "costo_clp": "0.840570346",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 2.141072,
+      "numero": 12,
+      "ronda": 2,
+      "caso": "calculo_costo"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:08:46.795391+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "¡Bienvenido a Python! Aquí tienes los conceptos clave explicados de forma sencilla.\n\n### La analogía del mozo en un restaurante\nUna API (Interfaz de Programación de Aplicaciones) es como el **mozo** de un restaurante. Tú (tu código en Python) estás sentado en la mesa y quieres un plato de comida (información o procesamiento). No puedes entrar a la cocina a cocinar (el servidor de Gemini); necesitas un intermediario. El mozo toma tu pedido, lo lleva a la cocina y te trae el plato listo.\n\n### El viaje de tu pregunta\n1. **Salida:** Tu código en Python empaqueta tu pregunta y la envía por internet usando la API de Google.\n2. **Proceso:** El servidor de Gemini recibe la solicitud, \"piensa\" la respuesta usando su inteligencia artificial y la prepara.\n3. **Regreso:** El servidor devuelve la respuesta empaquetada a tu programa de Python, que la desempaqueta y la muestra en tu pantalla.\n\n### ¿Para qué sirve la API Key?\nLa **API Key** es como tu **documento de identidad o tarjeta VIP**. Es una contraseña secreta y única que le dice a Google quién está haciendo la solicitud. Sirve para identificar, autorizar el acceso y controlar cuánto usas el servicio para evitar abusos. ¡Nunca la compartas en público!",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T4xpY2A7yg//dcFbjkEbgM0cq9UBqDtgrluGFL+x+rcDuBjoXAIp9kAphv/gemEKH/raKpP7sR5R/ueTxvw9KQZMZOaJIfRdfjPIdclHzNs0VAoXwlQRfE6Q="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541330,
+        "id": "jwLYatv1L5eE1sgPypzjyQs",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 285,
+          "prompt_tokens": 63,
+          "total_tokens": 348
+        }
+      },
+      "uso": {
+        "entrada": 63,
+        "salida": 285,
+        "total": 348,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0007314",
+      "costo_clp": "0.718132404",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 4.110341,
+      "numero": 13,
+      "ronda": 3,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:08:50.907267+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "error",
+      "error": "Gemini respondió HTTP 503. Gemini no está disponible temporalmente. Intenta nuevamente más tarde.",
+      "respuesta_proveedor": null,
+      "uso": null,
+      "costo_usd": null,
+      "costo_clp": null,
+      "tipo_cambio": null,
+      "aviso_clp": null,
+      "latencia_segundos": 37.049323,
+      "numero": 14,
+      "ronda": 3,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:09:27.958976+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "**Gestión de credenciales**\nLa app usa dos secretos independientes (guardados en variables de entorno): el **Token Bearer Local** (autentica a clientes entrantes en su API) y la **API Key de Gemini** (autentica llamadas salientes hacia Google).\n\n**1. HTTP 401 (API Local)**\n* **Diagnóstico:** El cliente no envió el token local o este es inválido/expirado.\n* **Solución:** Inspeccione el encabezado `Authorization: Bearer <token_local>` en la petición entrante. Valide su firma y expiración en el middleware sin exponer credenciales.\n\n**2. HTTP 429 (Gemini)**\n* **Diagnóstico:** La app superó la cuota de peticiones (*rate limit*) permitida por Google para su API Key.\n* **Solución:** Implemente reintentos con retraso exponencial (*exponential backoff*) usando la librería `tenacity` y verifique la cuota de su proyecto en Google Cloud Console.\n\n**3. Timeout al consultar Gemini**\n* **Diagnóstico:** Congestión de red o la respuesta del modelo demoró demasiado.\n* **Solución:** Defina un límite explícito en la llamada de Python: `requests.post(..., timeout=(5, 30))`. Capture la excepción `requests.exceptions.Timeout` para devolver un error estructurado al cliente sin congelar el servidor.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "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"
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541383,
+        "id": "uALYarTgDN6lmtkPjJL10QE",
+        "model": "gemini-3.6-flash",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 307,
+          "prompt_tokens": 87,
+          "total_tokens": 2789
+        }
+      },
+      "uso": {
+        "entrada": 87,
+        "salida": 2702,
+        "total": 2789,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.01019775",
+      "costo_clp": "10.012762815",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 15.940523,
+      "numero": 15,
+      "ronda": 3,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:09:43.901318+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "### Gestión de Credenciales\nTu aplicación usa dos credenciales distintas: el **Bearer token** (protege *tu* API local para validar a tus clientes) y la **API Key de Google Gemini** (autoriza a tu app para consumir el servicio externo de IA). Nunca expongas ninguna en repositorios públicos; usa variables de entorno (`os.getenv`).\n\n### HTTP 401 en tu API Local\nOcurre porque el cliente no envía el token o es inválido. \n* **Diagnóstico:** Revisa los logs del servidor para ver si falta la cabecera `Authorization: Bearer <token>` o si el token expiró.\n* **Resolución:** Asegúrate de que el cliente incluya la cabecera exacta y que tu validador compare contra el secreto configurado en el servidor.\n\n### HTTP 429 de Gemini\nIndica exceso de peticiones o cuota superada (*Rate Limit*).\n* **Diagnóstico:** Revisa el cuerpo de la respuesta de Google; suele indicar \"Quota exceeded\".\n* **Resolución:** Implementa reintentos con *backoff* exponencial (esperas crecientes) usando la librería `urllib3` o `tenacity` en tus llamadas con `requests`.\n\n### Timeout al Consultar Gemini\nOcurre cuando Google tarda demasiado en responder.\n* **Diagnóstico:** Tu petición con `requests.post()` superó el tiempo límite predeterminado.\n* **Resolución:** Añade un parámetro `timeout=(3, 30)` (conexión y lectura en segundos) y maneja la excepción `requests.exceptions.Timeout` para reintentar o devolver un error limpio.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TOI9vngjuM+fPxeUZLOmF5WEVWma79TKD/f3DFpPB/O9XVR80bdmFPMYbWl3egOUANzjsK8N3AZl4X0evQv7edUXdoBseigPRL/4CGUrsa7bcT/RhZ+Q8Rd8="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541386,
+        "id": "yQLYavfFAperytMPzOmk4QI",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 354,
+          "prompt_tokens": 87,
+          "total_tokens": 441
+        }
+      },
+      "uso": {
+        "entrada": 87,
+        "salida": 354,
+        "total": 441,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0009111",
+      "costo_clp": "0.894572646",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 2.851594,
+      "numero": 16,
+      "ronda": 3,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:09:46.754952+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "Aquí tienes el cálculo detallado para esta consulta a la IA (recuerda que un token no es una palabra, sino un fragmento de texto).\n\n### Costo en USD\n*   **Entrada:** (1.000 tokens / 1.000.000) * USD 0.30 = **USD 0,0003**\n*   **Salida:** (2.000 tokens / 1.000.000) * USD 2.50 = **USD 0,0050**\n*   **Total (1 consulta):** 0,0003 + 0,0050 = **USD 0,0053**\n\n### Costo en CLP (Tipo de cambio: 950)\n*   USD 0,0053 * 950 = **5,035 CLP**\n\n### Costo por 1.000 consultas iguales\n*   En USD: USD 0,0053 * 1.000 = **USD 5,30**\n*   En CLP: 5,035 CLP * 1.000 = **5.035 CLP**\n\n*Nota: Estas cifras son estimaciones basadas en los valores indicados y no incluyen impuestos aplicables (como IVA).*",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TokzGI5BQfL5S1pysmO9qQcBBq48g+XGcEAYInJYw/dkkBNrbFbX9G/LEy7sWpn6ehGaalCAjQSeBVsJRhouypUZMA9ey6bX1QXkzLtiOw5HIT2K5oAXkEdA="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541389,
+        "id": "ywLYao6qLd-fqtsP3sSdGA",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 299,
+          "prompt_tokens": 137,
+          "total_tokens": 436
+        }
+      },
+      "uso": {
+        "entrada": 137,
+        "salida": 299,
+        "total": 436,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0007886",
+      "costo_clp": "0.774294796",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 3.171351,
+      "numero": 17,
+      "ronda": 3,
+      "caso": "calculo_costo"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:09:49.928077+00:00",
+      "modelo": "gemini-3.6-flash",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "### Aclaración importante\nEs fundamental recordar que los tokens corresponden a fragmentos de texto procesados por el modelo y **no son equivalentes a palabras**. Además, los valores calculados son estimaciones financieras netas que no incluyen impuestos ni cobros adicionales.\n\n### Costos por consulta en USD\nSe muestra la operación proporcional para los volúmenes de entrada y salida indicados:\n* **Entrada:** (1.000 tokens / 1.000.000) × 0,30 USD = 0,0003 USD\n* **Salida:** (2.000 tokens / 1.000.000) × 2,50 USD = 0,0050 USD\n* **Costo total por consulta:** 0,0003 USD + 0,0050 USD = **0,0053 USD**\n\n### Costos por consulta en CLP\nMultiplicando el valor total obtenido en dólares por el tipo de cambio hipotético:\n* **Total en CLP:** 0,0053 USD × 950 CLP/USD = **5,035 CLP**\n\n### Proyección para 1.000 consultas idénticas\nMultiplicando el costo de una sola consulta por el factor de mil ejecuciones repetidas:\n* **Total acumulado en USD:** 0,0053 USD × 1.000 = **5,30 USD**\n* **Total acumulado en CLP:** 5,035 CLP × 1.000 = **5.035 CLP**",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "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"
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541412,
+        "id": "zwLYaurcGtuuytMPu6Hy2AQ",
+        "model": "gemini-3.6-flash",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 354,
+          "prompt_tokens": 137,
+          "total_tokens": 5284
+        }
+      },
+      "uso": {
+        "entrada": 137,
+        "salida": 5147,
+        "total": 5284,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.019404",
+      "costo_clp": "19.05201144",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 22.234174,
+      "numero": 18,
+      "ronda": 3,
+      "caso": "calculo_costo"
+    }
+  ],
+  "resumen": {
+    "gemini-3.5-flash-lite": {
+      "intentos": 9,
+      "respuestas_completas": 9,
+      "errores_o_incompletas": 0,
+      "latencia_media_segundos": 2.783306,
+      "latencia_mediana_segundos": 2.634203,
+      "latencia_minima_segundos": 1.77711,
+      "latencia_maxima_segundos": 4.110341,
+      "tokens_entrada_media": 95.667,
+      "tokens_salida_media": 303.111,
+      "tokens_entrada_cache_media": 0,
+      "consultas_con_costo_usd": 9,
+      "costo_medio_usd": "0.0007864777777777777777777777778",
+      "proyeccion_1000_consultas_usd": "0.7864777777777777777777777778",
+      "costo_observado_total_usd": "0.0070783",
+      "consultas_con_costo_clp": 9,
+      "costo_medio_clp": "0.7722110708888888888888888889",
+      "proyeccion_1000_consultas_clp": "772.2110708888888888888888889",
+      "costo_observado_total_clp": "6.949899638"
+    },
+    "gemini-3.6-flash": {
+      "intentos": 9,
+      "respuestas_completas": 6,
+      "errores_o_incompletas": 3,
+      "latencia_media_segundos": 16.069978,
+      "latencia_mediana_segundos": 14.851502,
+      "latencia_minima_segundos": 9.590955,
+      "latencia_maxima_segundos": 23.246177,
+      "tokens_entrada_media": 95.667,
+      "tokens_salida_media": 3308.333,
+      "tokens_entrada_cache_media": 0,
+      "consultas_con_costo_usd": 6,
+      "costo_medio_usd": "0.012478",
+      "proyeccion_1000_consultas_usd": "12.478",
+      "costo_observado_total_usd": "0.074868",
+      "consultas_con_costo_clp": 6,
+      "costo_medio_clp": "12.25164908",
+      "proyeccion_1000_consultas_clp": "12251.64908",
+      "costo_observado_total_clp": "73.50989448"
+    }
+  },
+  "resumen_pares_completos": {
+    "gemini-3.5-flash-lite": {
+      "intentos": 6,
+      "respuestas_completas": 6,
+      "errores_o_incompletas": 0,
+      "latencia_media_segundos": 2.507161,
+      "latencia_mediana_segundos": 2.550919,
+      "latencia_minima_segundos": 1.77711,
+      "latencia_maxima_segundos": 3.171351,
+      "tokens_entrada_media": 95.667,
+      "tokens_salida_media": 302.5,
+      "tokens_entrada_cache_media": 0,
+      "consultas_con_costo_usd": 6,
+      "costo_medio_usd": "0.00078495",
+      "proyeccion_1000_consultas_usd": "0.78495",
+      "costo_observado_total_usd": "0.0047097",
+      "consultas_con_costo_clp": 6,
+      "costo_medio_clp": "0.770711007",
+      "proyeccion_1000_consultas_clp": "770.711007",
+      "costo_observado_total_clp": "4.624266042"
+    },
+    "gemini-3.6-flash": {
+      "intentos": 6,
+      "respuestas_completas": 6,
+      "errores_o_incompletas": 0,
+      "latencia_media_segundos": 16.069978,
+      "latencia_mediana_segundos": 14.851502,
+      "latencia_minima_segundos": 9.590955,
+      "latencia_maxima_segundos": 23.246177,
+      "tokens_entrada_media": 95.667,
+      "tokens_salida_media": 3308.333,
+      "tokens_entrada_cache_media": 0,
+      "consultas_con_costo_usd": 6,
+      "costo_medio_usd": "0.012478",
+      "proyeccion_1000_consultas_usd": "12.478",
+      "costo_observado_total_usd": "0.074868",
+      "consultas_con_costo_clp": 6,
+      "costo_medio_clp": "12.25164908",
+      "proyeccion_1000_consultas_clp": "12251.64908",
+      "costo_observado_total_clp": "73.50989448"
+    }
+  }
+}

@@ -1,12 +1,96 @@
 # Práctica 2: consultas HTTP autenticadas con Gemini
 
-Proyecto del Bloque 4 de Skillnest que permite consultar Gemini desde Python y mediante una API local protegida con un Bearer token.
+Proyecto iniciado en el Bloque 4 de Skillnest que permite consultar Gemini desde Python y mediante una API local protegida con un Bearer token. Incluye el diagrama del Bloque 8 y la evaluación de modelos del Bloque 9.
+
+La [decisión de arquitectura](docs/decision-arquitectura.md) reúne la comparación real de costo y latencia, la elección del modelo y el [diagrama de la aplicación](docs/arquitectura.md). Su alcance es la práctica actual; la [propuesta del proyecto final Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) explica qué falta validar para utilizar IA en consultas normativas.
 
 La tarea incluye una función `obtener_dato_de_prueba(pregunta)` para comprobar que Gemini responde desde Python. Tanto el comando como la API devuelven el texto, los tokens consumidos y el costo estimado en USD y CLP de cada consulta, con símbolos de moneda y decimales sin notación exponencial. También incluye validaciones de entrada, manejo de errores y pruebas automatizadas.
 
 La API también permite inspeccionar la respuesta JSON completa del proveedor mediante `POST /consultar/raw`.
 
-## Tecnologías
+## Proyecto final de Skillnest: asistente RAG para Ley REP
+
+**Estado: propuesta.** Este repositorio implementa consultas HTTP a Gemini; el RAG se desarrollará como proyecto final. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
+
+### Objetivo y justificación
+
+Construir un asistente sobre la Ley de Responsabilidad Extendida del Productor en Chile que responda con documentación oficial y citas trazables, pida antecedentes faltantes y reconozca cuándo no puede responder.
+
+RAG recuperará leyes, decretos y documentos de apoyo para que el modelo explique esa evidencia. El corpus podrá actualizarse sin reentrenar el modelo. La [Ley 20.920 en la BCN](https://www.bcn.cl/leychile/navegar?idNorma=1090894) será una fuente de partida, conservando versión y fecha de consulta.
+
+Python permitirá aprovechar la API, validaciones, cliente Gemini, pruebas y medición de consumo de esta práctica. La migración desde Laravel responde al desarrollo del proyecto dentro de Skillnest.
+
+### Qué aporta el avance existente
+
+El prototipo **`leyrep-agente` es un proyecto Laravel externo**. Los archivos e insumos siguientes pertenecen a ese proyecto y deberán revisarse antes de incorporarlos aquí:
+
+- **Corpus:** 116 documentos y 12.340 fragmentos en `app/knowledge/`, con búsqueda léxica mediante SQLite FTS5 y relaciones entre normas.
+- **Reglas:** preguntas frecuentes, estado conversacional, aplicabilidad parcial y verificación de referencias.
+- **Pruebas:** 145 casos de recuperación en `tests/Evaluacion/rag-gold.json` y 50 preguntas en `tests/gold_dataset/benchmark_50.json`; se depurarán rúbricas pendientes o contradictorias.
+
+Las referencias del análisis son `CONTEXTO-DEL-PROYECTO.md` y los servicios `KnowledgeRetriever`, `LeyRepAgent` y `VerificadorDeRespuesta` del prototipo. La calidad y el rendimiento se medirán nuevamente en Python.
+
+### Dónde se usará IA y dónde se aplicarán reglas
+
+Se mantendrán **Python, [FastAPI](https://fastapi.tiangolo.com/features/) y Pydantic**. Se evaluará búsqueda híbrida con PostgreSQL y [pgvector](https://github.com/pgvector/pgvector#hybrid-search), combinando referencias exactas de normas con recuperación por significado.
+
+| Etapa | Uso propuesto | Justificación |
+| --- | --- | --- |
+| Ingesta | Python: versionar y fragmentar por artículo, preservando tablas y fuentes. | Evitar pérdida de evidencia. |
+| Recuperación | Búsqueda léxica y embeddings de documentos y preguntas. | Encontrar términos exactos y formulaciones equivalentes. |
+| Preguntas frecuentes y aclaraciones | Respuestas revisadas y reglas en Python. | Ahorrar inferencias y obtener antecedentes del caso. |
+| Generación | Gemini redacta con los fragmentos seleccionados. | Explicar y relacionar evidencia. |
+| Vigencia, aplicabilidad y cálculos | Metadatos revisados y reglas en Python. | La similitud por sí sola no demuestra aplicabilidad. |
+| Verificación | Código para referencias y cifras; pruebas de contenido y revisión experta. | Comprobar existencia y respaldo de las afirmaciones. |
+
+Flujo propuesto para una pregunta abierta; las preguntas frecuentes podrán resolverse antes con respuestas revisadas:
+
+```mermaid
+flowchart TD
+    A["Pregunta y antecedentes"] --> B["API Python: validar y resolver ruta"]
+    B --> C["Recuperación léxica y semántica"]
+    D["Corpus oficial versionado"] --> C
+    C --> E["Filtrar por estado y aplicabilidad; ordenar evidencia"]
+    E --> F{"¿Hay evidencia y antecedentes suficientes?"}
+    F -- No --> G["Pedir aclaración o informar el límite"]
+    F -- Sí --> H["Gemini redacta con la evidencia seleccionada"]
+    H --> I["Verificar afirmaciones, citas y estructura"]
+    I --> K{"¿Supera la verificación?"}
+    K -- Sí --> J["Respuesta con fuentes, tokens y costo"]
+    K -- No --> G
+```
+
+La salida incluirá respuesta, documento y artículo o sección, enlace oficial, fecha de la fuente y estado del caso. El sistema resolverá las referencias desde el corpus. La existencia de una cita no basta: también deberá respaldar la afirmación.
+
+### Qué justifica la comparación de modelos y qué falta comprobar
+
+| Función en el RAG | Modelo candidato | Estado |
+| --- | --- | --- |
+| Generar respuestas | `gemini-3.5-flash-lite` | Candidato por costo y latencia; falta validar calidad normativa. |
+| Comparar calidad de generación | `gemini-3.6-flash` | Alternativa para evaluar con el mismo contexto e instrucciones. |
+| Crear embeddings | `gemini-embedding-001` | Propuesto para recuperación semántica; pendiente de implementación. |
+
+El modelo de [embeddings](https://ai.google.dev/gemini-api/docs/embeddings) cumple una función distinta del generativo. Los documentos y las consultas deberán usar un espacio vectorial compatible.
+
+**La elección final priorizará calidad y respaldo documental, después costo y latencia.** La comparación actual usó preguntas breves sin RAG; sus importes no estiman una consulta con historial y artículos. Se medirán recuperación de evidencia, fidelidad, citas, abstención y errores críticos con respuestas de referencia revisadas jurídicamente.
+
+```text
+Costo por consulta RAG = embedding de la pregunta
+                      + generación con sistema, historial y fragmentos
+                      + llamadas adicionales y reintentos, si existen
+```
+
+Indexación e infraestructura se presupuestarán aparte. Se medirá latencia por etapa y total, con mediana y percentil 95 sobre una muestra suficiente. El objetivo será **menor costo por respuesta correcta y respaldada**.
+
+### Plan de desarrollo y criterios de avance
+
+1. **Corpus:** revisar procedencia, vigencia y aplicabilidad; versionar documentos y validar rúbricas, reservando preguntas de prueba.
+2. **Recuperación de referencia:** reproducir la búsqueda léxica en Python y medir documentos y artículos recuperados.
+3. **Búsqueda híbrida:** incorporar embeddings si mejoran la recuperación sin perder evidencia crítica.
+4. **Respuestas evaluadas:** integrar contexto acotado, citas, aclaraciones y abstención. Elegir entre modelos que cumplan la rúbrica; corregir citas inventadas y errores críticos antes de aceptar la entrega.
+5. **Operación:** completar historial acotado, privacidad, acceso, límites y manejo de caídas. Demostrar primero el RAG por API; integrar WhatsApp y Odoo después, con datos anonimizados en las pruebas académicas.
+
+## Tecnologías actuales
 
 - Python 3.12 y `uv` para gestionar el entorno y las dependencias.
 - `requests` para realizar la petición HTTP autenticada a Gemini.
@@ -265,7 +349,7 @@ Los errores de autenticación, validación, configuración y comunicación conse
 
 El consumo se obtiene del objeto `usage` de Gemini. `entrada` corresponde a `prompt_tokens`, `total` a `total_tokens` y `salida` se calcula como `total - entrada`. Así se incluyen los tokens de razonamiento aunque el proveedor los omita de `completion_tokens`, sin sumarlos dos veces. Este cliente realiza consultas de texto sin herramientas. `entrada_cache` corresponde a `prompt_tokens_details.cached_tokens` y forma parte de `entrada`; si ese detalle no aparece, se utiliza cero.
 
-Las tarifas están centralizadas por modelo en [src/costos.py](src/costos.py). Para `gemini-3.5-flash-lite` se usan las [tarifas oficiales estándar de pago](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.5-flash-lite), verificadas el 19 de octubre de 2026, en USD por millón de tokens:
+Las tarifas están centralizadas por modelo en [src/costos.py](src/costos.py). Para `gemini-3.5-flash-lite` se usan las [tarifas oficiales estándar de pago](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.5-flash-lite), verificadas el 20 de octubre de 2026, en USD por millón de tokens:
 
 | Consumo | USD por 1.000.000 de tokens |
 | --- | --- |
@@ -338,6 +422,28 @@ Por ejemplo, para seleccionar Gemini 3.6 Flash:
 La API recibe el alias de la tabla; el evaluador `--modelos` recibe el identificador del proveedor. Los tres modelos tienen tarifas registradas en `src/costos.py`. La disponibilidad y la cuota dependen de Google; los fallos observados durante la evaluación están documentados en el registro del Bloque 9.
 
 El servidor resuelve el nombre del modelo del proveedor a partir de los códigos públicos. La petición a Gemini utiliza el endpoint definido en `src/agente_gemini.py` y envía la clave en `Authorization: Bearer ...`. El token local se valida en la API y no se envía a Google.
+
+### Comparar costo y latencia: Bloque 9
+
+Esta evaluación corresponde a la práctica de consultas breves. La [propuesta de Ley REP](#qué-justifica-la-comparación-de-modelos-y-qué-falta-comprobar) establece cómo ampliar la comparación antes de elegir un modelo para el RAG normativo.
+
+La evaluación reutiliza `consultar_gemini_raw()` y los cálculos de costos de la aplicación. Para consultar el inventario accesible con tu clave, sin generar respuestas:
+
+```bash
+uv run python -m src.comparar_modelos --listar-modelos
+```
+
+Para repetir la comparación de `gemini-3.5-flash-lite` y `gemini-3.6-flash`:
+
+```bash
+uv run python -m src.comparar_modelos --repeticiones 3 --salida docs/evaluaciones/gemini-nueva-ejecucion.json
+```
+
+Necesita `GEMINI_API_KEY` en `.env` y hace **18 consultas reales**: tres casos, tres repeticiones y dos modelos. Consumen cuota y pueden generar cobros. `--repeticiones 1` reduce la prueba a seis consultas; `--modelos` selecciona candidatos con tarifas registradas en `src/costos.py`. Esta selección es independiente del catálogo de modelos habilitados en la API.
+
+El JSON se guarda después de cada intento y conserva preguntas, respuestas, consumo, costos, tiempos y errores. La salida **1** indica errores o respuestas incompletas; revisa la evidencia antes de interpretar los promedios. Se rechazan rutas de salida existentes para conservar las mediciones anteriores. Listar un modelo no garantiza cuota ni éxito al generar texto.
+
+La [decisión del Bloque 9](docs/decision-arquitectura.md) documenta metodología, tarifas, resultados y limitaciones, incluida la exploración interrumpida de Flash 3.8. Las [mediciones originales](docs/evaluaciones/gemini-2026-10-20.json) permiten auditar los números. Los costos son estimaciones a precios de pago, no comprobantes de facturación.
 
 ## 5. Probar con Yaak o Postman
 
@@ -418,7 +524,7 @@ Ejecuta la suite:
 uv run python -m tests -v
 ```
 
-Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. También comprueban que `/consultar/raw` conserve todo el JSON del proveedor, incluso sin texto generado, y que utilice una sola petición sin consultar el dólar. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
+Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. También comprueban que `/consultar/raw` conserve todo el JSON del proveedor, incluso sin texto generado, y que utilice una sola petición sin consultar el dólar. El evaluador tiene pruebas de tarifas por candidato, errores, respuestas truncadas, promedios, planificación e inventario paginado. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
 
 Para revisar el código con las herramientas de desarrollo:
 
@@ -436,12 +542,15 @@ uv run basedpyright
 │   ├── agentes.py         # Selección y ejecución del agente
 │   ├── api.py             # Endpoints y autenticación local
 │   ├── catalogo.py        # Agentes y modelos habilitados
+│   ├── comparar_modelos.py # Evaluación real de costo y latencia (Bloque 9)
 │   ├── costos.py          # Tarifas por modelo y costos en USD y CLP
 │   ├── esquemas.py        # Modelos de datos y validaciones
 │   ├── respuestas.py      # Contrato de respuestas y manejo de errores
 │   └── tipo_cambio.py     # Dólar observado y tasa manual opcional
 ├── tests/                 # Suite automatizada
-├── docs/                  # Evidencias de las peticiones
+├── docs/                  # Evidencias, diagrama y decisión de arquitectura
+│   ├── decision-arquitectura.md
+│   └── evaluaciones/      # Respuestas y mediciones originales de Gemini
 ├── api.postman_collection.json
 ├── gemini.postman_collection.json
 ├── .env.example

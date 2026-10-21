@@ -1,0 +1,956 @@
+{
+  "inicio_utc": "2026-10-21T00:04:53.338224+00:00",
+  "fin_utc": "2026-10-21T00:06:46.565320+00:00",
+  "endpoint_consultas": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+  "endpoint_inventario": "https://generativelanguage.googleapis.com/v1beta/models",
+  "modelos_disponibles": [
+    {
+      "name": "models/gemini-2.5-flash",
+      "displayName": "Gemini 2.5 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-pro",
+      "displayName": "Gemini 2.5 Pro",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-preview-tts",
+      "displayName": "Gemini 2.5 Flash Preview TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "generateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-pro-preview-tts",
+      "displayName": "Gemini 2.5 Pro Preview TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "generateContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemma-4-26b-a4b-it",
+      "displayName": "Gemma 4 26B A4B IT",
+      "inputTokenLimit": 262144,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemma-4-31b-it",
+      "displayName": "Gemma 4 31B IT",
+      "inputTokenLimit": 262144,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-flash-latest",
+      "displayName": "Gemini Flash Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-flash-lite-latest",
+      "displayName": "Gemini Flash-Lite Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-pro-latest",
+      "displayName": "Gemini Pro Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-lite",
+      "displayName": "Gemini 2.5 Flash-Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-image",
+      "displayName": "Nano Banana",
+      "inputTokenLimit": 32768,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-flash-preview",
+      "displayName": "Gemini 3 Flash Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-pro-preview",
+      "displayName": "Gemini 3.1 Pro Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-pro-preview-customtools",
+      "displayName": "Gemini 3.1 Pro Preview Custom Tools",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite-preview",
+      "displayName": "Gemini 3.1 Flash Lite Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite",
+      "displayName": "Gemini 3.1 Flash Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-pro-image-preview",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-pro-image",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/nano-banana-pro-preview",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-image-preview",
+      "displayName": "Nano Banana 2",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-image",
+      "displayName": "Nano Banana 2",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite-image",
+      "displayName": "Nano Banana 2 Lite",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-nano-banana-2.1",
+      "displayName": "Nano Banana 2.1",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-flash",
+      "displayName": "Gemini 3.5 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-flash-lite",
+      "displayName": "Gemini 3.5 Flash Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-omni-flash-preview",
+      "displayName": "Gemini Omni Flash Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-omni-1.1-flash",
+      "displayName": "Gemini Omni 1.1 Flash",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-transcribe",
+      "displayName": "Gemini 3.5 Transcribe",
+      "inputTokenLimit": 98304,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-3.6-flash",
+      "displayName": "Gemini 3.6 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.7-flash",
+      "displayName": "Gemini 3.7 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash",
+      "displayName": "Gemini 3.8 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-4-argon",
+      "displayName": "Gemini 4 Argon",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/lyria-3-clip-preview",
+      "displayName": "Lyria 3 Clip Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/lyria-3-pro-preview",
+      "displayName": "Lyria 3 Pro Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/lyria-3.5",
+      "displayName": "Lyria 3.5",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-tts-preview",
+      "displayName": "Gemini 3.1 Flash TTS Preview",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash-tts",
+      "displayName": "Gemini 3.8 Flash TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash-lite-tts",
+      "displayName": "Gemini 3.8 Flash Lite TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-robotics-er-2-preview",
+      "displayName": "Gemini Robotics-ER 2 Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-computer-use-preview-10-2025",
+      "displayName": "Gemini 2.5 Computer Use Preview 10-2025",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/antigravity-preview-05-2026",
+      "displayName": "Antigravity Agent Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/antigravity-preview-09-2026",
+      "displayName": "Antigravity Agent Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/antigravity-preview-latest",
+      "displayName": "Antigravity Agent Preview Latest",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/deep-research-max-preview-04-2026",
+      "displayName": "Deep Research Max Preview (Apr-21-2026)",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/deep-research-preview-04-2026",
+      "displayName": "Deep Research Preview (Apr-21-2026)",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/deep-research-pro-preview-12-2025",
+      "displayName": "Deep Research Pro Preview (Dec-12-2025)",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-embedding-001",
+      "displayName": "Gemini Embedding 001",
+      "inputTokenLimit": 2048,
+      "outputTokenLimit": 1,
+      "supportedGenerationMethods": [
+        "embedContent",
+        "countTextTokens",
+        "countTokens",
+        "asyncBatchEmbedContent"
+      ]
+    },
+    {
+      "name": "models/gemini-embedding-2-preview",
+      "displayName": "Gemini Embedding 2 Preview",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 1,
+      "supportedGenerationMethods": [
+        "embedContent",
+        "countTextTokens",
+        "countTokens",
+        "asyncBatchEmbedContent"
+      ]
+    },
+    {
+      "name": "models/gemini-embedding-2",
+      "displayName": "Gemini Embedding 2",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 1,
+      "supportedGenerationMethods": [
+        "embedContent",
+        "countTextTokens",
+        "countTokens",
+        "asyncBatchEmbedContent"
+      ]
+    },
+    {
+      "name": "models/aqa",
+      "displayName": "Model that performs Attributed Question Answering.",
+      "inputTokenLimit": 7168,
+      "outputTokenLimit": 1024,
+      "supportedGenerationMethods": [
+        "generateAnswer"
+      ]
+    },
+    {
+      "name": "models/veo-3.1-generate-preview",
+      "displayName": "Veo 3.1",
+      "inputTokenLimit": 480,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "predictLongRunning"
+      ]
+    },
+    {
+      "name": "models/veo-3.1-fast-generate-preview",
+      "displayName": "Veo 3.1 fast",
+      "inputTokenLimit": 480,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "predictLongRunning"
+      ]
+    },
+    {
+      "name": "models/veo-3.1-lite-generate-preview",
+      "displayName": "Veo 3.1 lite",
+      "inputTokenLimit": 480,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "predictLongRunning"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-transcribe-live",
+      "displayName": "Gemini 3.5 Transcribe Live",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-native-audio-latest",
+      "displayName": "Gemini 2.5 Flash Native Audio Latest",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-native-audio-preview-09-2025",
+      "displayName": "Gemini 2.5 Flash Native Audio Preview 09-2025",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-2.5-flash-native-audio-preview-12-2025",
+      "displayName": "Gemini 2.5 Flash Native Audio Preview 12-2025",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 8192,
+      "supportedGenerationMethods": [
+        "countTokens",
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-live-preview",
+      "displayName": "Gemini 3.1 Flash Live Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-live",
+      "displayName": "Gemini 3.8 Live",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-live-extended-thinking",
+      "displayName": "Gemini 3.8 Live Extended Thinking",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-robotics-er-2-streaming-preview",
+      "displayName": "Gemini Robotics-ER 2 Streaming Preview",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-live-translate-preview",
+      "displayName": "Gemini 3.5 Live Translate Preview",
+      "inputTokenLimit": 16384,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "bidiGenerateContent"
+      ]
+    },
+    {
+      "name": "models/lyria-realtime-exp",
+      "displayName": "Lyria Realtime Experimental",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "bidiGenerateMusic"
+      ]
+    }
+  ],
+  "modelos_evaluados": [
+    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash"
+  ],
+  "repeticiones_por_caso": 3,
+  "casos": {
+    "explicacion_api": "Estoy aprendiendo Python. Explica qué es una API con una analogía cotidiana, cómo viaja una pregunta desde Python hasta Gemini y cómo vuelve la respuesta, y para qué sirve una API key. Responde en español, con secciones breves y entre 150 y 200 palabras.",
+    "errores_http": "Una aplicación Python consulta Gemini con requests y usa un Bearer token distinto para proteger su API local. Explica cómo diagnosticar y resolver HTTP 401 de la API local, HTTP 429 de Gemini y un timeout al consultar Gemini. Distingue las dos credenciales y evita recomendar publicar secretos. Responde en español, con secciones breves y entre 150 y 200 palabras.",
+    "calculo_costo": "Una consulta a una IA consume 1000 tokens de entrada y 2000 de salida, sin caché. La entrada cuesta USD 0.30 por millón y la salida USD 2.50 por millón. Usa un tipo de cambio hipotético de 950 CLP por USD. Calcula el costo de entrada, salida y total en USD, el total en CLP y el costo de 1000 consultas iguales. Muestra las operaciones, aclara que son estimaciones sin impuestos y no confundas tokens con palabras. Responde en español, con secciones breves y entre 150 y 200 palabras."
+  },
+  "configuracion": {
+    "parametros": "Predeterminados del proveedor; mismo cuerpo que la aplicación.",
+    "streaming": false,
+    "historial": false,
+    "reintentos": 0,
+    "timeout_conexion_segundos": 10,
+    "timeout_lectura_segundos": 60,
+    "latencia": "perf_counter alrededor de consultar_gemini_raw; excluye cálculo y dólar.",
+    "orden": "Secuencial, intercalado y rotando el primer modelo por caso y ronda."
+  },
+  "tarifas": {
+    "fuente": "https://ai.google.dev/gemini-api/docs/pricing",
+    "verificadas_el": "2026-10-20",
+    "modalidad": "Standard de pago, USD por millón; no es facturación de la cuenta.",
+    "flash_3_8_promocion_hasta": "2026-12-31",
+    "modelos": {
+      "gemini-3.5-flash-lite": {
+        "entrada": "US$ 0.30",
+        "entrada_cache": "US$ 0.03",
+        "salida": "US$ 2.50"
+      },
+      "gemini-3.8-flash": {
+        "entrada": "US$ 0.75",
+        "entrada_cache": "US$ 0.075",
+        "salida": "US$ 3.75"
+      }
+    }
+  },
+  "mediciones": [
+    {
+      "inicio_utc": "2026-10-21T00:04:53.338819+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "¡Bienvenido a Python! Aquí tienes los conceptos clave explicados de forma sencilla:\n\n**La analogía del mesero**\nImagina que estás en un restaurante (tu código en Python). Tú no puedes entrar a la cocina (los servidores de Google/Gemini) a preparar tu comida. Necesitas un mesero. El **API** (Application Programming Interface) es ese mesero: toma tu pedido, lo lleva a la cocina, espera a que esté listo y te lo trae a la mesa.\n\n**El viaje de la pregunta y la respuesta**\n1. **Salida:** Desde Python, empaquetas tu texto (ej. \"Hola\") usando la librería de Gemini y se lo envías al API a través de internet.\n2. **Proceso:** El API traduce tu mensaje para que los servidores de Google lo entiendan. Gemini procesa la información y genera una respuesta.\n3. **Regreso:** El API empaqueta esa respuesta y la devuelve a tu script de Python, que la imprime en tu pantalla.\n\n**¿Para qué sirve una API Key?**\nEs como tu **identificación o tarjeta VIP**. Google la exige para saber quién está haciendo la petición. Sirve para controlar el uso, evitar abusos y, si usas servicios de pago, saber a quién cobrarle. ¡Nunca la compartas públicamente!",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TO/EsnrhEFvG61Ea3MxvZ3c+7viW7m+YhoGj5+Bbp5b+4Glf5fW+W3mzxRloDAndhj9ZxToYgWE98inpWoQD1ZFwdLxF+mDmk3Wf2e80STesMittIgQj/uY8="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541095,
+        "id": "pgHYau_FE4GwytMPpZv22AI",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 282,
+          "prompt_tokens": 63,
+          "total_tokens": 345
+        }
+      },
+      "uso": {
+        "entrada": 63,
+        "salida": 282,
+        "total": 345,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0007239",
+      "costo_clp": "0.710768454",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 2.515375,
+      "numero": 1,
+      "ronda": 1,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:04:56.161832+00:00",
+      "modelo": "gemini-3.8-flash",
+      "estado": "error",
+      "error": "Gemini respondió HTTP 503. Gemini no está disponible temporalmente. Intenta nuevamente más tarde.",
+      "respuesta_proveedor": null,
+      "uso": null,
+      "costo_usd": null,
+      "costo_clp": null,
+      "tipo_cambio": null,
+      "aviso_clp": null,
+      "latencia_segundos": 50.685043,
+      "numero": 2,
+      "ronda": 1,
+      "caso": "explicacion_api"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:05:46.848626+00:00",
+      "modelo": "gemini-3.8-flash",
+      "estado": "error",
+      "error": "Gemini respondió HTTP 503. Gemini no está disponible temporalmente. Intenta nuevamente más tarde.",
+      "respuesta_proveedor": null,
+      "uso": null,
+      "costo_usd": null,
+      "costo_clp": null,
+      "tipo_cambio": null,
+      "aviso_clp": null,
+      "latencia_segundos": 39.686076,
+      "numero": 3,
+      "ronda": 1,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:06:26.536086+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "Para solucionar errores en esta arquitectura, es vital distinguir dos credenciales: la **API Key de Google Gemini** (que autentica tu app ante Google) y el **Bearer Token local** (que autentica a los clientes ante tu propia API). **Nunca publiques ninguna en repositorios.**\n\n**1. HTTP 401 en tu API local**\n*   **Diagnóstico:** El cliente no envía la cabecera `Authorization: Bearer <token>` o el token no coincide con el configurado en tu servidor.\n*   **Resolución:** Verifica que el cliente envíe exactamente el token esperado y que tu servidor lo valide correctamente, sin espacios adicionales.\n\n**2. HTTP 429 de Gemini**\n*   **Diagnóstico:** Superaste la cuota o el límite de peticiones por minuto (RPM) de tu API Key de Gemini.\n*   **Resolución:** Implementa reintentos con espera exponencial (*exponential backoff*) y reduce la frecuencia de consultas.\n\n**3. Timeout al consultar Gemini**\n*   **Diagnóstico:** La respuesta de Gemini tarda más que el límite configurado en tu cliente `requests`.\n*   **Resolución:** Aumenta el parámetro `timeout` en tu llamada (ej. `requests.post(..., timeout=30)`) y optimiza el tamaño del *prompt* para acelerar la generación.",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T/EVIoqH+oigln7XjhZLHNOFER7i61pZpjCWvYRgZNVWY9aaUGClftguc5k0i1diEFkhMRPKzlaikedtsdEE5Q7FsF/acGh2obbmFDcURp36ECtOo962FdPg="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541189,
+        "id": "AwLYatWEI7v7qtsPup2XGA",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 287,
+          "prompt_tokens": 87,
+          "total_tokens": 374
+        }
+      },
+      "uso": {
+        "entrada": 87,
+        "salida": 287,
+        "total": 374,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0007436",
+      "costo_clp": "0.730111096",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 3.225245,
+      "numero": 4,
+      "ronda": 1,
+      "caso": "errores_http"
+    },
+    {
+      "inicio_utc": "2026-10-21T00:06:29.762176+00:00",
+      "modelo": "gemini-3.5-flash-lite",
+      "estado": "ok",
+      "error": null,
+      "respuesta_proveedor": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "Aquí tienes el cálculo detallado de la consulta a la IA. *(Nota: Un token es una unidad de procesamiento de texto, típicamente una fracción de palabra, no una palabra).*\n\n**Costos en USD**\n*   **Entrada:** 1.000 tokens × (USD 0,30 / 1.000.000) = **USD 0,00030**\n*   **Salida:** 2.000 tokens × (USD 2,50 / 1.000.000) = **USD 0,00500**\n*   **Total (1 consulta):** 0,00030 + 0,00500 = **USD 0,00530**\n\n**Conversión a CLP**\nUsando el tipo de cambio de 950 CLP:\n*   USD 0,00530 × 950 = **5,035 CLP**\n\n**Costo de 1.000 consultas iguales**\n*   En USD: USD 0,00530 × 1.000 = **USD 5,30**\n*   En CLP: 5,035 CLP × 1.000 = **5.035 CLP**\n\n*Aviso legal: Esta es una estimación matemática basada estrictamente en los valores provistos y no incluye impuestos aplicables (como IVA).*",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T9oywjlDK2E+dH7Kgfv+Vgx1dvphDgXYuOoWWtAtWDwjVfHJ2tClg+iScDNIZ8I96QBhcEA/BtyDI7hHagVfsM2JDlqC0lAPQFruxGs+yZgcKXC+YJQPEL4I="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792541192,
+        "id": "BgLYap-XNICoytMPhLz8mAw",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 327,
+          "prompt_tokens": 137,
+          "total_tokens": 464
+        }
+      },
+      "uso": {
+        "entrada": 137,
+        "salida": 327,
+        "total": 464,
+        "entrada_cache": 0
+      },
+      "costo_usd": "0.0008586",
+      "costo_clp": "0.843024996",
+      "tipo_cambio": {
+        "clp_por_usd": "981.86",
+        "fecha": "2026-10-20",
+        "fuente": "https://indicadores.cl/api/v1/dolar.json"
+      },
+      "aviso_clp": null,
+      "latencia_segundos": 2.723476,
+      "numero": 5,
+      "ronda": 1,
+      "caso": "calculo_costo"
+    }
+  ],
+  "resumen": {
+    "gemini-3.5-flash-lite": {
+      "intentos": 3,
+      "respuestas_completas": 3,
+      "errores_o_incompletas": 0,
+      "latencia_media_segundos": 2.821365,
+      "latencia_mediana_segundos": 2.723476,
+      "latencia_minima_segundos": 2.515375,
+      "latencia_maxima_segundos": 3.225245,
+      "tokens_entrada_media": 95.667,
+      "tokens_salida_media": 298.667,
+      "tokens_entrada_cache_media": 0,
+      "consultas_con_costo_usd": 3,
+      "costo_medio_usd": "0.0007753666666666666666666666667",
+      "proyeccion_1000_consultas_usd": "0.7753666666666666666666666667",
+      "costo_observado_total_usd": "0.0023261",
+      "consultas_con_costo_clp": 3,
+      "costo_medio_clp": "0.7613015153333333333333333333",
+      "proyeccion_1000_consultas_clp": "761.3015153333333333333333333",
+      "costo_observado_total_clp": "2.283904546"
+    },
+    "gemini-3.8-flash": {
+      "intentos": 2,
+      "respuestas_completas": 0,
+      "errores_o_incompletas": 2,
+      "latencia_media_segundos": null,
+      "latencia_mediana_segundos": null,
+      "latencia_minima_segundos": null,
+      "latencia_maxima_segundos": null,
+      "tokens_entrada_media": null,
+      "tokens_salida_media": null,
+      "tokens_entrada_cache_media": null,
+      "consultas_con_costo_usd": 0,
+      "costo_medio_usd": null,
+      "proyeccion_1000_consultas_usd": null,
+      "costo_observado_total_usd": null,
+      "consultas_con_costo_clp": 0,
+      "costo_medio_clp": null,
+      "proyeccion_1000_consultas_clp": null,
+      "costo_observado_total_clp": null
+    }
+  },
+  "estado_ejecucion": "interrumpida",
+  "motivo_interrupcion": "Dos HTTP 503 consecutivos de gemini-3.8-flash. Se conserva la evidencia y se evalúa otro candidato estable; no se sustituyen costos desconocidos por cero.",
+  "intento_interrumpido": {
+    "numero": 6,
+    "ronda": 1,
+    "caso": "calculo_costo",
+    "modelo": "gemini-3.8-flash",
+    "estado": "interrumpida",
+    "consumo": null,
+    "costo": null,
+    "nota": "La solicitud estaba en curso al detener el proceso; no se recibió respuesta. No forma parte de las mediciones finalizadas."
+  }
+}
