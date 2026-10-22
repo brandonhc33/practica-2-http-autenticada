@@ -1,6 +1,6 @@
 # Práctica 2: consultas HTTP autenticadas con Gemini
 
-Proyecto iniciado en el Bloque 4 de Skillnest que permite consultar Gemini desde Python y mediante una API local protegida con un Bearer token. Incluye el diagrama del Bloque 8 y la evaluación de modelos del Bloque 9.
+Proyecto iniciado en el Bloque 4 de Skillnest que permite consultar Gemini desde Python y mediante una API local protegida con un Bearer token. Incluye el diagrama del Bloque 8, la evaluación de modelos del Bloque 9 y el banco de prompts con salida JSON estructurada del Bloque 10.
 
 La [decisión de arquitectura](docs/decision-arquitectura.md) reúne la comparación real de costo y latencia, la elección del modelo y el [diagrama de la aplicación](docs/arquitectura.md). Su alcance es la práctica actual; la [propuesta del proyecto final Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) explica qué falta validar para utilizar IA en consultas normativas.
 
@@ -389,13 +389,14 @@ Si el consumo está ausente, incompleto o es inválido, `uso` y `costo_estimado`
 
 ### Campos y validaciones
 
-Los tres campos son obligatorios y deben ser cadenas de texto. No se aceptan campos adicionales ni valores vacíos o compuestos solo por espacios.
+`agente`, `modelo` y `mensaje` son obligatorios y deben ser cadenas de texto. `prompt` es opcional y selecciona una tarea del banco. No se aceptan otros campos ni valores obligatorios vacíos o compuestos solo por espacios.
 
 | Campo | Longitud | Validaciones |
 | --- | --- | --- |
 | `agente` | De 1 a 32 caracteres. | Debe existir en el catálogo. Solo acepta letras minúsculas, números, guiones y guiones bajos. |
 | `modelo` | De 1 a 64 caracteres. | Debe pertenecer al agente elegido y cumplir el mismo formato que `agente`. |
 | `mensaje` | De 1 a 4.000 caracteres. | Debe contener texto. Se conservan sus espacios y saltos de línea. |
+| `prompt` | Opcional. | `explicar_concepto`, `diagnosticar_error_http`, `resumir_texto_tecnico` o `null`. |
 
 Los límites son inclusivos y cuentan caracteres, no bytes. En la API, el texto se envía en `mensaje`; un campo llamado `pregunta` se rechaza con HTTP 422.
 
@@ -444,6 +445,51 @@ Necesita `GEMINI_API_KEY` en `.env` y hace **18 consultas reales**: tres casos, 
 El JSON se guarda después de cada intento y conserva preguntas, respuestas, consumo, costos, tiempos y errores. La salida **1** indica errores o respuestas incompletas; revisa la evidencia antes de interpretar los promedios. Se rechazan rutas de salida existentes para conservar las mediciones anteriores. Listar un modelo no garantiza cuota ni éxito al generar texto.
 
 La [decisión del Bloque 9](docs/decision-arquitectura.md) documenta metodología, tarifas, resultados y limitaciones, incluida la exploración interrumpida de Flash 3.8. Las [mediciones originales](docs/evaluaciones/gemini-2026-10-20.json) permiten auditar los números. Los costos son estimaciones a precios de pago, no comprobantes de facturación.
+
+### Banco de prompts y salida estructurada: Bloque 10
+
+El [banco](prompts/banco.py) centraliza tres tareas. Cada una contiene nombre, versión, instrucciones de sistema, entrada de ejemplo y un modelo Pydantic que genera el JSON Schema y valida la respuesta.
+
+| `prompt` | Campos de la salida |
+| --- | --- |
+| `explicar_concepto` | `concepto`, `explicacion`, `analogia`, `ejemplo`. |
+| `diagnosticar_error_http` | `codigo_http` (entero o `null`), `causa_probable`, `pasos_revision` (lista). |
+| `resumir_texto_tecnico` | `resumen`, `puntos_clave` (lista). |
+
+Desde la terminal:
+
+```bash
+uv run python -m src.agente_gemini --prompt explicar_concepto "¿Qué es una API?"
+```
+
+Desde `POST /consultar`, con el Bearer token local habitual:
+
+```json
+{
+  "agente": "gemini",
+  "modelo": "flash-lite",
+  "prompt": "diagnosticar_error_http",
+  "mensaje": "POST /consultar devuelve HTTP 401 antes de llamar a Gemini. ¿Qué reviso?"
+}
+```
+
+Al elegir un prompt, `detalles.respuesta` es un **objeto JSON validado**. `uso` y `costo_estimado` conservan su función. Si se omite `prompt` o vale `null`, `respuesta` sigue siendo texto libre. El cliente envía el sistema en un mensaje `system` y el esquema mediante `response_format`, porque utiliza la interfaz compatible con OpenAI de Gemini. Una salida truncada, JSON inválido o un contrato incorrecto produce HTTP 502 sin reintentos automáticos.
+
+`POST /consultar/raw` y `--raw` también aceptan un prompt; permiten inspeccionar todo el JSON del proveedor y no validan su contenido generado ni calculan costos.
+
+La [evidencia real](prompts/registro_resultados.json) conserva tres repeticiones por prompt, las instrucciones y esquemas utilizados, el JSON original del proveedor, el contenido validado, consumo, costos, latencia HTTP y errores. Para una nueva evaluación:
+
+```bash
+uv run python -m prompts.test_consistencia --salida prompts/registro_resultados_nueva_ejecucion.json
+```
+
+El script requiere `GEMINI_API_KEY`, realiza **nueve llamadas reales** con el modelo `flash-lite` y espera un segundo entre llamadas. `--repeticiones` permite aumentar la muestra (mínimo 3), `--modelo` elige un alias del catálogo y `--pausa` ajusta la espera. Conserva un registro después de cada intento y rechaza archivos de salida existentes. Termina con código 0 si todos los intentos son válidos, 1 si hubo fallos y 130 ante una interrupción.
+
+Se mide consistencia de estructura, no exactitud técnica del contenido. Un 3/3 describe esa muestra; no garantiza todos los casos futuros. La [guía del Bloque 10](docs/bloque-10-prompts.md) explica los PDF con ejemplos del proyecto y ejercicios breves.
+
+La [ejecución inicial](prompts/registro_resultados_inicial.json) del 21 de octubre de 2026 obtuvo **3/3 por tarea (9/9 en total)** con `gemini-3.5-flash-lite`, sin errores de estructura y con un costo total estimado de **US$ 0.0041241**. La revisión de contenido llevó a precisar los ejemplos y el comportamiento del token local en dos prompts; la guía documenta esos ajustes y la evaluación posterior.
+
+La evaluación posterior también obtuvo **9/9**, con un costo estimado de **US$ 0.0039965**. En sus textos ya no aparecieron los ejemplos de SDK ni la supuesta expiración del token local observados en la primera muestra. Las dos corridas suman **18 llamadas y US$ 0.0081206 estimados**; no constituyen una evaluación exhaustiva de exactitud.
 
 ## 5. Probar con Yaak o Postman
 
@@ -526,10 +572,12 @@ uv run python -m tests -v
 
 Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. También comprueban que `/consultar/raw` conserve todo el JSON del proveedor, incluso sin texto generado, y que utilice una sola petición sin consultar el dólar. El evaluador tiene pruebas de tarifas por candidato, errores, respuestas truncadas, promedios, planificación e inventario paginado. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
 
+El Bloque 10 agrega cobertura de sistema y esquema enviados, salidas válidas y truncadas, claves y tipos incorrectos, rangos, campos extra, listas, limpieza de Markdown, selección de prompts, CLI y conservación de fallos y consumo en el evaluador. `python -m tests` no ejecuta la evaluación real de `prompts/test_consistencia.py`.
+
 Para revisar el código con las herramientas de desarrollo:
 
 ```bash
-uv run ruff check src tests
+uv run ruff check src tests prompts
 uv run basedpyright
 ```
 
@@ -546,10 +594,17 @@ uv run basedpyright
 │   ├── costos.py          # Tarifas por modelo y costos en USD y CLP
 │   ├── esquemas.py        # Modelos de datos y validaciones
 │   ├── respuestas.py      # Contrato de respuestas y manejo de errores
+│   ├── salida_estructurada.py # Parseo y validación del contenido generado
 │   └── tipo_cambio.py     # Dólar observado y tasa manual opcional
+├── prompts/
+│   ├── banco.py           # Tres prompts y sus esquemas de salida
+│   ├── test_consistencia.py # Evaluación real: mínimo tres intentos por tarea
+│   ├── registro_resultados_inicial.json # Evaluación anterior al ajuste
+│   └── registro_resultados.json # Evaluación de las instrucciones actuales
 ├── tests/                 # Suite automatizada
 ├── docs/                  # Evidencias, diagrama y decisión de arquitectura
 │   ├── decision-arquitectura.md
+│   ├── bloque-10-prompts.md # Guía de estudio aplicada al código
 │   └── evaluaciones/      # Respuestas y mediciones originales de Gemini
 ├── api.postman_collection.json
 ├── gemini.postman_collection.json

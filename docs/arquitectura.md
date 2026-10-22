@@ -6,27 +6,27 @@ La [decisión de arquitectura del Bloque 9](decision-arquitectura.md) utiliza es
 
 ![Diagrama de arquitectura de POST /consultar](diagrama_arquitectura.png)
 
-El diagrama representa el código actual del repositorio. El archivo [editable de draw.io](diagrama_arquitectura.drawio) permite modificar las cajas, los textos y las conexiones. Para abrirlo, usa **Archivo → Abrir desde → Dispositivo** en diagrams.net. Después de editarlo, exporta nuevamente el PNG para mantener ambos archivos sincronizados.
+El diagrama representa el flujo base entregado en el Bloque 8. El Bloque 10 agrega la selección opcional de prompts, las instrucciones de sistema y la validación del contenido JSON, descritas en esta nota y en la [guía de prompts](bloque-10-prompts.md). El archivo [editable de draw.io](diagrama_arquitectura.drawio) permite modificar las cajas, los textos y las conexiones. Para abrirlo, usa **Archivo → Abrir desde → Dispositivo** en diagrams.net.
 
 ## Correspondencia con la actividad
 
-La consigna parte de tres funciones llamadas `armar_peticion`, `enviar_peticion` y `extraer_texto`. Esas funciones no existen con esos nombres en este proyecto. Sus responsabilidades aparecen como tres cajas separadas y numeradas, identificando la función que realmente las implementa:
+La consigna parte de tres funciones llamadas `armar_peticion`, `enviar_peticion` y `extraer_texto`. Las primeras dos responsabilidades se reúnen aquí en `consultar_gemini_raw()`; desde el Bloque 10, `extraer_texto()` existe como función independiente. Las tres cajas numeradas del diagrama identifican los tramos originales:
 
 | Responsabilidad del curso | Implementación en este repositorio |
 | --- | --- |
 | `armar_peticion` | Primer tramo de `consultar_gemini_raw()`: lee `GEMINI_API_KEY` y arma los encabezados y el cuerpo. |
 | `enviar_peticion` | Segundo tramo de `consultar_gemini_raw()`: hace `requests.post()`, comprueba el estado HTTP y decodifica el JSON. |
-| `extraer_texto` | Tramo de `consultar_gemini()` que lee `choices[0].message.content`, valida el texto y elimina espacios en los extremos. |
+| `extraer_texto` | `extraer_texto()`, invocada por `consultar_gemini()`, lee `choices[0].message.content`, valida el texto y elimina espacios en los extremos. |
 
 El proyecto utiliza el endpoint compatible con OpenAI de Gemini. Por eso el dato de consumo se llama **`usage`**, en lugar de **`usageMetadata`**, que es el nombre utilizado en la consigna. El diagrama muestra el campo que procesa el código real.
 
 ## Recorrido de la consulta
 
-1. El usuario envía a `POST /consultar` un JSON con `agente`, `modelo` y `mensaje`, junto con el Bearer token de la API local.
+1. El usuario envía a `POST /consultar` un JSON con `agente`, `modelo` y `mensaje`, opcionalmente `prompt`, junto con el Bearer token de la API local.
 2. `validar_bearer()` autentica y `Consulta` valida los datos. `consultar()` llama a `ejecutar_consulta()` con `consultar_agente`.
-3. `consultar_agente()` resuelve el modelo del catálogo y ejecuta `consultar_gemini(modelo, mensaje)`.
-4. `consultar_gemini_raw()` prepara y envía la petición a Gemini. La credencial del proveedor se utiliza en `Authorization: Bearer <GEMINI_API_KEY>`.
-5. Con el JSON recibido, `consultar_gemini()` extrae el texto y llama a `extraer_uso(datos.get("usage"))`.
+3. `consultar_agente()` resuelve el modelo del catálogo y ejecuta `consultar_gemini(modelo, mensaje)`, pasando también `prompt` si fue seleccionado.
+4. `consultar_gemini_raw()` prepara y envía la petición a Gemini. Si se eligió un prompt, agrega un mensaje `system` y un `response_format` con el JSON Schema del banco. La credencial del proveedor se utiliza en `Authorization: Bearer <GEMINI_API_KEY>`.
+5. Con el JSON recibido, `consultar_gemini()` usa `extraer_texto()`. Con un prompt exige finalización `stop` y llama a `parsear_respuesta_json()`, que interpreta el contenido y lo valida estrictamente con Pydantic. Después llama a `extraer_uso(datos.get("usage"))`.
 6. `calcular_costo_gemini()` utiliza el consumo y las tarifas registradas para calcular USD. Luego intenta obtener el tipo de cambio y convertir a CLP.
 7. `consultar_gemini()` devuelve `Resultado(respuesta, uso, costo_estimado)` y la API lo publica dentro de `RespuestaAPI.detalles`.
 
@@ -46,11 +46,13 @@ El proyecto utiliza el endpoint compatible con OpenAI de Gemini. Por eso el dato
 
 Las validaciones de entrada producen HTTP 401 o 422. Los manejadores registrados en `src/respuestas.py` mantienen el contrato JSON de error; una excepción no prevista produce HTTP 500.
 
+Con un prompt, una salida truncada o que no cumple su esquema genera `ValueError` y la API responde HTTP 502. `Resultado.respuesta` admite texto libre u objeto validado según la selección. El modo raw permite observar incluso contenido inválido sin transformarlo.
+
 Si faltan metadatos válidos, `uso` y `costo_estimado` quedan en `null`. Si hay consumo válido pero no existen tarifas para el modelo, solo `costo_estimado` queda en `null`. En ambos casos se conserva el texto generado.
 
 ## Alcance y entrega
 
-La imagen muestra el flujo completo de `POST /consultar`. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.
+La imagen muestra el flujo base de `POST /consultar`; la selección opcional de prompts se describe arriba. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.
 
 Los archivos de entrega son `docs/diagrama_arquitectura.png` y su fuente editable `docs/diagrama_arquitectura.drawio`. Esta nota documenta cómo se adaptó la consigna al proyecto.
 
