@@ -3,7 +3,7 @@
 import re
 from datetime import date
 from decimal import Decimal
-from typing import Annotated, ClassVar, Literal
+from typing import Annotated, Any, ClassVar, Literal
 
 from pydantic import (
     BaseModel,
@@ -15,6 +15,8 @@ from pydantic import (
     field_validator,
 )
 from pydantic_core import PydanticCustomError
+
+from prompts.banco import NombrePrompt
 
 from .catalogo import AGENTES
 
@@ -52,6 +54,7 @@ class Consulta(BaseModel):
     agente: str = Field(min_length=1, max_length=LIMITES_CONSULTA["agente"])
     modelo: str = Field(min_length=1, max_length=LIMITES_CONSULTA["modelo"])
     mensaje: str = Field(min_length=1, max_length=LIMITES_CONSULTA["mensaje"])
+    prompt: NombrePrompt | None = None
 
     @field_validator("agente", "modelo", "mensaje", mode="before")
     @classmethod
@@ -191,6 +194,6 @@ class CostoEstimado(BaseModel):
 class Resultado(BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
-    respuesta: str
+    respuesta: str | dict[str, Any]
     uso: UsoTokens | None = None
     costo_estimado: CostoEstimado | None = None

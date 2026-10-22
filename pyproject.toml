@@ -24,7 +24,7 @@ dev = [
 ]
 
 [tool.basedpyright]
-include = ["src", "tests"]
+include = ["src", "tests", "prompts"]
 pythonVersion = "3.12"
 typeCheckingMode = "standard"
 venvPath = "."

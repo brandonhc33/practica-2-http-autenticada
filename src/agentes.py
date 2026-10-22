@@ -1,15 +1,21 @@
 """Coordina la configuración, selección y ejecución de los agentes registrados."""
 
 import os
-from collections.abc import Callable
-from typing import Any
+from typing import Any, Protocol
+
+from prompts.banco import NombrePrompt
 
 from .agente_gemini import consultar_gemini, consultar_gemini_raw
 from .catalogo import AGENTES
 from .esquemas import Consulta, Resultado
 
-CLIENTES: dict[str, Callable[[str, str], Resultado]] = {"gemini": consultar_gemini}
-CLIENTES_RAW: dict[str, Callable[[str, str], dict[str, Any]]] = {"gemini": consultar_gemini_raw}
+
+class Cliente[T](Protocol):
+    def __call__(self, modelo: str, mensaje: str, *, prompt: NombrePrompt | None = None) -> T: ...
+
+
+CLIENTES: dict[str, Cliente[Resultado]] = {"gemini": consultar_gemini}
+CLIENTES_RAW: dict[str, Cliente[dict[str, Any]]] = {"gemini": consultar_gemini_raw}
 
 
 class AgenteNoConfigurado(ValueError):
@@ -34,6 +40,8 @@ def consultar_agente(consulta: Consulta) -> Resultado:
     cliente = CLIENTES.get(consulta.agente)
     if cliente is None:
         raise ValueError(f"Falta implementar el cliente del agente {consulta.agente}.")
+    if consulta.prompt is not None:
+        return cliente(modelo, consulta.mensaje, prompt=consulta.prompt)
     return cliente(modelo, consulta.mensaje)
 
 
@@ -42,4 +50,6 @@ def consultar_agente_raw(consulta: Consulta) -> dict[str, Any]:
     cliente = CLIENTES_RAW.get(consulta.agente)
     if cliente is None:
         raise ValueError(f"Falta implementar el cliente raw del agente {consulta.agente}.")
+    if consulta.prompt is not None:
+        return cliente(modelo, consulta.mensaje, prompt=consulta.prompt)
     return cliente(modelo, consulta.mensaje)

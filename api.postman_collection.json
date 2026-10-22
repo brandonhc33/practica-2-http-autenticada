@@ -132,6 +132,156 @@
       }
     },
     {
+      "name": "Bloque 10 - explicar_concepto",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('La tarea devuelve un objeto con sus campos esperados', function () {",
+              "  pm.response.to.have.status(200);",
+              "  const detalles = pm.response.json().detalles;",
+              "  pm.expect(detalles).to.have.all.keys('respuesta', 'uso', 'costo_estimado');",
+              "  pm.expect(detalles.respuesta).to.be.an('object');",
+              "  pm.expect(detalles.respuesta).to.have.all.keys([\"concepto\", \"explicacion\", \"analogia\", \"ejemplo\"]);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "description": "Aplica el prompt del banco y devuelve detalles.respuesta como objeto validado, con tokens y costos.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{API_BEARER_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{BASE_URL}}/consultar",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"agente\": \"{{AGENTE}}\",\n  \"modelo\": \"{{MODELO}}\",\n  \"prompt\": \"explicar_concepto\",\n  \"mensaje\": \"¿Qué es una API y cómo la usa Python para consultar Gemini?\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Bloque 10 - diagnosticar_error_http",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('La tarea devuelve un objeto con sus campos esperados', function () {",
+              "  pm.response.to.have.status(200);",
+              "  const detalles = pm.response.json().detalles;",
+              "  pm.expect(detalles).to.have.all.keys('respuesta', 'uso', 'costo_estimado');",
+              "  pm.expect(detalles.respuesta).to.be.an('object');",
+              "  pm.expect(detalles.respuesta).to.have.all.keys([\"codigo_http\", \"causa_probable\", \"pasos_revision\"]);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "description": "Aplica el prompt del banco y devuelve detalles.respuesta como objeto validado, con tokens y costos.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{API_BEARER_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{BASE_URL}}/consultar",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"agente\": \"{{AGENTE}}\",\n  \"modelo\": \"{{MODELO}}\",\n  \"prompt\": \"diagnosticar_error_http\",\n  \"mensaje\": \"Mi POST /consultar a la API local de FastAPI devuelve HTTP 401. Todavía no se realizó ninguna llamada a Gemini. ¿Qué debo revisar?\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Bloque 10 - resumir_texto_tecnico",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('La tarea devuelve un objeto con sus campos esperados', function () {",
+              "  pm.response.to.have.status(200);",
+              "  const detalles = pm.response.json().detalles;",
+              "  pm.expect(detalles).to.have.all.keys('respuesta', 'uso', 'costo_estimado');",
+              "  pm.expect(detalles.respuesta).to.be.an('object');",
+              "  pm.expect(detalles.respuesta).to.have.all.keys([\"resumen\", \"puntos_clave\"]);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "description": "Aplica el prompt del banco y devuelve detalles.respuesta como objeto validado, con tokens y costos.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{API_BEARER_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{BASE_URL}}/consultar",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"agente\": \"{{AGENTE}}\",\n  \"modelo\": \"{{MODELO}}\",\n  \"prompt\": \"resumir_texto_tecnico\",\n  \"mensaje\": \"Python envía una petición HTTP a Gemini usando GEMINI_API_KEY. Nuestra API local se protege con otro Bearer token. Ambos secretos se cargan desde .env y no se publican en Git. El cliente configura timeouts y controla errores de conexión y de cuota. El consumo de tokens lo informa Gemini y el costo estimado se calcula en Python.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "Consultar respuesta raw de Gemini",
       "event": [
         {

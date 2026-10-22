@@ -9,6 +9,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from prompts.banco import BANCO_DE_PROMPTS
+
 from .esquemas import EJEMPLO_CONSULTA, Consulta, RespuestaAPI, ValidacionCampo
 
 logger = logging.getLogger(__name__)
@@ -59,6 +61,8 @@ def mensajes_validacion(error: Mapping[str, Any], campo: str) -> list[str]:
         return ["El campo no está permitido."]
     if tipo == "string_type":
         return ["Debe ser una cadena de texto."]
+    if tipo == "literal_error" and campo == "prompt":
+        return [f"Prompt no disponible. Usa: {', '.join(BANCO_DE_PROMPTS)}."]
     if tipo == "string_too_short":
         return [f"Debe contener al menos {contexto['min_length']} caracteres."]
     if tipo == "string_too_long":

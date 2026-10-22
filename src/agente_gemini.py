@@ -10,9 +10,12 @@ import requests
 from dotenv import load_dotenv
 from pydantic import ValidationError
 
+from prompts.banco import BANCO_DE_PROMPTS, NombrePrompt
+
 from .catalogo import AGENTES
 from .costos import calcular_costo_gemini
 from .esquemas import Resultado, UsoTokens
+from .salida_estructurada import parsear_respuesta_json
 
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
 
@@ -46,7 +49,9 @@ def extraer_uso(uso: object) -> UsoTokens | None:
     return tokens
 
 
-def consultar_gemini_raw(modelo: str, mensaje: str) -> dict[str, Any]:
+def consultar_gemini_raw(
+    modelo: str, mensaje: str, *, prompt: NombrePrompt | None = None
+) -> dict[str, Any]:
     """Devuelve todos los campos JSON del proveedor sin procesar el texto ni el consumo."""
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not api_key:
@@ -58,10 +63,22 @@ def consultar_gemini_raw(modelo: str, mensaje: str) -> dict[str, Any]:
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
     }
-    cuerpo = {
+    cuerpo: dict[str, Any] = {
         "model": modelo,
         "messages": [{"role": "user", "content": mensaje}],
     }
+    if prompt is not None:
+        definicion = BANCO_DE_PROMPTS[prompt]
+        cuerpo["messages"].insert(0, {"role": "system", "content": definicion.system_instruction})
+        # Este endpoint usa el contrato compatible con OpenAI, no generationConfig.
+        cuerpo["response_format"] = {
+            "type": "json_schema",
+            "json_schema": {
+                "name": prompt,
+                "strict": True,
+                "schema": definicion.response_schema,
+            },
+        }
 
     try:
         with requests.post(
@@ -97,8 +114,7 @@ def consultar_gemini_raw(modelo: str, mensaje: str) -> dict[str, Any]:
     return datos
 
 
-def consultar_gemini(modelo: str, mensaje: str) -> Resultado:
-    datos = consultar_gemini_raw(modelo, mensaje)
+def extraer_texto(datos: dict[str, Any], *, exigir_completa: bool = False) -> str:
     # El endpoint de chat devuelve el texto en choices[0].message.content.
     opciones = datos.get("choices")
     primera = opciones[0] if isinstance(opciones, list) and opciones else None
@@ -106,22 +122,40 @@ def consultar_gemini(modelo: str, mensaje: str) -> Resultado:
     texto = mensaje_generado.get("content") if isinstance(mensaje_generado, dict) else None
     if not isinstance(texto, str) or not texto.strip():
         raise ValueError("Gemini respondió HTTP 200, pero no devolvió texto generado.")
-    texto = texto.strip()
+    if exigir_completa and (
+        not isinstance(primera, dict) or primera.get("finish_reason") != "stop"
+    ):
+        raise ValueError("Gemini no terminó la respuesta estructurada con finish_reason=stop.")
+    return texto.strip()
+
+
+def consultar_gemini(modelo: str, mensaje: str, *, prompt: NombrePrompt | None = None) -> Resultado:
+    datos = (
+        consultar_gemini_raw(modelo, mensaje)
+        if prompt is None
+        else consultar_gemini_raw(modelo, mensaje, prompt=prompt)
+    )
+    texto = extraer_texto(datos, exigir_completa=prompt is not None)
+    respuesta = texto if prompt is None else parsear_respuesta_json(texto, prompt)
 
     uso = extraer_uso(datos.get("usage"))
-    return Resultado(respuesta=texto, uso=uso, costo_estimado=calcular_costo_gemini(modelo, uso))
+    return Resultado(
+        respuesta=respuesta, uso=uso, costo_estimado=calcular_costo_gemini(modelo, uso)
+    )
 
 
-def obtener_dato_de_prueba(pregunta: str) -> Resultado:
+def obtener_dato_de_prueba(pregunta: str, *, prompt: NombrePrompt | None = None) -> Resultado:
     load_dotenv(Path(__file__).resolve().parent.parent / ".env")
     modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
-    return consultar_gemini(modelo, pregunta)
+    return consultar_gemini(modelo, pregunta, prompt=prompt)
 
 
-def obtener_dato_de_prueba_raw(pregunta: str) -> dict[str, Any]:
+def obtener_dato_de_prueba_raw(
+    pregunta: str, *, prompt: NombrePrompt | None = None
+) -> dict[str, Any]:
     load_dotenv(Path(__file__).resolve().parent.parent / ".env")
     modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
-    return consultar_gemini_raw(modelo, pregunta)
+    return consultar_gemini_raw(modelo, pregunta, prompt=prompt)
 
 
 def main() -> None:
@@ -134,12 +168,17 @@ def main() -> None:
         "Responde en español, con secciones breves y en unas 200 palabras."
     )
     parser = argparse.ArgumentParser(
-        description="Consulta Gemini y muestra texto, tokens y costos en USD y CLP como JSON."
+        description="Consulta Gemini y muestra texto u objetos validados, tokens y costos como JSON."
     )
     parser.add_argument(
         "--raw",
         action="store_true",
         help="Muestra el JSON completo de Gemini, tal como lo devuelve el proveedor.",
+    )
+    parser.add_argument(
+        "--prompt",
+        choices=tuple(BANCO_DE_PROMPTS),
+        help="Aplica una tarea del banco y valida su salida JSON (salvo en modo --raw).",
     )
     parser.add_argument(
         "pregunta",
@@ -152,9 +191,11 @@ def main() -> None:
         parser.error("La pregunta no puede estar vacía ni contener solo espacios.")
     try:
         if argumentos.raw:
-            datos = obtener_dato_de_prueba_raw(argumentos.pregunta)
+            datos = obtener_dato_de_prueba_raw(argumentos.pregunta, prompt=argumentos.prompt)
         else:
-            datos = obtener_dato_de_prueba(argumentos.pregunta).model_dump(mode="json")
+            datos = obtener_dato_de_prueba(
+                argumentos.pregunta, prompt=argumentos.prompt
+            ).model_dump(mode="json")
         print(json.dumps(datos, ensure_ascii=False, indent=2))
     except ValueError as error:
         raise SystemExit(str(error)) from None

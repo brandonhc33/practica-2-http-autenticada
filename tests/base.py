@@ -102,7 +102,7 @@ class CasoAPI(unittest.TestCase):
 
     def assertValidaciones(self, respuesta):
         detalles = self.assertRespuesta(respuesta, 422, "Revisa los campos de la solicitud.")
-        self.assertEqual(detalles["campos_permitidos"], ["agente", "modelo", "mensaje"])
+        self.assertEqual(detalles["campos_permitidos"], ["agente", "modelo", "mensaje", "prompt"])
         self.assertEqual(detalles["ejemplo"], EJEMPLO_CONSULTA)
         validaciones = detalles["validaciones"]
         self.assertTrue(validaciones)
