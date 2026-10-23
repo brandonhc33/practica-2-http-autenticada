@@ -144,18 +144,26 @@ def consultar_gemini(modelo: str, mensaje: str, *, prompt: NombrePrompt | None =
     )
 
 
-def obtener_dato_de_prueba(pregunta: str, *, prompt: NombrePrompt | None = None) -> Resultado:
+def _cargar_modelo_de_prueba(alias: str) -> str:
+    modelos = AGENTES["gemini"]["modelos"]
+    if alias not in modelos:
+        raise ValueError(f"Modelo no disponible para Gemini. Usa: {', '.join(modelos)}.")
     load_dotenv(Path(__file__).resolve().parent.parent / ".env")
-    modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
-    return consultar_gemini(modelo, pregunta, prompt=prompt)
+    return modelos[alias]
+
+
+def obtener_dato_de_prueba(
+    pregunta: str, *, modelo: str = "flash-lite", prompt: NombrePrompt | None = None
+) -> Resultado:
+    modelo_configurado = _cargar_modelo_de_prueba(modelo)
+    return consultar_gemini(modelo_configurado, pregunta, prompt=prompt)
 
 
 def obtener_dato_de_prueba_raw(
-    pregunta: str, *, prompt: NombrePrompt | None = None
+    pregunta: str, *, modelo: str = "flash-lite", prompt: NombrePrompt | None = None
 ) -> dict[str, Any]:
-    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
-    modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
-    return consultar_gemini_raw(modelo, pregunta, prompt=prompt)
+    modelo_configurado = _cargar_modelo_de_prueba(modelo)
+    return consultar_gemini_raw(modelo_configurado, pregunta, prompt=prompt)
 
 
 def main() -> None:
@@ -169,6 +177,12 @@ def main() -> None:
     )
     parser = argparse.ArgumentParser(
         description="Consulta Gemini y muestra texto u objetos validados, tokens y costos como JSON."
+    )
+    parser.add_argument(
+        "--modelo",
+        choices=tuple(AGENTES["gemini"]["modelos"]),
+        default="flash-lite",
+        help="Alias del modelo de Gemini en el catálogo (por defecto: flash-lite).",
     )
     parser.add_argument(
         "--raw",
@@ -191,10 +205,12 @@ def main() -> None:
         parser.error("La pregunta no puede estar vacía ni contener solo espacios.")
     try:
         if argumentos.raw:
-            datos = obtener_dato_de_prueba_raw(argumentos.pregunta, prompt=argumentos.prompt)
+            datos = obtener_dato_de_prueba_raw(
+                argumentos.pregunta, modelo=argumentos.modelo, prompt=argumentos.prompt
+            )
         else:
             datos = obtener_dato_de_prueba(
-                argumentos.pregunta, prompt=argumentos.prompt
+                argumentos.pregunta, modelo=argumentos.modelo, prompt=argumentos.prompt
             ).model_dump(mode="json")
         print(json.dumps(datos, ensure_ascii=False, indent=2))
     except ValueError as error:
