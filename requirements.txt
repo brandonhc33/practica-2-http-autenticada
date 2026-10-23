@@ -44,6 +44,8 @@ typing-inspection==0.4.4
     #   fastapi
     #   pydantic
 urllib3==2.8.0
-    # via requests
+    # via
+    #   practica-2-http-autenticada
+    #   requests
 uvicorn==0.54.0
     # via practica-2-http-autenticada

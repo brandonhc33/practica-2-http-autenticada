@@ -18,6 +18,8 @@ from prompts.banco import BANCO_DE_PROMPTS, Prompt
 from src.agente_gemini import ENDPOINT, consultar_gemini_raw, extraer_texto, extraer_uso
 from src.catalogo import AGENTES
 from src.costos import calcular_costo_gemini
+from src.errores_cliente import ErrorCliente
+from src.reintentos import SIN_REINTENTOS
 from src.salida_estructurada import parsear_respuesta_json
 
 
@@ -40,7 +42,9 @@ def evaluar_intento(prompt: Prompt, modelo: str, numero: int) -> dict[str, Any]:
     inicio = perf_counter()
     try:
         try:
-            datos = consultar_gemini_raw(modelo, prompt.ejemplo_usuario, prompt=prompt.nombre)
+            datos = consultar_gemini_raw(
+                modelo, prompt.ejemplo_usuario, prompt=prompt.nombre, politica=SIN_REINTENTOS
+            )
         finally:
             registro["latencia_http_segundos"] = round(perf_counter() - inicio, 6)
         registro["respuesta_proveedor"] = datos
@@ -52,7 +56,7 @@ def evaluar_intento(prompt: Prompt, modelo: str, numero: int) -> dict[str, Any]:
         texto = extraer_texto(datos, exigir_completa=True)
         registro["datos_validados"] = parsear_respuesta_json(texto, prompt.nombre)
         registro["estado"] = "valido"
-    except ValueError as error:
+    except (ErrorCliente, ValueError) as error:
         registro["error"] = str(error)
     except KeyboardInterrupt:
         registro["estado"] = "interrumpido"
@@ -113,6 +117,7 @@ def main() -> None:
         "endpoint": ENDPOINT,
         "repeticiones_por_prompt": argumentos.repeticiones,
         "pausa_segundos": argumentos.pausa,
+        "reintentos_por_consulta": 0,
         "criterio": (
             "Finalización stop, objeto JSON válido y validación estricta de campos, "
             "tipos y restricciones Pydantic. Se tolera un único bloque Markdown envolvente."

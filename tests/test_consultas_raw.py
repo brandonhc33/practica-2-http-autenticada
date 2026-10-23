@@ -142,7 +142,7 @@ class ConsultasRawTests(CasoAPI):
         self.upstream.status_code = 429
         self.upstream.json.return_value = {"error": {"message": "dato-interno-del-proveedor"}}
         respuesta = self.client.post("/consultar/raw", headers=self.headers, json=self.cuerpo)
-        detalles = self.assertRespuesta(respuesta, 502)
+        detalles = self.assertRespuesta(respuesta, 503)
         self.assertIn("HTTP 429", detalles["causa"])
         self.assertNotIn("dato-interno-del-proveedor", respuesta.text)
         self.upstream.json.assert_not_called()
@@ -150,7 +150,7 @@ class ConsultasRawTests(CasoAPI):
     def test_timeout_usa_el_contrato_local(self):
         self.post.side_effect = requests.exceptions.Timeout()
         respuesta = self.client.post("/consultar/raw", headers=self.headers, json=self.cuerpo)
-        self.assertIn("tardó demasiado", self.assertRespuesta(respuesta, 502)["causa"])
+        self.assertIn("tardó demasiado", self.assertRespuesta(respuesta, 504)["causa"])
 
     def test_json_invalido_o_que_no_es_objeto_devuelve_502(self):
         for datos in (None, [], "texto"):

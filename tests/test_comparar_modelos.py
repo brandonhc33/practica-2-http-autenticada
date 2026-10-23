@@ -17,6 +17,7 @@ from src.comparar_modelos import (
     resumir_pares_completos,
 )
 from src.esquemas import TipoCambio
+from src.reintentos import SIN_REINTENTOS
 
 
 class ComparacionModelosTests(unittest.TestCase):
@@ -52,7 +53,9 @@ class ComparacionModelosTests(unittest.TestCase):
                 self.assertEqual(registro["costo_usd"], esperado)
                 self.assertEqual(Decimal(registro["costo_clp"]), Decimal(esperado) * 950)
                 self.assertEqual(registro["respuesta_proveedor"], self.raw.return_value)
-                self.raw.assert_called_once_with(modelo, "Pregunta idéntica")
+                self.raw.assert_called_once_with(
+                    modelo, "Pregunta idéntica", politica=SIN_REINTENTOS
+                )
 
     def test_error_no_inventa_costo_ni_se_reintenta(self):
         self.raw.side_effect = ValueError("Gemini respondió HTTP 429.")

@@ -16,7 +16,9 @@ from dotenv import load_dotenv
 
 from .agente_gemini import ENDPOINT, consultar_gemini_raw, extraer_uso
 from .costos import TARIFAS_GEMINI, calcular_costo_gemini
+from .errores_cliente import ErrorCliente
 from .esquemas import decimal_fijo
+from .reintentos import SIN_REINTENTOS
 
 ENDPOINT_MODELOS = "https://generativelanguage.googleapis.com/v1beta/models"
 MODELOS_CANDIDATOS = ("gemini-3.5-flash-lite", "gemini-3.6-flash")
@@ -103,8 +105,8 @@ def medir_consulta(modelo: str, mensaje: str) -> dict[str, Any]:
     }
     inicio = perf_counter()
     try:
-        datos = consultar_gemini_raw(modelo, mensaje)
-    except (ValueError, KeyboardInterrupt) as error:
+        datos = consultar_gemini_raw(modelo, mensaje, politica=SIN_REINTENTOS)
+    except (ErrorCliente, ValueError, KeyboardInterrupt) as error:
         registro["latencia_segundos"] = round(perf_counter() - inicio, 6)
         if isinstance(error, KeyboardInterrupt):
             registro["estado"] = "interrumpida"

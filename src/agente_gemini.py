@@ -9,15 +9,35 @@ from typing import Any
 import requests
 from dotenv import load_dotenv
 from pydantic import ValidationError
+from urllib3.exceptions import MaxRetryError, NewConnectionError, ReadTimeoutError
 
 from prompts.banco import BANCO_DE_PROMPTS, NombrePrompt
 
 from .catalogo import AGENTES
 from .costos import calcular_costo_gemini
+from .errores_cliente import (
+    ErrorAutenticacion,
+    ErrorCliente,
+    ErrorPeticion,
+    ErrorRespuesta,
+    ErrorTemporalProveedor,
+    ErrorTimeoutLectura,
+)
 from .esquemas import Resultado, UsoTokens
+from .reintentos import (
+    POLITICA_PREDETERMINADA,
+    PoliticaReintento,
+    con_reintento,
+    parsear_retry_after,
+)
 from .salida_estructurada import parsear_respuesta_json
 
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+ESTADOS_REINTENTABLES = frozenset({429, 500, 502, 503, 504})
+MENSAJE_TIMEOUT_LECTURA = (
+    "La petición tardó demasiado. El resultado y su consumo son desconocidos; "
+    "repetirla puede generar consumo adicional."
+)
 
 
 def extraer_uso(uso: object) -> UsoTokens | None:
@@ -49,13 +69,80 @@ def extraer_uso(uso: object) -> UsoTokens | None:
     return tokens
 
 
+def _enviar_peticion(
+    cuerpo: dict[str, Any], encabezados: dict[str, str], timeout: tuple[float, float]
+) -> dict[str, Any]:
+    """Un solo intento HTTP; únicamente expone mensajes controlados por el cliente."""
+    try:
+        with requests.post(
+            ENDPOINT,
+            headers=encabezados,
+            json=cuerpo,
+            timeout=timeout,
+            allow_redirects=False,
+        ) as respuesta:
+            if respuesta.status_code != 200:
+                mensajes = {
+                    400: "Revisa la clave y el contenido de la petición.",
+                    401: "Revisa tu clave de API.",
+                    403: "Revisa la clave y los permisos del proyecto en Google AI Studio.",
+                    404: "Revisa el modelo de Gemini configurado en src/catalogo.py.",
+                    429: "Se alcanzó la cuota. Revisa tus límites en Google AI Studio.",
+                    503: "Gemini no está disponible temporalmente. Intenta nuevamente más tarde.",
+                }
+                detalle = mensajes.get(respuesta.status_code, "Intenta nuevamente más tarde.")
+                mensaje = f"Gemini respondió HTTP {respuesta.status_code}. {detalle}"
+                if respuesta.status_code in (401, 403):
+                    raise ErrorAutenticacion(mensaje, codigo_http=respuesta.status_code)
+                if respuesta.status_code in ESTADOS_REINTENTABLES:
+                    raise ErrorTemporalProveedor(
+                        mensaje,
+                        codigo_http=respuesta.status_code,
+                        retry_after=parsear_retry_after(respuesta.headers.get("Retry-After")),
+                    )
+                # No se interpreta ni se expone el cuerpo de error del proveedor.
+                raise ErrorPeticion(mensaje, codigo_http=respuesta.status_code)
+            datos = respuesta.json()
+    except requests.exceptions.JSONDecodeError:
+        raise ErrorRespuesta("Gemini no devolvió un JSON válido.") from None
+    except requests.exceptions.ConnectTimeout:
+        raise ErrorTemporalProveedor(
+            "No se pudo establecer la conexión con Gemini a tiempo."
+        ) from None
+    except requests.exceptions.Timeout:
+        raise ErrorTimeoutLectura(MENSAJE_TIMEOUT_LECTURA) from None
+    except requests.exceptions.SSLError:
+        raise ErrorPeticion("No se pudo verificar el certificado TLS de Gemini.") from None
+    except requests.exceptions.ConnectionError as error:
+        causa = error.args[0] if error.args else None
+        if isinstance(causa, MaxRetryError) and isinstance(causa.reason, NewConnectionError):
+            raise ErrorTemporalProveedor("No se pudo abrir la conexión con Gemini.") from None
+        if isinstance(causa, ReadTimeoutError):
+            raise ErrorTimeoutLectura(MENSAJE_TIMEOUT_LECTURA) from None
+        # Un ConnectionError genérico también puede ocurrir después de enviar el POST.
+        raise ErrorCliente(
+            "Se interrumpió la conexión con Gemini. El resultado y su consumo son desconocidos."
+        ) from None
+    except requests.exceptions.RequestException:
+        raise ErrorPeticion(
+            "No se pudo enviar la petición a Gemini. Revisa la configuración HTTP."
+        ) from None
+    if not isinstance(datos, dict):
+        raise ErrorRespuesta("Gemini no devolvió una respuesta válida.")
+    return datos
+
+
 def consultar_gemini_raw(
-    modelo: str, mensaje: str, *, prompt: NombrePrompt | None = None
+    modelo: str,
+    mensaje: str,
+    *,
+    prompt: NombrePrompt | None = None,
+    politica: PoliticaReintento = POLITICA_PREDETERMINADA,
 ) -> dict[str, Any]:
     """Devuelve todos los campos JSON del proveedor sin procesar el texto ni el consumo."""
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not api_key:
-        raise ValueError("Falta GEMINI_API_KEY. Agrega tu clave en el archivo .env.")
+        raise ErrorPeticion("Falta GEMINI_API_KEY. Agrega tu clave en el archivo .env.")
 
     # La clave viaja en el encabezado, nunca en la URL ni en el cuerpo.
     # El token de la API local se valida en api.py y no se envía a Google.
@@ -82,38 +169,9 @@ def consultar_gemini_raw(
             },
         }
 
-    try:
-        with requests.post(
-            ENDPOINT,
-            headers=encabezados,
-            json=cuerpo,
-            timeout=(10, 60),
-            allow_redirects=False,
-        ) as respuesta:
-            # Algunos errores de clave de Gemini también llegan como HTTP 400.
-            if respuesta.status_code != 200:
-                mensajes = {
-                    400: "Revisa la clave y el contenido de la petición.",
-                    401: "Revisa tu clave de API.",
-                    403: "Revisa la clave y los permisos del proyecto en Google AI Studio.",
-                    404: "Revisa el modelo de Gemini configurado en src/catalogo.py.",
-                    429: "Se alcanzó la cuota. Revisa tus límites en Google AI Studio.",
-                    503: "Gemini no está disponible temporalmente. Intenta nuevamente más tarde.",
-                }
-                detalle = mensajes.get(respuesta.status_code, "Intenta nuevamente más tarde.")
-                raise ValueError(f"Gemini respondió HTTP {respuesta.status_code}. {detalle}")
-
-            datos = respuesta.json()
-    except requests.exceptions.JSONDecodeError:
-        raise ValueError("Gemini no devolvió un JSON válido.") from None
-    except requests.exceptions.Timeout:
-        raise ValueError("La petición tardó demasiado. Intenta nuevamente.") from None
-    except requests.exceptions.RequestException:
-        raise ValueError("No se pudo conectar con Gemini. Revisa tu conexión.") from None
-
-    if not isinstance(datos, dict):
-        raise ValueError("Gemini no devolvió una respuesta válida.")
-    return datos
+    return con_reintento(
+        lambda restante: _enviar_peticion(cuerpo, encabezados, politica.timeout(restante)), politica
+    )
 
 
 def extraer_texto(datos: dict[str, Any], *, exigir_completa: bool = False) -> str:
@@ -123,22 +181,27 @@ def extraer_texto(datos: dict[str, Any], *, exigir_completa: bool = False) -> st
     mensaje_generado = primera.get("message") if isinstance(primera, dict) else None
     texto = mensaje_generado.get("content") if isinstance(mensaje_generado, dict) else None
     if not isinstance(texto, str) or not texto.strip():
-        raise ValueError("Gemini respondió HTTP 200, pero no devolvió texto generado.")
+        raise ErrorRespuesta("Gemini respondió HTTP 200, pero no devolvió texto generado.")
     if exigir_completa and (
         not isinstance(primera, dict) or primera.get("finish_reason") != "stop"
     ):
-        raise ValueError("Gemini no terminó la respuesta estructurada con finish_reason=stop.")
+        raise ErrorRespuesta("Gemini no terminó la respuesta estructurada con finish_reason=stop.")
     return texto.strip()
 
 
-def consultar_gemini(modelo: str, mensaje: str, *, prompt: NombrePrompt | None = None) -> Resultado:
-    datos = (
-        consultar_gemini_raw(modelo, mensaje)
-        if prompt is None
-        else consultar_gemini_raw(modelo, mensaje, prompt=prompt)
-    )
+def consultar_gemini(
+    modelo: str,
+    mensaje: str,
+    *,
+    prompt: NombrePrompt | None = None,
+    politica: PoliticaReintento = POLITICA_PREDETERMINADA,
+) -> Resultado:
+    datos = consultar_gemini_raw(modelo, mensaje, prompt=prompt, politica=politica)
     texto = extraer_texto(datos, exigir_completa=prompt is not None)
-    respuesta = texto if prompt is None else parsear_respuesta_json(texto, prompt)
+    try:
+        respuesta = texto if prompt is None else parsear_respuesta_json(texto, prompt)
+    except ValueError as error:
+        raise ErrorRespuesta(str(error)) from None
 
     uso = extraer_uso(datos.get("usage"))
     return Resultado(
@@ -155,17 +218,25 @@ def _cargar_modelo_de_prueba(alias: str) -> str:
 
 
 def obtener_dato_de_prueba(
-    pregunta: str, *, modelo: str = "flash-lite", prompt: NombrePrompt | None = None
+    pregunta: str,
+    *,
+    modelo: str = "flash-lite",
+    prompt: NombrePrompt | None = None,
+    politica: PoliticaReintento = POLITICA_PREDETERMINADA,
 ) -> Resultado:
     modelo_configurado = _cargar_modelo_de_prueba(modelo)
-    return consultar_gemini(modelo_configurado, pregunta, prompt=prompt)
+    return consultar_gemini(modelo_configurado, pregunta, prompt=prompt, politica=politica)
 
 
 def obtener_dato_de_prueba_raw(
-    pregunta: str, *, modelo: str = "flash-lite", prompt: NombrePrompt | None = None
+    pregunta: str,
+    *,
+    modelo: str = "flash-lite",
+    prompt: NombrePrompt | None = None,
+    politica: PoliticaReintento = POLITICA_PREDETERMINADA,
 ) -> dict[str, Any]:
     modelo_configurado = _cargar_modelo_de_prueba(modelo)
-    return consultar_gemini_raw(modelo_configurado, pregunta, prompt=prompt)
+    return consultar_gemini_raw(modelo_configurado, pregunta, prompt=prompt, politica=politica)
 
 
 def main() -> None:
@@ -197,6 +268,18 @@ def main() -> None:
         help="Aplica una tarea del banco y valida su salida JSON (salvo en modo --raw).",
     )
     parser.add_argument(
+        "--intentos",
+        type=int,
+        default=POLITICA_PREDETERMINADA.intentos,
+        help="Máximo de intentos totales, incluido el primero (por defecto: 3).",
+    )
+    parser.add_argument(
+        "--presupuesto-segundos",
+        type=float,
+        default=POLITICA_PREDETERMINADA.presupuesto_segundos,
+        help="Presupuesto para peticiones y esperas (por defecto: 90 segundos).",
+    )
+    parser.add_argument(
         "pregunta",
         nargs="?",
         default=pregunta_por_defecto,
@@ -206,16 +289,28 @@ def main() -> None:
     if not argumentos.pregunta.strip():
         parser.error("La pregunta no puede estar vacía ni contener solo espacios.")
     try:
+        politica = PoliticaReintento(
+            intentos=argumentos.intentos, presupuesto_segundos=argumentos.presupuesto_segundos
+        )
+    except ValueError as error:
+        parser.error(str(error))
+    try:
         if argumentos.raw:
             datos = obtener_dato_de_prueba_raw(
-                argumentos.pregunta, modelo=argumentos.modelo, prompt=argumentos.prompt
+                argumentos.pregunta,
+                modelo=argumentos.modelo,
+                prompt=argumentos.prompt,
+                politica=politica,
             )
         else:
             datos = obtener_dato_de_prueba(
-                argumentos.pregunta, modelo=argumentos.modelo, prompt=argumentos.prompt
+                argumentos.pregunta,
+                modelo=argumentos.modelo,
+                prompt=argumentos.prompt,
+                politica=politica,
             ).model_dump(mode="json")
         print(json.dumps(datos, ensure_ascii=False, indent=2))
-    except ValueError as error:
+    except (ErrorCliente, ValueError) as error:
         raise SystemExit(str(error)) from None
 
 

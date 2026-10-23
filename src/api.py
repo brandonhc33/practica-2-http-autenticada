@@ -12,6 +12,12 @@ from fastapi import Depends, FastAPI, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from src.agentes import AgenteNoConfigurado, consultar_agente, consultar_agente_raw
+from src.errores_cliente import (
+    ErrorCliente,
+    ErrorTemporalProveedor,
+    ErrorTimeoutLectura,
+    ReintentosAgotados,
+)
 from src.esquemas import Consulta, EstadoAPI, RespuestaAPI, Resultado
 from src.respuestas import ErrorAPI, registrar_manejadores
 
@@ -77,11 +83,32 @@ def ejecutar_consulta[T](consulta: Consulta, cliente: Callable[[Consulta], T]) -
             mensaje="El agente no está configurado en el servidor.",
             detalles={"agente": error.agente, "configuracion_requerida": error.clave},
         ) from None
-    except ValueError as error:
+    except (ErrorCliente, ValueError) as error:
+        codigo = 502
+        detalles: dict[str, Any] = {
+            "agente": consulta.agente,
+            "modelo": consulta.modelo,
+            "causa": str(error),
+        }
+        if isinstance(error, ErrorCliente):
+            detalles["tipo_error"] = type(error).__name__
+            if error.codigo_http is not None:
+                detalles["codigo_proveedor"] = error.codigo_http
+        if isinstance(error, ReintentosAgotados):
+            detalles["intentos"] = error.intentos
+            codigo = (
+                504
+                if error.presupuesto_agotado or isinstance(error.ultimo_error, ErrorTimeoutLectura)
+                else 503
+            )
+        elif isinstance(error, ErrorTimeoutLectura):
+            codigo = 504
+        elif isinstance(error, ErrorTemporalProveedor):
+            codigo = 503
         raise ErrorAPI(
-            codigo=502,
+            codigo=codigo,
             mensaje="No se pudo completar la consulta al agente.",
-            detalles={"agente": consulta.agente, "modelo": consulta.modelo, "causa": str(error)},
+            detalles=detalles,
         ) from None
 
 
