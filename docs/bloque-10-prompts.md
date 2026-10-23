@@ -24,7 +24,7 @@ Nuestro cliente envía ambos mensajes por separado:
 
 El rol no es parte del texto: es un campo del protocolo. Escribir "SYSTEM: ..." dentro de la pregunta no crea un mensaje de sistema.
 
-En `prompts/banco.py`, `REGLAS_COMUNES` reúne idioma, nivel educativo y formato. Cada tarea añade sus reglas particulares. Por ejemplo, el diagnóstico HTTP debe distinguir la credencial de Google del token de la API local.
+El punto de entrada es `prompts/banco.py`, que reúne los grupos. En [base.py](../prompts/base.py), `REGLAS_DE_SALIDA` reúne idioma y formato; en [educativos.py](../prompts/educativos.py), `REGLAS_COMUNES` añade el rol educativo; en [ley_rep.py](../prompts/ley_rep.py), `REGLAS_REP` añade el rol documental para Ley REP. Cada tarea añade sus reglas particulares junto a su esquema y ejemplo. Por ejemplo, el diagnóstico HTTP debe distinguir la credencial de Google del token de la API local.
 
 La separación permite revisar y versionar las instrucciones. También ayuda a marcar que el texto del usuario es contenido a procesar. No convierte el prompt en una barrera infalible contra instrucciones maliciosas; esa resistencia requeriría pruebas específicas.
 
@@ -123,18 +123,18 @@ Un banco organiza una definición completa por tarea:
 | Ejemplo de usuario. | Probar siempre la misma entrada. |
 | Modelo Pydantic y JSON Schema. | Definir y comprobar la salida. |
 
-Los tres prompts del proyecto son `explicar_concepto`, `diagnosticar_error_http` y `resumir_texto_tecnico`. Al elegir uno desde la API se envía su nombre, no instrucciones de sistema arbitrarias del cliente.
+El banco contiene seis prompts. Los educativos son `explicar_concepto`, `diagnosticar_error_http` y `resumir_texto_tecnico`. La preparación del proyecto final agrega `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`; sus entradas y ejemplos están en el [README](../README.md#prompts-para-el-proyecto-final-de-ley-rep). Al elegir uno desde la API se envía su nombre, no instrucciones de sistema arbitrarias del cliente.
 
 La actividad pide al menos tres repeticiones reales por prompt. La cuenta es:
 
 ```text
-3 prompts × 3 repeticiones = 9 llamadas a Gemini
+6 prompts × 3 repeticiones = 18 llamadas a Gemini
 consistencia observada = respuestas válidas / intentos realizados
 ```
 
 Consistente no significa idéntico palabra por palabra: pueden cambiar la analogía o la redacción y conservar el contrato. El evaluador registra cada intento, las instrucciones, la entrada y el esquema, la respuesta original, el resultado validado, el consumo, el costo estimado y la latencia HTTP.
 
-`prompts/registro_resultados.json` contiene la evaluación de las instrucciones actuales. La primera ejecución se conserva en `prompts/registro_resultados_inicial.json`. Cada error queda guardado, no desaparece del denominador. Los HTTP fallidos sin consumo informado tienen costo desconocido (`null`), no costo cero. Si llegó consumo de una salida inválida, también se conserva.
+`prompts/registro_resultados.json` contiene la evaluación de las instrucciones de los tres prompts educativos; los tres nuevos de Ley REP aún no tienen evaluación real. La primera ejecución se conserva en `prompts/registro_resultados_inicial.json`. Cada error queda guardado, no desaparece del denominador. Los HTTP fallidos sin consumo informado tienen costo desconocido (`null`), no costo cero. Si llegó consumo de una salida inválida, también se conserva.
 
 La ejecución inicial del **21 de octubre de 2026** utilizó `gemini-3.5-flash-lite` y produjo estos resultados:
 
@@ -190,7 +190,7 @@ En Postman o Yaak, envía a `POST /consultar` el Bearer token local habitual y e
 }
 ```
 
-La colección `api.postman_collection.json` incluye una solicitud por tarea.
+La colección `api.postman_collection.json` incluye una solicitud por cada tarea educativa original.
 
 Para repetir toda la actividad y conservar la primera evidencia:
 
@@ -198,7 +198,7 @@ Para repetir toda la actividad y conservar la primera evidencia:
 uv run python -m prompts.test_consistencia --salida prompts/registro_resultados_nueva_ejecucion.json
 ```
 
-Elige un nombre de salida que no exista. El script llama a Gemini nueve veces y consume cuota. Las pruebas de `uv run python -m tests -v` utilizan simulaciones y verifican nuestro código; el script anterior verifica las salidas reales del modelo.
+Elige un nombre de salida que no exista. El script llama a Gemini 18 veces por defecto y consume cuota. Las pruebas de `uv run python -m tests -v` utilizan simulaciones y verifican nuestro código; el script anterior verifica las salidas reales del modelo.
 
 ## 5. Comprueba que lo entendiste
 
@@ -207,7 +207,9 @@ Elige un nombre de salida que no exista. El script llama a Gemini nueve veces y 
 3. **¿Un JSON completo demuestra que la causa del error es correcta?** No. Estructura y exactitud del contenido se evalúan por separado.
 4. **¿Tres resultados válidos prueban que nunca fallará?** No. Son una muestra inicial de consistencia para la actividad.
 
-En el futuro RAG de Ley REP, esta misma separación permitirá definir reglas estables, procesar la consulta y devolver respuesta, fuentes y antecedentes faltantes como campos separados. La recuperación de documentos y la comprobación de respaldo seguirán siendo trabajos adicionales.
+Los prompts de Ley REP permiten preparar la consulta, resumir un artículo y devolver respuesta, citas y antecedentes faltantes como campos separados. La [fuente local](../datos/ley_rep/README.md) conserva el PDF aportado, su texto y 50 artículos con páginas y procedencia. Una pregunta normal con `responder_ley_rep` carga todos los artículos; `resumir_fragmento_rep` admite referencias como `artículo 3`. El contexto explícito en JSON sigue disponible. Esta integración usa la copia de 2016 y no comprueba vigencia actual.
+
+Pydantic exige citas para el estado `respondida` y antecedentes para `requiere_aclaracion`; no verifica su existencia ni su respaldo documental. La recuperación de documentos y la comprobación de respaldo siguen pendientes para el RAG.
 
 ## Material de clase consultado
 

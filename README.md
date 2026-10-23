@@ -6,41 +6,45 @@ El recorrido de este README es: actividades del curso, instalación, preparació
 
 ## Índice
 
-- [Actividades del curso](#actividades-del-curso)
-- [Instalación](#instalación)
-  - [uv y Python](#uv-y-python)
-  - [Cliente HTTP opcional](#cliente-http-opcional)
-- [Preparación](#preparación)
-- [Configuración](#configuración)
-  - [Configurar las credenciales](#configurar-las-credenciales)
-  - [Conversión de USD a CLP](#conversión-de-usd-a-clp)
-- [Uso y comandos](#uso-y-comandos)
-  - [Resumen de comandos](#resumen-de-comandos)
-  - [Consultar Gemini desde Python](#consultar-gemini-desde-python)
-  - [Iniciar la API local](#iniciar-la-api-local)
-  - [Probar con Yaak o Postman](#probar-con-yaak-o-postman)
-  - [Comparar costo y latencia: Bloque 9](#comparar-costo-y-latencia-bloque-9)
-  - [Banco de prompts y salida estructurada: Bloque 10](#banco-de-prompts-y-salida-estructurada-bloque-10)
-- [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
-  - [Pruebas automatizadas](#pruebas-automatizadas)
-  - [Comprobaciones de la tarea](#comprobaciones-de-la-tarea)
-- [Referencia de la API](#referencia-de-la-api)
-  - [Solicitud de consulta](#solicitud-de-consulta)
-  - [Campos y validaciones](#campos-y-validaciones)
-  - [Agente y modelos habilitados](#agente-y-modelos-habilitados)
-  - [Inspeccionar la respuesta original de Gemini](#inspeccionar-la-respuesta-original-de-gemini)
-  - [Contrato común de respuestas](#contrato-común-de-respuestas)
-  - [Tokens y costo por consulta](#tokens-y-costo-por-consulta)
-- [Resolver problemas](#resolver-problemas)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Justificación del proyecto actual](#justificación-del-proyecto-actual)
-  - [Tecnologías actuales](#tecnologías-actuales)
-- [Proyecto final de Skillnest: asistente RAG para Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep)
-  - [Objetivo y justificación](#objetivo-y-justificación)
-  - [Qué aporta el avance existente](#qué-aporta-el-avance-existente)
-  - [Dónde se usará IA y dónde se aplicarán reglas](#dónde-se-usará-ia-y-dónde-se-aplicarán-reglas)
-  - [Qué justifica la comparación de modelos y qué falta comprobar](#qué-justifica-la-comparación-de-modelos-y-qué-falta-comprobar)
-  - [Plan de desarrollo y criterios de avance](#plan-de-desarrollo-y-criterios-de-avance)
+1. [Actividades del curso](#actividades-del-curso)
+2. [Instalación](#instalación)
+    1. [uv y Python](#uv-y-python)
+    2. [Cliente HTTP opcional](#cliente-http-opcional)
+3. [Preparación](#preparación)
+4. [Configuración](#configuración)
+    1. [Configurar las credenciales](#configurar-las-credenciales)
+    2. [Conversión de USD a CLP](#conversión-de-usd-a-clp)
+5. [Uso y comandos](#uso-y-comandos)
+    1. [Resumen de comandos](#resumen-de-comandos)
+    2. [Consultar Gemini desde Python](#consultar-gemini-desde-python)
+    3. [Iniciar la API local](#iniciar-la-api-local)
+    4. [Probar con Yaak o Postman](#probar-con-yaak-o-postman)
+        1. [Consulta directa a Gemini](#consulta-directa-a-gemini)
+        2. [Consulta mediante la API Python](#consulta-mediante-la-api-python)
+    5. [Comparar costo y latencia: Bloque 9](#comparar-costo-y-latencia-bloque-9)
+    6. [Banco de prompts y salida estructurada: Bloque 10](#banco-de-prompts-y-salida-estructurada-bloque-10)
+        1. [Prompts para el proyecto final de Ley REP](#prompts-para-el-proyecto-final-de-ley-rep)
+        2. [Evaluar el banco](#evaluar-el-banco)
+6. [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
+    1. [Pruebas automatizadas](#pruebas-automatizadas)
+    2. [Comprobaciones de la tarea](#comprobaciones-de-la-tarea)
+7. [Referencia de la API](#referencia-de-la-api)
+    1. [Solicitud de consulta](#solicitud-de-consulta)
+    2. [Campos y validaciones](#campos-y-validaciones)
+    3. [Agente y modelos habilitados](#agente-y-modelos-habilitados)
+    4. [Inspeccionar la respuesta original de Gemini](#inspeccionar-la-respuesta-original-de-gemini)
+    5. [Contrato común de respuestas](#contrato-común-de-respuestas)
+    6. [Tokens y costo por consulta](#tokens-y-costo-por-consulta)
+8. [Resolver problemas](#resolver-problemas)
+9. [Estructura del proyecto](#estructura-del-proyecto)
+10. [Justificación del proyecto actual](#justificación-del-proyecto-actual)
+    1. [Tecnologías actuales](#tecnologías-actuales)
+11. [Proyecto final de Skillnest: asistente RAG para Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep)
+    1. [Objetivo y justificación](#objetivo-y-justificación)
+    2. [Qué aporta el avance existente](#qué-aporta-el-avance-existente)
+    3. [Dónde se usará IA y dónde se aplicarán reglas](#dónde-se-usará-ia-y-dónde-se-aplicarán-reglas)
+    4. [Qué justifica la comparación de modelos y qué falta comprobar](#qué-justifica-la-comparación-de-modelos-y-qué-falta-comprobar)
+    5. [Plan de desarrollo y criterios de avance](#plan-de-desarrollo-y-criterios-de-avance)
 
 ## Actividades del curso
 
@@ -166,12 +170,13 @@ Ejecuta los comandos desde la raíz del repositorio, después de completar la pr
 | Instalar dependencias | `uv sync --locked` |
 | Consultar Gemini con la pregunta de prueba | `uv run python -m src.agente_gemini` |
 | Enviar tu pregunta | `uv run python -m src.agente_gemini "¿Qué es una API?"` |
+| Elegir el modelo para tu pregunta | `uv run python -m src.agente_gemini --modelo flash "¿Qué es una API?"` |
 | Ver el JSON original del proveedor | `uv run python -m src.agente_gemini --raw "Hola"` |
 | Usar un prompt con salida estructurada | `uv run python -m src.agente_gemini --prompt explicar_concepto "¿Qué es una API?"` |
 | Iniciar la API local | `uv run uvicorn src.api:app --host 127.0.0.1 --port 8000 --reload` |
 | Consultar el catálogo accesible de Gemini | `uv run python -m src.comparar_modelos --listar-modelos` |
 | Comparar modelos | `uv run python -m src.comparar_modelos --repeticiones 3 --salida docs/evaluaciones/gemini-nueva-ejecucion.json` |
-| Evaluar los tres prompts | `uv run python -m prompts.test_consistencia --salida prompts/registro_resultados_nueva_ejecucion.json` |
+| Evaluar el banco de prompts | `uv run python -m prompts.test_consistencia --salida prompts/registro_resultados_nueva_ejecucion.json` |
 | Ejecutar pruebas sin llamadas reales | `uv run python -m tests -v` |
 | Revisar estilo y errores de código | `uv run ruff check src tests prompts` |
 | Revisar tipos | `uv run basedpyright` |
@@ -192,7 +197,7 @@ Si no pasas una pregunta, el módulo llama a `obtener_dato_de_prueba(pregunta)` 
 
 La salida es un JSON con `respuesta`, `uso` y `costo_estimado`. En `respuesta` aparece una explicación con una analogía, el recorrido de la consulta, el uso de la API key y tres errores con sus soluciones. El texto y el consumo se generan en cada ejecución y pueden variar.
 
-La función está en [src/agente_gemini.py](src/agente_gemini.py). Carga `.env`, obtiene el modelo `flash-lite` del catálogo, realiza la consulta autenticada y devuelve un objeto `Resultado` con texto, tokens y costos. Al ejecutar el módulo, ese resultado se imprime como JSON en la terminal, con la misma estructura que `detalles` en la API.
+La función está en [src/agente_gemini.py](src/agente_gemini.py). Carga `.env`, resuelve el modelo seleccionado del catálogo (por defecto, `flash-lite`), realiza la consulta autenticada y devuelve un objeto `Resultado` con texto, tokens y costos. Al ejecutar el módulo, ese resultado se imprime como JSON en la terminal, con la misma estructura que `detalles` en la API.
 
 Esta prueba requiere `GEMINI_API_KEY`. Puedes ejecutarla sin iniciar la API local y sin configurar `API_BEARER_TOKEN`.
 
@@ -203,6 +208,22 @@ uv run python -m src.agente_gemini "Explica la diferencia entre una API y una p�
 ```
 
 La pregunta entre comillas reemplaza la predeterminada para esa ejecución. Las comillas permiten enviar varias palabras como un solo argumento. Una pregunta vacía o compuesta solo por espacios se rechaza antes de consultar Gemini.
+
+Para elegir un modelo, agrega `--modelo` con uno de los alias disponibles en [src/catalogo.py](src/catalogo.py):
+
+| Alias para `--modelo` | Modelo del proveedor |
+| --- | --- |
+| `flash-lite` (predeterminado) | `gemini-3.5-flash-lite` |
+| `flash` | `gemini-3.6-flash` |
+| `flash-3-8` | `gemini-3.8-flash` |
+
+Por ejemplo, para consultar con `flash`:
+
+```bash
+uv run python -m src.agente_gemini --modelo flash "¿Qué es una API?"
+```
+
+Si omites `--modelo`, se usa `flash-lite`. También puedes elegir el modelo con la pregunta predeterminada o combinarlo con `--raw` y `--prompt`. Un alias desconocido se rechaza antes de realizar la consulta.
 
 Para inspeccionar el JSON completo de Gemini desde la terminal, agrega `--raw`:
 
@@ -225,7 +246,8 @@ from src.agente_gemini import obtener_dato_de_prueba
 
 resultado = obtener_dato_de_prueba(
     "Explica tres usos de la inteligencia artificial en la educación, "
-    "con un ejemplo práctico y una limitación de cada uno."
+    "con un ejemplo práctico y una limitación de cada uno.",
+    modelo="flash",
 )
 print(resultado.respuesta)
 print(resultado.uso)
@@ -315,13 +337,28 @@ La [decisión del Bloque 9](docs/decision-arquitectura.md) documenta metodologí
 
 ### Banco de prompts y salida estructurada: Bloque 10
 
-El [banco](prompts/banco.py) centraliza tres tareas. Cada una contiene nombre, versión, instrucciones de sistema, entrada de ejemplo y un modelo Pydantic que genera el JSON Schema y valida la respuesta.
+El [banco](prompts/banco.py) centraliza seis tareas: tres educativas y tres para preparar el proyecto final de Ley REP. Cada una contiene nombre, versión, instrucciones de sistema, entrada de ejemplo y un modelo Pydantic que genera el JSON Schema y valida la respuesta.
+
+El código se organiza por responsabilidad:
+
+| Archivo | Responsabilidad |
+| --- | --- |
+| [banco.py](prompts/banco.py) | Punto de entrada: reúne los grupos en `BANCO_DE_PROMPTS` y exporta `NombrePrompt` y `Prompt`. |
+| [base.py](prompts/base.py) | Tipos, contrato `Prompt`, modelo de salida base y reglas de formato compartidas. |
+| [educativos.py](prompts/educativos.py) | Instrucciones, ejemplos y esquemas de las tres tareas educativas. |
+| [ley_rep.py](prompts/ley_rep.py) | Instrucciones, ejemplo documental y esquemas de las tres tareas de Ley REP. |
+| [contexto_ley_rep.py](prompts/contexto_ley_rep.py) | Carga la fuente local y prepara preguntas o artículos para los prompts de Ley REP. |
+
+Los clientes siguen importando el banco desde `prompts.banco`. Para agregar una tarea, define su esquema y su `Prompt` en el módulo del grupo e incorpora su nombre a `NombrePrompt` en `base.py`. `preparar_entrada` permite asociar una función que añada contexto documental antes de enviar el mensaje a Gemini. Si creas otro grupo, regístralo también en `banco.py`.
 
 | `prompt` | Campos de la salida |
 | --- | --- |
 | `explicar_concepto` | `concepto`, `explicacion`, `analogia`, `ejemplo`. |
 | `diagnosticar_error_http` | `codigo_http` (entero o `null`), `causa_probable`, `pasos_revision` (lista). |
 | `resumir_texto_tecnico` | `resumen`, `puntos_clave` (lista). |
+| `preparar_consulta_rep` | `consulta_interpretada`, `busquedas_sugeridas`, `antecedentes_faltantes`. |
+| `resumir_fragmento_rep` | `id_fragmento`, `resumen`, `puntos_clave`, `limites`. |
+| `responder_ley_rep` | `estado`, `respuesta`, `citas`, `antecedentes_faltantes`. |
 
 Desde la terminal:
 
@@ -344,13 +381,116 @@ Al elegir un prompt, `detalles.respuesta` es un **objeto JSON validado**. `uso` 
 
 `POST /consultar/raw` y `--raw` también aceptan un prompt; permiten inspeccionar todo el JSON del proveedor y no validan su contenido generado ni calculan costos.
 
-La [evidencia real](prompts/registro_resultados.json) conserva tres repeticiones por prompt, las instrucciones y esquemas utilizados, el JSON original del proveedor, el contenido validado, consumo, costos, latencia HTTP y errores. Para una nueva evaluación:
+#### Prompts para el proyecto final de Ley REP
+
+La copia PDF aportada se convirtió a [texto completo](datos/ley_rep/ley_20920.txt) y a [50 fragmentos con metadatos](datos/ley_rep/ley_20920.json): 46 artículos y cuatro transitorios. Se conserva el [PDF original](datos/ley_rep/Ley-20920_01-JUN-2016.pdf), sus páginas y hashes de integridad. La [guía de la fuente](datos/ley_rep/README.md) explica el tratamiento del texto y cómo reproducir la conversión.
+
+La versión que declara el PDF es **01-JUN-2016**. Las respuestas se basan en esa copia; la extracción no incorpora decretos ni acredita vigencia actual. El banco obtiene de ella el artículo 1 completo como ejemplo, en lugar del extracto parcial anterior.
+
+`preparar_consulta_rep` recibe la consulta del usuario y propone búsquedas y preguntas para obtener antecedentes. Permite practicar la preparación de una consulta sin afirmar obligaciones ni ejecutar una búsqueda:
+
+```bash
+uv run python -m src.agente_gemini --modelo flash-lite --prompt preparar_consulta_rep "Mi empresa importa productos envasados. ¿Qué antecedentes necesito para revisar mi caso?"
+```
+
+Más preguntas para `preparar_consulta_rep`, a partir de casos hipotéticos:
+
+| Caso | Pregunta para probar |
+| --- | --- |
+| Importación de productos envasados | «Importamos alimentos en cajas de cartón y envases plásticos. ¿Qué información debo reunir para revisar nuestro caso bajo la Ley REP?» |
+| Fabricación y venta | «Fabricamos detergentes y los vendemos en botellas plásticas. ¿Qué documentos y datos necesitas antes de revisar nuestras posibles obligaciones?» |
+| Reventa en Chile | «Compramos productos envasados a un proveedor chileno y los revendemos. ¿Qué antecedentes faltan para determinar nuestro rol?» |
+| Uso propio | «Importamos neumáticos para maquinaria que utiliza nuestra empresa. ¿Qué información necesitas para orientar la búsqueda normativa?» |
+| Comercio electrónico | «Vendemos por internet y agregamos cajas y material de protección al despacho. ¿Qué aspectos del negocio debo describir para analizar el caso?» |
+| Residuos de una empresa | «Nuestra oficina genera residuos de papel, cartón y equipos eléctricos. ¿Qué datos necesitas para distinguir las actividades y buscar las normas pertinentes?» |
+| Períodos distintos | «Quiero revisar nuestras operaciones de 2025 y 2026. ¿Qué antecedentes debería separar por período para hacer una consulta precisa?» |
+| Consulta demasiado general | «¿Mi empresa tiene que cumplir la Ley REP? ¿Qué deberías preguntarme antes de intentar responder?» |
+
+Puedes reemplazar la pregunta entre comillas del comando por cualquiera de las anteriores. Esta tarea devuelve la consulta interpretada, búsquedas sugeridas y antecedentes faltantes; la respuesta normativa se trabaja con `responder_ley_rep` y los fragmentos correspondientes. Por ejemplo:
+
+```bash
+uv run python -m src.agente_gemini --modelo flash --prompt preparar_consulta_rep \
+  "Compramos productos envasados a un proveedor chileno y los revendemos. ¿Qué antecedentes faltan para determinar nuestro rol?"
+```
+
+`resumir_fragmento_rep` permite elegir un artículo de la copia local por número o referencia. Por ejemplo, para resumir las definiciones del artículo 3:
+
+```bash
+uv run python -m src.agente_gemini --prompt resumir_fragmento_rep "artículo 3"
+```
+
+También acepta `"3"` o `"artículo primero transitorio"`. Puedes seguir entregando como texto un objeto JSON con `id_fragmento`, `documento`, `referencia`, `url`, `fecha_consulta` y `texto` para resumir un fragmento explícito. Los fragmentos locales añaden versión, páginas y procedencia del PDF.
+
+Esta tarea ayuda a estudiar preguntas como «¿Qué dice este artículo en lenguaje sencillo?», «¿Cuáles son sus puntos principales?» y «¿Qué no puedo concluir leyendo solo este artículo?». El resumen y sus límites se solicitan mediante las instrucciones del prompt.
+
+`responder_ley_rep` acepta una pregunta normal y carga automáticamente los 50 artículos como contexto. Funciona desde la terminal y mediante `mensaje` en `/consultar` o `/consultar/raw`:
+
+```bash
+uv run python -m src.agente_gemini --modelo flash-lite --prompt responder_ley_rep \
+  "¿Qué productos prioritarios enumera el artículo 10 de esta copia de la ley?"
+
+uv run python -m src.agente_gemini --prompt responder_ley_rep \
+  "¿Cómo define el artículo 3 al productor de un producto prioritario?"
+
+uv run python -m src.agente_gemini --prompt responder_ley_rep \
+  "¿Qué obligaciones describe el artículo 9 y qué citas las respaldan?"
+```
+
+La instrucción exige responder solo con la evidencia enviada, copiar citas literales e identificar los fragmentos por ID. Los estados posibles son `respondida`, `requiere_aclaracion` y `evidencia_insuficiente`.
+
+Para proporcionar antecedentes puedes enviar un objeto JSON con `pregunta` y `antecedentes`; si omites `fragmentos`, se añade la copia local. Si incluyes `fragmentos`, se respeta exactamente esa selección, incluso una lista vacía. Así puedes practicar el caso sin evidencia:
+
+```bash
+uv run python -m src.agente_gemini --prompt responder_ley_rep '{"pregunta":"¿Qué obligaciones tiene mi empresa?","antecedentes":{},"fragmentos":[]}'
+```
+
+Más preguntas para enviar directamente o usar en el campo `pregunta` del JSON:
+
+| Pregunta para probar | Contexto que debes entregar |
+| --- | --- |
+| «¿Qué objetivo menciona el artículo 1?» | El artículo 1 de la copia local o el ejemplo del banco. |
+| «¿El artículo 1 permite determinar obligaciones concretas para mi empresa? ¿Qué falta?» | Para limitar la prueba a ese artículo, envíalo como contexto explícito junto con los antecedentes que conozcas. |
+| «Según las definiciones entregadas, ¿qué rol podría corresponder a nuestra actividad y qué datos faltan para confirmarlo?» | Fragmentos con las definiciones pertinentes y una descripción de la actividad de la empresa. |
+| «¿Qué obligaciones aparecen expresamente para el rol descrito y qué fragmento respalda cada una?» | Los antecedentes del caso y fragmentos que describan esas obligaciones y su ámbito de aplicación. |
+| «¿Qué metas o plazos indican los fragmentos para el producto y período consultados?» | El producto, período y fragmentos que contengan los valores y condiciones aplicables. |
+| «Las fuentes parecen contradecirse. ¿Se puede resolver con lo entregado o falta evidencia?» | Los fragmentos en conflicto y sus metadatos. Sirve para observar si reconoce la insuficiencia de evidencia. |
+
+Con `fragmentos: []`, las preguntas normativas permiten practicar el estado `evidencia_insuficiente`. Para ensayar una respuesta respaldada, usa la copia local o entrega fragmentos pertinentes junto con los antecedentes del caso. Una pregunta sobre metas específicas por producto y período puede necesitar decretos que no están en este PDF; el modelo debe reconocer esa limitación.
+
+Para seleccionar artículos desde Python y enviar solo ese contexto:
+
+```python
+import json
+
+from prompts.contexto_ley_rep import obtener_fragmento_ley_rep
+from src.agente_gemini import obtener_dato_de_prueba
+
+entrada = {
+    "pregunta": "¿Qué productos prioritarios enumera el artículo entregado?",
+    "antecedentes": {},
+    "fragmentos": [obtener_fragmento_ley_rep(10)],
+}
+resultado = obtener_dato_de_prueba(
+    json.dumps(entrada, ensure_ascii=False),
+    modelo="flash-lite",
+    prompt="responder_ley_rep",
+)
+print(resultado.respuesta)
+```
+
+Una pregunta normal envía todos los artículos y consume más tokens de entrada que una selección explícita. En la API local, el límite de 4.000 caracteres se aplica al `mensaje` recibido; la copia se añade después en el servidor. `--raw` también prepara el contexto, pero conserva la respuesta completa del proveedor.
+
+Esta integración utiliza contexto documental completo. La búsqueda de fragmentos relevantes y el RAG con múltiples fuentes siguen pendientes, al igual que la comprobación del respaldo de cada afirmación. Pydantic valida campos, tipos y coherencia básica del estado; no comprueba que una cita exista en el contexto, que sea literal o que respalde la respuesta. Los prompts de Ley REP y la carga documental tienen pruebas simuladas; las evidencias reales existentes corresponden a los tres educativos.
+
+#### Evaluar el banco
+
+La [evidencia real de los tres prompts educativos](prompts/registro_resultados.json) conserva tres repeticiones por prompt, las instrucciones y esquemas utilizados, el JSON original del proveedor, el contenido validado, consumo, costos, latencia HTTP y errores. Para una nueva evaluación de todo el banco:
 
 ```bash
 uv run python -m prompts.test_consistencia --salida prompts/registro_resultados_nueva_ejecucion.json
 ```
 
-El script requiere `GEMINI_API_KEY`, realiza **nueve llamadas reales** con el modelo `flash-lite` y espera un segundo entre llamadas. `--repeticiones` permite aumentar la muestra (mínimo 3), `--modelo` elige un alias del catálogo y `--pausa` ajusta la espera. Conserva un registro después de cada intento y rechaza archivos de salida existentes. Termina con código 0 si todos los intentos son válidos, 1 si hubo fallos y 130 ante una interrupción.
+El script requiere `GEMINI_API_KEY`, realiza **18 llamadas reales** por defecto (seis prompts por tres repeticiones) con el modelo `flash-lite` y espera un segundo entre llamadas. `--repeticiones` permite aumentar la muestra (mínimo 3), `--modelo` elige un alias del catálogo y `--pausa` ajusta la espera. Conserva un registro después de cada intento y rechaza archivos de salida existentes. Termina con código 0 si todos los intentos son válidos, 1 si hubo fallos y 130 ante una interrupción.
 
 Se mide consistencia de estructura, no exactitud técnica del contenido. Un 3/3 describe esa muestra; no garantiza todos los casos futuros. La [guía del Bloque 10](docs/bloque-10-prompts.md) explica los PDF con ejemplos del proyecto y ejercicios breves.
 
@@ -468,13 +608,13 @@ Cada consulta es independiente; no se conserva un historial de conversación ni 
 | `agente` | De 1 a 32 caracteres. | Debe existir en el catálogo. Solo acepta letras minúsculas, números, guiones y guiones bajos. |
 | `modelo` | De 1 a 64 caracteres. | Debe pertenecer al agente elegido y cumplir el mismo formato que `agente`. |
 | `mensaje` | De 1 a 4.000 caracteres. | Debe contener texto. Se conservan sus espacios y saltos de línea. |
-| `prompt` | Opcional. | `explicar_concepto`, `diagnosticar_error_http`, `resumir_texto_tecnico` o `null`. |
+| `prompt` | Opcional. | Uno de los seis nombres del [banco de prompts](#banco-de-prompts-y-salida-estructurada-bloque-10) o `null`. |
 
 Los límites son inclusivos y cuentan caracteres, no bytes. En la API, el texto se envía en `mensaje`; un campo llamado `pregunta` se rechaza con HTTP 422.
 
 ### Agente y modelos habilitados
 
-El catálogo de [src/catalogo.py](src/catalogo.py) contiene estas combinaciones para `POST /consultar` y `POST /consultar/raw`:
+El catálogo de [src/catalogo.py](src/catalogo.py) contiene estas combinaciones para `POST /consultar` y `POST /consultar/raw`. La consulta directa con `src.agente_gemini --modelo` utiliza los mismos alias de modelo:
 
 | Agente en el JSON | Modelo en el JSON | Modelo del proveedor | Credencial |
 | --- | --- | --- | --- |
@@ -597,11 +737,22 @@ Cuando el mensaje de la prueba Python o `detalles.causa` indique HTTP 400, 401 o
 │   ├── salida_estructurada.py # Parseo y validación del contenido generado
 │   └── tipo_cambio.py     # Dólar observado y tasa manual opcional
 ├── prompts/
-│   ├── banco.py           # Tres prompts y sus esquemas de salida
+│   ├── banco.py           # Punto de entrada que reúne los grupos de prompts
+│   ├── base.py            # Tipos, contrato y reglas de salida compartidas
+│   ├── educativos.py      # Prompts educativos y sus esquemas
+│   ├── ley_rep.py         # Prompts, esquemas y ejemplo documental de Ley REP
+│   ├── contexto_ley_rep.py # Carga y preparación del contexto local de Ley REP
 │   ├── test_consistencia.py # Evaluación real: mínimo tres intentos por tarea
 │   ├── registro_resultados_inicial.json # Evaluación anterior al ajuste
 │   └── registro_resultados.json # Evaluación de las instrucciones actuales
 ├── tests/                 # Suite automatizada
+├── datos/ley_rep/         # Fuente local de Ley REP, versión 2016-06-01
+│   ├── Ley-20920_01-JUN-2016.pdf # Copia del PDF aportado
+│   ├── ley_20920.txt      # Texto completo con marcas de página
+│   ├── ley_20920.json     # Artículos y metadatos de procedencia
+│   └── README.md         # Alcance y reproducción de la conversión
+├── scripts/
+│   └── extraer_ley_rep.py # Conversión del PDF a texto y artículos
 ├── docs/                  # Evidencias, diagrama y decisión de arquitectura
 │   ├── decision-arquitectura.md
 │   ├── bloque-10-prompts.md # Guía de estudio aplicada al código
@@ -633,7 +784,9 @@ El modelo predeterminado es `gemini-3.5-flash-lite`. La [decisión de arquitectu
 
 ## Proyecto final de Skillnest: asistente RAG para Ley REP
 
-**Estado: propuesta.** Este repositorio implementa consultas HTTP a Gemini; el RAG se desarrollará como proyecto final. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
+**Estado: preparación del RAG.** Este repositorio implementa consultas HTTP a Gemini y preguntas con el texto de una copia local de Ley REP. La recuperación de fragmentos y el RAG con múltiples fuentes se desarrollarán como proyecto final. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
+
+Como preparación, el banco incluye `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`. Utilizan el [PDF convertido a texto y artículos](datos/ley_rep/README.md), además de permitir contexto explícito. La recuperación documental y la verificación de citas están pendientes.
 
 ### Objetivo y justificación
 
