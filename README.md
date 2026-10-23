@@ -1,6 +1,6 @@
 # Práctica 2: consultas HTTP autenticadas con Gemini
 
-Miniaplicación de Skillnest para consultar Gemini desde Python y mediante una API local protegida con Bearer token. Incluye las actividades de conexión HTTP, arquitectura, comparación de modelos y prompts con salida JSON estructurada.
+Miniaplicación de Skillnest para consultar Gemini desde Python y mediante una API local protegida con Bearer token. Incluye las actividades de conexión HTTP, arquitectura, comparación de modelos, prompts con salida JSON estructurada y cliente con reintentos ante fallos temporales.
 
 El recorrido de este README es: actividades del curso, instalación, preparación y configuración, uso y comandos, verificación y referencia técnica. La [justificación del proyecto](#justificación-del-proyecto-actual) y la [propuesta final de Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) se encuentran al final.
 
@@ -17,12 +17,13 @@ El recorrido de este README es: actividades del curso, instalación, preparació
 5. [Uso y comandos](#uso-y-comandos)
     1. [Resumen de comandos](#resumen-de-comandos)
     2. [Consultar Gemini desde Python](#consultar-gemini-desde-python)
-    3. [Iniciar la API local](#iniciar-la-api-local)
-    4. [Probar con Yaak o Postman](#probar-con-yaak-o-postman)
+    3. [Cliente con reintentos: Bloque 12](#cliente-con-reintentos-bloque-12)
+    4. [Iniciar la API local](#iniciar-la-api-local)
+    5. [Probar con Yaak o Postman](#probar-con-yaak-o-postman)
         1. [Consulta directa a Gemini](#consulta-directa-a-gemini)
         2. [Consulta mediante la API Python](#consulta-mediante-la-api-python)
-    5. [Comparar costo y latencia: Bloque 9](#comparar-costo-y-latencia-bloque-9)
-    6. [Banco de prompts y salida estructurada: Bloque 10](#banco-de-prompts-y-salida-estructurada-bloque-10)
+    6. [Comparar costo y latencia: Bloque 9](#comparar-costo-y-latencia-bloque-9)
+    7. [Banco de prompts y salida estructurada: Bloque 10](#banco-de-prompts-y-salida-estructurada-bloque-10)
         1. [Prompts para el proyecto final de Ley REP](#prompts-para-el-proyecto-final-de-ley-rep)
         2. [Evaluar el banco](#evaluar-el-banco)
 6. [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
@@ -56,6 +57,7 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloque 8: arquitectura | Revisar el recorrido de la pregunta, las credenciales y el manejo de errores. | [Explicación](docs/arquitectura.md), [diagrama](docs/diagrama_arquitectura.png) y [fuente editable](docs/diagrama_arquitectura.drawio). |
 | Bloque 9: elección de modelo | [Comparar costo y latencia](#comparar-costo-y-latencia-bloque-9) con las mismas preguntas. | [Decisión de arquitectura](docs/decision-arquitectura.md) y [mediciones reales](docs/evaluaciones/gemini-2026-10-20.json). |
 | Bloque 10: prompts y JSON | [Usar el banco y evaluar su consistencia](#banco-de-prompts-y-salida-estructurada-bloque-10). | [Banco](prompts/banco.py), [evaluador](prompts/test_consistencia.py), [resultados](prompts/registro_resultados.json) y [guía de estudio](docs/bloque-10-prompts.md). |
+| Bloque 12: cliente modular | [Revisar la política de reintentos](#cliente-con-reintentos-bloque-12) y ejecutar las pruebas simuladas. | [Errores](src/errores_cliente.py), [política](src/reintentos.py), [pruebas de la política](tests/test_reintentos.py) e [integración](tests/test_cliente_resiliente.py). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -172,6 +174,7 @@ Ejecuta los comandos desde la raíz del repositorio, después de completar la pr
 | Enviar tu pregunta | `uv run python -m src.agente_gemini "¿Qué es una API?"` |
 | Elegir el modelo para tu pregunta | `uv run python -m src.agente_gemini --modelo flash "¿Qué es una API?"` |
 | Ver el JSON original del proveedor | `uv run python -m src.agente_gemini --raw "Hola"` |
+| Consultar con un solo intento | `uv run python -m src.agente_gemini --intentos 1 "Hola"` |
 | Usar un prompt con salida estructurada | `uv run python -m src.agente_gemini --prompt explicar_concepto "¿Qué es una API?"` |
 | Iniciar la API local | `uv run uvicorn src.api:app --host 127.0.0.1 --port 8000 --reload` |
 | Consultar el catálogo accesible de Gemini | `uv run python -m src.comparar_modelos --listar-modelos` |
@@ -260,6 +263,63 @@ if resultado.costo_estimado is not None:
 
 Si la consulta falla, el comando muestra un mensaje de error y termina con un código de salida distinto de cero.
 
+### Cliente con reintentos: Bloque 12
+
+La API y el CLI reutilizan `consultar_gemini_raw()` y su política de [src/reintentos.py](src/reintentos.py). El reintento ocurre dentro del cliente, antes de extraer texto, validar el contenido generado y calcular costos. No necesitas envolver la llamada con otro bucle.
+
+| Situación | Comportamiento predeterminado |
+| --- | --- |
+| HTTP 401 o 403 del proveedor | `ErrorAutenticacion`, sin reintentos. |
+| HTTP 400, 404 u otro estado fuera de la lista temporal | `ErrorPeticion`, sin reintentos. Algunos errores de clave de Gemini llegan como HTTP 400. |
+| HTTP 429, 500, 502, 503 o 504 | `ErrorTemporalProveedor`, hasta 3 intentos totales. Un límite de cuota persistente también puede agotar los intentos. |
+| Timeout al establecer la conexión, DNS o apertura fallida identificada por el transporte | Se reintenta porque la petición no llegó a enviarse. |
+| Timeout de lectura o interrupción de conexión cuyo momento no puede determinarse | Falla sin repetir: el resultado y su consumo pueden ser desconocidos. |
+| Error de certificado TLS, JSON inválido, salida truncada o esquema incorrecto | Falla sin reintentos. |
+
+Los valores predeterminados son: **3 intentos en total**, espera inicial de **1 segundo**, espera que se duplica después de cada fallo, variación aleatoria de **0 a 0,25 segundos**, tope de espera calculada de **8 segundos** y presupuesto de **90 segundos**. El timeout de conexión/lectura conserva como máximos los **10/60 segundos** originales.
+
+`Retry-After` acepta segundos enteros o una fecha HTTP y se respeta como espera mínima, aunque supere el tope del backoff. Si esa espera no cabe en el presupuesto restante, el cliente termina inmediatamente con `ReintentosAgotados`; no acorta la espera ni inicia otra petición. Un encabezado ausente o inválido usa el backoff.
+
+El presupuesto incluye el tiempo observado de las peticiones y las pausas. Se comprueba antes de iniciar cada intento y espera, y reduce ambos timeouts para ajustarlos al tiempo restante. **No cancela estrictamente una petición HTTP que ya está en curso**: los timeouts de Requests y la resolución DNS no garantizan un límite absoluto de tiempo de pared.
+
+Para cambiar el máximo de intentos o el presupuesto desde la terminal:
+
+```bash
+uv run python -m src.agente_gemini --intentos 2 --presupuesto-segundos 45 "¿Qué es una API?"
+```
+
+Desde Python puedes configurar toda la política, también con `obtener_dato_de_prueba_raw()`, `consultar_gemini()` y `consultar_gemini_raw()`:
+
+```python
+from src.agente_gemini import obtener_dato_de_prueba
+from src.reintentos import PoliticaReintento
+
+resultado = obtener_dato_de_prueba(
+    "¿Qué es una API?",
+    politica=PoliticaReintento(intentos=3, presupuesto_segundos=45, espera_maxima=5),
+)
+```
+
+`reintentar_lectura=True` permite repetir expresamente un timeout de lectura. Puede producir otra generación y consumo adicional; queda desactivado por defecto. Las interrupciones ambiguas de conexión siguen sin reintentarse. El costo estimado corresponde al consumo recibido en la respuesta final, no demuestra el costo total de todos los intentos ni supone costo cero para intentos sin respuesta.
+
+El cliente usa `logging`: cada intento registra su categoría, código HTTP y duración a nivel INFO; cada reintento anuncia su espera a nivel WARNING. No registra prompts, claves ni cuerpos del proveedor. Los avisos del CLI salen por stderr y stdout conserva únicamente el JSON exitoso.
+
+Los errores públicos están en [src/errores_cliente.py](src/errores_cliente.py). La API conserva su contrato JSON y publica `detalles.tipo_error`, `detalles.codigo_proveedor` cuando se conoce y `detalles.intentos` al agotar la política:
+
+| HTTP local | Significado |
+| --- | --- |
+| 502 | Credencial o petición del proveedor incorrecta, respuesta inválida o conexión interrumpida de resultado incierto. |
+| 503 | Se agotaron los intentos ante errores temporales. También se usa, como antes, si falta configurar el agente. |
+| 504 | Timeout de lectura o presupuesto insuficiente para continuar. |
+
+Un HTTP 401 de Gemini no se transforma en un 401 local: este último sigue indicando un Bearer token local ausente o inválido.
+
+El comparador de modelos y el evaluador de prompts pasan explícitamente `SIN_REINTENTOS` (un intento por consulta). Así conservan sus mediciones de errores, latencia y consumo; las repeticiones del experimento son distintas de los reintentos de transporte. Las pruebas del Bloque 12 simulan fallos y esperas sin provocar límites reales ni consumir tokens:
+
+```bash
+uv run python -m unittest tests.test_reintentos tests.test_cliente_resiliente -v
+```
+
 ### Iniciar la API local
 
 Con ambas credenciales configuradas, ejecuta:
@@ -317,7 +377,7 @@ En Postman, la colección de la API incluye comprobaciones del contrato común y
 
 Esta evaluación corresponde a la práctica de consultas breves. La [propuesta de Ley REP](#qué-justifica-la-comparación-de-modelos-y-qué-falta-comprobar) establece cómo ampliar la comparación antes de elegir un modelo para el RAG normativo.
 
-La evaluación reutiliza `consultar_gemini_raw()` y los cálculos de costos de la aplicación. Para consultar el inventario accesible con tu clave, sin generar respuestas:
+La evaluación reutiliza `consultar_gemini_raw()` con `SIN_REINTENTOS` y los cálculos de costos de la aplicación. Cada medición hace una sola petición. Para consultar el inventario accesible con tu clave, sin generar respuestas:
 
 ```bash
 uv run python -m src.comparar_modelos --listar-modelos
@@ -508,9 +568,11 @@ Ejecuta la suite:
 uv run python -m tests -v
 ```
 
-Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. También comprueban que `/consultar/raw` conserve todo el JSON del proveedor, incluso sin texto generado, y que utilice una sola petición sin consultar el dólar. El evaluador tiene pruebas de tarifas por candidato, errores, respuestas truncadas, promedios, planificación e inventario paginado. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
+Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. También comprueban que `/consultar/raw` conserve todo el JSON del proveedor, incluso sin texto generado, y que no consulte el dólar. El evaluador tiene pruebas de tarifas por candidato, errores, respuestas truncadas, promedios, planificación e inventario paginado. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
 
 El Bloque 10 agrega cobertura de sistema y esquema enviados, salidas válidas y truncadas, claves y tipos incorrectos, rangos, campos extra, listas, limpieza de Markdown, selección de prompts, CLI y conservación de fallos y consumo en el evaluador. `python -m tests` no ejecuta la evaluación real de `prompts/test_consistencia.py`.
+
+El Bloque 12 agrega recuperación tras 429 y 5xx, agotamiento, autenticación sin reintentos, conexión y lectura, `Retry-After`, backoff con jitter, reloj virtual, presupuesto de tiempo, errores HTTP locales y conservación de las evaluaciones sin reintentos.
 
 Para revisar el código con las herramientas de desarrollo:
 
@@ -654,7 +716,7 @@ La respuesta corresponde al endpoint compatible con OpenAI que usa este proyecto
 
 Cada petición realiza una nueva consulta a Gemini. La respuesta exitosa de esta ruta contiene únicamente el JSON del proveedor: los costos calculados por la aplicación se obtienen mediante `/consultar`. La ruta raw realiza una sola llamada a Gemini y no consulta el tipo de cambio.
 
-Los errores de autenticación, validación, configuración y comunicación conservan el contrato local `error`, `codigo`, `mensaje` y `detalles`. Por ejemplo, si Gemini devuelve HTTP 429, la API responde HTTP 502 con la causa, igual que en `/consultar`.
+Los errores de autenticación, validación, configuración y comunicación conservan el contrato local `error`, `codigo`, `mensaje` y `detalles`. Por ejemplo, si Gemini sigue devolviendo HTTP 429 tras tres intentos, la API responde HTTP 503 con la causa y la cantidad de intentos, igual que en `/consultar`. Si `Retry-After` no cabe en el presupuesto, responde HTTP 504 sin iniciar otra petición.
 
 ### Contrato común de respuestas
 
@@ -714,8 +776,9 @@ Los cálculos usan `Decimal` y conservan todos los decimales significativos. Los
 | HTTP 404 de la API local | Revisa la ruta y evita la barra final. `detalles.ruta` indica la ruta solicitada. |
 | HTTP 405 | Revisa el método HTTP. `detalles.metodos_permitidos` indica las opciones. |
 | HTTP 422 | Revisa los campos y los mensajes de `detalles.validaciones`. |
-| HTTP 503 de la API local | Configura la credencial indicada en `detalles.configuracion_requerida`. |
-| HTTP 502 | La consulta a Gemini falló. `detalles.causa` explica el error del proveedor o de conexión. |
+| HTTP 503 de la API local | Si aparece `detalles.configuracion_requerida`, configura esa credencial. Si aparece `ReintentosAgotados`, espera y revisa la disponibilidad o cuota del proveedor. |
+| HTTP 502 | Revisa la credencial, petición, respuesta o conexión indicada en `detalles.causa`. |
+| HTTP 504 | Se agotó el tiempo disponible o hubo un timeout de lectura. Revisa `detalles.causa` antes de repetir una generación de consumo desconocido. |
 | HTTP 500 | Revisa los registros del servidor y vuelve a intentar la operación. |
 | Error de conexión al servidor local | Comprueba que Uvicorn siga ejecutándose en el puerto 8000. |
 
@@ -732,7 +795,9 @@ Cuando el mensaje de la prueba Python o `detalles.causa` indique HTTP 400, 401 o
 │   ├── catalogo.py        # Agentes y modelos habilitados
 │   ├── comparar_modelos.py # Evaluación real de costo y latencia (Bloque 9)
 │   ├── costos.py          # Tarifas por modelo y costos en USD y CLP
+│   ├── errores_cliente.py # Categorías públicas de errores del proveedor
 │   ├── esquemas.py        # Modelos de datos y validaciones
+│   ├── reintentos.py      # Política, Retry-After y backoff con jitter (Bloque 12)
 │   ├── respuestas.py      # Contrato de respuestas y manejo de errores
 │   ├── salida_estructurada.py # Parseo y validación del contenido generado
 │   └── tipo_cambio.py     # Dólar observado y tasa manual opcional

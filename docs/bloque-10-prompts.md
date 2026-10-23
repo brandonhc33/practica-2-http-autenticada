@@ -110,7 +110,7 @@ Sin `prompt`, la consulta permite texto libre como antes. Con `prompt`, una sali
 | Texto vacío o lista de pasos vacía. | Rechazar. |
 | Gemini informa finalización distinta de `stop`. | Rechazar como salida incompleta. |
 
-El parser genera un `ValueError` explicativo y la API lo convierte en HTTP 502. No hay reintentos automáticos que oculten un fallo o consuman llamadas adicionales. El evaluador conserva los errores y diferencia un fallo de estructura de un error HTTP, de cuota o de conexión.
+El parser genera un `ValueError` explicativo; el cliente lo clasifica como `ErrorRespuesta` y la API lo convierte en HTTP 502. No se repite una generación cuya salida incumple el esquema. Desde el Bloque 12, el cliente normal sí reintenta fallos temporales de transporte; el evaluador pasa `SIN_REINTENTOS` para conservar una petición por medición. Conserva los errores y diferencia un fallo de estructura de un error HTTP, de cuota o de conexión.
 
 ## 3. Banco de prompts: tareas reutilizables y evidencia
 
