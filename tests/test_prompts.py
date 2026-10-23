@@ -5,9 +5,11 @@ import unittest
 from io import StringIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Any
 from unittest.mock import patch
 
-from prompts.banco import BANCO_DE_PROMPTS
+from prompts.banco import BANCO_DE_PROMPTS, NombrePrompt
+from prompts.ley_rep import EJEMPLO_FRAGMENTO_REP
 from prompts.test_consistencia import evaluar_intento, main, resumir
 from src.agente_gemini import main as main_cliente
 from src.salida_estructurada import parsear_respuesta_json
@@ -25,13 +27,36 @@ DIAGNOSTICO = {
     "pasos_revision": ["Revisar el encabezado Authorization."],
 }
 RESUMEN = {"resumen": "La API usa dos credenciales distintas.", "puntos_clave": ["No publicarlas."]}
+PREPARACION_REP = {
+    "consulta_interpretada": "Revisar el caso de una empresa que importa productos envasados.",
+    "busquedas_sugeridas": ["Ley REP importación productos envasados"],
+    "antecedentes_faltantes": ["¿Qué productos importa y en qué período?"],
+}
+RESUMEN_REP = {
+    "id_fragmento": EJEMPLO_FRAGMENTO_REP["id_fragmento"],
+    "resumen": "El extracto menciona la disminución de la generación de residuos.",
+    "puntos_clave": ["Se describe un objetivo general."],
+    "limites": [
+        "El artículo describe el objeto de la ley; no resuelve por sí solo un caso concreto."
+    ],
+}
+RESPUESTA_REP = {
+    "estado": "respondida",
+    "respuesta": "El extracto menciona disminuir la generación de residuos.",
+    "citas": [
+        {
+            "id_fragmento": EJEMPLO_FRAGMENTO_REP["id_fragmento"],
+            "cita_textual": EJEMPLO_FRAGMENTO_REP["texto"],
+        }
+    ],
+    "antecedentes_faltantes": [],
+}
+SALIDAS_VALIDAS = (EXPLICACION, DIAGNOSTICO, RESUMEN, PREPARACION_REP, RESUMEN_REP, RESPUESTA_REP)
 
 
 class ParseoPromptsTests(unittest.TestCase):
-    def test_los_tres_contratos_aceptan_datos_y_bloques_markdown(self):
-        for nombre, datos in zip(
-            BANCO_DE_PROMPTS, (EXPLICACION, DIAGNOSTICO, RESUMEN), strict=True
-        ):
+    def test_todos_los_contratos_aceptan_datos_y_bloques_markdown(self):
+        for nombre, datos in zip(BANCO_DE_PROMPTS, SALIDAS_VALIDAS, strict=True):
             for plantilla in ("{}", "  ```json\n{}\n```  ", "\n```\n{}\n```\n"):
                 with self.subTest(nombre=nombre, plantilla=plantilla):
                     texto = plantilla.format(json.dumps(datos))
@@ -69,19 +94,68 @@ class ParseoPromptsTests(unittest.TestCase):
             parsear_respuesta_json(json.dumps(sin_codigo), "diagnosticar_error_http"), sin_codigo
         )
 
+    def test_respuesta_rep_admite_abstencion_y_aclaracion_con_antecedentes(self):
+        casos = (
+            {
+                "estado": "evidencia_insuficiente",
+                "respuesta": "No se proporcionaron fragmentos que respalden una respuesta.",
+                "citas": [],
+                "antecedentes_faltantes": [],
+            },
+            {
+                "estado": "requiere_aclaracion",
+                "respuesta": "Se necesitan antecedentes del caso para continuar.",
+                "citas": [],
+                "antecedentes_faltantes": ["¿Qué actividad realiza la empresa?"],
+            },
+        )
+        for datos in casos:
+            with self.subTest(estado=datos["estado"]):
+                self.assertEqual(
+                    parsear_respuesta_json(json.dumps(datos), "responder_ley_rep"), datos
+                )
+
+    def test_respuesta_rep_rechaza_estados_incoherentes_y_citas_sin_contrato(self):
+        invalidos = (
+            {**RESPUESTA_REP, "citas": []},
+            {**RESPUESTA_REP, "antecedentes_faltantes": ["Falta identificar el producto."]},
+            {**RESPUESTA_REP, "estado": "requiere_aclaracion"},
+            {**RESPUESTA_REP, "estado": "desconocido"},
+            {**RESPUESTA_REP, "citas": [{"id_fragmento": "fuente"}]},
+            {**RESPUESTA_REP, "citas": [{"id_fragmento": "fuente", "cita_textual": "   "}]},
+            {
+                **RESPUESTA_REP,
+                "citas": [{**RESPUESTA_REP["citas"][0], "url": "https://ejemplo.invalid"}],
+            },
+        )
+        for datos in invalidos:
+            with self.subTest(datos=datos), self.assertRaises(ValueError):
+                parsear_respuesta_json(json.dumps(datos), "responder_ley_rep")
+
+    def test_preparacion_y_resumen_rep_rechazan_salida_vacia(self):
+        casos: tuple[tuple[NombrePrompt, dict[str, Any]], ...] = (
+            ("preparar_consulta_rep", {**PREPARACION_REP, "busquedas_sugeridas": []}),
+            ("resumir_fragmento_rep", {**RESUMEN_REP, "id_fragmento": "   "}),
+            ("resumir_fragmento_rep", {**RESUMEN_REP, "limites": []}),
+        )
+        for nombre, datos in casos:
+            with self.subTest(prompt=nombre), self.assertRaises(ValueError):
+                parsear_respuesta_json(json.dumps(datos), nombre)
+
 
 class PromptsAPITests(CasoAPI):
     def test_consulta_estructurada_envia_sistema_y_esquema_y_devuelve_objeto_con_costo(self):
-        for nombre, datos in zip(
-            BANCO_DE_PROMPTS, (EXPLICACION, DIAGNOSTICO, RESUMEN), strict=True
-        ):
+        for nombre, datos in zip(BANCO_DE_PROMPTS, SALIDAS_VALIDAS, strict=True):
             with self.subTest(prompt=nombre):
                 self.post.reset_mock()
+                mensaje = BANCO_DE_PROMPTS[nombre].ejemplo_usuario
                 self.upstream.json.return_value["choices"] = [
                     {"message": {"content": json.dumps(datos)}, "finish_reason": "stop"}
                 ]
                 respuesta = self.client.post(
-                    "/consultar", headers=self.headers, json={**self.cuerpo, "prompt": nombre}
+                    "/consultar",
+                    headers=self.headers,
+                    json={**self.cuerpo, "prompt": nombre, "mensaje": mensaje},
                 )
                 detalles = self.assertRespuesta(respuesta, 200)
                 self.assertEqual(detalles["respuesta"], datos)
@@ -93,7 +167,7 @@ class PromptsAPITests(CasoAPI):
                     cuerpo["messages"],
                     [
                         {"role": "system", "content": BANCO_DE_PROMPTS[nombre].system_instruction},
-                        {"role": "user", "content": self.cuerpo["mensaje"]},
+                        {"role": "user", "content": mensaje},
                     ],
                 )
                 self.assertEqual(cuerpo["response_format"]["type"], "json_schema")
@@ -144,11 +218,22 @@ class PromptsAPITests(CasoAPI):
         ]
         with (
             patch("src.agente_gemini.load_dotenv"),
-            patch("sys.argv", ["cliente", "--prompt", "explicar_concepto", "¿Qué es una API?"]),
+            patch(
+                "sys.argv",
+                [
+                    "cliente",
+                    "--modelo",
+                    "flash",
+                    "--prompt",
+                    "explicar_concepto",
+                    "¿Qué es una API?",
+                ],
+            ),
             patch("sys.stdout", new_callable=StringIO) as salida,
         ):
             main_cliente()
         self.assertEqual(json.loads(salida.getvalue())["respuesta"], EXPLICACION)
+        self.assertEqual(self.post.call_args.kwargs["json"]["model"], "gemini-3.6-flash")
 
 
 class ConsistenciaPromptsTests(CasoAPI):
@@ -179,7 +264,9 @@ class ConsistenciaPromptsTests(CasoAPI):
         self.assertIsNone(registro["uso"])
         self.assertIsNone(registro["costo_estimado"])
 
-    def test_script_ejecuta_nueve_intentos_guarda_evidencia_y_no_oculta_fallos(self):
+    def test_script_evalua_todo_el_banco_guarda_evidencia_y_no_oculta_fallos(self):
+        cantidad_prompts = len(BANCO_DE_PROMPTS)
+        cantidad_intentos = cantidad_prompts * 3
         with TemporaryDirectory() as directorio:
             ruta = Path(directorio) / "registro.json"
             with (
@@ -193,9 +280,9 @@ class ConsistenciaPromptsTests(CasoAPI):
             self.assertEqual(salida.exception.code, 1)
             registro = json.loads(ruta.read_text())
             self.assertEqual(registro["estado"], "con_fallos")
-            self.assertEqual(len(registro["banco"]), 3)
-            self.assertEqual(len(registro["intentos"]), 9)
-            self.assertEqual(self.post.call_count, 9)
+            self.assertEqual(len(registro["banco"]), cantidad_prompts)
+            self.assertEqual(len(registro["intentos"]), cantidad_intentos)
+            self.assertEqual(self.post.call_count, cantidad_intentos)
             for valores in registro["resumen"].values():
                 self.assertEqual(valores["intentos"], 3)
                 self.assertEqual(valores["exitos"], 0)
@@ -207,4 +294,4 @@ class ConsistenciaPromptsTests(CasoAPI):
             ):
                 main()
             self.assertEqual(existente.exception.code, 2)
-            self.assertEqual(self.post.call_count, 9)
+            self.assertEqual(self.post.call_count, cantidad_intentos)

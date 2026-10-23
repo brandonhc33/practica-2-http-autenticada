@@ -69,6 +69,8 @@ def consultar_gemini_raw(
     }
     if prompt is not None:
         definicion = BANCO_DE_PROMPTS[prompt]
+        if definicion.preparar_entrada is not None:
+            cuerpo["messages"][0]["content"] = definicion.preparar_entrada(mensaje)
         cuerpo["messages"].insert(0, {"role": "system", "content": definicion.system_instruction})
         # Este endpoint usa el contrato compatible con OpenAI, no generationConfig.
         cuerpo["response_format"] = {
