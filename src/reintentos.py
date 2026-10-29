@@ -21,7 +21,10 @@ logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class PoliticaReintento:
-    """Los intentos incluyen el primero; los timeouts se ajustan al tiempo restante."""
+    """Los intentos incluyen el primero; los timeouts se ajustan al tiempo restante.
+
+    espera_maxima limita el backoff base; Retry-After y jitter pueden superarla.
+    """
 
     intentos: int = 3
     espera_inicial: float = 1.0
@@ -115,9 +118,10 @@ def con_reintento[T](
                 raise ReintentosAgotados(
                     intento, error, presupuesto_agotado=restante <= 0
                 ) from None
-            pausa = min(politica.espera_maxima, espera + uniform(0, politica.jitter))
+            pausa_base = min(politica.espera_maxima, espera)
             if error.retry_after is not None:
-                pausa = max(pausa, error.retry_after)
+                pausa_base = max(pausa_base, error.retry_after)
+            pausa = pausa_base + uniform(0, politica.jitter)
             if pausa >= restante:
                 # No se acorta Retry-After para forzar otro intento antes de tiempo.
                 raise ReintentosAgotados(intento, error, presupuesto_agotado=True) from None

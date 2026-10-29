@@ -95,10 +95,15 @@ class ReintentosTests(unittest.TestCase):
         operacion.assert_called_once()
         self.esperar.assert_not_called()
 
-    def test_retry_after_prevalece_sobre_el_tope_de_backoff(self):
-        operacion = Mock(side_effect=[ErrorTemporalProveedor("429", retry_after=12), "ok"])
-        self.assertEqual(con_reintento(operacion), "ok")
-        self.esperar.assert_called_once_with(12)
+    def test_retry_after_se_respeta_como_minimo_y_conserva_jitter(self):
+        for retry_after, pausa in ((0, 1.25), (1, 1.25), (12, 12.25)):
+            with self.subTest(retry_after=retry_after):
+                self.esperar.reset_mock()
+                operacion = Mock(
+                    side_effect=[ErrorTemporalProveedor("429", retry_after=retry_after), "ok"]
+                )
+                self.assertEqual(con_reintento(operacion), "ok")
+                self.esperar.assert_called_once_with(pausa)
 
     def test_retry_after_fuera_del_presupuesto_no_se_acorta_ni_se_espera(self):
         operacion = Mock(side_effect=ErrorTemporalProveedor("429", retry_after=100))
@@ -108,6 +113,20 @@ class ReintentosTests(unittest.TestCase):
         self.assertEqual(resultado.exception.intentos, 1)
         operacion.assert_called_once()
         self.esperar.assert_not_called()
+
+    def test_pausa_con_jitter_debe_caber_en_el_presupuesto(self):
+        for retry_after, presupuesto in ((None, 1.125), (None, 1.25), (12, 12.125), (12, 12.25)):
+            with self.subTest(retry_after=retry_after, presupuesto=presupuesto):
+                error = ErrorTemporalProveedor("503", retry_after=retry_after)
+                operacion = Mock(side_effect=error)
+                politica = PoliticaReintento(presupuesto_segundos=presupuesto)
+                with self.assertRaises(ReintentosAgotados) as resultado:
+                    con_reintento(operacion, politica)
+                self.assertTrue(resultado.exception.presupuesto_agotado)
+                self.assertEqual(resultado.exception.intentos, 1)
+                self.assertIs(resultado.exception.ultimo_error, error)
+                operacion.assert_called_once()
+                self.esperar.assert_not_called()
 
     def test_presupuesto_incluye_duracion_de_peticion(self):
         def fallar(restante):
@@ -129,12 +148,12 @@ class ReintentosTests(unittest.TestCase):
         self.assertEqual(resultado.exception.intentos, 1)
         operacion.assert_called_once()
 
-    def test_espera_exponencial_tiene_tope_incluido_jitter(self):
+    def test_espera_exponencial_limita_la_base_y_conserva_jitter(self):
         operacion = Mock(side_effect=[ErrorTemporalProveedor("503")] * 4 + ["ok"])
         politica = PoliticaReintento(intentos=5, espera_inicial=4, espera_maxima=5, jitter=2)
         self.azar.return_value = 1
         self.assertEqual(con_reintento(operacion, politica), "ok")
-        self.assertEqual(self.esperar.call_args_list, [call(5)] * 4)
+        self.assertEqual(self.esperar.call_args_list, [call(5), call(6), call(6), call(6)])
 
     def test_timeout_se_reduce_para_ajustarse_al_tiempo_restante(self):
         politica = PoliticaReintento()
