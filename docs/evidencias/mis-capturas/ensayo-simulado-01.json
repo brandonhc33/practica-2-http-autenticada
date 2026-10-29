@@ -1,0 +1,148 @@
+{
+  "modo": "simulado",
+  "modelo": "gemini-3.5-flash-lite",
+  "inicio": "2026-10-29T01:13:01.294114+00:00",
+  "limites": {
+    "consultas": 20,
+    "envios_http": 30,
+    "presupuesto_segundos": 120,
+    "costo_conocido_usd": "0.01"
+  },
+  "nota_costo": "Estimación con tarifas de pago; no acredita facturación. Los intentos sin uso reportado conservan consumo desconocido. El umbral de costo conocido se comprueba entre consultas, no es un tope de facturación.",
+  "consultas": [
+    {
+      "numero": 1,
+      "inicio": "2026-10-29T01:13:01.294907+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "message": {
+              "content": "OK"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1000,
+          "completion_tokens": 2000,
+          "total_tokens": 3000
+        }
+      },
+      "fin": "2026-10-29T01:13:01.295426+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 1,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 1,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 1000,
+        "tokens_salida": 2000,
+        "tokens_total": 3000,
+        "costo_conocido_usd": "0.0053"
+      }
+    },
+    {
+      "numero": 2,
+      "inicio": "2026-10-29T01:13:01.295660+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "message": {
+              "content": "OK"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1000,
+          "completion_tokens": 2000,
+          "total_tokens": 3000
+        }
+      },
+      "fin": "2026-10-29T01:13:01.296727+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 2,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 4,
+        "intentos_sin_uso": 2,
+        "tokens_entrada": 2000,
+        "tokens_salida": 4000,
+        "tokens_total": 6000,
+        "costo_conocido_usd": "0.0106"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "fecha": "2026-10-29T01:13:01.295334+00:00",
+      "consulta": 1,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=0.000s"
+    },
+    {
+      "fecha": "2026-10-29T01:13:01.295414+00:00",
+      "consulta": 1,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=3000, costo_usd=0.0053, acumulado_usd=0.0053, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T01:13:01.296018+00:00",
+      "consulta": 2,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: ErrorTemporalProveedor, HTTP=429, duración=0.000s"
+    },
+    {
+      "fecha": "2026-10-29T01:13:01.296062+00:00",
+      "consulta": 2,
+      "nivel": "WARNING",
+      "mensaje": "Intento 1/3 falló (ErrorTemporalProveedor, HTTP=429); reintentando en 1.125s."
+    },
+    {
+      "fecha": "2026-10-29T01:13:01.296340+00:00",
+      "consulta": 2,
+      "nivel": "INFO",
+      "mensaje": "Intento 2/3: ErrorTemporalProveedor, HTTP=503, duración=0.000s"
+    },
+    {
+      "fecha": "2026-10-29T01:13:01.296375+00:00",
+      "consulta": 2,
+      "nivel": "WARNING",
+      "mensaje": "Intento 2/3 falló (ErrorTemporalProveedor, HTTP=503); reintentando en 2.125s."
+    },
+    {
+      "fecha": "2026-10-29T01:13:01.296669+00:00",
+      "consulta": 2,
+      "nivel": "INFO",
+      "mensaje": "Intento 3/3: completado, duración=0.000s"
+    },
+    {
+      "fecha": "2026-10-29T01:13:01.296718+00:00",
+      "consulta": 2,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=3000, costo_usd=0.0053, acumulado_usd=0.0106, intentos=3"
+    }
+  ],
+  "primer_429": {
+    "fecha": "2026-10-29T01:13:01.296018+00:00",
+    "consulta": 2,
+    "nivel": "INFO",
+    "mensaje": "Intento 1/3: ErrorTemporalProveedor, HTTP=429, duración=0.000s"
+  },
+  "fin": "2026-10-29T01:13:01.296961+00:00",
+  "motivo_fin": "primer_429_observado",
+  "resumen": {
+    "respuestas_con_costo": 2,
+    "respuestas_sin_costo": 0,
+    "consultas_fallidas": 0,
+    "intentos_http": 4,
+    "intentos_sin_uso": 2,
+    "tokens_entrada": 2000,
+    "tokens_salida": 4000,
+    "tokens_total": 6000,
+    "costo_conocido_usd": "0.0106"
+  },
+  "duracion_segundos": 0.003
+}

@@ -1,6 +1,6 @@
 # Práctica 2: consultas HTTP autenticadas con Gemini
 
-Miniaplicación de Skillnest para consultar Gemini desde Python y mediante una API local protegida con Bearer token. Incluye las actividades de conexión HTTP, arquitectura, comparación de modelos, prompts con salida JSON estructurada y cliente con reintentos ante fallos temporales.
+Miniaplicación de Skillnest para consultar Gemini desde Python y mediante una API local protegida con Bearer token. Incluye las actividades de conexión HTTP, arquitectura, comparación de modelos, prompts con salida JSON estructurada, reintentos ante fallos temporales, costos por sesión y pruebas automatizadas del cliente modular.
 
 El recorrido de este README es: actividades del curso, instalación, preparación y configuración, uso y comandos, verificación y referencia técnica. La [justificación del proyecto](#justificación-del-proyecto-actual) y la [propuesta final de Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) se encuentran al final.
 
@@ -18,17 +18,24 @@ El recorrido de este README es: actividades del curso, instalación, preparació
     1. [Resumen de comandos](#resumen-de-comandos)
     2. [Consultar Gemini desde Python](#consultar-gemini-desde-python)
     3. [Cliente con reintentos: Bloque 12](#cliente-con-reintentos-bloque-12)
-    4. [Iniciar la API local](#iniciar-la-api-local)
-    5. [Probar con Yaak o Postman](#probar-con-yaak-o-postman)
+    4. [Costos por sesión y evidencias: bloques 13 y 14](#costos-por-sesión-y-evidencias-bloques-13-y-14)
+        1. [Registro de costo por sesión](#registro-de-costo-por-sesión)
+        2. [Ensayo simulado de backoff y costo](#ensayo-simulado-de-backoff-y-costo)
+        3. [Ensayo real de HTTP 429](#ensayo-real-de-http-429)
+    5. [Iniciar la API local](#iniciar-la-api-local)
+    6. [Probar con Yaak o Postman](#probar-con-yaak-o-postman)
         1. [Consulta directa a Gemini](#consulta-directa-a-gemini)
         2. [Consulta mediante la API Python](#consulta-mediante-la-api-python)
-    6. [Comparar costo y latencia: Bloque 9](#comparar-costo-y-latencia-bloque-9)
-    7. [Banco de prompts y salida estructurada: Bloque 10](#banco-de-prompts-y-salida-estructurada-bloque-10)
+    7. [Comparar costo y latencia: Bloque 9](#comparar-costo-y-latencia-bloque-9)
+    8. [Banco de prompts y salida estructurada: Bloque 10](#banco-de-prompts-y-salida-estructurada-bloque-10)
         1. [Prompts para el proyecto final de Ley REP](#prompts-para-el-proyecto-final-de-ley-rep)
         2. [Evaluar el banco](#evaluar-el-banco)
 6. [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
     1. [Pruebas automatizadas](#pruebas-automatizadas)
+        1. [Checklist del cliente modular: Bloque 14](#checklist-del-cliente-modular-bloque-14)
+        2. [Resultados y capturas de las pruebas](#resultados-y-capturas-de-las-pruebas)
     2. [Comprobaciones de la tarea](#comprobaciones-de-la-tarea)
+    3. [Evidencias y entrega: bloques 13 y 14](#evidencias-y-entrega-bloques-13-y-14)
 7. [Referencia de la API](#referencia-de-la-api)
     1. [Solicitud de consulta](#solicitud-de-consulta)
     2. [Campos y validaciones](#campos-y-validaciones)
@@ -58,6 +65,8 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloque 9: elección de modelo | [Comparar costo y latencia](#comparar-costo-y-latencia-bloque-9) con las mismas preguntas. | [Decisión de arquitectura](docs/decision-arquitectura.md) y [mediciones reales](docs/evaluaciones/gemini-2026-10-20.json). |
 | Bloque 10: prompts y JSON | [Usar el banco y evaluar su consistencia](#banco-de-prompts-y-salida-estructurada-bloque-10). | [Banco](prompts/banco.py), [evaluador](prompts/test_consistencia.py), [resultados](prompts/registro_resultados.json) y [guía de estudio](docs/bloque-10-prompts.md). |
 | Bloque 12: cliente modular | [Revisar la política de reintentos](#cliente-con-reintentos-bloque-12) y ejecutar las pruebas simuladas. | [Errores](src/errores_cliente.py), [política](src/reintentos.py), [pruebas de la política](tests/test_reintentos.py) e [integración](tests/test_cliente_resiliente.py). |
+| Bloque 13: backoff y costo | [Revisar sesiones de costo y el ensayo](#costos-por-sesión-y-evidencias-bloques-13-y-14). | [Registro](src/registro_costos.py), [ensayo real de HTTP 429](docs/evidencias/mis-capturas/ensayo-real-01.json) y [capturas de terminal](docs/evidencias/mis-capturas/README.md). |
+| Bloque 14: pruebas unitarias | [Revisar el checklist](#checklist-del-cliente-modular-bloque-14) y ejecutar `uv run python -m pytest tests -v`. | [Resultados y capturas](#resultados-y-capturas-de-las-pruebas), [cliente modular](tests/test_cliente_modular.py), [registro de costos](tests/test_registro_costos.py) y [guía de entrega](docs/entrega-bloques-13-14.md). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -180,7 +189,9 @@ Ejecuta los comandos desde la raíz del repositorio, después de completar la pr
 | Consultar el catálogo accesible de Gemini | `uv run python -m src.comparar_modelos --listar-modelos` |
 | Comparar modelos | `uv run python -m src.comparar_modelos --repeticiones 3 --salida docs/evaluaciones/gemini-nueva-ejecucion.json` |
 | Evaluar el banco de prompts | `uv run python -m prompts.test_consistencia --salida prompts/registro_resultados_nueva_ejecucion.json` |
-| Ejecutar pruebas sin llamadas reales | `uv run python -m tests -v` |
+| Ejecutar pruebas sin llamadas reales | `uv run python -m pytest tests -v` |
+| Ejecutar mediante el runner anterior | `uv run python -m tests -v` |
+| Ensayo de 429 sin consumir tokens | `uv run python -m scripts.ensayo_rate_limit --simulado --salida docs/evidencias/ensayo-nuevo.json` |
 | Revisar estilo y errores de código | `uv run ruff check src tests prompts` |
 | Revisar tipos | `uv run basedpyright` |
 
@@ -234,7 +245,7 @@ Para inspeccionar el JSON completo de Gemini desde la terminal, agrega `--raw`:
 uv run python -m src.agente_gemini --raw "Hola, responde con una frase breve."
 ```
 
-También puedes usar `uv run python -m src.agente_gemini --raw` con la pregunta predeterminada. Esta opción carga `GEMINI_API_KEY` desde `.env` y consulta directamente a Gemini; puedes ejecutarla sin iniciar la API local. Imprime todos los campos del proveedor, igual que una respuesta exitosa de `/consultar/raw`, y no calcula costos ni consulta el tipo de cambio.
+También puedes usar `uv run python -m src.agente_gemini --raw` con la pregunta predeterminada. Esta opción carga `GEMINI_API_KEY` desde `.env` y consulta directamente a Gemini; puedes ejecutarla sin iniciar la API local. Imprime todos los campos del proveedor, igual que una respuesta exitosa de `/consultar/raw`, sin añadir costos al JSON ni consultar el tipo de cambio. El registro interno de sesión acumula el consumo conocido en USD.
 
 Para ver la ayuda del comando:
 
@@ -276,9 +287,9 @@ La API y el CLI reutilizan `consultar_gemini_raw()` y su política de [src/reint
 | Timeout de lectura o interrupción de conexión cuyo momento no puede determinarse | Falla sin repetir: el resultado y su consumo pueden ser desconocidos. |
 | Error de certificado TLS, JSON inválido, salida truncada o esquema incorrecto | Falla sin reintentos. |
 
-Los valores predeterminados son: **3 intentos en total**, espera inicial de **1 segundo**, espera que se duplica después de cada fallo, variación aleatoria de **0 a 0,25 segundos**, tope de espera calculada de **8 segundos** y presupuesto de **90 segundos**. El timeout de conexión/lectura conserva como máximos los **10/60 segundos** originales.
+Los valores predeterminados son: **3 intentos en total**, espera inicial de **1 segundo**, espera base que se duplica después de cada fallo hasta un tope de **8 segundos**, variación aleatoria (jitter) de **0 a 0,25 segundos** y presupuesto de **90 segundos**. `espera_maxima` limita el backoff base; el jitter se suma al final y conserva la variación incluso al alcanzar ese tope: una base de 8 segundos produce una pausa de entre 8 y 8,25 segundos. El timeout de conexión/lectura conserva como máximos los **10/60 segundos** originales.
 
-`Retry-After` acepta segundos enteros o una fecha HTTP y se respeta como espera mínima, aunque supere el tope del backoff. Si esa espera no cabe en el presupuesto restante, el cliente termina inmediatamente con `ReintentosAgotados`; no acorta la espera ni inicia otra petición. Un encabezado ausente o inválido usa el backoff.
+`Retry-After` acepta segundos enteros o una fecha HTTP y se respeta como espera mínima, aunque supere el tope del backoff. Primero se elige el mayor valor entre el backoff base y `Retry-After`, y después se suma el jitter: si el proveedor pide 12 segundos, la pausa será de entre 12 y 12,25 segundos. Si la pausa final es mayor o igual al presupuesto restante, el cliente termina inmediatamente con `ReintentosAgotados`; no acorta la espera ni inicia otra petición. Un encabezado ausente o inválido usa el backoff más jitter.
 
 El presupuesto incluye el tiempo observado de las peticiones y las pausas. Se comprueba antes de iniciar cada intento y espera, y reduce ambos timeouts para ajustarlos al tiempo restante. **No cancela estrictamente una petición HTTP que ya está en curso**: los timeouts de Requests y la resolución DNS no garantizan un límite absoluto de tiempo de pared.
 
@@ -319,6 +330,86 @@ El comparador de modelos y el evaluador de prompts pasan explícitamente `SIN_RE
 ```bash
 uv run python -m unittest tests.test_reintentos tests.test_cliente_resiliente -v
 ```
+
+Plan pendiente de implementación: [PRD 01: control de consumo de Gemini](docs/prd-01-control-consumo-gemini.md). Propone espaciar las peticiones, limitar la concurrencia y compartir las pausas por HTTP 429 dentro de un proceso, conservando el presupuesto y la política de reintentos existentes.
+
+### Costos por sesión y evidencias: bloques 13 y 14
+
+El Bloque 13 combina la recuperación ante límites de uso con el seguimiento del consumo. La [política de reintentos del Bloque 12](#cliente-con-reintentos-bloque-12) conserva backoff exponencial, techo, jitter, `Retry-After` y presupuesto de tiempo. El registro de sesión añade el costo acumulado y las evidencias comprueban su comportamiento, tanto con respuestas simuladas como con Gemini real.
+
+#### Registro de costo por sesión
+
+El [registro de costos](src/registro_costos.py) observa el resultado de `consultar_gemini_raw()` después del bucle de reintentos. Acumula el costo conocido en USD una sola vez por respuesta, con `Decimal`, y cuenta por separado los intentos sin consumo reportado. Registra también una respuesta cuyos tokens llegaron pero cuyo contenido después se rechaza por truncamiento o por incumplir el esquema. Este registro no añade campos a las respuestas HTTP ni al JSON del CLI, y no realiza consultas al dólar.
+
+Por defecto, el total vive en el proceso actual y se comparte entre sus consultas. Para separar un ensayo o sesión, usa un contexto explícito:
+
+```python
+from src.agente_gemini import obtener_dato_de_prueba
+from src.registro_costos import sesion_costos
+
+with sesion_costos() as registro:
+    obtener_dato_de_prueba("Responde únicamente OK.")
+    obtener_dato_de_prueba("Responde únicamente LISTO.")
+    print(registro.resumen().como_dict())
+```
+
+Las dos consultas del ejemplo son reales. Crear otra sesión empieza un total nuevo. El registro protege las sumas entre hilos que comparten la instancia; no coordina procesos ni identifica usuarios automáticamente. El acumulado es una estimación de consumo conocido, no una factura ni un límite de gasto.
+
+#### Ensayo simulado de backoff y costo
+
+Para demostrar el backoff sin usar la red ni consumir tokens, el script sustituye el transporte y el tiempo por respuestas y esperas controladas. Usa el mismo cliente y la misma política:
+
+```bash
+uv run python -m scripts.ensayo_rate_limit --simulado --salida docs/evidencias/ensayo-nuevo.json
+```
+
+La [ejecución simulada conservada](docs/evidencias/mis-capturas/ensayo-simulado-01.json) completa primero una consulta y después se recupera de la secuencia **429 → 503 → 200**. Las esperas simuladas son de **1,125 y 2,125 segundos**. Termina con dos respuestas, cuatro envíos HTTP y **US$ 0.0106 de costo de prueba**, sumados una sola vez por respuesta. Estos tokens y costos son datos simulados.
+
+![Bloque 13: ensayo simulado con backoff, recuperación y costo acumulado](docs/evidencias/mis-capturas/bloque-13/01-ensayo-simulado.png)
+
+#### Ensayo real de HTTP 429
+
+El ensayo real utiliza `GEMINI_API_KEY` de `.env` y consume cuota y tokens. Para repetirlo con una salida nueva:
+
+```bash
+uv run python -m scripts.ensayo_rate_limit \
+  --real \
+  --modelo flash-lite \
+  --consultas 30 \
+  --max-envios 36 \
+  --presupuesto-total 180 \
+  --salida docs/evidencias/ensayo-real-nuevo.json
+```
+
+El script exige elegir `--real` o `--simulado` y no sobrescribe evidencias anteriores. Se detiene después de la primera consulta donde aparece un 429 o al alcanzar los límites del ensayo. El umbral de costo conocido se comprueba entre consultas y no constituye un tope estricto de facturación.
+
+La ejecución capturada desde la terminal el **28 de octubre de 2026** quedó registrada en el [JSON original del ensayo real](docs/evidencias/mis-capturas/ensayo-real-01.json):
+
+| Dato | Resultado observado |
+| --- | --- |
+| Horario local | 22:13:34 a 22:14:19, America/Santiago. |
+| Modelo | `gemini-3.5-flash-lite`. |
+| Consultas | 16: 15 completadas y una fallida tras agotar sus intentos. |
+| Primer HTTP 429 | Primer intento de la consulta 16; envío HTTP número 16. |
+| Reintentos de esa consulta | Dos adicionales; los tres intentos recibieron HTTP 429. |
+| Esperas | 1,172 y 2,008 segundos. |
+| Envíos HTTP totales | 18. |
+| Tokens reportados | 171 de entrada y 15 de salida; total 186. |
+| Costo conocido estimado | **US$ 0.0000888**, correspondiente a las 15 respuestas recibidas. |
+| Intentos sin uso reportado | 3; su consumo se conserva como desconocido. |
+
+La consulta 16 terminó con `ReintentosAgotados`, respetando el máximo de tres intentos y manteniendo el acumulado anterior. El mensaje `primer_429_observado` indica que el ensayo encontró el límite de uso; no implica que esa consulta haya terminado con éxito.
+
+![Bloque 13: HTTP 429 real, esperas, agotamiento de reintentos y resumen del costo conocido](docs/evidencias/mis-capturas/bloque-13/03-ensayo-real-resultado.png)
+
+<details>
+<summary>Ver el comando y el inicio del ensayo real</summary>
+
+![Bloque 13: comando del ensayo real y primeras respuestas con costo acumulado](docs/evidencias/mis-capturas/bloque-13/02-ensayo-real-inicio.png)
+
+</details>
+
+La [guía de entrega](docs/entrega-bloques-13-14.md#recuperación-observada-en-la-ejecución-complementaria) conserva también una ejecución anterior que sí se recuperó en su tercer intento. Ambos desenlaces están previstos por la política. Las [evidencias y archivos de entrega](#evidencias-y-entrega-bloques-13-y-14) reúnen las capturas y registros de cada ejecución.
 
 ### Iniciar la API local
 
@@ -439,7 +530,7 @@ Desde `POST /consultar`, con el Bearer token local habitual:
 
 Al elegir un prompt, `detalles.respuesta` es un **objeto JSON validado**. `uso` y `costo_estimado` conservan su función. Si se omite `prompt` o vale `null`, `respuesta` sigue siendo texto libre. El cliente envía el sistema en un mensaje `system` y el esquema mediante `response_format`, porque utiliza la interfaz compatible con OpenAI de Gemini. Una salida truncada, JSON inválido o un contrato incorrecto produce HTTP 502 sin reintentos automáticos.
 
-`POST /consultar/raw` y `--raw` también aceptan un prompt; permiten inspeccionar todo el JSON del proveedor y no validan su contenido generado ni calculan costos.
+`POST /consultar/raw` y `--raw` también aceptan un prompt; permiten inspeccionar todo el JSON del proveedor y no validan su contenido generado ni añaden costos al JSON. El consumo conocido se acumula internamente en USD, sin consultar el dólar.
 
 #### Prompts para el proyecto final de Ley REP
 
@@ -562,11 +653,13 @@ La evaluación posterior también obtuvo **9/9**, con un costo estimado de **US$
 
 ### Pruebas automatizadas
 
-Ejecuta la suite:
+Ejecuta la suite con pytest, que también ejecuta las clases de unittest existentes:
 
 ```bash
-uv run python -m tests -v
+uv run python -m pytest tests -v
 ```
+
+`tests/conftest.py` bloquea conexiones externas durante esta ejecución: cualquier acceso de red sin simular hace fallar la prueba. El runner anterior sigue disponible con `uv run python -m tests -v`. Las dependencias de desarrollo, incluido pytest, están declaradas en `pyproject.toml`, fijadas en `uv.lock` y exportadas también a `requirements.txt`.
 
 Las pruebas comprueban autenticación, configuración, validaciones, consultas, manejo de errores y costos. Cubren la salida del comando y del endpoint, caché, razonamiento, importes pequeños sin exponentes, conversión USD/CLP, tasa manual y fallas de la fuente del dólar. También comprueban que `/consultar/raw` conserve todo el JSON del proveedor, incluso sin texto generado, y que no consulte el dólar. El evaluador tiene pruebas de tarifas por candidato, errores, respuestas truncadas, promedios, planificación e inventario paginado. Simulan la comunicación con Gemini y el servicio de tipo de cambio, por lo que no requieren credenciales reales ni conexión a esos servicios una vez instaladas las dependencias.
 
@@ -574,12 +667,63 @@ El Bloque 10 agrega cobertura de sistema y esquema enviados, salidas válidas y 
 
 El Bloque 12 agrega recuperación tras 429 y 5xx, agotamiento, autenticación sin reintentos, conexión y lectura, `Retry-After`, backoff con jitter, reloj virtual, presupuesto de tiempo, errores HTTP locales y conservación de las evaluaciones sin reintentos.
 
+Los bloques 13 y 14 agregan pruebas unitarias directas del transporte y la fachada, acumulación exacta, sesiones independientes, sumas concurrentes, consumo desconocido, registro previo al rechazo del contenido y ausencia de doble contabilización después de reintentos. También comprueban que el ensayo respete el máximo de envíos y preserve archivos anteriores.
+
 Para revisar el código con las herramientas de desarrollo:
 
 ```bash
 uv run ruff check src tests prompts
 uv run basedpyright
 ```
+
+#### Checklist del cliente modular: Bloque 14
+
+El Bloque 14 convierte las verificaciones manuales del cliente en pruebas repetibles. Los mocks sustituyen las dependencias externas, como `requests.post`, la espera y el reloj; las funciones reales del cliente siguen ejecutándose. La suite combina pruebas unitarias de funciones con pruebas de integración local mediante `TestClient` y servicios simulados.
+
+| Responsabilidad del curso | Implementación en este proyecto | Escenarios comprobados |
+| --- | --- | --- |
+| `enviar_peticion` | `_enviar_peticion()` en [agente_gemini.py](src/agente_gemini.py). | 401/403, 429 y 5xx recuperables; JSON exitoso sin transformaciones. |
+| `con_reintento` | [reintentos.py](src/reintentos.py). | Recuperación, errores permanentes sin repetición, agotamiento, esperas, `Retry-After` y presupuesto. |
+| `registrar_costo` | [costos.py](src/costos.py) y [registro_costos.py](src/registro_costos.py). | Cálculo con tokens conocidos, acumulación, aislamiento entre sesiones, uso desconocido y ausencia de dobles registros. |
+| `consultar_modelo` | `consultar_gemini()` y traducción de errores en API y CLI. | Propagación de la misma causa y resultado final comprensible al agotar intentos. |
+
+Se conservan las categorías propias `ErrorAutenticacion`, `ErrorTemporalProveedor` y `ReintentosAgotados`, en lugar de las excepciones genéricas del ejemplo del curso. La API y el CLI mantienen sus contratos existentes. Las [equivalencias y verificaciones de entrega](docs/entrega-bloques-13-14.md#correspondencia-con-el-checklist-del-curso) explican esta correspondencia.
+
+Para ejecutar solo el conjunto seleccionado del checklist:
+
+```bash
+uv run python -m pytest \
+  tests/test_cliente_modular.py \
+  tests/test_reintentos.py \
+  tests/test_registro_costos.py \
+  -v
+```
+
+#### Resultados y capturas de las pruebas
+
+Las capturas tomadas desde la terminal el 28 de octubre de 2026 muestran:
+
+| Ejecución | Resultado | Tiempo de la ejecución capturada |
+| --- | --- | --- |
+| Suite completa: `uv run python -m pytest tests -q` | **152 pruebas y 389 subcasos correctos.** | 1,08 segundos. |
+| Checklist seleccionado con `-v` | **36 pruebas y 38 subcasos correctos.** | 0,32 segundos. |
+
+Los tiempos pueden variar entre ejecuciones. Las pruebas automáticas usan datos simulados; el ensayo real de HTTP 429 se ejecuta por separado.
+
+![Bloque 14: suite completa con 152 pruebas y 389 subcasos correctos](docs/evidencias/mis-capturas/bloque-14/01-suite-completa.png)
+
+<details>
+<summary>Ver las pruebas del checklist: comando, nombres y resultado</summary>
+
+Comando y primeras pruebas del transporte, la fachada y los reintentos:
+
+![Bloque 14: comando del checklist y primeras pruebas correctas](docs/evidencias/mis-capturas/bloque-14/02-checklist-inicio.png)
+
+Continuación, pruebas del registro de costos y resumen final:
+
+![Bloque 14: continuación del checklist y resumen de 36 pruebas correctas](docs/evidencias/mis-capturas/bloque-14/03-checklist-resumen.png)
+
+</details>
 
 ### Comprobaciones de la tarea
 
@@ -592,6 +736,19 @@ Para verificar lo implementado:
 - Ejecuta la suite de pruebas automatizadas.
 
 La carpeta [docs](docs/) contiene las evidencias de peticiones del proyecto, incluida la [captura del endpoint de consulta](docs/evidencia_endpoint_consultar.png).
+
+### Evidencias y entrega: bloques 13 y 14
+
+Las seis capturas de terminal se conservan en `docs/evidencias/mis-capturas/`, separadas en las carpetas `bloque-13/` y `bloque-14/`. Las imágenes anteriores muestran los resultados y las secciones desplegables permiten consultar el comando del ensayo real y el checklist completo.
+
+| Recurso | Contenido |
+| --- | --- |
+| [Índice de evidencias](docs/evidencias/mis-capturas/README.md) | Las seis capturas, su orden de lectura y qué demuestra cada imagen. |
+| [Registro simulado](docs/evidencias/mis-capturas/ensayo-simulado-01.json) | Respuestas de prueba, errores, esperas y costo acumulado del ensayo sin red. |
+| [Registro real](docs/evidencias/mis-capturas/ensayo-real-01.json) | Consultas a Gemini, tres HTTP 429, agotamiento y consumo conocido. |
+| [Manifiesto de las capturas](docs/evidencias/mis-capturas/manifest.json) | Nombres originales, dimensiones y SHA-256 de las copias sin modificaciones. |
+| [Guía de entrega](docs/entrega-bloques-13-14.md) | Checklist, correspondencia con el curso, comandos y ejecución complementaria con recuperación. |
+| [Paquete de entrega ZIP](output/entrega-bloques-13-14.zip) | Código, pruebas, dependencias, documentación, capturas y registros originales. |
 
 ## Referencia de la API
 
@@ -797,6 +954,7 @@ Cuando el mensaje de la prueba Python o `detalles.causa` indique HTTP 400, 401 o
 │   ├── costos.py          # Tarifas por modelo y costos en USD y CLP
 │   ├── errores_cliente.py # Categorías públicas de errores del proveedor
 │   ├── esquemas.py        # Modelos de datos y validaciones
+│   ├── registro_costos.py # Acumulado de sesión en USD y consumo desconocido
 │   ├── reintentos.py      # Política, Retry-After y backoff con jitter (Bloque 12)
 │   ├── respuestas.py      # Contrato de respuestas y manejo de errores
 │   ├── salida_estructurada.py # Parseo y validación del contenido generado
@@ -817,10 +975,13 @@ Cuando el mensaje de la prueba Python o `detalles.causa` indique HTTP 400, 401 o
 │   ├── ley_20920.json     # Artículos y metadatos de procedencia
 │   └── README.md         # Alcance y reproducción de la conversión
 ├── scripts/
-│   └── extraer_ley_rep.py # Conversión del PDF a texto y artículos
+│   ├── extraer_ley_rep.py # Conversión del PDF a texto y artículos
+│   ├── ensayo_rate_limit.py # Ensayo real o simulado de 429, con límites
+│   └── capturar_evidencia.py # Captura de salidas conservadas, mediante Chromium
 ├── docs/                  # Evidencias, diagrama y decisión de arquitectura
 │   ├── decision-arquitectura.md
 │   ├── bloque-10-prompts.md # Guía de estudio aplicada al código
+│   ├── entrega-bloques-13-14.md # Checklist final, capturas y ensayo real
 │   └── evaluaciones/      # Respuestas y mediciones originales de Gemini
 ├── api.postman_collection.json
 ├── gemini.postman_collection.json

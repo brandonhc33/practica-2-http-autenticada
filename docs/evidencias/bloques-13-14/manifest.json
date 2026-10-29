@@ -1,0 +1,48 @@
+{
+  "generado_utc": "2026-10-29T01:02:29.211524+00:00",
+  "descripcion": "Ejecuciones conservadas; capturas de un visor HTML local de sus salidas.",
+  "archivos": {
+    "docs/evidencias/bloques-13-14/01-suite-completa.html": "7e0001ae6c9d57597b2a77a03867ae0ccc789978995009cc97d6cf0b345703f9",
+    "docs/evidencias/bloques-13-14/01-suite-completa.png": "f643a15ff5de019a8020ae5106062107ecb667f941c693c8fc536b95b02e67bd",
+    "docs/evidencias/bloques-13-14/01-suite-completa.txt": "fedb7f5cc7081afdf265a36289d326b74b727fa5e193f784cc08c3453a3ce501",
+    "docs/evidencias/bloques-13-14/02-checklist-cliente.html": "4e7d09d8e1ee3b3bdf725ba3b618043e77cf8e5c278e17c71fe9ee8f1c1a049e",
+    "docs/evidencias/bloques-13-14/02-checklist-cliente.png": "bcaef9cde6499d7b6b727dcaeff43c25c09e209c70af65fdd8805ac81784e9c5",
+    "docs/evidencias/bloques-13-14/02-checklist-cliente.txt": "d4e714af719016a74116219fc8d3d96e3f38732b46bcf5c4d950daea368dbd7c",
+    "docs/evidencias/bloques-13-14/03-ensayo-simulado.html": "5551ed7e22079fb21ecbf643efad97ba4d36dfa3322f81c1a93211752257c286",
+    "docs/evidencias/bloques-13-14/03-ensayo-simulado.json": "98bc55c149280779a4c8df3cdbd79b0088cbd1b016a319e590702b1731a24d34",
+    "docs/evidencias/bloques-13-14/03-ensayo-simulado.png": "fa58f2899573a8c750d81787c6821d837e36e8e31a4ce34ec0e13727053eda2c",
+    "docs/evidencias/bloques-13-14/03-ensayo-simulado.txt": "685132f5e0ccae4a094b5607fbfc87fc6128de62720624c1bc97e2c37a2bff0d",
+    "docs/evidencias/bloques-13-14/04-ensayo-real-flash-lite.html": "3803e28a60340c27284409596d2751cffedffde9d0c021a22bb4fb9053eda75c",
+    "docs/evidencias/bloques-13-14/04-ensayo-real-flash-lite.json": "68e6f6fd188048a4d30af60bcd8a3339f90aecb627f99b27488e8750a58e2b26",
+    "docs/evidencias/bloques-13-14/04-ensayo-real-flash-lite.png": "7e3f230cf495f574263f8019399860d3c4187d19592ce98f335a4f20bad0ee27",
+    "docs/evidencias/bloques-13-14/04-ensayo-real-flash-lite.txt": "1a8a3fcd1a84d46f390fff31206bfbcc79cc46bdcba41a4f490d3ecf4fc2abce",
+    "docs/evidencias/bloques-13-14/05-comprobaciones.txt": "896bcba5221c8f04d256cddc1d70fafd287ba5ba3390a7b7fd9ad03b1ab9d3c9",
+    "docs/evidencias/bloques-13-14/06-tipos.txt": "781187327ad36d90662d760beff410527c0f8d764955322f2eaf208fa9659e77",
+    "docs/evidencias/bloques-13-14/07-unittest.txt": "f330df65dfeefde923b1bbd0512eed1e4f7f79d2929fe6a118445b5ca35321b0"
+  },
+  "fuentes": {
+    "src/agente_gemini.py": "3d2b5a4347a81f3a6a363ac5e2e9e48a0fa26f42c8831be3a28b10f4e0ad22c4",
+    "src/costos.py": "70902042a3a0720fe69fb8cbe1a500b7a327a3d402c5c58824527bd44dccd168",
+    "src/registro_costos.py": "cb1043ef508a78d102304006e44553fbc1572a997d11fc428f8f527c52792f85",
+    "src/reintentos.py": "6fcc36ea75a1b84d7b36d79b61381e65f6e4159f18618ae9de09d5cc627cfa8c",
+    "src/errores_cliente.py": "cf45662f96838c739a39fdf7d5d535e8c6f1a12652936bfb7b9b8abd0a819135",
+    "src/api.py": "59e7cb91540feade8a60b1a124505ff82f3ef863497d32f2f34d83e7ba1f7d09",
+    "tests/base.py": "67e189e348eb3691881c971e4306a403ba0a2b250d9195b47cea7732902bc4e3",
+    "tests/conftest.py": "47dca8e8adec78e8a8ec8627941083448be0d2e0aeaa05d4d5a18efbc65c85ec",
+    "tests/test_cliente_modular.py": "2814c0d52b95c47cc8a87d4d87052e593f4bf4cadf6c703e1b4b009d7c223490",
+    "tests/test_registro_costos.py": "be3c2611438e32b717f3f29818348f0dd556d33ed42329666e253819ac910610",
+    "tests/test_ensayo_rate_limit.py": "f0b4b96beeb5f3aac0f5a094bc2695df305ce1679698cf09541eb5ead21b11ba",
+    "scripts/ensayo_rate_limit.py": "b83717dd28ced7b3cc6bd13d6a280f7d3c9148304ca8af455d5f0878a6e3f866",
+    "scripts/capturar_evidencia.py": "d41e290d924bfd94ba3bb39398aa678e882b6001454f00236ad296e3d5b1d63e",
+    "pyproject.toml": "489a9b4bea7585c8e0afb6f7ae6dc88fc132b142213efc741e7100f8298ce267",
+    "uv.lock": "f58f591b3ebd588e9539b345ca17d2fe9057e76802d66d82d0010bd7e10c6929",
+    "requirements.txt": "5c8d5992662a73292f668e7716b4dc37e5b0a45d4a50936bf7e4037cb3955037"
+  },
+  "pruebas": {
+    "pytest": 152,
+    "subcasos": 389,
+    "checklist": 36,
+    "subcasos_checklist": 38,
+    "unittest": 152
+  }
+}

@@ -1,0 +1,5 @@
+$ uv run ruff check src tests prompts scripts/ensayo_rate_limit.py
+
+All checks passed!
+
+Código de salida: 0

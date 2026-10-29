@@ -1,0 +1,77 @@
+{
+  "generado_utc": "2026-10-29T01:23:18.614512+00:00",
+  "descripcion": "Capturas de terminal aportadas por el usuario; copias idénticas a los PNG originales.",
+  "carpeta_origen": "/home/brandonhc/Pictures/Screenshots/evidencias",
+  "capturas": [
+    {
+      "origen": "Screenshot_20261028_221307.png",
+      "archivo": "bloque-13/01-ensayo-simulado.png",
+      "sha256": "9b23e5723f26c0516b212ba25eb2f2793750092e7044433b1725cc3cf5b7437d",
+      "bytes": 129051,
+      "dimensiones": {
+        "ancho": 1081,
+        "alto": 654
+      },
+      "fecha_archivo": "2026-10-28T22:13:15.007578-03:00"
+    },
+    {
+      "origen": "Screenshot_20261028_221432.png",
+      "archivo": "bloque-13/02-ensayo-real-inicio.png",
+      "sha256": "408de6e442bdcd63217c9f09d87ed9c890f140a43a4d7cbb16b9cf4c7e551780",
+      "bytes": 226414,
+      "dimensiones": {
+        "ancho": 1267,
+        "alto": 880
+      },
+      "fecha_archivo": "2026-10-28T22:14:37.390777-03:00"
+    },
+    {
+      "origen": "Screenshot_20261028_221442.png",
+      "archivo": "bloque-13/03-ensayo-real-resultado.png",
+      "sha256": "d742494a99f00b2b908b8b355c3d5a07272a86e136d7ecf533f4f02d01e588e8",
+      "bytes": 140620,
+      "dimensiones": {
+        "ancho": 838,
+        "alto": 640
+      },
+      "fecha_archivo": "2026-10-28T22:14:48.292936-03:00"
+    },
+    {
+      "origen": "Screenshot_20261028_221133.png",
+      "archivo": "bloque-14/01-suite-completa.png",
+      "sha256": "bebf45be13b98e4615f4274a208b43ef7ef887332865bed8b3802e2b21691748",
+      "bytes": 27178,
+      "dimensiones": {
+        "ancho": 829,
+        "alto": 219
+      },
+      "fecha_archivo": "2026-10-28T22:11:40.217195-03:00"
+    },
+    {
+      "origen": "Screenshot_20261028_221210.png",
+      "archivo": "bloque-14/02-checklist-inicio.png",
+      "sha256": "89d2c276c907c0522d2a71a616eba80467cb793144ad7825c024ddd3c79dae15",
+      "bytes": 219603,
+      "dimensiones": {
+        "ancho": 1469,
+        "alto": 775
+      },
+      "fecha_archivo": "2026-10-28T22:12:18.863759-03:00"
+    },
+    {
+      "origen": "Screenshot_20261028_221222.png",
+      "archivo": "bloque-14/03-checklist-resumen.png",
+      "sha256": "279c8377940dd83ee5da5465c215068838d5ec790ad8e3e1dd21edaf804bd07d",
+      "bytes": 306833,
+      "dimensiones": {
+        "ancho": 1388,
+        "alto": 859
+      },
+      "fecha_archivo": "2026-10-28T22:12:38.646048-03:00"
+    }
+  ],
+  "registros": {
+    "ensayo-real-01.json": "2885d9c91da70d473fb24c4c0f69fe6fab42188fa30c4c47c0782b10097a1588",
+    "ensayo-simulado-01.json": "12bf500bf98a6cfacd17c0cf340aa3288036d63eb72ca49575992e382e868813"
+  }
+}

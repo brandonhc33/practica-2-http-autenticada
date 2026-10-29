@@ -1,0 +1,5 @@
+$ uv run basedpyright src tests prompts scripts/ensayo_rate_limit.py
+
+0 errors, 0 warnings, 0 notes
+
+Código de salida: 0

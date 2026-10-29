@@ -1,0 +1,1160 @@
+{
+  "modo": "real",
+  "modelo": "gemini-3.5-flash-lite",
+  "inicio": "2026-10-29T00:54:50.931222+00:00",
+  "limites": {
+    "consultas": 30,
+    "envios_http": 36,
+    "presupuesto_segundos": 180.0,
+    "costo_conocido_usd": "0.01"
+  },
+  "nota_costo": "Estimación con tarifas de pago; no acredita facturación. Los intentos sin uso reportado conservan consumo desconocido. El umbral de costo conocido se comprueba entre consultas, no es un tope de facturación.",
+  "consultas": [
+    {
+      "numero": 1,
+      "inicio": "2026-10-29T00:54:50.931410+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TQKCOyzzWQDwmIGI+XvSxGvUhZlrtwhyvnKSnaNwmOyBmce2vAxzL1sWe2nFGcKkAq+m8QJhuA+IAzngZa2etY8ySMN2rD/rM+/K7gj1lRKZSVzkHpKXAugE="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235292,
+        "id": "XJniasZEreHT-A__nu_gAw",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:54:52.507908+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 1,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 1,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 11,
+        "tokens_salida": 1,
+        "tokens_total": 12,
+        "costo_conocido_usd": "0.0000058"
+      }
+    },
+    {
+      "numero": 2,
+      "inicio": "2026-10-29T00:54:52.508298+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T8+lcFqbplOwS8oFNg3UQfRHJB343Iap5FUEvuwJNgyCgaNAaNNSAKQOZYnhSv4ujpGK2cKUbIAzPP5VmIGS9FwXb+AZpGA73XpdnWHQVG6LM9DQNlp8lNW4="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235294,
+        "id": "XZniavTVOZTknsEPrpXkyQY",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:54:54.339899+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 2,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 2,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 22,
+        "tokens_salida": 2,
+        "tokens_total": 24,
+        "costo_conocido_usd": "0.0000116"
+      }
+    },
+    {
+      "numero": 3,
+      "inicio": "2026-10-29T00:54:54.340283+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T6LkWUKGizR1HoVwaRXvx8oILIwhaMovnRLmceBWOn1fKEsO1miMH56RfS9XRZm8X0fJk30r2sAI/EQNgv7jcgqSPjXK8r0bmLH10E65h1l+YOmDTmEIME+c="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235295,
+        "id": "X5niau_NGeH35NoPrPa08Qc",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:54:55.918938+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 3,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 3,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 33,
+        "tokens_salida": 3,
+        "tokens_total": 36,
+        "costo_conocido_usd": "0.0000174"
+      }
+    },
+    {
+      "numero": 4,
+      "inicio": "2026-10-29T00:54:55.919398+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TpzEq6dCbpDBHskGOgT5ge/f96FbsJm1Rqkhh3oqG0tJNFDG0WEQK4UkMq6VaViW1NIAVh5H0sHuoUWfJ+WPPX3zeqMtsHO8mEdfEAKmeR+ex4aHQp2En6x4="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235297,
+        "id": "YJniaqnFOoGs5NoPwZzJ4QM",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:54:57.443083+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 4,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 4,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 44,
+        "tokens_salida": 4,
+        "tokens_total": 48,
+        "costo_conocido_usd": "0.0000232"
+      }
+    },
+    {
+      "numero": 5,
+      "inicio": "2026-10-29T00:54:57.443727+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TN9pt0gvXcwIs4NaxNkJxs7l0bbsE1RaTOgCGZ5/btY14Aa40rl6+zqTjpbT6AgBFZ4RxkPcmk0XirPcrZDvOKOROAwjoyQZaVjITcIKQwNLHSzrf/fhOBY4="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235299,
+        "id": "YpniaofAMpvfvdIPr4bisQc",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:54:59.276233+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 5,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 5,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 55,
+        "tokens_salida": 5,
+        "tokens_total": 60,
+        "costo_conocido_usd": "0.000029"
+      }
+    },
+    {
+      "numero": 6,
+      "inicio": "2026-10-29T00:54:59.277088+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T98LwLOvqIB7p3AjeHfl8oBDaEwLKM0k8rQNnCjooo0loHLtiZtdUV8xQirgCTMLyQjwvQ7NwXt44NLWz0A1UFPfHCzrPDL55UCM1IjNI5IBV4pfslgDHgUI="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235300,
+        "id": "ZJnias3qEuqp5NoPrPbOyAM",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:55:00.844487+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 6,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 6,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 66,
+        "tokens_salida": 6,
+        "tokens_total": 72,
+        "costo_conocido_usd": "0.0000348"
+      }
+    },
+    {
+      "numero": 7,
+      "inicio": "2026-10-29T00:55:00.845248+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T3SXg6Ou59/VNMZtFMthwjW0flFXHAyU7vCP6OjCIzPusPGnfcRfNv9I11dzcwaPTzKBXxMTwZiEc71M5EZ8VH0dHGcWpkpghTtDh/5PKYoVQeU+3qAxIPMM="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235302,
+        "id": "ZZniapngOMSKiLMPhJL-8Ac",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:55:02.320483+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 7,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 7,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 77,
+        "tokens_salida": 7,
+        "tokens_total": 84,
+        "costo_conocido_usd": "0.0000406"
+      }
+    },
+    {
+      "numero": 8,
+      "inicio": "2026-10-29T00:55:02.321147+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TDQMEoRU8ztoXHvnM7iIp7KM0dwDC5l2HKB/iPgwHVBHdvGOE8LxetxiUxYQTLuwXsk/dCLckXlLBpiMQb8MX08kyXMMEw5db/hcFEOrknOtJLudeFSIRBRk="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235303,
+        "id": "Z5niaubwF8SKiLMPhJL-8Ac",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:55:03.904479+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 8,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 8,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 88,
+        "tokens_salida": 8,
+        "tokens_total": 96,
+        "costo_conocido_usd": "0.0000464"
+      }
+    },
+    {
+      "numero": 9,
+      "inicio": "2026-10-29T00:55:03.905176+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TMQ5J8sxl8WiL5RfN7XIncdMeAI3EJTsC3+3BNRJgf5Aswtc6FYVpC6SVWD0ZOLEYRpx7U3CayICKDPYhOOEzqV1Q2OTcWLSguYYZAFTFgwBoHZBeph26daM="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235305,
+        "id": "aZnias7IEZGJvdIPovSwoAg",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 11,
+          "total_tokens": 12
+        }
+      },
+      "fin": "2026-10-29T00:55:05.690843+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 9,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 9,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 99,
+        "tokens_salida": 9,
+        "tokens_total": 108,
+        "costo_conocido_usd": "0.0000522"
+      }
+    },
+    {
+      "numero": 10,
+      "inicio": "2026-10-29T00:55:05.691577+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TdTcLSmpRzbGmNYp9akEHgu3MGjtfpe8j38K60NnfGWQXI7ThhceUTcBa2Xm/R/5Bl4BZ4/qEN/Yx6YazN315OT7s6wNsPSW8MtgfoI83WmU2OLT9W0B7Dco="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235307,
+        "id": "apniauHBMIvg0_gP6_PcyAM",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:07.241205+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 10,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 10,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 111,
+        "tokens_salida": 10,
+        "tokens_total": 121,
+        "costo_conocido_usd": "0.0000583"
+      }
+    },
+    {
+      "numero": 11,
+      "inicio": "2026-10-29T00:55:07.242008+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0THOjUXtGaLIY7PdX5mnuzyShpRRL3bCNsmOv3qUWEIpIFoYeXZ9E58anvJyOxwEWaJbNKHT5GE4zSTgboQ7bW4PSuM+uh+Rio1UDO4IkjKbioQtkIXIqpc+M="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235308,
+        "id": "bJniatXKEOH35NoPrPa08Qc",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:08.922201+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 11,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 11,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 123,
+        "tokens_salida": 11,
+        "tokens_total": 134,
+        "costo_conocido_usd": "0.0000644"
+      }
+    },
+    {
+      "numero": 12,
+      "inicio": "2026-10-29T00:55:08.923058+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TS+RV+Y8hyGxzqnAhI5KGd5fBodlA63O7CQXV7rpNMAU7bjgwjwmxrmd/+F+wC/bR2xtrcjUw8QAS+JKnK5hf41tv5hTyq4kwtGYgtpRoDRHMVCJqFha//fw="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235310,
+        "id": "bpniarPyH_yf3boP4sCbsAI",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:10.945175+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 12,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 12,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 135,
+        "tokens_salida": 12,
+        "tokens_total": 147,
+        "costo_conocido_usd": "0.0000705"
+      }
+    },
+    {
+      "numero": 13,
+      "inicio": "2026-10-29T00:55:10.945973+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0Tni5epqPQreEx08U4a4pn9SMdIuLMOWJRDoPPdg/bXrlgd4cTUqMQmqJ8gnnW1n4VH0/lbg/pjBMzjgLjNKCucAePOnqKU1aC1QQLmKa/IM5p3ZzvyWdkSxE="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235312,
+        "id": "b5niasG7Oem7xdIP1pab0Ac",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:12.535794+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 13,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 13,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 147,
+        "tokens_salida": 13,
+        "tokens_total": 160,
+        "costo_conocido_usd": "0.0000766"
+      }
+    },
+    {
+      "numero": 14,
+      "inicio": "2026-10-29T00:55:12.536757+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TB3R0/VL2Nbzjx3IAXOQFaQST+/BKADmOSTBLQ9BYJYyZ8B1XeN9YZEPPsT5x49LzVJCGf1VijzZsYazLYAoK0k+j4PMofEQs2iDLZ473pJ4qKGvRYyCz09A="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235314,
+        "id": "cZniarK-KZXc0_gPiJu-2QM",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:14.102087+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 14,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 14,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 159,
+        "tokens_salida": 14,
+        "tokens_total": 173,
+        "costo_conocido_usd": "0.0000827"
+      }
+    },
+    {
+      "numero": 15,
+      "inicio": "2026-10-29T00:55:14.102899+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TAQbi5+UIh6qhXASH6yyvNv6T50Nmq51dgTVZRv3R0OoQpfstqSd6b3cYDSvve0e7DbPw3UXPEgCAu6PnlpOD3MVD35AKQ+RZ0nliMgkHUBFOP3NOJcKLe70="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235315,
+        "id": "c5niaraEH6m-kdUPgp7F8AM",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:16.022361+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 15,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 15,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 171,
+        "tokens_salida": 15,
+        "tokens_total": 186,
+        "costo_conocido_usd": "0.0000888"
+      }
+    },
+    {
+      "numero": 16,
+      "inicio": "2026-10-29T00:55:16.023397+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0T13LfuVI3b/LzA6VlJJojTQy93vybvMdqVonNffGgRVCj+42vJfvIk3R8z2OX2uKp7Q0yWUdfu8xwyGcyuiKURXMimTgE+EGHTXDOfjRmTQpmGoFKmA60SAk="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235317,
+        "id": "dZniau-7GI_7xs0P-o2RiQU",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:17.894484+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 16,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 16,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 183,
+        "tokens_salida": 16,
+        "tokens_total": 199,
+        "costo_conocido_usd": "0.0000949"
+      }
+    },
+    {
+      "numero": 17,
+      "inicio": "2026-10-29T00:55:17.895549+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TciUHJVD3K+0P983vUrl+fnpwkA7I8eSK4jSo5JKHLJVBxmUAHhtbsjg9kxHG129S1U0X4V5t4Ixn+pggrLJzlIvFu1HFh5xwhPJT7+q8RpJmXZOrmnMMO7E="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235322,
+        "id": "dpniapHYPLTf0_gPucrC2QM",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:22.449020+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 17,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 17,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 195,
+        "tokens_salida": 17,
+        "tokens_total": 212,
+        "costo_conocido_usd": "0.000101"
+      }
+    },
+    {
+      "numero": 18,
+      "inicio": "2026-10-29T00:55:22.450140+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TJKUEX9hEoIZjyyHBo2wujXhyZHQbRd8MTzBUR4kdRSkKMJy8Si1q2ByszK7f31S1Up4UVY4N89sY9q4zBoV4iO6q9rbTbx8GtJy5wAmuGTvlVqSCYKYFU6o="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235324,
+        "id": "e5niaqT7Gpuq_uMP-_OxiA0",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:24.196618+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 18,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 18,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 207,
+        "tokens_salida": 18,
+        "tokens_total": 225,
+        "costo_conocido_usd": "0.0001071"
+      }
+    },
+    {
+      "numero": 19,
+      "inicio": "2026-10-29T00:55:24.197584+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0Tq0yKM69wtDS6K6I2G5Wa4dCKbZZD0sSNzj6ZB5xWwbHF+6NXz4U/eRRxmY0NpETlPvLMS5S8mLDvs1B5lCXcciYxFEGSYJ+6Kui+FIQU7YHY3kXj/KqEOYw="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235325,
+        "id": "fZniasfZCfDjytMPieDr0Aw",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:25.624841+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 19,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 19,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 219,
+        "tokens_salida": 19,
+        "tokens_total": 238,
+        "costo_conocido_usd": "0.0001132"
+      }
+    },
+    {
+      "numero": 20,
+      "inicio": "2026-10-29T00:55:25.626026+00:00",
+      "estado": "completada",
+      "respuesta_original": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0Twi/TmdRp9Z5iCG4gSH0OMm8KnHPH/2al3aIJooHu3lyesXgOK8ooDeQInlrCnSUiZEJlshU43uYVcX7es2bi43xxIqxqSKc3nVgX1jVBegkzpky1cwaRf1Q="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1793235333,
+        "id": "hJniaoisLevJ0_gPjomrqAc",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 1,
+          "prompt_tokens": 12,
+          "total_tokens": 13
+        }
+      },
+      "fin": "2026-10-29T00:55:33.181977+00:00",
+      "resumen_sesion": {
+        "respuestas_con_costo": 20,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 22,
+        "intentos_sin_uso": 2,
+        "tokens_entrada": 231,
+        "tokens_salida": 20,
+        "tokens_total": 251,
+        "costo_conocido_usd": "0.0001193"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "fecha": "2026-10-29T00:54:52.507717+00:00",
+      "consulta": 1,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.576s"
+    },
+    {
+      "fecha": "2026-10-29T00:54:52.507892+00:00",
+      "consulta": 1,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000058, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:54:54.339749+00:00",
+      "consulta": 2,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.831s"
+    },
+    {
+      "fecha": "2026-10-29T00:54:54.339885+00:00",
+      "consulta": 2,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000116, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:54:55.918809+00:00",
+      "consulta": 3,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.578s"
+    },
+    {
+      "fecha": "2026-10-29T00:54:55.918916+00:00",
+      "consulta": 3,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000174, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:54:57.442961+00:00",
+      "consulta": 4,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.523s"
+    },
+    {
+      "fecha": "2026-10-29T00:54:57.443068+00:00",
+      "consulta": 4,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000232, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:54:59.276063+00:00",
+      "consulta": 5,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.832s"
+    },
+    {
+      "fecha": "2026-10-29T00:54:59.276214+00:00",
+      "consulta": 5,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.000029, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:00.844347+00:00",
+      "consulta": 6,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.567s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:00.844471+00:00",
+      "consulta": 6,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000348, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:02.320352+00:00",
+      "consulta": 7,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.475s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:02.320468+00:00",
+      "consulta": 7,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000406, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:03.904368+00:00",
+      "consulta": 8,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.583s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:03.904468+00:00",
+      "consulta": 8,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000464, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:05.690722+00:00",
+      "consulta": 9,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.785s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:05.690830+00:00",
+      "consulta": 9,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=12, costo_usd=0.0000058, acumulado_usd=0.0000522, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:07.241057+00:00",
+      "consulta": 10,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.549s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:07.241189+00:00",
+      "consulta": 10,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000583, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:08.922081+00:00",
+      "consulta": 11,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.680s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:08.922186+00:00",
+      "consulta": 11,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000644, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:10.945052+00:00",
+      "consulta": 12,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=2.022s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:10.945157+00:00",
+      "consulta": 12,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000705, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:12.535658+00:00",
+      "consulta": 13,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.590s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:12.535778+00:00",
+      "consulta": 13,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000766, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:14.101971+00:00",
+      "consulta": 14,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.565s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:14.102075+00:00",
+      "consulta": 14,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000827, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:16.022252+00:00",
+      "consulta": 15,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.919s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:16.022349+00:00",
+      "consulta": 15,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000888, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:17.894346+00:00",
+      "consulta": 16,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.871s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:17.894468+00:00",
+      "consulta": 16,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000949, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:22.448866+00:00",
+      "consulta": 17,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=4.553s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:22.449002+00:00",
+      "consulta": 17,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.000101, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:24.196508+00:00",
+      "consulta": 18,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.746s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:24.196606+00:00",
+      "consulta": 18,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0001071, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:25.624677+00:00",
+      "consulta": 19,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: completado, duración=1.427s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:25.624825+00:00",
+      "consulta": 19,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0001132, intentos=1"
+    },
+    {
+      "fecha": "2026-10-29T00:55:26.861872+00:00",
+      "consulta": 20,
+      "nivel": "INFO",
+      "mensaje": "Intento 1/3: ErrorTemporalProveedor, HTTP=429, duración=1.236s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:26.861928+00:00",
+      "consulta": 20,
+      "nivel": "WARNING",
+      "mensaje": "Intento 1/3 falló (ErrorTemporalProveedor, HTTP=429); reintentando en 1.154s."
+    },
+    {
+      "fecha": "2026-10-29T00:55:29.538330+00:00",
+      "consulta": 20,
+      "nivel": "INFO",
+      "mensaje": "Intento 2/3: ErrorTemporalProveedor, HTTP=429, duración=1.522s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:29.538379+00:00",
+      "consulta": 20,
+      "nivel": "WARNING",
+      "mensaje": "Intento 2/3 falló (ErrorTemporalProveedor, HTTP=429); reintentando en 2.120s."
+    },
+    {
+      "fecha": "2026-10-29T00:55:33.181832+00:00",
+      "consulta": 20,
+      "nivel": "INFO",
+      "mensaje": "Intento 3/3: completado, duración=1.522s"
+    },
+    {
+      "fecha": "2026-10-29T00:55:33.181964+00:00",
+      "consulta": 20,
+      "nivel": "INFO",
+      "mensaje": "Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0001193, intentos=3"
+    }
+  ],
+  "primer_429": {
+    "fecha": "2026-10-29T00:55:26.861872+00:00",
+    "consulta": 20,
+    "nivel": "INFO",
+    "mensaje": "Intento 1/3: ErrorTemporalProveedor, HTTP=429, duración=1.236s"
+  },
+  "fin": "2026-10-29T00:55:33.183150+00:00",
+  "motivo_fin": "primer_429_observado",
+  "resumen": {
+    "respuestas_con_costo": 20,
+    "respuestas_sin_costo": 0,
+    "consultas_fallidas": 0,
+    "intentos_http": 22,
+    "intentos_sin_uso": 2,
+    "tokens_entrada": 231,
+    "tokens_salida": 20,
+    "tokens_total": 251,
+    "costo_conocido_usd": "0.0001193"
+  },
+  "duracion_segundos": 42.252
+}

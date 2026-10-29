@@ -1,0 +1,57 @@
+$ uv run python -m pytest tests/test_cliente_modular.py tests/test_reintentos.py tests/test_registro_costos.py -v --color=no
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.2.0, pluggy-1.7.0 -- /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 36 items
+
+tests/test_cliente_modular.py::ClienteModularTests::test_fachada_conserva_agotamiento_y_causa_para_la_traduccion_de_api_y_cli PASSED [  2%]
+tests/test_cliente_modular.py::ClienteModularTests::test_fachada_propaga_el_mismo_error_permanente PASSED [  5%]
+tests/test_cliente_modular.py::ClienteModularTests::test_transporte_clasifica_401_y_403_como_autenticacion 
+tests/test_cliente_modular.py::ClienteModularTests::test_transporte_clasifica_401_y_403_como_autenticacion PASSED [  8%]
+tests/test_cliente_modular.py::ClienteModularTests::test_transporte_clasifica_429_y_5xx_recuperables_como_temporales 
+tests/test_cliente_modular.py::ClienteModularTests::test_transporte_clasifica_429_y_5xx_recuperables_como_temporales PASSED [ 11%]
+tests/test_cliente_modular.py::ClienteModularTests::test_transporte_devuelve_el_json_exitoso_sin_transformarlo PASSED [ 13%]
+tests/test_reintentos.py::ReintentosTests::test_agotamiento_conserva_ultima_causa_sin_esperar_despues_del_ultimo PASSED [ 16%]
+tests/test_reintentos.py::ReintentosTests::test_errores_permanentes_y_cancelacion_se_propagan_sin_reintentar 
+tests/test_reintentos.py::ReintentosTests::test_errores_permanentes_y_cancelacion_se_propagan_sin_reintentar PASSED [ 19%]
+tests/test_reintentos.py::ReintentosTests::test_espera_exponencial_limita_la_base_y_conserva_jitter PASSED [ 22%]
+tests/test_reintentos.py::ReintentosTests::test_exito_inicial_no_espera PASSED [ 25%]
+tests/test_reintentos.py::ReintentosTests::test_no_inicia_otra_peticion_si_la_espera_sobrepasa_el_presupuesto PASSED [ 27%]
+tests/test_reintentos.py::ReintentosTests::test_pausa_con_jitter_debe_caber_en_el_presupuesto 
+tests/test_reintentos.py::ReintentosTests::test_pausa_con_jitter_debe_caber_en_el_presupuesto PASSED [ 30%]
+tests/test_reintentos.py::ReintentosTests::test_politica_rechaza_limites_invalidos 
+tests/test_reintentos.py::ReintentosTests::test_politica_rechaza_limites_invalidos PASSED [ 33%]
+tests/test_reintentos.py::ReintentosTests::test_presupuesto_incluye_duracion_de_peticion PASSED [ 36%]
+tests/test_reintentos.py::ReintentosTests::test_recuperacion_respeta_backoff_jitter_y_presupuesto_restante PASSED [ 38%]
+tests/test_reintentos.py::ReintentosTests::test_retry_after_fuera_del_presupuesto_no_se_acorta_ni_se_espera PASSED [ 41%]
+tests/test_reintentos.py::ReintentosTests::test_retry_after_se_respeta_como_minimo_y_conserva_jitter 
+tests/test_reintentos.py::ReintentosTests::test_retry_after_se_respeta_como_minimo_y_conserva_jitter PASSED [ 44%]
+tests/test_reintentos.py::ReintentosTests::test_sin_reintentos_conserva_el_error_original PASSED [ 47%]
+tests/test_reintentos.py::ReintentosTests::test_timeout_lectura_solo_se_reintenta_si_la_politica_lo_habilita PASSED [ 50%]
+tests/test_reintentos.py::ReintentosTests::test_timeout_se_reduce_para_ajustarse_al_tiempo_restante PASSED [ 52%]
+tests/test_reintentos.py::RetryAfterTests::test_encabezados_invalidos_no_rompen_el_cliente 
+tests/test_reintentos.py::RetryAfterTests::test_encabezados_invalidos_no_rompen_el_cliente PASSED [ 55%]
+tests/test_reintentos.py::RetryAfterTests::test_segundos_enormes_conservan_la_espera_minima_del_proveedor PASSED [ 58%]
+tests/test_reintentos.py::RetryAfterTests::test_segundos_y_fecha_http_incluida_fecha_pasada PASSED [ 61%]
+tests/test_registro_costos.py::RegistroCostosTests::test_cada_resumen_es_una_instantanea PASSED [ 63%]
+tests/test_registro_costos.py::RegistroCostosTests::test_calculo_usd_no_consulta_el_dolar_y_descuenta_la_cache PASSED [ 66%]
+tests/test_registro_costos.py::RegistroCostosTests::test_consumo_cero_es_distinto_de_respuesta_sin_consumo PASSED [ 69%]
+tests/test_registro_costos.py::RegistroCostosTests::test_dos_operaciones_acumulan_importes_y_tokens_exactos PASSED [ 72%]
+tests/test_registro_costos.py::RegistroCostosTests::test_fallo_cuenta_intentos_sin_inventar_importes PASSED [ 75%]
+tests/test_registro_costos.py::RegistroCostosTests::test_modelo_sin_tarifa_conserva_tokens_y_costo_desconocido PASSED [ 77%]
+tests/test_registro_costos.py::RegistroCostosTests::test_registro_compartido_entre_hilos_no_pierde_sumas PASSED [ 80%]
+tests/test_registro_costos.py::RegistroCostosTests::test_sesiones_anidadas_son_independientes_y_restauran_el_contexto PASSED [ 83%]
+tests/test_registro_costos.py::RegistroClienteTests::test_agotamiento_conserva_el_contrato_y_todos_los_intentos_sin_uso PASSED [ 86%]
+tests/test_registro_costos.py::RegistroClienteTests::test_consultas_normal_y_raw_comparten_sesion_sin_cambiar_sus_respuestas PASSED [ 88%]
+tests/test_registro_costos.py::RegistroClienteTests::test_recalcular_costo_para_presentacion_no_duplica_el_registro PASSED [ 91%]
+tests/test_registro_costos.py::RegistroClienteTests::test_recuperacion_429_503_200_registra_el_costo_una_sola_vez PASSED [ 94%]
+tests/test_registro_costos.py::RegistroClienteTests::test_salida_rechazada_conserva_el_consumo_reportado_por_el_proveedor PASSED [ 97%]
+tests/test_registro_costos.py::RegistroClienteTests::test_timeout_de_lectura_no_reintenta_ni_inventa_costo PASSED [100%]
+
+==================== 36 passed, 38 subtests passed in 0.34s ====================
+
+Código de salida: 0

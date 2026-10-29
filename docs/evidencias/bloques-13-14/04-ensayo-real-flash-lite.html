@@ -1,0 +1,55 @@
+<!doctype html><html lang="es"><meta charset="utf-8">
+<title>Bloque 13: HTTP 429 real y recuperación de Gemini</title><style>
+*{box-sizing:border-box}body{margin:0;padding:40px;background:#edf1f5;color:#142536;
+font-family:Arial,sans-serif}main{max-width:1520px;margin:auto}.eyebrow{color:#52677d;
+font-size:15px;letter-spacing:1.4px;font-weight:700}h1{font-size:32px;margin:12px 0 16px}
+.meta{font-size:14px;line-height:1.65;color:#4b5e70;overflow-wrap:anywhere}
+.comando{margin:24px 0 0;background:#dfe7ee;padding:16px 20px;border-radius:8px 8px 0 0;
+font:15px/1.6 'DejaVu Sans Mono',monospace;overflow-wrap:anywhere}
+pre{margin:0;padding:24px;background:#101c2a;color:#e4edf6;border-radius:0 0 8px 8px;
+font:15px/1.55 'DejaVu Sans Mono',monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+footer{font-size:13px;line-height:1.7;color:#52677d;margin-top:18px;overflow-wrap:anywhere}
+</style><main><div class="eyebrow">SKILLNEST · EVIDENCIA DE EJECUCIÓN</div>
+<h1>Bloque 13: HTTP 429 real y recuperación de Gemini</h1><div class="meta">Fuente: docs/evidencias/bloques-13-14/04-ensayo-real-flash-lite.txt<br>Registrada: 2026-10-29T00:55:33+00:00<br>Últimas 40 líneas. La salida íntegra está en el archivo fuente.</div>
+<div class="comando">$ uv run python -m scripts.ensayo_rate_limit --real --modelo flash-lite --consultas 30 --max-envios 36 --presupuesto-total 180 --salida docs/evidencias/bloques-13-14/04-ensayo-real-flash-lite.json</div><pre>INFO: Intento 1/3: completado, duración=1.565s
+INFO: Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000827, intentos=1
+Consulta 14: completada; costo conocido acumulado US$ 0.0000827
+INFO: Intento 1/3: completado, duración=1.919s
+INFO: Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000888, intentos=1
+Consulta 15: completada; costo conocido acumulado US$ 0.0000888
+INFO: Intento 1/3: completado, duración=1.871s
+INFO: Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0000949, intentos=1
+Consulta 16: completada; costo conocido acumulado US$ 0.0000949
+INFO: Intento 1/3: completado, duración=4.553s
+INFO: Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.000101, intentos=1
+Consulta 17: completada; costo conocido acumulado US$ 0.000101
+INFO: Intento 1/3: completado, duración=1.746s
+INFO: Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0001071, intentos=1
+Consulta 18: completada; costo conocido acumulado US$ 0.0001071
+INFO: Intento 1/3: completado, duración=1.427s
+INFO: Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0001132, intentos=1
+Consulta 19: completada; costo conocido acumulado US$ 0.0001132
+INFO: Intento 1/3: ErrorTemporalProveedor, HTTP=429, duración=1.236s
+WARNING: Intento 1/3 falló (ErrorTemporalProveedor, HTTP=429); reintentando en 1.154s.
+INFO: Intento 2/3: ErrorTemporalProveedor, HTTP=429, duración=1.522s
+WARNING: Intento 2/3 falló (ErrorTemporalProveedor, HTTP=429); reintentando en 2.120s.
+INFO: Intento 3/3: completado, duración=1.522s
+INFO: Operación: tokens=13, costo_usd=0.0000061, acumulado_usd=0.0001193, intentos=3
+Consulta 20: completada; costo conocido acumulado US$ 0.0001193
+Resultado: primer_429_observado
+{
+  &quot;respuestas_con_costo&quot;: 20,
+  &quot;respuestas_sin_costo&quot;: 0,
+  &quot;consultas_fallidas&quot;: 0,
+  &quot;intentos_http&quot;: 22,
+  &quot;intentos_sin_uso&quot;: 2,
+  &quot;tokens_entrada&quot;: 231,
+  &quot;tokens_salida&quot;: 20,
+  &quot;tokens_total&quot;: 251,
+  &quot;costo_conocido_usd&quot;: &quot;0.0001193&quot;
+}
+Evidencia: docs/evidencias/bloques-13-14/04-ensayo-real-flash-lite.json
+
+Código de salida: 0</pre>
+<footer>Captura del visor local de la salida registrada. No se recrearon resultados.<br>
+SHA-256 del archivo fuente: 1a8a3fcd1a84d46f390fff31206bfbcc79cc46bdcba41a4f490d3ecf4fc2abce</footer></main></html>
