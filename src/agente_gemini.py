@@ -14,7 +14,7 @@ from urllib3.exceptions import MaxRetryError, NewConnectionError, ReadTimeoutErr
 from prompts.banco import BANCO_DE_PROMPTS, NombrePrompt
 
 from .catalogo import AGENTES
-from .costos import calcular_costo_gemini
+from .costos import calcular_costo_gemini, calcular_costo_usd_gemini
 from .errores_cliente import (
     ErrorAutenticacion,
     ErrorCliente,
@@ -24,6 +24,7 @@ from .errores_cliente import (
     ErrorTimeoutLectura,
 )
 from .esquemas import Resultado, UsoTokens
+from .registro_costos import obtener_registro_costos
 from .reintentos import (
     POLITICA_PREDETERMINADA,
     PoliticaReintento,
@@ -139,7 +140,7 @@ def consultar_gemini_raw(
     prompt: NombrePrompt | None = None,
     politica: PoliticaReintento = POLITICA_PREDETERMINADA,
 ) -> dict[str, Any]:
-    """Devuelve todos los campos JSON del proveedor sin procesar el texto ni el consumo."""
+    """Conserva el JSON original y registra el consumo en USD sin consultar el dólar."""
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not api_key:
         raise ErrorPeticion("Falta GEMINI_API_KEY. Agrega tu clave en el archivo .env.")
@@ -169,9 +170,23 @@ def consultar_gemini_raw(
             },
         }
 
-    return con_reintento(
-        lambda restante: _enviar_peticion(cuerpo, encabezados, politica.timeout(restante)), politica
-    )
+    registro = obtener_registro_costos()
+    intentos = 0
+
+    def enviar(restante: float) -> dict[str, Any]:
+        nonlocal intentos
+        intentos += 1
+        return _enviar_peticion(cuerpo, encabezados, politica.timeout(restante))
+
+    try:
+        datos = con_reintento(enviar, politica)
+    except BaseException:
+        # También conserva como desconocido un envío interrumpido por el usuario.
+        registro.registrar_fallo(intentos=intentos)
+        raise
+    uso = extraer_uso(datos.get("usage"))
+    registro.registrar_respuesta(uso, calcular_costo_usd_gemini(modelo, uso), intentos=intentos)
+    return datos
 
 
 def extraer_texto(datos: dict[str, Any], *, exigir_completa: bool = False) -> str:

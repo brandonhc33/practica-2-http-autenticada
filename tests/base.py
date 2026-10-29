@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 
 from src.api import app
 from src.esquemas import EJEMPLO_CONSULTA
+from src.registro_costos import sesion_costos
 from src.tipo_cambio import ENDPOINT_DOLAR, consultar_dolar
 
 TOKEN = "token-local-para-las-pruebas"
@@ -15,6 +16,7 @@ TOKEN = "token-local-para-las-pruebas"
 
 class CasoAPI(unittest.TestCase):
     def setUp(self):
+        self.registro_costos = self.enterContext(sesion_costos())
         self.enterContext(
             patch.dict(
                 os.environ,

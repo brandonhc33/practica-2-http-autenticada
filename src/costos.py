@@ -23,7 +23,8 @@ TARIFAS_GEMINI: dict[str, TarifasTokens] = {
 }
 
 
-def calcular_costo_gemini(modelo: str, uso: UsoTokens | None) -> CostoEstimado | None:
+def calcular_costo_usd_gemini(modelo: str, uso: UsoTokens | None) -> CostosMoneda | None:
+    """Calcula únicamente USD; no consulta la red ni registra la operación."""
     tarifas = TARIFAS_GEMINI.get(modelo)
     if uso is None or tarifas is None:
         return None
@@ -35,6 +36,14 @@ def calcular_costo_gemini(modelo: str, uso: UsoTokens | None) -> CostoEstimado |
     ) / Decimal(1_000_000)
     salida = uso.salida * tarifas.salida / Decimal(1_000_000)
     total = entrada + salida
+    return CostosMoneda(moneda="USD", entrada=entrada, salida=salida, total=total)
+
+
+def calcular_costo_gemini(modelo: str, uso: UsoTokens | None) -> CostoEstimado | None:
+    usd = calcular_costo_usd_gemini(modelo, uso)
+    if usd is None:
+        return None
+    tarifas = TARIFAS_GEMINI[modelo]
     tipo_cambio = None
     clp = None
     tarifas_clp = None
@@ -48,16 +57,16 @@ def calcular_costo_gemini(modelo: str, uso: UsoTokens | None) -> CostoEstimado |
         )
         clp = CostosMoneda(
             moneda="CLP",
-            entrada=entrada * tipo_cambio.clp_por_usd,
-            salida=salida * tipo_cambio.clp_por_usd,
-            total=total * tipo_cambio.clp_por_usd,
+            entrada=usd.entrada * tipo_cambio.clp_por_usd,
+            salida=usd.salida * tipo_cambio.clp_por_usd,
+            total=usd.total * tipo_cambio.clp_por_usd,
         )
     except ValueError as error:
         # La falta de conversión no descarta una consulta ya completada por Gemini.
         aviso_clp = str(error)
     return CostoEstimado(
         modelo=modelo,
-        usd=CostosMoneda(moneda="USD", entrada=entrada, salida=salida, total=total),
+        usd=usd,
         clp=clp,
         tipo_cambio=tipo_cambio,
         tarifas_por_millon_usd=tarifas,
