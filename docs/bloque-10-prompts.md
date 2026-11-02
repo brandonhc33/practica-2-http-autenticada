@@ -1,6 +1,6 @@
 # Bloque 10: aprender los PDF con este proyecto
 
-Las tres lecciones forman una secuencia: separar las instrucciones del contenido, pedir una estructura que Python pueda utilizar y medir si esa combinación funciona repetidamente. El proyecto implementa esa secuencia en [el banco](../prompts/banco.py), [el cliente](../src/agente_gemini.py), [el validador](../src/salida_estructurada.py) y [el evaluador real](../prompts/test_consistencia.py).
+Las tres lecciones forman una secuencia: separar las instrucciones del contenido, pedir una estructura que Python pueda utilizar y medir si esa combinación funciona repetidamente. El proyecto implementa esa secuencia en [el banco](../src/prompts/banco.py), [el cliente](../src/clientes/gemini.py), [el validador](../src/clientes/salida_estructurada.py) y [el evaluador real](../scripts/evaluar_prompts.py).
 
 ## 1. Prompt de sistema: las reglas de una tarea
 
@@ -24,7 +24,7 @@ Nuestro cliente envía ambos mensajes por separado:
 
 El rol no es parte del texto: es un campo del protocolo. Escribir "SYSTEM: ..." dentro de la pregunta no crea un mensaje de sistema.
 
-El punto de entrada es `prompts/banco.py`, que reúne los grupos. En [base.py](../prompts/base.py), `REGLAS_DE_SALIDA` reúne idioma y formato; en [educativos.py](../prompts/educativos.py), `REGLAS_COMUNES` añade el rol educativo; en [ley_rep.py](../prompts/ley_rep.py), `REGLAS_REP` añade el rol documental para Ley REP. Cada tarea añade sus reglas particulares junto a su esquema y ejemplo. Por ejemplo, el diagnóstico HTTP debe distinguir la credencial de Google del token de la API local.
+El punto de entrada es `src/prompts/banco.py`, que reúne los grupos. En [base.py](../src/prompts/base.py), `REGLAS_DE_SALIDA` reúne idioma y formato; en [educativos.py](../src/prompts/educativos.py), `REGLAS_COMUNES` añade el rol educativo; en [ley_rep.py](../src/prompts/ley_rep.py), `REGLAS_REP` añade el rol documental para Ley REP. Cada tarea añade sus reglas particulares junto a su esquema y ejemplo. Por ejemplo, el diagnóstico HTTP debe distinguir la credencial de Google del token de la API local.
 
 La separación permite revisar y versionar las instrucciones. También ayuda a marcar que el texto del usuario es contenido a procesar. No convierte el prompt en una barrera infalible contra instrucciones maliciosas; esa resistencia requeriría pruebas específicas.
 
@@ -123,7 +123,7 @@ Un banco organiza una definición completa por tarea:
 | Ejemplo de usuario. | Probar siempre la misma entrada. |
 | Modelo Pydantic y JSON Schema. | Definir y comprobar la salida. |
 
-El banco contiene seis prompts. Los educativos son `explicar_concepto`, `diagnosticar_error_http` y `resumir_texto_tecnico`. La preparación del proyecto final agrega `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`; sus entradas y ejemplos están en el [README](../README.md#prompts-para-el-proyecto-final-de-ley-rep). Al elegir uno desde la API se envía su nombre, no instrucciones de sistema arbitrarias del cliente.
+El banco contiene seis prompts. Los educativos son `explicar_concepto`, `diagnosticar_error_http` y `resumir_texto_tecnico`. La preparación del proyecto final agrega `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`; sus entradas y ejemplos están en el [README](guia-completa.md#prompts-para-el-proyecto-final-de-ley-rep). Al elegir uno desde la API se envía su nombre, no instrucciones de sistema arbitrarias del cliente.
 
 La actividad pide al menos tres repeticiones reales por prompt. La cuenta es:
 
@@ -134,7 +134,7 @@ consistencia observada = respuestas válidas / intentos realizados
 
 Consistente no significa idéntico palabra por palabra: pueden cambiar la analogía o la redacción y conservar el contrato. El evaluador registra cada intento, las instrucciones, la entrada y el esquema, la respuesta original, el resultado validado, el consumo, el costo estimado y la latencia HTTP.
 
-`prompts/registro_resultados.json` contiene la evaluación de las instrucciones de los tres prompts educativos; los tres nuevos de Ley REP aún no tienen evaluación real. La primera ejecución se conserva en `prompts/registro_resultados_inicial.json`. Cada error queda guardado, no desaparece del denominador. Los HTTP fallidos sin consumo informado tienen costo desconocido (`null`), no costo cero. Si llegó consumo de una salida inválida, también se conserva.
+`docs/evaluaciones/prompts-actual.json` contiene la evaluación de las instrucciones de los tres prompts educativos; los tres nuevos de Ley REP aún no tienen evaluación real. La primera ejecución se conserva en `docs/evaluaciones/prompts-inicial.json`. Cada error queda guardado, no desaparece del denominador. Los HTTP fallidos sin consumo informado tienen costo desconocido (`null`), no costo cero. Si llegó consumo de una salida inválida, también se conserva.
 
 La ejecución inicial del **21 de octubre de 2026** utilizó `gemini-3.5-flash-lite` y produjo estos resultados:
 
@@ -166,7 +166,7 @@ Un resultado de 3/3 muestra que esos tres intentos cumplieron. No demuestra que 
 Desde la raíz del repositorio, con `.env` configurado, ejecuta una explicación:
 
 ```bash
-uv run python -m src.agente_gemini --prompt explicar_concepto "¿Qué es un Bearer token?"
+uv run python -m src.clientes.gemini --prompt explicar_concepto "¿Qué es un Bearer token?"
 ```
 
 Observa que `respuesta` es un objeto con cuatro campos. Cambia solo la pregunta a `¿Qué es un timeout?`: se reutilizan las mismas reglas y el mismo esquema.
@@ -174,7 +174,7 @@ Observa que `respuesta` es un objeto con cuatro campos. Cambia solo la pregunta 
 Prueba otra tarea:
 
 ```bash
-uv run python -m src.agente_gemini --prompt diagnosticar_error_http "Mi API local devuelve HTTP 401 antes de consultar Gemini."
+uv run python -m src.clientes.gemini --prompt diagnosticar_error_http "Mi API local devuelve HTTP 401 antes de consultar Gemini."
 ```
 
 Para ver el cuerpo original del proveedor, añade `--raw` a cualquiera de los comandos. Esa acción realiza una nueva consulta real: no recupera la respuesta de la ejecución anterior.
@@ -195,7 +195,7 @@ La colección `api.postman_collection.json` incluye una solicitud por cada tarea
 Para repetir toda la actividad y conservar la primera evidencia:
 
 ```bash
-uv run python -m prompts.test_consistencia --salida prompts/registro_resultados_nueva_ejecucion.json
+uv run python -m scripts.evaluar_prompts --salida docs/evaluaciones/prompts-nueva-ejecucion.json
 ```
 
 Elige un nombre de salida que no exista. El script llama a Gemini 18 veces por defecto y consume cuota. Las pruebas de `uv run python -m tests -v` utilizan simulaciones y verifican nuestro código; el script anterior verifica las salidas reales del modelo.

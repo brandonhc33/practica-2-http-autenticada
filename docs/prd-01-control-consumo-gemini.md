@@ -16,7 +16,7 @@ La recuperación ante fallos seguiría a cargo de la política existente: hasta 
 
 ## 2. Problema y situación actual
 
-1. [consultar_gemini_raw()](../src/agente_gemini.py) construye la petición y delega su ejecución en [con_reintento()](../src/reintentos.py).
+1. [consultar_gemini_raw()](../src/clientes/gemini.py) construye la petición y delega su ejecución en [con_reintento()](../src/clientes/reintentos.py).
 2. La política actual espera después de determinados fallos. Las consultas exitosas consecutivas pueden enviarse sin separación preventiva.
 3. Cada consulta tiene sus propios contadores y presupuesto. Tres intentos por consulta no limitan la cantidad total de peticiones por minuto.
 4. Varias consultas concurrentes al mismo modelo pueden iniciar peticiones al mismo tiempo. La espera por `Retry-After` solo afecta actualmente a la consulta que recibió el error.
@@ -106,9 +106,9 @@ Este valor ilustra el mecanismo; la configuración definitiva se elegirá según
 | Archivo | Cambio previsto |
 | --- | --- |
 | `src/limites.py` — nuevo | Configuración validada, estado por modelo, cálculo de turnos y pausas compartidas con reloj monotónico. |
-| `src/agente_gemini.py` | Solicitar turno antes de cada envío, recalcular timeouts, liberar el cupo y comunicar al controlador los HTTP 429 con `Retry-After`. |
-| `src/reintentos.py` | Coordinar el presupuesto común y contabilizar los envíos reales, conservando un único bucle de reintentos. |
-| `src/errores_cliente.py` y `src/api.py` | Representar el agotamiento durante la espera y mantener su traducción a HTTP 504, incluidos cero intentos cuando corresponda. |
+| `src/clientes/gemini.py` | Solicitar turno antes de cada envío, recalcular timeouts, liberar el cupo y comunicar al controlador los HTTP 429 con `Retry-After`. |
+| `src/clientes/reintentos.py` | Coordinar el presupuesto común y contabilizar los envíos reales, conservando un único bucle de reintentos. |
+| `src/clientes/errores.py` y `src/api/app.py` | Representar el agotamiento durante la espera y mantener su traducción a HTTP 504, incluidos cero intentos cuando corresponda. |
 | `.env.example` y `README.md` | Documentar la activación, los límites por modelo y el alcance por proceso. |
 | `tests/test_limites.py` — nuevo | Verificar turnos, separación de envíos, concurrencia y pausas compartidas con tiempo simulado. |
 | Pruebas existentes del cliente y evaluadores | Comprobar la integración y la compatibilidad de errores y mediciones. |
@@ -173,7 +173,7 @@ La verificación combinará reloj, esperas y transporte simulados con coordinaci
 ## 10. Referencias
 
 1. [Arquitectura actual de la aplicación](arquitectura.md).
-2. [Cliente con reintentos en el README](../README.md#cliente-con-reintentos-bloque-12).
+2. [Cliente con reintentos en el README](guia-completa.md#cliente-con-reintentos-bloque-12).
 3. [Límites de Gemini y alcance por proyecto](https://ai.google.dev/gemini-api/docs/rate-limits).
 4. [Recomendaciones de Gemini sobre reintentos y jitter](https://ai.google.dev/gemini-api/docs/troubleshooting#retry-strategy).
 

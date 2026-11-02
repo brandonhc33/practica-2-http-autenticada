@@ -3,11 +3,10 @@
 import os
 from typing import Any, Protocol
 
-from prompts.banco import NombrePrompt
-
-from .agente_gemini import consultar_gemini, consultar_gemini_raw
-from .catalogo import AGENTES
-from .esquemas import Consulta, Resultado
+from src.api.esquemas import Consulta, Resultado
+from src.catalogo import AGENTES
+from src.clientes.gemini import consultar_gemini, consultar_gemini_raw
+from src.prompts.banco import NombrePrompt
 
 
 class Cliente[T](Protocol):

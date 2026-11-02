@@ -65,10 +65,10 @@ No hace falta renombrar funciones ni reunir todo en un `cliente.py`. La correspo
 
 | Ejemplo del curso | Implementación actual |
 | --- | --- |
-| `enviar_peticion` | [`_enviar_peticion`](../src/agente_gemini.py), un intento HTTP. |
-| `con_reintento` | [`con_reintento`](../src/reintentos.py), con `PoliticaReintento`. |
-| `registrar_costo` | [`extraer_uso`](../src/agente_gemini.py) y [`calcular_costo_gemini`](../src/costos.py), para leer consumo y calcular el costo individual. Falta la parte de acumulación del cliente general. |
-| `consultar_modelo` | [`consultar_gemini_raw` y `consultar_gemini`](../src/agente_gemini.py), con traducción del error en la [API](../src/api.py) y el CLI. |
+| `enviar_peticion` | [`_enviar_peticion`](../src/clientes/gemini.py), un intento HTTP. |
+| `con_reintento` | [`con_reintento`](../src/clientes/reintentos.py), con `PoliticaReintento`. |
+| `registrar_costo` | [`extraer_uso`](../src/clientes/gemini.py) y [`calcular_costo_gemini`](../src/costos/calculadora.py), para leer consumo y calcular el costo individual. Falta la parte de acumulación del cliente general. |
+| `consultar_modelo` | [`consultar_gemini_raw` y `consultar_gemini`](../src/clientes/gemini.py), con traducción del error en la [API](../src/api/app.py) y el CLI. |
 
 El proyecto usa el endpoint de Gemini compatible con OpenAI. Por eso lee `usage.prompt_tokens`, `usage.completion_tokens` y `usage.total_tokens`; pegar literalmente el acceso a `usageMetadata.totalTokenCount` no serviría para este contrato.
 
@@ -86,7 +86,7 @@ El proyecto usa el endpoint de Gemini compatible con OpenAI. Por eso lee `usage.
 | Ensayo real de HTTP 429 documentado | Sin evidencia encontrada | Las pruebas simulan 429. No encontré el registro del ensayo solicitado ni un error 429 registrado como resultado en las evidencias JSON revisadas. |
 | Error final comprensible | Implementado con otro contrato | `ReintentosAgotados` conserva intentos y última causa; la API lo traduce a 503 o 504 según corresponda. No es el `RuntimeError` literal del ejemplo. |
 
-El [comparador de modelos](../src/comparar_modelos.py) sí calcula `costo_observado_total_usd` y `costo_observado_total_clp` sobre sus mediciones. Ese resumen de una evaluación no constituye un acumulador reutilizable de la sesión del cliente general.
+El [comparador de modelos](../scripts/comparar_modelos.py) sí calcula `costo_observado_total_usd` y `costo_observado_total_clp` sobre sus mediciones. Ese resumen de una evaluación no constituye un acumulador reutilizable de la sesión del cliente general.
 
 El modo `raw` conserva deliberadamente el JSON del proveedor y no calcula costos ni consulta el dólar. Esa distinción está documentada y probada.
 
@@ -94,15 +94,15 @@ El modo `raw` conserva deliberadamente el JSON del proveedor y no calcula costos
 
 | Escenario | Pruebas actuales | Evaluación |
 | --- | --- | --- |
-| 401/403 no se reintentan | `test_estados_permanentes_no_se_reintentan_ni_exponen_el_cuerpo`, en [cliente resiliente](../tests/test_cliente_resiliente.py) | Cubierto mediante `ErrorAutenticacion`. |
+| 401/403 no se reintentan | `test_estados_permanentes_no_se_reintentan_ni_exponen_el_cuerpo`, en [cliente resiliente](../tests/clientes/test_cliente_resiliente.py) | Cubierto mediante `ErrorAutenticacion`. |
 | 429 y errores temporales se recuperan | `test_estados_temporales_se_recuperan_con_una_segunda_llamada`, en cliente resiliente | Cubre 429, 500, 502, 503 y 504. |
-| Respuesta exitosa conserva JSON | `test_devuelve_todos_los_campos_del_proveedor_sin_transformarlos`, en [consultas raw](../tests/test_consultas_raw.py) | Cubierto por integración simulada. |
-| Reintentar y esperar entre intentos | `test_recuperacion_respeta_backoff_jitter_y_presupuesto_restante`, en [reintentos](../tests/test_reintentos.py) | Cubierto con reloj, espera y aleatoriedad simulados. |
+| Respuesta exitosa conserva JSON | `test_devuelve_todos_los_campos_del_proveedor_sin_transformarlos`, en [consultas raw](../tests/api/test_consultas_raw.py) | Cubierto por integración simulada. |
+| Reintentar y esperar entre intentos | `test_recuperacion_respeta_backoff_jitter_y_presupuesto_restante`, en [reintentos](../tests/clientes/test_reintentos.py) | Cubierto con reloj, espera y aleatoriedad simulados. |
 | Error permanente se propaga sin repetir | `test_errores_permanentes_y_cancelacion_se_propagan_sin_reintentar`, en reintentos | Comprueba también la identidad del error original. |
 | Agotamiento de intentos | `test_agotamiento_conserva_ultima_causa_sin_esperar_despues_del_ultimo`, en reintentos | Cubierto con `ReintentosAgotados`; guarda el objeto original en `ultimo_error`. |
-| Cálculo de costo conocido | [Pruebas de costos](../tests/test_costos.py), [consultas](../tests/test_consultas.py) y [comparador](../tests/test_comparar_modelos.py) | Cubierto. Incluye caché, razonamiento, consumo ausente y valores pequeños. |
+| Cálculo de costo conocido | [Pruebas de costos](../tests/costos/test_costos.py), [consultas](../tests/api/test_consultas.py) y [comparador](../tests/scripts/test_comparar_modelos.py) | Cubierto. Incluye caché, razonamiento, consumo ausente y valores pequeños. |
 | Suma al costo de sesión | No existe todavía el acumulador general | Pendiente. |
-| Traducción del fallo final al consumidor | `test_gemini_no_disponible_devuelve_503_tras_tres_intentos`, en [Gemini](../tests/test_gemini.py), y pruebas del CLI en cliente resiliente | Cubierto en los puntos de entrada con el contrato propio. |
+| Traducción del fallo final al consumidor | `test_gemini_no_disponible_devuelve_503_tras_tres_intentos`, en [Gemini](../tests/clientes/test_gemini.py), y pruebas del CLI en cliente resiliente | Cubierto en los puntos de entrada con el contrato propio. |
 | Propagación del error permanente al consumidor | Pruebas de cliente resiliente y API | Cubierto en el recorrido actual. Puede añadirse una prueba unitaria directa de la fachada si se necesita mostrar explícitamente su contrato Python. |
 | API y tiempo simulados | [Preparación compartida](../tests/base.py) y pruebas de reintentos | Implementado. También se simula el servicio del dólar. |
 | Ejecución con `pytest` declarado como dependencia | No está en `pyproject.toml`, `uv.lock`, `requirements.txt` ni en el entorno revisado | Pendiente para la entrega que pide el curso. |
@@ -135,7 +135,7 @@ Estas comprobaciones se hicieron sobre el código actual. No se ejecutó un ensa
 
 ### 4.1. Incorporar el registro de costo por sesión
 
-Conservar el cálculo actual y añadir una responsabilidad de registro, por ejemplo en `src/registro_costos.py`. La sesión debe tener un alcance explícito: una ejecución de un ensayo o cliente; si se comparte una instancia en la API, su acumulado será del proceso, no automáticamente de cada usuario.
+Conservar el cálculo actual y añadir una responsabilidad de registro, por ejemplo en `src/costos/registro.py`. La sesión debe tener un alcance explícito: una ejecución de un ensayo o cliente; si se comparte una instancia en la API, su acumulado será del proceso, no automáticamente de cada usuario.
 
 Un núcleo posible es el siguiente. Es código propuesto, todavía no incorporado al proyecto:
 
@@ -209,7 +209,7 @@ uv export --frozen --group dev --no-hashes --no-emit-project --output-file requi
 
 Esa exportación incluiría además las otras dependencias de desarrollo. Si se prefiere mantener un archivo exclusivo de ejecución, se puede generar `requirements-dev.txt` y documentar su instalación; esa variante debe corresponder con lo que acepte la entrega.
 
-Una prueba directa de `calcular_costo_gemini` en este repositorio sí necesita sustituir `src.costos.obtener_tipo_cambio`, porque el cálculo actual puede consultar la red para convertir a CLP. La afirmación del PDF de que la función de costo no necesita mocks describe su ejemplo sencillo. Separar el cálculo puro USD evita esa dependencia en sus pruebas unitarias.
+Una prueba directa de `calcular_costo_gemini` en este repositorio sí necesita sustituir `src.costos.calculadora.obtener_tipo_cambio`, porque el cálculo actual puede consultar la red para convertir a CLP. La afirmación del PDF de que la función de costo no necesita mocks describe su ejemplo sencillo. Separar el cálculo puro USD evita esa dependencia en sus pruebas unitarias.
 
 ### 4.3. Documentar las diferencias de contrato
 
@@ -238,7 +238,7 @@ La evidencia podría quedar en `docs/ensayo-rate-limit.md` con fecha, modelo, l�
 - **El techo limita la base en los ejemplos.** El código suma jitter después; la pausa final puede superar ligeramente ese techo. El proyecto hace lo mismo y respeta además `Retry-After`.
 - **Una operación fallida no demuestra consumo cero.** Un timeout puede ocurrir después de que el proveedor procese el POST; una salida inválida o truncada también puede tener tokens reportados. El README del proyecto ya reconoce el consumo desconocido de intentos sin respuesta.
 - **La aleatoriedad puede controlarse en una prueba.** El PDF desaconseja comparar una espera aleatoria exacta. Aquí `uniform` se sustituye por un valor fijo, así que las comprobaciones exactas existentes son deterministas y útiles.
-- **Se sustituye el nombre donde se utiliza.** Las rutas adecuadas aquí son `src.agente_gemini.requests.post`, `src.reintentos.sleep` y `src.reintentos.uniform`. El módulo importa `sleep` directamente, no utiliza `time.sleep`.
+- **Se sustituye el nombre donde se utiliza.** Las rutas adecuadas aquí son `src.clientes.gemini.requests.post`, `src.clientes.reintentos.sleep` y `src.clientes.reintentos.uniform`. El módulo importa `sleep` directamente, no utiliza `time.sleep`.
 - **Los archivos de código y pruebas pueden estar en carpetas distintas.** La estructura `src/` y `tests/` del proyecto funciona con sus paquetes e importaciones. Tener todo junto es una simplificación de la actividad.
 - **Backoff no garantiza recuperar cualquier cuota.** Gemini distingue límites por minuto y por día, entre otros; una espera breve no garantiza recuperar una cuota diaria agotada.
 - **Los PDF tienen fragmentos recortados.** La inspección visual confirmó líneas de código y párrafos cortados por el borde derecho, especialmente en el cierre del bloque 13. No deben copiarse como si fueran archivos completos ejecutables.

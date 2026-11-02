@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from src.api import app
+from src.api.app import app
 from tests.base import CasoAPI
 
 
@@ -24,7 +24,7 @@ class ConfiguracionAPITests(CasoAPI):
 class ConfiguracionTests(unittest.TestCase):
     def test_servidor_no_inicia_sin_token(self):
         with patch.dict(os.environ, {}, clear=True):
-            with patch("src.api.load_dotenv"):
+            with patch("src.api.app.load_dotenv"):
                 with self.assertRaisesRegex(RuntimeError, "Falta API_BEARER_TOKEN"):
                     with TestClient(app):
                         pass

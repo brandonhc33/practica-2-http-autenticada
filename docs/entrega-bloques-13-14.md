@@ -2,17 +2,17 @@
 
 Fecha: 28 de octubre de 2026, America/Santiago.
 
-La implementación completa los requisitos de costo acumulado, pruebas automatizadas y ensayo real de HTTP 429 sobre el cliente existente. Conserva sus políticas de reintento, clases de error, contratos HTTP y salidas JSON del CLI. `src/reintentos.py` y sus pruebas se conservaron exactamente como estaban al comenzar esta implementación, incluidos los cambios locales previos.
+La implementación completa los requisitos de costo acumulado, pruebas automatizadas y ensayo real de HTTP 429 sobre el cliente existente. Conserva sus políticas de reintento, clases de error, contratos HTTP y salidas JSON del CLI. `src/clientes/reintentos.py` y sus pruebas se conservaron exactamente como estaban al comenzar esta implementación, incluidos los cambios locales previos.
 
 ## Qué se incorporó
 
-- [`src/registro_costos.py`](../src/registro_costos.py): acumulado exacto de USD y tokens, intentos sin uso reportado y sesiones aisladas. Protege las sumas cuando se comparte la instancia entre hilos.
-- [`src/costos.py`](../src/costos.py): cálculo puro de USD reutilizado por el registro; el cálculo y la conversión a CLP siguen ofreciendo el mismo resultado.
-- [`src/agente_gemini.py`](../src/agente_gemini.py): registro de una respuesta después de los reintentos y antes de procesar su contenido. El recorrido raw conserva el JSON original y no consulta el dólar.
-- [`tests/test_cliente_modular.py`](../tests/test_cliente_modular.py): pruebas unitarias directas de transporte y fachada, usando el contrato de errores del proyecto.
-- [`tests/test_registro_costos.py`](../tests/test_registro_costos.py): acumulación, aislamiento, concurrencia, costo desconocido y ausencia de duplicados.
+- [`src/costos/registro.py`](../src/costos/registro.py): acumulado exacto de USD y tokens, intentos sin uso reportado y sesiones aisladas. Protege las sumas cuando se comparte la instancia entre hilos.
+- [`src/costos/calculadora.py`](../src/costos/calculadora.py): cálculo puro de USD reutilizado por el registro; el cálculo y la conversión a CLP siguen ofreciendo el mismo resultado.
+- [`src/clientes/gemini.py`](../src/clientes/gemini.py): registro de una respuesta después de los reintentos y antes de procesar su contenido. El recorrido raw conserva el JSON original y no consulta el dólar.
+- [`tests/clientes/test_cliente_modular.py`](../tests/clientes/test_cliente_modular.py): pruebas unitarias directas de transporte y fachada, usando el contrato de errores del proyecto.
+- [`tests/costos/test_registro_costos.py`](../tests/costos/test_registro_costos.py): acumulación, aislamiento, concurrencia, costo desconocido y ausencia de duplicados.
 - [`scripts/ensayo_rate_limit.py`](../scripts/ensayo_rate_limit.py): ensayo manual acotado, con ejecución real o simulada y evidencia incremental en JSON.
-- [`tests/test_ensayo_rate_limit.py`](../tests/test_ensayo_rate_limit.py): límites y conservación de evidencias del ensayo.
+- [`tests/scripts/test_ensayo_rate_limit.py`](../tests/scripts/test_ensayo_rate_limit.py): límites y conservación de evidencias del ensayo.
 - `pytest` declarado en desarrollo y fijado en los archivos de dependencias. [`tests/conftest.py`](../tests/conftest.py) impide conexiones externas durante la suite de pytest.
 
 El recorrido conserva una sola capa de reintentos:
@@ -106,7 +106,7 @@ Desde la raíz del repositorio:
 ```bash
 uv sync --locked
 uv run python -m pytest tests -v
-uv run ruff check src tests prompts scripts/ensayo_rate_limit.py scripts/capturar_evidencia.py
+uv run ruff check .
 uv run basedpyright src tests prompts scripts/ensayo_rate_limit.py scripts/capturar_evidencia.py
 ```
 

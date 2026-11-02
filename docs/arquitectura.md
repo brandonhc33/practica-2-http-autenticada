@@ -6,7 +6,7 @@ La [decisión de arquitectura del Bloque 9](decision-arquitectura.md) utiliza es
 
 ![Diagrama de arquitectura de POST /consultar](diagrama_arquitectura.png)
 
-El diagrama representa el flujo base entregado en el Bloque 8. El Bloque 10 agrega la selección opcional de prompts, las instrucciones de sistema y la validación del contenido JSON, descritas en esta nota y en la [guía de prompts](bloque-10-prompts.md). El Bloque 12 incorpora la política interna de reintentos descrita abajo y en el [README](../README.md#cliente-con-reintentos-bloque-12). El archivo [editable de draw.io](diagrama_arquitectura.drawio) permite modificar las cajas, los textos y las conexiones. Para abrirlo, usa **Archivo → Abrir desde → Dispositivo** en diagrams.net.
+El diagrama representa el flujo base entregado en el Bloque 8. El Bloque 10 agrega la selección opcional de prompts, las instrucciones de sistema y la validación del contenido JSON, descritas en esta nota y en la [guía de prompts](bloque-10-prompts.md). El Bloque 12 incorpora la política interna de reintentos descrita abajo y en el [README](guia-completa.md#cliente-con-reintentos-bloque-12). El archivo [editable de draw.io](diagrama_arquitectura.drawio) permite modificar las cajas, los textos y las conexiones. Para abrirlo, usa **Archivo → Abrir desde → Dispositivo** en diagrams.net.
 
 ## Correspondencia con la actividad
 
@@ -46,7 +46,7 @@ El proyecto utiliza el endpoint compatible con OpenAI de Gemini. Por eso el dato
 | `obtener_tipo_cambio()` | Si existe `USD_CLP`, intenta convertirlo a `Decimal` y construir `TipoCambio`. Captura `InvalidOperation` y `ValidationError`, y genera `ValueError`. |
 | `consultar_dolar()` | El `try` comprende la consulta pública, la lectura del JSON y la validación del tipo de cambio. Captura `RequestException` y `ValueError`, y genera un `ValueError` explicativo. |
 
-Las validaciones de entrada producen HTTP 401 o 422. Los manejadores registrados en `src/respuestas.py` mantienen el contrato JSON de error; una excepción no prevista produce HTTP 500.
+Las validaciones de entrada producen HTTP 401 o 422. Los manejadores registrados en `src/api/respuestas.py` mantienen el contrato JSON de error; una excepción no prevista produce HTTP 500.
 
 Con un prompt, una salida truncada o que no cumple su esquema genera `ErrorRespuesta` y la API responde HTTP 502 sin reintentar. `Resultado.respuesta` admite texto libre u objeto validado según la selección. El modo raw permite observar incluso contenido inválido sin transformarlo.
 
@@ -70,4 +70,4 @@ git commit -m "agrega diagrama de arquitectura de la miniaplicación"
 git push
 ```
 
-Las funciones y los datos representados se contrastaron con `src/api.py`, `src/agentes.py`, `src/agente_gemini.py`, `src/catalogo.py`, `src/costos.py`, `src/tipo_cambio.py`, `src/esquemas.py` y `src/respuestas.py`.
+Las funciones y los datos representados se contrastaron con `src/api/app.py`, `src/agentes.py`, `src/clientes/gemini.py`, `src/catalogo.py`, `src/costos/calculadora.py`, `src/costos/tipo_cambio.py`, `src/api/esquemas.py` y `src/api/respuestas.py`.

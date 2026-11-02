@@ -6,10 +6,10 @@ from unittest.mock import Mock, patch
 
 from fastapi.testclient import TestClient
 
-from src.api import app
-from src.esquemas import EJEMPLO_CONSULTA
-from src.registro_costos import sesion_costos
-from src.tipo_cambio import ENDPOINT_DOLAR, consultar_dolar
+from src.api.app import app
+from src.api.esquemas import EJEMPLO_CONSULTA
+from src.costos.registro import sesion_costos
+from src.costos.tipo_cambio import ENDPOINT_DOLAR, consultar_dolar
 
 TOKEN = "token-local-para-las-pruebas"
 
@@ -27,13 +27,13 @@ class CasoAPI(unittest.TestCase):
                 clear=True,
             )
         )
-        self.enterContext(patch("src.api.load_dotenv"))
-        self.esperar = self.enterContext(patch("src.reintentos.sleep"))
-        self.enterContext(patch("src.reintentos.uniform", return_value=0.0))
-        self.enterContext(patch("src.reintentos.logger.warning"))
+        self.enterContext(patch("src.api.app.load_dotenv"))
+        self.esperar = self.enterContext(patch("src.clientes.reintentos.sleep"))
+        self.enterContext(patch("src.clientes.reintentos.uniform", return_value=0.0))
+        self.enterContext(patch("src.clientes.reintentos.logger.warning"))
         consultar_dolar.cache_clear()
         self.addCleanup(consultar_dolar.cache_clear)
-        self.get = self.enterContext(patch("src.tipo_cambio.requests.get"))
+        self.get = self.enterContext(patch("src.costos.tipo_cambio.requests.get"))
         self.dolar = Mock(status_code=200)
         self.dolar.json.return_value = {
             "indicador": "dolar",
@@ -41,7 +41,7 @@ class CasoAPI(unittest.TestCase):
             "valor": "900.00",
         }
         self.get.return_value.__enter__.return_value = self.dolar
-        self.post = self.enterContext(patch("src.agente_gemini.requests.post"))
+        self.post = self.enterContext(patch("src.clientes.gemini.requests.post"))
         self.upstream = Mock(status_code=200)
         self.upstream.json.return_value = {
             "choices": [{"message": {"role": "assistant", "content": "Respuesta simulada"}}],

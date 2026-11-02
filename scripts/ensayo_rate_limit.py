@@ -15,12 +15,12 @@ from unittest.mock import MagicMock, patch
 
 from dotenv import load_dotenv
 
-from src.agente_gemini import consultar_gemini_raw
+from src.api.esquemas import decimal_fijo
 from src.catalogo import AGENTES
-from src.errores_cliente import ErrorCliente, ErrorTemporalProveedor, ReintentosAgotados
-from src.esquemas import decimal_fijo
-from src.registro_costos import sesion_costos
-from src.reintentos import POLITICA_PREDETERMINADA, PoliticaReintento
+from src.clientes.errores import ErrorCliente, ErrorTemporalProveedor, ReintentosAgotados
+from src.clientes.gemini import consultar_gemini_raw
+from src.clientes.reintentos import POLITICA_PREDETERMINADA, PoliticaReintento
+from src.costos.registro import sesion_costos
 
 RAIZ = Path(__file__).resolve().parent.parent
 
@@ -68,10 +68,10 @@ def configurar_simulacion(contextos: ExitStack) -> None:
         reloj[0] += segundos
 
     contextos.enter_context(patch.dict(os.environ, {"GEMINI_API_KEY": "clave-simulada"}))
-    contextos.enter_context(patch("src.agente_gemini.requests.post", side_effect=post_simulado))
-    contextos.enter_context(patch("src.reintentos.monotonic", side_effect=lambda: reloj[0]))
-    contextos.enter_context(patch("src.reintentos.sleep", side_effect=esperar))
-    contextos.enter_context(patch("src.reintentos.uniform", return_value=0.125))
+    contextos.enter_context(patch("src.clientes.gemini.requests.post", side_effect=post_simulado))
+    contextos.enter_context(patch("src.clientes.reintentos.monotonic", side_effect=lambda: reloj[0]))
+    contextos.enter_context(patch("src.clientes.reintentos.sleep", side_effect=esperar))
+    contextos.enter_context(patch("src.clientes.reintentos.uniform", return_value=0.125))
 
 
 def main() -> int:
@@ -157,7 +157,7 @@ def main() -> int:
     with ExitStack() as contextos:
         if args.simulado:
             configurar_simulacion(contextos)
-        for nombre in ("src.reintentos", "src.registro_costos"):
+        for nombre in ("src.clientes.reintentos", "src.costos.registro"):
             logger = logging.getLogger(nombre)
             anteriores = logger.handlers[:], logger.level, logger.propagate
 

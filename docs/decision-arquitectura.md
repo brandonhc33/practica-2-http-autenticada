@@ -6,7 +6,7 @@
 
 **Estado:** aceptada para el alcance actual de la miniaplicación.
 
-Este registro corresponde a la práctica HTTP. La selección de modelos para el [proyecto RAG de Ley REP](../README.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) requiere una evaluación específica de calidad normativa.
+Este registro corresponde a la práctica HTTP. La selección de modelos para el [proyecto RAG de Ley REP](guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) requiere una evaluación específica de calidad normativa.
 
 ## Modelo elegido
 
@@ -35,7 +35,7 @@ Inicialmente se intentó comparar Flash-Lite con **Gemini 3.8 Flash**. Este últ
 ### Método de medición
 
 - **Ejecución:** 20 de octubre de 2026, de 21:07:11 a 21:10:12 en Santiago; los registros usan UTC, del `2026-10-21T00:07:11` al `2026-10-21T00:10:12`.
-- **Carga:** tres preguntas en español: explicar una API, diagnosticar errores HTTP y calcular un costo con datos fijados en la pregunta. Se pidieron secciones breves y entre 150 y 200 palabras. Los textos exactos están en `casos` del JSON y en [src/comparar_modelos.py](../src/comparar_modelos.py).
+- **Carga:** tres preguntas en español: explicar una API, diagnosticar errores HTTP y calcular un costo con datos fijados en la pregunta. Se pidieron secciones breves y entre 150 y 200 palabras. Los textos exactos están en `casos` del JSON y en [scripts/comparar_modelos.py](../scripts/comparar_modelos.py).
 - **Muestra:** tres repeticiones por caso y modelo: nueve intentos por candidato, **18 consultas reales** en la serie principal. La serie inicial interrumpida se conserva aparte y no participa en sus promedios.
 - **Condiciones:** solicitudes independientes, secuenciales, sin historial ni streaming; se intercalaron los modelos y se rotó quién consultaba primero. Se usó el mismo cuerpo de petición que la aplicación, con los parámetros predeterminados de cada modelo, sin ajustar temperatura, longitud máxima ni presupuesto de razonamiento. No hubo calentamiento ni reintentos automáticos.
 - **Latencia:** `perf_counter()` alrededor de `consultar_gemini_raw()`, hasta recibir y decodificar el JSON completo. Incluye red y conexión HTTP; excluye el cálculo de costos y la consulta del dólar. No es tiempo al primer token ni latencia completa de `POST /consultar`. Los timeouts son 10 s de conexión y 60 s de lectura; el timeout de lectura no es un límite total de ejecución.
@@ -107,7 +107,7 @@ También hay recomendaciones técnicas que requieren revisión. Flash-Lite menci
 
 **El costo por request fue el criterio principal y la latencia el segundo**, dentro del alcance de un asistente educativo de consultas breves. En las seis parejas comparables, Flash-Lite costó aproximadamente **93.7 % menos** y redujo la latencia media en **84.4 %** frente a Flash. Además completó los nueve intentos, mientras Flash devolvió tres HTTP 503 durante esta ventana de medición.
 
-Flash-Lite cubrió los temas solicitados con respuestas breves, pero mostró menor cumplimiento de extensión y un error numérico. Se acepta ese compromiso para la explicación introductoria; la elección no supone equivalencia de calidad con Flash. Para los importes de consumo, la arquitectura ya utiliza `src/costos.py` y `Decimal`: el costo publicado en los campos estructurados de la aplicación no depende de las operaciones escritas por el modelo. Una respuesta textual puede contener errores aunque esos campos estén bien calculados.
+Flash-Lite cubrió los temas solicitados con respuestas breves, pero mostró menor cumplimiento de extensión y un error numérico. Se acepta ese compromiso para la explicación introductoria; la elección no supone equivalencia de calidad con Flash. Para los importes de consumo, la arquitectura ya utiliza `src/costos/calculadora.py` y `Decimal`: el costo publicado en los campos estructurados de la aplicación no depende de las operaciones escritas por el modelo. Una respuesta textual puede contener errores aunque esos campos estén bien calculados.
 
 La decisión mantiene la integración simple que ya existe. No añade un segundo proveedor ni una nueva ruta de ejecución: se conserva el cliente autenticado de Gemini y el alias `flash-lite` del catálogo. La evaluación de candidatos se ejecuta por separado con una herramienta reproducible.
 
@@ -127,10 +127,10 @@ Desde la raíz del repositorio, con `GEMINI_API_KEY` configurada en `.env`:
 
 ```bash
 # Inventario, sin generar texto.
-uv run python -m src.comparar_modelos --listar-modelos
+uv run python -m scripts.comparar_modelos --listar-modelos
 
 # Nueva serie de 18 solicitudes; requiere una ruta de salida que no exista.
-uv run python -m src.comparar_modelos --repeticiones 3 --salida docs/evaluaciones/gemini-nueva-ejecucion.json
+uv run python -m scripts.comparar_modelos --repeticiones 3 --salida docs/evaluaciones/gemini-nueva-ejecucion.json
 
 # Pruebas sin consumo de la API.
 uv run python -m tests -v
@@ -144,9 +144,9 @@ Para registrar y publicar esta entrega completa, incluyendo su herramienta de re
 
 ```bash
 git add .env.example README.md docs/arquitectura.md docs/decision-arquitectura.md \
-    docs/evaluaciones/ src/catalogo.py src/comparar_modelos.py src/costos.py \
-    tests/test_comparar_modelos.py tests/test_consultas.py tests/test_consultas_raw.py \
-    tests/test_validaciones.py
+    docs/evaluaciones/ src/catalogo.py scripts/comparar_modelos.py src/costos/calculadora.py \
+    tests/scripts/test_comparar_modelos.py tests/api/test_consultas.py tests/api/test_consultas_raw.py \
+    tests/api/test_validaciones.py
 git commit -m "documenta decisión de arquitectura: elección de modelo"
 git push
 ```
