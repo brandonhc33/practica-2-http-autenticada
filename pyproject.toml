@@ -26,7 +26,7 @@ dev = [
 ]
 
 [tool.basedpyright]
-include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/evaluar_prompts.py"]
+include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py"]
 pythonVersion = "3.12"
 typeCheckingMode = "standard"
 venvPath = "."

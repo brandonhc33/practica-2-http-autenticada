@@ -1,0 +1,389 @@
+[
+  {
+    "id": "rep-01",
+    "consulta": "¿Cuál es el objeto de la ley?",
+    "referencia": "Disminuir la generación de residuos y fomentar su reutilización, reciclaje y valorización mediante la responsabilidad extendida del productor y otros instrumentos, para proteger la salud y el medio ambiente.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-1",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 1",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        1
+      ],
+      "texto": "Artículo 1º.- Objeto. La presente ley tiene por objeto disminuir la generación de residuos y fomentar su reutilización, reciclaje y otro tipo de valorización, a través de la instauración de la responsabilidad extendida del productor y otros instrumentos de gestión de residuos, con el fin de proteger la salud de las personas y el medio ambiente."
+    }
+  },
+  {
+    "id": "rep-02",
+    "consulta": "¿Qué significa el principio de que el que contamina paga?",
+    "referencia": "El generador es responsable de sus residuos y debe internalizar los costos y las externalidades negativas asociados a su manejo.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-2",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 2",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        1,
+        2
+      ],
+      "texto": "Artículo 2º.- Principios. Los principios que inspiran la presente ley son los siguientes:\n\na) El que contamina paga: el generador de un residuo es responsable de éste, así como de internalizar los costos y las externalidades negativas asociados a su manejo.\n\nb) Gradualismo: Las obligaciones para prevenir la generación de residuos y fomentar su reutilización, reciclaje y otro tipo de valorización serán establecidas o exigidas de manera progresiva, atendiendo a la cantidad y peligrosidad de los residuos, las tecnologías disponibles, el impacto económico y social y la situación geográfica, entre otros.\n\nc) Inclusión: Conjunto de mecanismos e instrumentos de capacitación, financiación y formalización orientados a posibilitar la integración plena de los recicladores de base en la gestión de los residuos, incluidos los sistemas de gestión en el marco de la responsabilidad extendida del productor.\n\nd) Jerarquía en el manejo de residuos: Orden de preferencia de manejo, que considera como primera alternativa la prevención en la generación de residuos, luego la reutilización, el reciclaje de los mismos o de uno o más de sus componentes y la valorización energética de los residuos, total o parcial, dejando\n\ncomo última alternativa su eliminación, acorde al desarrollo de instrumentos legales, reglamentarios y económicos pertinentes.\n\ne) Libre competencia: El funcionamiento de los sistemas de gestión y la operación de los gestores en ningún caso podrá atentar contra la libre competencia.\n\nf) Participativo: La educación, opinión y el involucramiento de la comunidad son necesarios para prevenir la generación de residuos y fomentar su reutilización, reciclaje y otro tipo de valorización.\n\ng) Precautorio: la falta de certeza científica no podrá invocarse para dejar de implementar las medidas necesarias para disminuir el riesgo de daños para el medio ambiente y la salud humana derivado del manejo de residuos.\n\nh) Preventivo: Conjunto de acciones o medidas que se reflejan en cambios en los hábitos en el uso de insumos y materias primas utilizadas en procesos productivos, diseño o en modificaciones en dichos procesos, así como en el consumo, destinadas a evitar la generación de residuos, la reducción en cantidad o la peligrosidad de los mismos.\n\ni) Responsabilidad del generador de un residuo: El generador de un residuo es responsable de éste, desde su generación hasta su valorización o eliminación, en conformidad a la ley.\n\nj) Transparencia y publicidad: La gestión de residuos se efectuará con transparencia, de manera que la comunidad pueda acceder a la información relevante sobre la materia.\n\nk) Trazabilidad: Conjunto de procedimientos preestablecidos y autosuficientes que permiten conocer las cantidades, ubicación y trayectoria de un residuo o lote de residuos a lo largo de la cadena de manejo."
+    }
+  },
+  {
+    "id": "rep-03",
+    "consulta": "¿Qué se entiende por almacenamiento?",
+    "referencia": "Acumulación de residuos en un lugar específico por un tiempo determinado.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-3",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 3",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        2,
+        3,
+        4
+      ],
+      "texto": "Artículo 3º.- Definiciones. Para los efectos de esta ley, se entenderá por:\n\n1) Almacenamiento: Acumulación de residuos en un lugar específico por un tiempo determinado.\n\n2) Ciclo de vida de un producto: Etapas consecutivas e interrelacionadas de un sistema productivo, desde la adquisición de materias primas o su generación a partir de recursos naturales, hasta su eliminación como residuo.\n\n3) Comercializador: Toda persona natural o jurídica, distinta del productor, que vende un producto prioritario al consumidor.\n\nEn el caso de envases y embalajes, el comercializador es aquel que vende el bien de consumo envasado o embalado al consumidor.\n\n4) Consumidor: Todo generador de un residuo de producto prioritario.\n\n5) Consumidor industrial: todo establecimiento industrial, de acuerdo a la Ordenanza General de Urbanismo y Construcciones, que genere residuos de un producto prioritario.\n\n6) Distribuidor: Toda persona natural o jurídica, distinta del productor, que comercializa un producto prioritario antes de su venta al consumidor.\n\nEn el caso de envases y embalajes, el distribuidor es aquel que comercializa el bien de consumo envasado o embalado antes de su venta al consumidor.\n\n7) Ecodiseño: Integración de aspectos ambientales en el diseño del producto, envase, embalaje, etiquetado u otros, con el fin de disminuir las externalidades ambientales a lo largo de todo su ciclo de vida.\n\n8) Eliminación: Todo procedimiento cuyo objetivo es disponer en forma definitiva o destruir un residuo en instalaciones autorizadas.\n\n9) Generador: Poseedor de un producto, sustancia u objeto que lo desecha o tiene la obligación de desecharlo de acuerdo a la normativa vigente.\n\n10) Gestor: Persona natural o jurídica, pública o privada, que realiza cualquiera de las operaciones de manejo de residuos y que se encuentra autorizada y registrada en conformidad a la normativa vigente.\n\n11) Gestión: Operaciones de manejo y otras acciones de política, de planificación, normativas, administrativas, financieras, organizativas, educativas, de evaluación, de seguimiento y fiscalización, referidas a residuos.\n\n12) Instalación de recepción y almacenamiento: Lugar o establecimiento de recepción y acumulación selectiva de residuos, debidamente autorizado.\n\n13) Manejo: Todas las acciones operativas a las que se somete un residuo, incluyendo, entre otras, recolección, almacenamiento, transporte, pretratamiento y tratamiento.\n\n14) Manejo ambientalmente racional: La adopción de todas las medidas posibles para garantizar que los residuos se manejen de manera que el medio ambiente y la salud de las personas queden protegidos contra los efectos perjudiciales que pueden derivarse de tales residuos.\n\n15) Mejores prácticas ambientales: La aplicación de la combinación más exigente y pertinente de medidas y estrategias de control ambiental.\n\n16) Mejores técnicas disponibles: La etapa más eficaz y avanzada en el desarrollo de los procesos, instalaciones o métodos de operación, que expresan la pertinencia técnica, social y económica de una medida particular para limitar los impactos negativos en el medio ambiente y la salud de las personas.\n\n17) Ministerio: Ministerio del Medio Ambiente.\n\n18) Preparación para la reutilización: Acción de revisión, limpieza o reparación, mediante la cual productos o componentes de productos desechados se acondicionan para que puedan reutilizarse sin ninguna otra transformación previa.\n\n19) Pretratamiento: Operaciones físicas preparatorias o previas a la valorización o eliminación, tales como separación, desembalaje, corte, trituración, compactación, mezclado, lavado y empaque, entre otros, destinadas a reducir su volumen, facilitar su manipulación o potenciar su valorización.\n\n20) Producto prioritario: Sustancia u objeto que una vez transformado en residuo, por su volumen, peligrosidad o presencia de recursos aprovechables, queda sujeto a las obligaciones de la responsabilidad extendida del productor, en conformidad a esta ley.\n\n21) Productor de un producto prioritario o productor: Persona que, independientemente de la técnica de comercialización:\n\na) enajena un producto prioritario por primera vez en el mercado nacional.\n\nb) enajena bajo marca propia un producto prioritario adquirido de un tercero que no es el primer distribuidor.\n\nc) importa un producto prioritario para su propio uso profesional.\n\nEn el caso de envases y embalajes, el productor es aquél que introduce en el mercado el bien de consumo envasado y,o embalado.\n\nEl decreto supremo que establezca las metas y otras obligaciones asociadas de cada producto prioritario sobre la base de criterios y antecedentes fundados determinará los productores a los que les será aplicable la responsabilidad extendida del productor, previa consideración de su condición de micro, pequeña o mediana empresa, según lo dispuesto en la ley Nº 20.416.\n\n22) Reciclador de base: Persona natural que, mediante el uso de la técnica artesanal y semi industrial, se dedica en forma directa y habitual a la recolección selectiva de residuos domiciliarios o asimilables y a la gestión de instalaciones de recepción y almacenamiento de tales residuos, incluyendo su clasificación y pretratamiento. Sin perjuicio de lo anterior, se considerarán también como recicladores de base las personas jurídicas que estén compuestas exclusivamente por personas naturales registradas como recicladores de base, en conformidad al artículo 37.\n\n23) Reciclaje: Empleo de un residuo como insumo o materia prima en un proceso productivo, incluyendo el coprocesamiento y compostaje, pero excluyendo la valorización energética.\n\n24) Recolección: Operación consistente en recoger residuos, incluido su almacenamiento inicial, con el objeto de transportarlos a una instalación de almacenamiento, una instalación de valorización o de eliminación, según corresponda. La recolección de residuos separados en origen se denomina diferenciada o selectiva.\n\n25) Residuo: Sustancia u objeto que su generador desecha o tiene la intención u obligación de desechar de acuerdo a la normativa vigente.\n\n26) Reutilización: Acción mediante la cual productos o componentes de productos desechados se utilizan de nuevo, sin involucrar un proceso productivo.\n\n27) Sistema de gestión: Mecanismo instrumental para que los productores, individual o colectivamente, den cumplimiento a las obligaciones establecidas en el marco de la responsabilidad extendida del productor, a través de la implementación de un plan de gestión.\n\n28) Superintendencia: Superintendencia del Medio Ambiente.\n\n29) Tratamiento: Operaciones de valorización y eliminación de residuos.\n\n30) Valorización: Conjunto de acciones cuyo objetivo es recuperar un residuo, uno o varios de los materiales que lo componen y,o el poder calorífico de los mismos. La valorización comprende la preparación para la reutilización, el reciclaje y la valorización energética.\n\n31) Valorización energética: Empleo de un residuo con la finalidad de aprovechar su poder calorífico."
+    }
+  },
+  {
+    "id": "rep-04",
+    "consulta": "¿Qué destino debe tener todo residuo potencialmente valorizable?",
+    "referencia": "Debe ser destinado a valorización, evitando su eliminación.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-4",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 4",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        4
+      ],
+      "texto": "Artículo 4º.- De la prevención y valorización. Todo residuo potencialmente valorizable deberá ser destinado a tal fin evitando su eliminación.\n\nPara tal efecto, el Ministerio, considerando el principio de gradualismo y cuando sea pertinente, deberá establecer mediante decreto supremo los siguientes instrumentos destinados a prevenir la generación de residuos y,o promover su valorización:\n\na) Ecodiseño.\n\nb) Certificación, rotulación y etiquetado de uno o más productos.\n\nc) Sistemas de depósito y reembolso.\n\nd) Mecanismos de separación en origen y recolección selectiva de residuos.\n\ne) Mecanismos para asegurar un manejo ambientalmente racional de residuos.\n\nf) Mecanismos para prevenir la generación de residuos, incluyendo medidas para evitar que productos aptos para el uso o consumo, según lo determine el decreto supremo respectivo, se conviertan en residuos.\n\nUn reglamento establecerá el procedimiento para la elaboración de los decretos supremos que establezcan los instrumentos anteriores. Este procedimiento deberá contener a lo menos las siguientes etapas:\n\na) Un análisis general del impacto económico y social.\n\nb) Una consulta a organismos públicos competentes y privados, incluyendo a los recicladores de base.\n\nc) Una etapa de consulta pública, la que tendrá una duración mínima de treinta días hábiles.\n\nLa propuesta de decreto supremo que regule alguno de los instrumentos señalados en las letras anteriores deberá ser sometida al pronunciamiento del Consejo de Ministros para la Sustentabilidad, de conformidad a lo establecido en los artículos 71 y siguientes de la ley Nº 19.300. Tal decreto será reclamable en los términos establecidos en el artículo 16.\n\nLa Superintendencia será competente para fiscalizar el cumplimiento de dichos instrumentos e imponer sanciones, en conformidad a su ley orgánica."
+    }
+  },
+  {
+    "id": "rep-05",
+    "consulta": "¿A quién se deben entregar los residuos sólidos domiciliarios y asimilables?",
+    "referencia": "A la municipalidad correspondiente o a un gestor autorizado para su manejo.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-5",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 5",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        4,
+        5
+      ],
+      "texto": "Artículo 5º.- Obligaciones de los generadores de residuos. Todo generador de residuos deberá entregarlos a un gestor autorizado para su tratamiento, de acuerdo\n\ncon la normativa vigente, salvo que proceda a manejarlos por sí mismo en conformidad al artículo siguiente. El almacenamiento de tales residuos deberá igualmente cumplir con la normativa vigente.\n\nLos residuos sólidos domiciliarios y asimilables deberán ser entregados a la municipalidad correspondiente o a un gestor autorizado para su manejo.\n\nLo dispuesto en los incisos anteriores será sin perjuicio de lo establecido en el artículo 34."
+    }
+  },
+  {
+    "id": "rep-06",
+    "consulta": "¿Cómo debe manejar los residuos un gestor y con qué autorizaciones?",
+    "referencia": "De manera ambientalmente racional, aplicando las mejores técnicas disponibles y prácticas ambientales, conforme a la normativa vigente y con las autorizaciones correspondientes.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-6",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 6",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        5
+      ],
+      "texto": "Artículo 6º.- Obligaciones de los gestores de residuos. Todo gestor deberá manejar los residuos de manera ambientalmente racional, aplicando las mejores técnicas disponibles y mejores prácticas ambientales, en conformidad a la normativa vigente, y contar con la o las autorizaciones correspondientes.\n\nAsimismo, todo gestor deberá declarar, a través del Registro de Emisiones y Transferencia de Contaminantes, al menos, el tipo, cantidad, costos, tarifa del servicio, origen, tratamiento y destino de los residuos, de acuerdo a lo dispuesto en el reglamento a que se refiere el artículo 70, letra p), de la ley Nº 19.300."
+    }
+  },
+  {
+    "id": "rep-07",
+    "consulta": "¿Todos los gestores de residuos peligrosos deben contar con seguro según este artículo?",
+    "referencia": "El artículo exige seguro por daños a terceros y al medio ambiente a los gestores de residuos peligrosos que determine el Reglamento Sanitario sobre Manejo de Residuos Peligrosos.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-7",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 7",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        5
+      ],
+      "texto": "Artículo 7º.- Los gestores de residuos peligrosos que determine el Reglamento Sanitario sobre Manejo de Residuos Peligrosos deberán contar con un seguro por daños a terceros y al medio ambiente."
+    }
+  },
+  {
+    "id": "rep-08",
+    "consulta": "¿Se permite importar residuos peligrosos para su eliminación?",
+    "referencia": "Se prohíbe la importación de residuos peligrosos para su eliminación.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-8",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 8",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        5
+      ],
+      "texto": "Artículo 8º.- Obligaciones de los importadores y exportadores de residuos. Los importadores y exportadores de residuos se regirán por lo dispuesto en el Convenio de Basilea sobre el control de los movimientos transfronterizos de desechos peligrosos y su eliminación, y por las demás normas legales y reglamentarias que regulen la materia.\n\nSe prohíbe la importación de residuos peligrosos para su eliminación. La importación de residuos peligrosos para su valorización sólo será autorizada si se acredita ante el Ministerio del Medio Ambiente que aquella será efectuada por gestores autorizados que cuenten con una resolución de Calificación Ambiental que los habilite para tal efecto.\n\nMediante decreto supremo, expedido por el Ministerio y firmado además por el Ministro de Salud, se establecerán los requisitos, exigencias y procedimientos para la autorización de importación, exportación y tránsito de residuos, el que deberá incluir la regulación de las garantías asociadas.\n\nCuando la autoridad correspondiente advierta que un importador o exportador no cuenta con la autorización señalada en el inciso precedente, el Ministerio podrá adoptar las medidas necesarias para el adecuado manejo de los residuos, a costa del infractor, debiendo siempre manejar los residuos de manera que garantice la protección del medio ambiente y la salud de las personas.\n\nEl Ministerio estará facultado para denegar fundadamente las autorizaciones de importación y exportación, cuando existan antecedentes de que los residuos no serán sometidos a un manejo ambientalmente racional.\n\nTodo importador y exportador de residuos deberá informar, al menos, el tipo de residuo, cantidad, origen, tratamiento aplicado, incluyendo el destino de los residuos generados, cuando corresponda, a través del Registro de Emisiones y Transferencias de Contaminantes."
+    }
+  },
+  {
+    "id": "rep-09",
+    "consulta": "¿De qué son responsables los productores en el régimen de responsabilidad extendida?",
+    "referencia": "De organizar y financiar la gestión de los residuos de los productos prioritarios que comercialicen en el país.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-9",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 9",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        6
+      ],
+      "texto": "Artículo 9º.- Responsabilidad extendida del productor. La responsabilidad extendida del productor corresponde a un régimen especial de gestión de residuos, conforme al cual los productores de productos prioritarios son responsables de la organización y financiamiento de la gestión de los residuos de los productos prioritarios que comercialicen en el país.\n\nLos productores de productos prioritarios deberán cumplir con las siguientes obligaciones:\n\na) Inscribirse en el registro establecido en el artículo 37.\n\nb) Organizar y financiar la recolección de los residuos de los productos prioritarios en todo el territorio nacional, así como su almacenamiento, transporte y tratamiento en conformidad a la ley, a través de alguno de los sistemas de gestión a que se refiere el párrafo 3º de este título. La presente obligación será exigible con la entrada en vigencia de los respectivos decretos supremos que establezcan metas y otras obligaciones asociadas.\n\nc) Cumplir con las metas y otras obligaciones asociadas, en los plazos, proporción y condiciones establecidos en el respectivo decreto supremo.\n\nd) Asegurar que la gestión de los residuos de los productos prioritarios se realice por gestores autorizados y registrados.\n\ne) Las demás que establezca esta ley."
+    }
+  },
+  {
+    "id": "rep-10",
+    "consulta": "¿Cuáles son los seis productos prioritarios enumerados?",
+    "referencia": "Aceites lubricantes, aparatos eléctricos y electrónicos, baterías, envases y embalajes, neumáticos y pilas.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-10",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 10",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        6
+      ],
+      "texto": "Artículo 10.- Productos Prioritarios. La responsabilidad extendida del productor aplicará a las categorías o subcategorías definidas en los respectivos decretos supremos que establezcan metas y otras obligaciones asociadas, para los siguientes productos prioritarios:\n\na) Aceites lubricantes.\n\nb) Aparatos eléctricos y electrónicos.\n\nc) Baterías.\n\nd) Envases y embalajes.\n\ne) Neumáticos.\n\nf) Pilas.\n\nPara la definición de las categorías y subcategorías deberá considerarse la efectividad del instrumento para la gestión del residuo, su volumen, peligrosidad, potencial de valorización o el carácter de domiciliario o no domiciliario del residuo.\n\nEl Ministerio, a través de los decretos supremos referidos, podrá igualmente aplicar la responsabilidad extendida del productor a las categorías y subcategorías de otros productos, los que se entenderán productos prioritarios. Para tal efecto, deberán considerarse los criterios referidos en el inciso anterior."
+    }
+  },
+  {
+    "id": "rep-11",
+    "consulta": "¿A qué período corresponde la información anual que puede requerir el Ministerio?",
+    "referencia": "Al año inmediatamente anterior al requerimiento.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-11",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 11",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        6,
+        7
+      ],
+      "texto": "Artículo 11.- Productos prioritarios no sometidos a metas ni obligaciones asociadas. El Ministerio podrá requerir a los productores, cuyos productos prioritarios se encuentren en una categoría o subcategoría excluida de la aplicación de la responsabilidad extendida del productor, informar anualmente y respecto al año inmediatamente anterior al requerimiento, a través del Registro de Emisiones y Transferencias de Contaminantes, lo siguiente:\n\na) Cantidad de productos comercializados en el país.\n\nb) Actividades de recolección, valorización y eliminación realizadas y su costo.\n\nc) Cantidad de residuos recolectados, valorizados y eliminados.\n\nd) Indicación de si la gestión para las actividades de recolección y valorización es individual o colectiva.\n\nLos diarios, periódicos y revistas se considerarán productos prioritarios no\n\nsometidos a metas ni obligaciones asociadas y quedarán sujetos a las disposiciones del presente artículo.\n\nLa información referida podrá ser requerida por primera vez en un plazo máximo de doce meses, contado desde la entrada en vigencia del decreto supremo respectivo. En el caso de diarios, periódicos y revistas, dicho plazo se contará desde la publicación de la presente ley."
+    }
+  },
+  {
+    "id": "rep-12",
+    "consulta": "¿Mediante qué instrumento se establecen las metas de recolección y valorización?",
+    "referencia": "Mediante decretos supremos dictados por el Ministerio.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-12",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 12",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        7
+      ],
+      "texto": "Artículo 12.- Metas de recolección y valorización. Tanto las metas de recolección como de valorización de los residuos de productos prioritarios serán establecidas mediante decretos supremos dictados por el Ministerio.\n\nEl establecimiento de tales metas se efectuará en relación con la cantidad de productos prioritarios introducidos en el mercado nacional por cada productor, aplicando los principios de gradualismo y de jerarquía en el manejo de residuos, considerando las mejores técnicas disponibles y las mejores prácticas ambientales como criterio para tal efecto.\n\nEstos decretos supremos podrán establecer diferencias en las metas en base a consideraciones demográficas, geográficas y de conectividad."
+    }
+  },
+  {
+    "id": "rep-13",
+    "consulta": "¿Puede regularse el etiquetado como obligación asociada para asegurar las metas?",
+    "referencia": "Sí. Los decretos supremos pueden regular obligaciones de etiquetado para asegurar el cumplimiento de metas.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-13",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 13",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        7
+      ],
+      "texto": "Artículo 13.- Obligaciones asociadas. Con el fin de asegurar el cumplimiento de metas, los decretos supremos indicados en el artículo anterior podrán regular las siguientes obligaciones:\n\na) De etiquetado.\n\nb) De información a distribuidores o comercializadores, gestores y consumidores, incluyendo la tarifa correspondiente al costo de la gestión de residuos.\n\nc) De diseño e implementación de estrategias de comunicación y sensibilización.\n\nd) De diseño e implementación de medidas de prevención en la generación de residuos.\n\ne) De entrega separada en origen y recolección selectiva de residuos.\n\nf) De limitaciones en la presencia de sustancias peligrosas en los productos.\n\ng) De exigencias de ecodiseño.\n\nh) De diseño, cobertura y operación de instalaciones de recepción y almacenamiento.\n\ni) Especificación de los roles y responsabilidades que corresponden a los diferentes actores involucrados en el cumplimiento de las metas, en virtud de lo dispuesto en la presente ley."
+    }
+  },
+  {
+    "id": "rep-14",
+    "consulta": "¿Qué debe establecer el reglamento mencionado al comienzo del artículo?",
+    "referencia": "El procedimiento para elaborar los decretos supremos que establezcan metas y otras obligaciones asociadas por producto prioritario.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-14",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 14",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        7,
+        8
+      ],
+      "texto": "Artículo 14.- Procedimiento para el establecimiento de metas y otras obligaciones asociadas. Un reglamento establecerá el procedimiento para la elaboración de los decretos supremos que establezcan metas y otras obligaciones asociadas por producto prioritario, el que deberá contener a lo menos las siguientes etapas:\n\na) Un análisis general del impacto económico y social.\n\nb) Una consulta a organismos públicos y privados competentes, quienes conformarán un comité operativo ampliado que el Ministerio creará, de conformidad al artículo 70, letra x), de la ley Nº19.300. Dicho comité se constituirá por representantes de los ministerios, así como por personas naturales y jurídicas ajenas a la Administración del Estado que representen a los productores, los gestores de residuos, las asociaciones de consumidores, los recicladores de base, la academia, las organizaciones no gubernamentales, entre otros.\n\nc) Una etapa de consulta pública, la que incluirá la opinión del Consejo Consultivo del Ministerio del Medio Ambiente."
+    }
+  },
+  {
+    "id": "rep-15",
+    "consulta": "¿A qué órgano se somete la propuesta de decreto que establece metas?",
+    "referencia": "Al pronunciamiento del Consejo de Ministros para la Sustentabilidad.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-15",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 15",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        8
+      ],
+      "texto": "Artículo 15.- Pronunciamiento del Consejo de Ministros para la Sustentabilidad. La propuesta de decreto supremo que establezca metas y otras obligaciones asociadas deberá ser sometida al pronunciamiento del Consejo de Ministros para la Sustentabilidad, de conformidad a lo establecido en los  artículo 71 y siguientes de la ley Nº19.300."
+    }
+  },
+  {
+    "id": "rep-16",
+    "consulta": "¿Cuál es el plazo para interponer el reclamo y desde cuándo se cuenta?",
+    "referencia": "Treinta días desde la publicación del decreto en el Diario Oficial.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-16",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 16",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        8
+      ],
+      "texto": "Artículo 16.- Recurso de reclamación. Sin perjuicio de los recursos administrativos que procedan, los decretos supremos que establezcan metas y otras obligaciones asociadas serán reclamables ante el Tribunal Ambiental respectivo, por cualquier persona que considere que no se ajustan a esta ley y que le  causan perjuicio.\n\nEl plazo para interponer el reclamo será de treinta días, contado desde la fecha de publicación del decreto en el Diario Oficial.\n\nLos recursos serán conocidos por el tribunal que en primer lugar se avoque a su consideración, excluyendo la competencia de los demás.\n\nLa interposición del reclamo no suspenderá en caso alguno los efectos del acto impugnado."
+    }
+  },
+  {
+    "id": "rep-17",
+    "consulta": "¿Con qué frecuencia máxima deben revisarse las metas y demás obligaciones asociadas?",
+    "referencia": "Como máximo cada cinco años, según el procedimiento establecido en el reglamento.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-17",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 17",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        8
+      ],
+      "texto": "Artículo 17.- De la revisión de las metas y otras obligaciones asociadas. Las metas de recolección y valorización de residuos de los productos prioritarios, así como las demás obligaciones asociadas, deberán ser revisadas como máximo cada cinco años, de conformidad al procedimiento establecido en el reglamento."
+    }
+  },
+  {
+    "id": "rep-18",
+    "consulta": "¿A quién corresponde la interpretación administrativa de los decretos de metas?",
+    "referencia": "Al Ministerio.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-18",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 18",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        8
+      ],
+      "texto": "Artículo 18.- Interpretación administrativa. Corresponderá al Ministerio interpretar administrativamente las disposiciones contenidas en los decretos supremos que establezcan metas y otras obligaciones asociadas."
+    }
+  },
+  {
+    "id": "rep-19",
+    "consulta": "¿Qué tipos de sistema de gestión permiten cumplir las obligaciones?",
+    "referencia": "Un sistema de gestión individual o colectivo.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-19",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 19",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        8
+      ],
+      "texto": "Artículo 19.- Sistemas de gestión. Las obligaciones establecidas en el marco de la responsabilidad extendida del productor deberán cumplirse a través de un sistema de gestión, individual o colectivo.\n\nLos decretos supremos que establezcan metas y otras obligaciones asociadas podrán restringir la aplicación de uno u otro sistema, a fin de evitar distorsiones de mercado que pongan en riesgo la efectividad de la responsabilidad extendida del productor, o afecten la libre competencia en los términos establecidos en el decreto con fuerza de ley Nº 1, de 2004, del Ministerio de Economía, Fomento y Reconstrucción, que fijó el texto refundido, coordinado y sistematizado del decreto ley Nº 211, de 1973, oyendo previamente al organismo público competente."
+    }
+  },
+  {
+    "id": "rep-20",
+    "consulta": "¿Puede distribuir utilidades entre sus asociados la persona jurídica del sistema colectivo?",
+    "referencia": "No. Debe ser una persona jurídica que no distribuya utilidades entre sus asociados.",
+    "fragmento": {
+      "id_fragmento": "ley20920-articulo-20",
+      "documento": "Ley 20.920",
+      "referencia": "Artículo 20",
+      "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+      "fecha_consulta": "2026-10-22",
+      "version_documento": "2016-06-01",
+      "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+      "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+      "paginas": [
+        8,
+        9
+      ],
+      "texto": "Artículo 20.- Sistemas colectivos de gestión. Los productores que asuman el cumplimiento de sus obligaciones de manera colectiva, deberán hacerlo mediante la constitución o incorporación a una persona jurídica que no distribuya utilidades entre sus asociados, la que será responsable ante la autoridad. Dicha persona jurídica tendrá como fin exclusivo la gestión de los residuos de los productos prioritarios, y en ningún caso se entenderá como organización de interés público para los efectos de la ley Nº 20.500.\n\nAsimismo, deberá estar integrada exclusivamente por productores, salvo que el respectivo decreto supremo permita la integración de distribuidores u otros actores\n\nrelevantes.\n\nEn caso de incumplimiento de las obligaciones establecidas en el marco de la responsabilidad extendida del productor, cada productor responderá ante el sistema colectivo que integre, en proporción a las metas que le apliquen.\n\nSin perjuicio de la normativa aplicable a la persona jurídica que se constituya, los estatutos deberán garantizar la incorporación de todo productor del respectivo producto prioritario, en función de criterios objetivos, y la participación equitativa de productores, que aseguren acceso a la información y respeto a la libre competencia, y podrán  establecer una remuneración para sus directores.\n\nLos productores deberán financiar los costos en que incurra la referida persona jurídica en el cumplimiento de su función, en base a criterios objetivos, tales como la cantidad de productos comercializados en el país y la composición o diseño de tales productos, de conformidad a lo dispuesto en el decreto supremo que establezca las metas y otras obligaciones asociadas de cada producto prioritario.\n\nEn caso de extinción de la persona jurídica, sus bienes pasarán a otro sistema colectivo de gestión o a los productores asociados, según sus estatutos."
+    }
+  }
+]
