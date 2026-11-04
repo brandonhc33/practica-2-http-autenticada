@@ -171,14 +171,15 @@ main.py                 → Inicio de la API
 src/
 ├── api/                → Endpoints, autenticación y esquemas
 ├── clientes/           → Gemini, errores, reintentos y salida JSON
+├── evaluacion/         → Pipeline de texto y métricas léxicas
 ├── costos/             → Cálculo, registro de sesión y tipo de cambio
 ├── prompts/            → Banco, instrucciones y contexto documental
 ├── agentes.py          → Selección y ejecución del agente
 └── catalogo.py         → Modelos disponibles
-tests/                  → api/, clientes/, costos/, prompts/ y scripts/
+tests/                  → api/, clientes/, costos/, evaluacion/, prompts/ y scripts/
 scripts/                → Evaluaciones, ensayos y herramientas auxiliares
 docs/                   → Guía, arquitectura y evidencias
-datos/                  → Documentos locales de Ley REP
+datos/                  → Documentos de Ley REP y casos de evaluación
 ```
 
 Para evaluar el proyecto, comienza ejecutando `/health` y las pruebas. Luego sigue el flujo de código: [entrada](main.py) → [API y autenticación](src/api/app.py) → [selección del agente](src/agentes.py) → [cliente HTTP](src/clientes/gemini.py). Los [errores](src/clientes/errores.py) y los [reintentos](src/clientes/reintentos.py) se mantienen en módulos separados.
@@ -191,6 +192,8 @@ Las pruebas siguen las mismas áreas del código; `tests/conftest.py` bloquea la
 - [Arquitectura y recorrido de una petición](docs/arquitectura.md).
 - [Comparación de modelos y decisión de arquitectura](docs/decision-arquitectura.md).
 - [Banco de prompts y salida estructurada](docs/bloque-10-prompts.md).
+- [Evaluación de respuestas de Ley REP: bloques 15–17](docs/evaluacion-respuestas.md).
+- [Límites de las métricas y hallazgos de la revisión](docs/limites_metrica.md).
 - [Entrega de bloques 13 y 14: pruebas, costos y backoff](docs/entrega-bloques-13-14.md).
 - [Capturas y resultados de ejecución](docs/evidencias/mis-capturas/README.md).
 - [Propuesta del proyecto final: asistente RAG para Ley REP](docs/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

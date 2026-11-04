@@ -1,0 +1,421 @@
+{
+  "huella_resultados": "5e6430de31195ec518e41ad91ad0097f87c0e3a8b14d377256cc408c662453d9",
+  "revisor": "Codex (asistente de IA); revisión asistida pendiente de validación por Brandon",
+  "fecha_revision": "2026-11-04",
+  "criterio": "5 menores y 5 mayores F1; desempate por id; 10 casos distintos.",
+  "casos": [
+    {
+      "id": "rep-18",
+      "grupo": "cinco_menores",
+      "consulta": "¿A quién corresponde la interpretación administrativa de los decretos de metas?",
+      "referencia": "Al Ministerio.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-18",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 18",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          8
+        ],
+        "texto": "Artículo 18.- Interpretación administrativa. Corresponderá al Ministerio interpretar administrativamente las disposiciones contenidas en los decretos supremos que establezcan metas y otras obligaciones asociadas."
+      },
+      "respuesta": "La interpretación administrativa de las disposiciones contenidas en los decretos supremos que establezcan metas y otras obligaciones asociadas corresponde al Ministerio.",
+      "metricas": {
+        "precision": 0.09523809523809523,
+        "cobertura": 1.0,
+        "f1": 0.17391304347826084
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "La interpretación administrativa de las disposiciones contenidas en los decretos supremos que establezcan metas y otras obligaciones asociadas corresponde al Ministerio.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-18",
+            "cita_textual": "Corresponderá al Ministerio interpretar administrativamente las disposiciones contenidas en los decretos supremos que establezcan metas y otras obligaciones asociadas."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "La respuesta está bien: dice que le corresponde al Ministerio, tal como aparece en el artículo. Aunque el F1 es bajo, responde lo que se preguntó. Lo que pasa es que la referencia es muy corta y Gemini explica lo mismo con más palabras."
+    },
+    {
+      "id": "rep-19",
+      "grupo": "cinco_menores",
+      "consulta": "¿Qué tipos de sistema de gestión permiten cumplir las obligaciones?",
+      "referencia": "Un sistema de gestión individual o colectivo.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-19",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 19",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          8
+        ],
+        "texto": "Artículo 19.- Sistemas de gestión. Las obligaciones establecidas en el marco de la responsabilidad extendida del productor deberán cumplirse a través de un sistema de gestión, individual o colectivo.\n\nLos decretos supremos que establezcan metas y otras obligaciones asociadas podrán restringir la aplicación de uno u otro sistema, a fin de evitar distorsiones de mercado que pongan en riesgo la efectividad de la responsabilidad extendida del productor, o afecten la libre competencia en los términos establecidos en el decreto con fuerza de ley Nº 1, de 2004, del Ministerio de Economía, Fomento y Reconstrucción, que fijó el texto refundido, coordinado y sistematizado del decreto ley Nº 211, de 1973, oyendo previamente al organismo público competente."
+      },
+      "respuesta": "Las obligaciones establecidas en el marco de la responsabilidad extendida del productor deben cumplirse a través de un sistema de gestión, ya sea de carácter individual o colectivo.",
+      "metricas": {
+        "precision": 0.25,
+        "cobertura": 1.0,
+        "f1": 0.4
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "Las obligaciones establecidas en el marco de la responsabilidad extendida del productor deben cumplirse a través de un sistema de gestión, ya sea de carácter individual o colectivo.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-19",
+            "cita_textual": "Las obligaciones establecidas en el marco de la responsabilidad extendida del productor deberán cumplirse a través de un sistema de gestión, individual o colectivo."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "Menciona los dos tipos de sistema de gestión: individual y colectivo. Eso coincide con el artículo y responde la pregunta. El puntaje baja porque agrega una explicación más larga, pero no encontré información incorrecta. Las restricciones que aparecen después en el artículo no eran lo que se estaba preguntando."
+    },
+    {
+      "id": "rep-17",
+      "grupo": "cinco_menores",
+      "consulta": "¿Con qué frecuencia máxima deben revisarse las metas y demás obligaciones asociadas?",
+      "referencia": "Como máximo cada cinco años, según el procedimiento establecido en el reglamento.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-17",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 17",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          8
+        ],
+        "texto": "Artículo 17.- De la revisión de las metas y otras obligaciones asociadas. Las metas de recolección y valorización de residuos de los productos prioritarios, así como las demás obligaciones asociadas, deberán ser revisadas como máximo cada cinco años, de conformidad al procedimiento establecido en el reglamento."
+      },
+      "respuesta": "Las metas de recolección y valorización de residuos de los productos prioritarios, así como las demás obligaciones asociadas, deben ser revisadas como máximo cada cinco años, conforme al procedimiento establecido en el reglamento.",
+      "metricas": {
+        "precision": 0.30303030303030304,
+        "cobertura": 0.8333333333333334,
+        "f1": 0.4444444444444444
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "Las metas de recolección y valorización de residuos de los productos prioritarios, así como las demás obligaciones asociadas, deben ser revisadas como máximo cada cinco años, conforme al procedimiento establecido en el reglamento.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-17",
+            "cita_textual": "Las metas de recolección y valorización de residuos de los productos prioritarios, así como las demás obligaciones asociadas, deberán ser revisadas como máximo cada cinco años, de conformidad al procedimiento establecido en el reglamento."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "Indica correctamente que la revisión debe hacerse como máximo cada cinco años y siguiendo el reglamento. No falta nada de lo que se preguntó. El puntaje es más bajo de lo que esperaba para una respuesta correcta, porque usa más palabras y cambia algunas expresiones sin cambiar la idea."
+    },
+    {
+      "id": "rep-06",
+      "grupo": "cinco_menores",
+      "consulta": "¿Cómo debe manejar los residuos un gestor y con qué autorizaciones?",
+      "referencia": "De manera ambientalmente racional, aplicando las mejores técnicas disponibles y prácticas ambientales, conforme a la normativa vigente y con las autorizaciones correspondientes.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-6",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 6",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          5
+        ],
+        "texto": "Artículo 6º.- Obligaciones de los gestores de residuos. Todo gestor deberá manejar los residuos de manera ambientalmente racional, aplicando las mejores técnicas disponibles y mejores prácticas ambientales, en conformidad a la normativa vigente, y contar con la o las autorizaciones correspondientes.\n\nAsimismo, todo gestor deberá declarar, a través del Registro de Emisiones y Transferencia de Contaminantes, al menos, el tipo, cantidad, costos, tarifa del servicio, origen, tratamiento y destino de los residuos, de acuerdo a lo dispuesto en el reglamento a que se refiere el artículo 70, letra p), de la ley Nº 19.300."
+      },
+      "respuesta": "Todo gestor debe manejar los residuos de manera ambientalmente racional, aplicando las mejores técnicas disponibles y mejores prácticas ambientales conforme a la normativa vigente, y debe contar con la o las autorizaciones correspondientes. Asimismo, debe declarar a través del Registro de Emisiones y Transferencia de Contaminantes el tipo, cantidad, costos, tarifa del servicio, origen, tratamiento y destino de los residuos, según lo dispuesto en el reglamento.",
+      "metricas": {
+        "precision": 0.3333333333333333,
+        "cobertura": 1.0,
+        "f1": 0.5
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "Todo gestor debe manejar los residuos de manera ambientalmente racional, aplicando las mejores técnicas disponibles y mejores prácticas ambientales conforme a la normativa vigente, y debe contar con la o las autorizaciones correspondientes. Asimismo, debe declarar a través del Registro de Emisiones y Transferencia de Contaminantes el tipo, cantidad, costos, tarifa del servicio, origen, tratamiento y destino de los residuos, según lo dispuesto en el reglamento.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-6",
+            "cita_textual": "Todo gestor deberá manejar los residuos de manera ambientalmente racional, aplicando las mejores técnicas disponibles y mejores prácticas ambientales, en conformidad a la normativa vigente, y contar con la o las autorizaciones correspondientes."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "Explica cómo deben manejarse los residuos y que el gestor necesita las autorizaciones correspondientes. También agrega qué información debe declarar en el Registro. Eso aparece en el segundo párrafo del artículo, aunque no era necesario para responder. La respuesta está completa; el texto adicional hace que el F1 baje, pero no significa que esté mal."
+    },
+    {
+      "id": "rep-12",
+      "grupo": "cinco_menores",
+      "consulta": "¿Mediante qué instrumento se establecen las metas de recolección y valorización?",
+      "referencia": "Mediante decretos supremos dictados por el Ministerio.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-12",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 12",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          7
+        ],
+        "texto": "Artículo 12.- Metas de recolección y valorización. Tanto las metas de recolección como de valorización de los residuos de productos prioritarios serán establecidas mediante decretos supremos dictados por el Ministerio.\n\nEl establecimiento de tales metas se efectuará en relación con la cantidad de productos prioritarios introducidos en el mercado nacional por cada productor, aplicando los principios de gradualismo y de jerarquía en el manejo de residuos, considerando las mejores técnicas disponibles y las mejores prácticas ambientales como criterio para tal efecto.\n\nEstos decretos supremos podrán establecer diferencias en las metas en base a consideraciones demográficas, geográficas y de conectividad."
+      },
+      "respuesta": "Las metas de recolección y valorización de los residuos de productos prioritarios se establecen mediante decretos supremos dictados por el Ministerio.",
+      "metricas": {
+        "precision": 0.3333333333333333,
+        "cobertura": 1.0,
+        "f1": 0.5
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "Las metas de recolección y valorización de los residuos de productos prioritarios se establecen mediante decretos supremos dictados por el Ministerio.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-12",
+            "cita_textual": "Tanto las metas de recolección como de valorización de los residuos de productos prioritarios serán establecidas mediante decretos supremos dictados por el Ministerio."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "Responde que las metas se establecen mediante decretos supremos dictados por el Ministerio, igual que en el artículo. Está correcta y completa. El F1 queda en 0.5 porque Gemini repite parte de la pregunta y usa más palabras que la referencia, no porque se haya equivocado."
+    },
+    {
+      "id": "rep-05",
+      "grupo": "cinco_mayores",
+      "consulta": "¿A quién se deben entregar los residuos sólidos domiciliarios y asimilables?",
+      "referencia": "A la municipalidad correspondiente o a un gestor autorizado para su manejo.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-5",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 5",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          4,
+          5
+        ],
+        "texto": "Artículo 5º.- Obligaciones de los generadores de residuos. Todo generador de residuos deberá entregarlos a un gestor autorizado para su tratamiento, de acuerdo\n\ncon la normativa vigente, salvo que proceda a manejarlos por sí mismo en conformidad al artículo siguiente. El almacenamiento de tales residuos deberá igualmente cumplir con la normativa vigente.\n\nLos residuos sólidos domiciliarios y asimilables deberán ser entregados a la municipalidad correspondiente o a un gestor autorizado para su manejo.\n\nLo dispuesto en los incisos anteriores será sin perjuicio de lo establecido en el artículo 34."
+      },
+      "respuesta": "Los residuos sólidos domiciliarios y asimilables deben ser entregados a la municipalidad correspondiente o a un gestor autorizado para su manejo.",
+      "metricas": {
+        "precision": 0.5714285714285714,
+        "cobertura": 1.0,
+        "f1": 0.7272727272727273
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "Los residuos sólidos domiciliarios y asimilables deben ser entregados a la municipalidad correspondiente o a un gestor autorizado para su manejo.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-5",
+            "cita_textual": "Los residuos sólidos domiciliarios y asimilables deberán ser entregados a la municipalidad correspondiente o a un gestor autorizado para su manejo."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "La respuesta está bien porque menciona las dos opciones: entregar los residuos a la municipalidad correspondiente o a un gestor autorizado. No deja fuera ninguna de las dos. El puntaje es alto y coincide con lo que se ve al leerla; las palabras adicionales no cambian la respuesta."
+    },
+    {
+      "id": "rep-08",
+      "grupo": "cinco_mayores",
+      "consulta": "¿Se permite importar residuos peligrosos para su eliminación?",
+      "referencia": "Se prohíbe la importación de residuos peligrosos para su eliminación.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-8",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 8",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          5
+        ],
+        "texto": "Artículo 8º.- Obligaciones de los importadores y exportadores de residuos. Los importadores y exportadores de residuos se regirán por lo dispuesto en el Convenio de Basilea sobre el control de los movimientos transfronterizos de desechos peligrosos y su eliminación, y por las demás normas legales y reglamentarias que regulen la materia.\n\nSe prohíbe la importación de residuos peligrosos para su eliminación. La importación de residuos peligrosos para su valorización sólo será autorizada si se acredita ante el Ministerio del Medio Ambiente que aquella será efectuada por gestores autorizados que cuenten con una resolución de Calificación Ambiental que los habilite para tal efecto.\n\nMediante decreto supremo, expedido por el Ministerio y firmado además por el Ministro de Salud, se establecerán los requisitos, exigencias y procedimientos para la autorización de importación, exportación y tránsito de residuos, el que deberá incluir la regulación de las garantías asociadas.\n\nCuando la autoridad correspondiente advierta que un importador o exportador no cuenta con la autorización señalada en el inciso precedente, el Ministerio podrá adoptar las medidas necesarias para el adecuado manejo de los residuos, a costa del infractor, debiendo siempre manejar los residuos de manera que garantice la protección del medio ambiente y la salud de las personas.\n\nEl Ministerio estará facultado para denegar fundadamente las autorizaciones de importación y exportación, cuando existan antecedentes de que los residuos no serán sometidos a un manejo ambientalmente racional.\n\nTodo importador y exportador de residuos deberá informar, al menos, el tipo de residuo, cantidad, origen, tratamiento aplicado, incluyendo el destino de los residuos generados, cuando corresponda, a través del Registro de Emisiones y Transferencias de Contaminantes."
+      },
+      "respuesta": "La Ley 20.920 establece expresamente que se prohíbe la importación de residuos peligrosos para su eliminación.",
+      "metricas": {
+        "precision": 0.5882352941176471,
+        "cobertura": 1.0,
+        "f1": 0.7407407407407407
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "La Ley 20.920 establece expresamente que se prohíbe la importación de residuos peligrosos para su eliminación.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-8",
+            "cita_textual": "Se prohíbe la importación de residuos peligrosos para su eliminación."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "Dice claramente que está prohibido importar residuos peligrosos para eliminarlos, tal como señala el artículo. Responde lo que se preguntó y no confunde la eliminación con la valorización. El puntaje es alto, pero lo importante al leerla es que mantiene la prohibición y no dice lo contrario."
+    },
+    {
+      "id": "rep-20",
+      "grupo": "cinco_mayores",
+      "consulta": "¿Puede distribuir utilidades entre sus asociados la persona jurídica del sistema colectivo?",
+      "referencia": "No. Debe ser una persona jurídica que no distribuya utilidades entre sus asociados.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-20",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 20",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          8,
+          9
+        ],
+        "texto": "Artículo 20.- Sistemas colectivos de gestión. Los productores que asuman el cumplimiento de sus obligaciones de manera colectiva, deberán hacerlo mediante la constitución o incorporación a una persona jurídica que no distribuya utilidades entre sus asociados, la que será responsable ante la autoridad. Dicha persona jurídica tendrá como fin exclusivo la gestión de los residuos de los productos prioritarios, y en ningún caso se entenderá como organización de interés público para los efectos de la ley Nº 20.500.\n\nAsimismo, deberá estar integrada exclusivamente por productores, salvo que el respectivo decreto supremo permita la integración de distribuidores u otros actores\n\nrelevantes.\n\nEn caso de incumplimiento de las obligaciones establecidas en el marco de la responsabilidad extendida del productor, cada productor responderá ante el sistema colectivo que integre, en proporción a las metas que le apliquen.\n\nSin perjuicio de la normativa aplicable a la persona jurídica que se constituya, los estatutos deberán garantizar la incorporación de todo productor del respectivo producto prioritario, en función de criterios objetivos, y la participación equitativa de productores, que aseguren acceso a la información y respeto a la libre competencia, y podrán  establecer una remuneración para sus directores.\n\nLos productores deberán financiar los costos en que incurra la referida persona jurídica en el cumplimiento de su función, en base a criterios objetivos, tales como la cantidad de productos comercializados en el país y la composición o diseño de tales productos, de conformidad a lo dispuesto en el decreto supremo que establezca las metas y otras obligaciones asociadas de cada producto prioritario.\n\nEn caso de extinción de la persona jurídica, sus bienes pasarán a otro sistema colectivo de gestión o a los productores asociados, según sus estatutos."
+      },
+      "respuesta": "No, la persona jurídica que constituye el sistema colectivo de gestión debe ser una entidad que no distribuya utilidades entre sus asociados.",
+      "metricas": {
+        "precision": 0.5909090909090909,
+        "cobertura": 1.0,
+        "f1": 0.7428571428571429
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "No, la persona jurídica que constituye el sistema colectivo de gestión debe ser una entidad que no distribuya utilidades entre sus asociados.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-20",
+            "cita_textual": "Los productores que asuman el cumplimiento de sus obligaciones de manera colectiva, deberán hacerlo mediante la constitución o incorporación a una persona jurídica que no distribuya utilidades entre sus asociados, la que será responsable ante la autoridad."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "Responde que no se pueden distribuir utilidades entre los asociados, que es lo que dice el artículo. Está completa para esta pregunta y no encontré contradicciones. El puntaje alto coincide con la respuesta correcta, aunque igualmente hay que fijarse en que conserve el «no», porque quitarlo cambiaría todo el sentido."
+    },
+    {
+      "id": "rep-14",
+      "grupo": "cinco_mayores",
+      "consulta": "¿Qué debe establecer el reglamento mencionado al comienzo del artículo?",
+      "referencia": "El procedimiento para elaborar los decretos supremos que establezcan metas y otras obligaciones asociadas por producto prioritario.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-14",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 14",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          7,
+          8
+        ],
+        "texto": "Artículo 14.- Procedimiento para el establecimiento de metas y otras obligaciones asociadas. Un reglamento establecerá el procedimiento para la elaboración de los decretos supremos que establezcan metas y otras obligaciones asociadas por producto prioritario, el que deberá contener a lo menos las siguientes etapas:\n\na) Un análisis general del impacto económico y social.\n\nb) Una consulta a organismos públicos y privados competentes, quienes conformarán un comité operativo ampliado que el Ministerio creará, de conformidad al artículo 70, letra x), de la ley Nº19.300. Dicho comité se constituirá por representantes de los ministerios, así como por personas naturales y jurídicas ajenas a la Administración del Estado que representen a los productores, los gestores de residuos, las asociaciones de consumidores, los recicladores de base, la academia, las organizaciones no gubernamentales, entre otros.\n\nc) Una etapa de consulta pública, la que incluirá la opinión del Consejo Consultivo del Ministerio del Medio Ambiente."
+      },
+      "respuesta": "El reglamento debe establecer el procedimiento para la elaboración de los decretos supremos que fijen metas y otras obligaciones asociadas por producto prioritario.",
+      "metricas": {
+        "precision": 0.6521739130434783,
+        "cobertura": 0.8823529411764706,
+        "f1": 0.75
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "El reglamento debe establecer el procedimiento para la elaboración de los decretos supremos que fijen metas y otras obligaciones asociadas por producto prioritario.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-14",
+            "cita_textual": "Un reglamento establecerá el procedimiento para la elaboración de los decretos supremos que establezcan metas y otras obligaciones asociadas por producto prioritario"
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "Explica correctamente que el reglamento debe establecer cómo se elaboran los decretos sobre metas y otras obligaciones. Usa «fijen» en vez de «establezcan», pero la idea es la misma. No enumera las etapas porque la pregunta no las pide. La respuesta está completa, aunque no use exactamente las palabras de la referencia."
+    },
+    {
+      "id": "rep-04",
+      "grupo": "cinco_mayores",
+      "consulta": "¿Qué destino debe tener todo residuo potencialmente valorizable?",
+      "referencia": "Debe ser destinado a valorización, evitando su eliminación.",
+      "fragmento": {
+        "id_fragmento": "ley20920-articulo-4",
+        "documento": "Ley 20.920",
+        "referencia": "Artículo 4",
+        "url": "https://www.bcn.cl/leychile/navegar?idNorma=1090894",
+        "fecha_consulta": "2026-10-22",
+        "version_documento": "2016-06-01",
+        "archivo_pdf": "Ley-20920_01-JUN-2016.pdf",
+        "sha256_pdf": "2bbc168afdea13d9d53989c453ec5cc4c845fa4daa0c11dc5fa83cf0d6eafc9c",
+        "paginas": [
+          4
+        ],
+        "texto": "Artículo 4º.- De la prevención y valorización. Todo residuo potencialmente valorizable deberá ser destinado a tal fin evitando su eliminación.\n\nPara tal efecto, el Ministerio, considerando el principio de gradualismo y cuando sea pertinente, deberá establecer mediante decreto supremo los siguientes instrumentos destinados a prevenir la generación de residuos y,o promover su valorización:\n\na) Ecodiseño.\n\nb) Certificación, rotulación y etiquetado de uno o más productos.\n\nc) Sistemas de depósito y reembolso.\n\nd) Mecanismos de separación en origen y recolección selectiva de residuos.\n\ne) Mecanismos para asegurar un manejo ambientalmente racional de residuos.\n\nf) Mecanismos para prevenir la generación de residuos, incluyendo medidas para evitar que productos aptos para el uso o consumo, según lo determine el decreto supremo respectivo, se conviertan en residuos.\n\nUn reglamento establecerá el procedimiento para la elaboración de los decretos supremos que establezcan los instrumentos anteriores. Este procedimiento deberá contener a lo menos las siguientes etapas:\n\na) Un análisis general del impacto económico y social.\n\nb) Una consulta a organismos públicos competentes y privados, incluyendo a los recicladores de base.\n\nc) Una etapa de consulta pública, la que tendrá una duración mínima de treinta días hábiles.\n\nLa propuesta de decreto supremo que regule alguno de los instrumentos señalados en las letras anteriores deberá ser sometida al pronunciamiento del Consejo de Ministros para la Sustentabilidad, de conformidad a lo establecido en los artículos 71 y siguientes de la ley Nº 19.300. Tal decreto será reclamable en los términos establecidos en el artículo 16.\n\nLa Superintendencia será competente para fiscalizar el cumplimiento de dichos instrumentos e imponer sanciones, en conformidad a su ley orgánica."
+      },
+      "respuesta": "Todo residuo potencialmente valorizable debe ser destinado a la valorización, evitando su eliminación.",
+      "metricas": {
+        "precision": 0.6153846153846154,
+        "cobertura": 1.0,
+        "f1": 0.761904761904762
+      },
+      "salida_estructurada": {
+        "estado": "respondida",
+        "respuesta": "Todo residuo potencialmente valorizable debe ser destinado a la valorización, evitando su eliminación.",
+        "citas": [
+          {
+            "id_fragmento": "ley20920-articulo-4",
+            "cita_textual": "Todo residuo potencialmente valorizable deberá ser destinado a tal fin evitando su eliminación."
+          }
+        ],
+        "antecedentes_faltantes": []
+      },
+      "correccion_factual": "si",
+      "completitud": "si",
+      "contradiccion": "no",
+      "nota": "La respuesta coincide con el artículo: los residuos que se pueden valorizar deben destinarse a eso, evitando su eliminación. Responde directamente y no deja fuera ninguna parte importante de la pregunta. El puntaje es alto; la diferencia con la referencia está en algunas palabras adicionales, no en el contenido."
+    }
+  ]
+}
