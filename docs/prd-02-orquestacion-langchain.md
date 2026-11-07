@@ -1,6 +1,6 @@
 # PRD 02: orquestación de consultas de Ley REP con LangChain
 
-- **Estado:** propuesto; pendiente de implementación.
+- **Estado:** implementado.
 - **Fecha:** 5 de noviembre de 2026.
 - **Bloques cubiertos:** 18, 19 y 20 (Unidad 2.3).
 - **Primera versión:** flujo de terminal con clasificación, tres rutas y manejo de errores por paso. La API no cambia.
