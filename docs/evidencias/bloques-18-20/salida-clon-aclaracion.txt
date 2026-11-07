@@ -1,0 +1,13 @@
+warning: `VIRTUAL_ENV=/home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=202, costo_usd=0.0000672, acumulado_usd=0.0000672, intentos=1
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=234, costo_usd=0.0002088, acumulado_usd=0.000276, intentos=1
+Faltan antecedentes sobre su empresa para revisar la Ley REP. 
+
+1. ¿A qué sector económico o rubro pertenece su empresa?
+2. ¿Qué tipo de productos o materiales comercializa o importa?
+3. ¿Cuál es su volumen anual de ventas o de productos introducidos al mercado?
+{'respuestas_con_costo': 2, 'respuestas_sin_costo': 0, 'consultas_fallidas': 0, 'intentos_http': 2, 'intentos_sin_uso': 0, 'tokens_entrada': 370, 'tokens_salida': 66, 'tokens_total': 436, 'costo_conocido_usd': '0.000276'}

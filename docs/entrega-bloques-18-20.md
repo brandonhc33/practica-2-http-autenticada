@@ -98,7 +98,8 @@ Las corridas de las fases 1 a 3 no guardaron sus salidas completas, así que de 
 | Prueba del paso 3 reforzado | flash-lite | 2 | 1.407 | 0,0015133 |
 | Fase 3: ruta normativa, neumáticos | flash | 3 | 17.832 | 0,02943 |
 | Fase 4: corrida final, tres rutas | flash-lite | 8 | 14.137 | 0,0057833 |
-| **Total** | | **30** | **61.290** | **0,047798** |
+| Ensayo desde GitHub: ruta de aclaración | flash-lite | 2 | 436 | 0,000276 |
+| **Total** | | **32** | **61.726** | **0,048074** |
 
 Consulta de neumáticos: "Importo neumáticos a Chile y los vendo a talleres. ¿Qué obligaciones me impone la Ley REP y quién fija las metas que debo cumplir?"
 
@@ -108,7 +109,7 @@ Consulta de neumáticos: "Importo neumáticos a Chile y los vendo a talleres. ¿
 
 ## Corrida final
 
-El PRD pide "una corrida final" y CA-14 pide las tres rutas por el comando real. Se hicieron las tres rutas, con 8 llamadas (4 + 2 + 2), por terminal y en la carpeta de trabajo, no en el clon limpio. Las dos primeras se ejecutaron el 6 de noviembre a las 22:22 y la tercera el 7 de noviembre a las 11:44.
+El PRD pide "una corrida final" y CA-14 pide las tres rutas por el comando real. Se hicieron las tres rutas, con 8 llamadas (4 + 2 + 2), por terminal y en la carpeta de trabajo. El clon limpio solo repitió la ruta de aclaración, como se detalla en el [ensayo de instalación](#ensayo-de-instalación-limpia). Las dos primeras se ejecutaron el 6 de noviembre a las 22:22 y la tercera el 7 de noviembre a las 11:44.
 
 | Ruta | Consulta | Llamadas | Tokens (entrada / salida) | Costo USD | Salida |
 | --- | --- | --- | --- | --- | --- |
@@ -129,14 +130,24 @@ Revisión de cada salida contra la copia local de la ley:
 
 ## Ensayo de instalación limpia
 
-- **Fecha:** 6 de noviembre de 2026.
-- **Forma:** clon local de la rama `bloques-18-20` en una carpeta temporal, porque la rama aún no está en GitHub. El clon contenía el commit `c7e98e2`, sin la documentación de esta fase.
+Se hicieron dos ensayos siguiendo B11.2, cada uno en una carpeta temporal.
+
+**Primer ensayo, 6 de noviembre de 2026:** clon local de la rama `bloques-18-20`, porque aún no estaba en GitHub. Contenía el commit `c7e98e2`, sin la documentación de esta fase.
+
 - **Instalación con `uv sync --locked`:** 199 pruebas y 422 subcasos correctos, `ruff` correcto y `basedpyright` con 0 errores.
 - **Instalación con `python3 -m venv` y `pip install -r requirements.txt`, como en B11.2:** Python 3.12.13, `pip check` sin conflictos y 199 pruebas correctas.
 - **Sin clave:** el comando terminó con `Falta configurar GEMINI_API_KEY en el archivo .env.`
-- **Seguridad:** `git status` sin cambios; `.env`, `.venv/` y `venv/` quedaron ignorados.
-- **Hallazgos:** ninguno que requiera corrección.
-- **Sin verificar:** la corrida real no se hizo desde el clon, así que el paso 5 de B11.2 (crear `.env` desde `.env.example` y ejecutar con la clave) no quedó probado en la carpeta limpia. Además, el ensayo usó la misma máquina y la misma caché de paquetes: es una aproximación, como advierte B11.2.
+
+**Segundo ensayo, 7 de noviembre de 2026:** clon desde GitHub de la rama `main`, en el commit `afffea7`.
+
+- **Instalación con `uv sync --locked`:** 199 pruebas y 422 subcasos correctos, `ruff` correcto y `basedpyright` con 0 errores.
+- **Sin clave:** el mismo mensaje del primer ensayo.
+- **Con clave:** `.env` creado desde `.env.example`. La ruta de aclaración hizo 2 llamadas con HTTP 200, 436 tokens y US$ 0,000276, y entregó tres preguntas ([salida](evidencias/bloques-18-20/salida-clon-aclaracion.txt), [captura](evidencias/mis-capturas/bloque-20/07-clon-limpio.png)).
+- **Seguridad:** `git status --short` no mostró cambios y `git check-ignore .env` confirmó que `.env` está ignorado.
+
+**Resultado:** ningún hallazgo requirió corrección. La salida muestra una advertencia de `uv`: la terminal tenía activo `VIRTUAL_ENV` de la carpeta de trabajo, y `uv` lo ignoró para usar el `.venv` del clon.
+
+**Sin verificar:** el segundo ensayo no repitió la instalación con `pip`. Ambos ensayos usaron la misma máquina, y la terminal del segundo conservaba el entorno activo de la carpeta de trabajo. Además, solo la ruta de aclaración se ejecutó desde el clon. Es una aproximación, no una garantía, como advierte B11.2.
 
 ## Capturas
 
@@ -152,6 +163,7 @@ Capturas de terminal tomadas por el autor, copiadas a `docs/evidencias/mis-captu
 | [Corrida normativa](evidencias/mis-capturas/bloque-20/04-corrida-normativa.png) | Cuatro llamadas a flash-lite con HTTP 200, respuesta en viñetas y consumo de US$ 0,00494. | `Screenshot_20261106_222247.png` | `4eff4df136af6623…` |
 | [Corrida de resumen](evidencias/mis-capturas/bloque-20/05-corrida-resumen.png) | Dos llamadas, resumen del artículo 9 y consumo de US$ 0,0005448. | `Screenshot_20261106_222313.png` | `d815a8fc13f56377…` |
 | [Corrida de aclaración](evidencias/mis-capturas/bloque-20/06-corrida-aclaracion.png) | Dos llamadas, tres preguntas de aclaración y consumo de US$ 0,0002985. | `Screenshot_20261107_114458.png` | `7ab5e91fcf6f2f24…` |
+| [Clon desde GitHub](evidencias/mis-capturas/bloque-20/07-clon-limpio.png) | Commit `afffea7`, `.env` creado desde la plantilla e ignorado, y corrida de aclaración con 2 llamadas y US$ 0,000276. | `Screenshot_20261107_160032.png` | `3139b3953fadd881…` |
 
 ## Límites
 
