@@ -11,6 +11,7 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 - [Levantar y detener la API](#levantar-y-detener-la-api)
 - [Probar la API con curl](#probar-la-api-con-curl)
 - [Consultar Gemini desde terminal](#consultar-gemini-desde-terminal)
+- [Orquestar consultas de Ley REP](#orquestar-consultas-de-ley-rep)
 - [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
 - [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
 - [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
@@ -64,6 +65,7 @@ Ejecuta estos comandos desde la raíz del repositorio, después de configurar `.
 | Iniciar directamente con Uvicorn | `uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload` |
 | Ver opciones de inicio | `uv run python main.py --help` |
 | Consultar Gemini | `uv run python -m src.clientes.gemini "¿Qué es una API?"` |
+| Orquestar una consulta de Ley REP | `uv run python -m src.orquestacion.enrutamiento "Resume el artículo 9"` |
 | Ejecutar pruebas | `uv run python -m pytest tests -v` |
 | Revisar estilo | `uv run ruff check .` |
 | Revisar tipos | `uv run basedpyright` |
@@ -137,6 +139,16 @@ Estos comandos consultan directamente al proveedor; requieren `GEMINI_API_KEY` y
 | Limitar intentos y tiempo | `uv run python -m src.clientes.gemini --intentos 1 --presupuesto-segundos 30 "Hola"` |
 | Ver todas las opciones | `uv run python -m src.clientes.gemini --help` |
 
+### Orquestar consultas de Ley REP
+
+Flujo de terminal con LangChain de los bloques 18 a 20. Clasifica la consulta y elige una ruta: una pregunta normativa pasa por una chain de tres pasos, un resumen usa el artículo nombrado y cualquier otro caso pide aclaración. Requiere `GEMINI_API_KEY` y consume cuota; no necesitas levantar la API local.
+
+```bash
+uv run python -m src.orquestacion.enrutamiento "Resume el artículo 9"
+```
+
+La respuesta sale por stdout y el consumo por stderr. Una consulta normativa usa 4 llamadas y las otras rutas 2. Si Gemini falla, el flujo prueba con el modelo secundario y después entrega un texto de respaldo. Consulta la [guía de uso](docs/guia-completa.md#orquestación-con-langchain-bloques-18-a-20).
+
 ### Evaluaciones y ensayos
 
 Comparar modelos y evaluar prompts realiza consultas reales a Gemini. El ensayo con `--simulado` no usa red ni consume tokens. Elige un archivo de salida nuevo en cada ejecución para conservar las evidencias anteriores.
@@ -158,6 +170,7 @@ Para el ensayo contra el proveedor, consulta los [límites y comandos del ensayo
 | Ejecutar solo las pruebas de la API | `uv run python -m pytest tests/api -v` |
 | Ejecutar solo las pruebas del cliente HTTP | `uv run python -m pytest tests/clientes -v` |
 | Ejecutar solo las pruebas de costos | `uv run python -m pytest tests/costos -v` |
+| Ejecutar solo las pruebas de orquestación | `uv run python -m pytest tests/orquestacion -v` |
 | Ejecutar solo las pruebas de prompts | `uv run python -m pytest tests/prompts -v` |
 | Ejecutar solo las pruebas de scripts | `uv run python -m pytest tests/scripts -v` |
 | Usar el ejecutor alternativo de unittest | `uv run python -m tests -v` |
@@ -173,10 +186,11 @@ src/
 ├── clientes/           → Gemini, errores, reintentos y salida JSON
 ├── evaluacion/         → Pipeline de texto y métricas léxicas
 ├── costos/             → Cálculo, registro de sesión y tipo de cambio
+├── orquestacion/       → Chain, rutas y fallbacks con LangChain
 ├── prompts/            → Banco, instrucciones y contexto documental
 ├── agentes.py          → Selección y ejecución del agente
 └── catalogo.py         → Modelos disponibles
-tests/                  → api/, clientes/, costos/, evaluacion/, prompts/ y scripts/
+tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, prompts/ y scripts/
 scripts/                → Evaluaciones, ensayos y herramientas auxiliares
 docs/                   → Guía, arquitectura y evidencias
 datos/                  → Documentos de Ley REP y casos de evaluación
@@ -195,5 +209,7 @@ Las pruebas siguen las mismas áreas del código; `tests/conftest.py` bloquea la
 - [Evaluación de respuestas de Ley REP: bloques 15–17](docs/evaluacion-respuestas.md).
 - [Límites de las métricas y hallazgos de la revisión](docs/limites_metrica.md).
 - [Entrega de bloques 13 y 14: pruebas, costos y backoff](docs/entrega-bloques-13-14.md).
+- [PRD 02: orquestación de consultas con LangChain](docs/prd-02-orquestacion-langchain.md).
+- [Entrega de bloques 18 a 20: resultados y límites de la orquestación](docs/entrega-bloques-18-20.md).
 - [Capturas y resultados de ejecución](docs/evidencias/mis-capturas/README.md).
 - [Propuesta del proyecto final: asistente RAG para Ley REP](docs/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

@@ -1,0 +1,20 @@
+$ uv run python -m pytest tests/orquestacion/test_cadena_tres_pasos.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.2.0, pluggy-1.7.0 -- /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada
+configfile: pyproject.toml
+plugins: anyio-4.15.1, langsmith-0.14.17
+collecting ... collected 6 items
+
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_cada_paso_devuelve_texto 
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_cada_paso_devuelve_texto PASSED [ 16%]
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_cada_paso_recibe_la_salida_del_anterior PASSED [ 33%]
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_cadena_conecta_los_tres_pasos PASSED [ 50%]
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_formatear_fragmentos_incluye_todos_con_su_referencia PASSED [ 66%]
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_main_imprime_respuesta_y_consumo PASSED [ 83%]
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_plantillas_tratan_la_consulta_como_dato 
+tests/orquestacion/test_cadena_tres_pasos.py::TestCadenaTresPasos::test_plantillas_tratan_la_consulta_como_dato PASSED [100%]
+
+===================== 6 passed, 6 subtests passed in 0.51s =====================
+código de salida: 0

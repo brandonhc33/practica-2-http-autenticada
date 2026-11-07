@@ -1,0 +1,13 @@
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=202, costo_usd=0.0000672, acumulado_usd=0.0000672, intentos=1
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=243, costo_usd=0.0002313, acumulado_usd=0.0002985, intentos=1
+Faltan antecedentes para revisar la consulta sobre su empresa. 
+
+Para poder ayudarle, por favor indique:
+1. ¿A qué sector económico o actividad se dedica su empresa?
+2. ¿Qué tipo de productos o materiales comercializa o importa?
+3. ¿Cuál es su duda específica relacionada con la gestión de residuos o la ley?
+{'respuestas_con_costo': 2, 'respuestas_sin_costo': 0, 'consultas_fallidas': 0, 'intentos_http': 2, 'intentos_sin_uso': 0, 'tokens_entrada': 370, 'tokens_salida': 75, 'tokens_total': 445, 'costo_conocido_usd': '0.0002985'}

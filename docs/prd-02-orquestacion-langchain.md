@@ -83,6 +83,17 @@ D-01 define la estructura del módulo: si cambia, hay que revisar las fases 1 a 
 | Pruebas de `queja`, `pregunta`, normalización y defecto. | Una prueba por cada ruta, más normalización. | El ejemplo no prueba la segunda condición y repite la rama por defecto. |
 | Archivos en una sola carpeta. | `src/` y `tests/`. | Ver D-08. |
 
+### 4.3. Cambios durante la implementación
+
+Estas diferencias aparecieron al implementar las fases 1 a 3. El texto original de los requisitos y las decisiones se conserva.
+
+| Punto del PRD | En el código | Razón |
+| --- | --- | --- |
+| RF-12: los registros contienen el tipo de error, nunca cuerpos del proveedor. | Registran el tipo y el mensaje del error, que puede incluir el cuerpo del proveedor. El código no registra la consulta y la traza solo aparece en `DEBUG`. | Se siguió el material de B20.1 y B20.3, que registra el error para quien mantiene el proyecto. El límite está en la [entrega](entrega-bloques-18-20.md#límites). |
+| D-03: se usa `1` porque `0` significa "valor por defecto de Google". | Se mantiene `max_retries=1`. | El motivo quedó desactualizado: en `google-genai` 2.34.0, `attempts=0` también es un solo intento. |
+| Fase 1: confirmar que cada paso devuelve `str`. | Se comprueba con `isinstance`. | `StrOutputParser` entrega `TextAccessor`, subclase de `str`. |
+| Sección 5.4: los fallos que activan el fallback. | Se agregó `exigir_texto` después de cada `StrOutputParser` de las rutas. | Un bloqueo del proveedor llega como texto vacío y no activaría el fallback. |
+
 ## 5. Comportamiento esperado
 
 ### 5.1. Recorrido de una consulta

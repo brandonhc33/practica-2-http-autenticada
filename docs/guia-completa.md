@@ -32,6 +32,7 @@ El recorrido de este README es: actividades del curso, instalación, preparació
     8. [Banco de prompts y salida estructurada: Bloque 10](#banco-de-prompts-y-salida-estructurada-bloque-10)
         1. [Prompts para el proyecto final de Ley REP](#prompts-para-el-proyecto-final-de-ley-rep)
         2. [Evaluar el banco](#evaluar-el-banco)
+    9. [Orquestación con LangChain: bloques 18 a 20](#orquestación-con-langchain-bloques-18-a-20)
 6. [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
     1. [Pruebas automatizadas](#pruebas-automatizadas)
         1. [Checklist del cliente modular: Bloque 14](#checklist-del-cliente-modular-bloque-14)
@@ -69,6 +70,9 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloque 12: cliente modular | [Revisar la política de reintentos](#cliente-con-reintentos-bloque-12) y ejecutar las pruebas simuladas. | [Errores](../src/clientes/errores.py), [política](../src/clientes/reintentos.py), [pruebas de la política](../tests/clientes/test_reintentos.py) e [integración](../tests/clientes/test_cliente_resiliente.py). |
 | Bloque 13: backoff y costo | [Revisar sesiones de costo y el ensayo](#costos-por-sesión-y-evidencias-bloques-13-y-14). | [Registro](../src/costos/registro.py), [ensayo real de HTTP 429](../docs/evidencias/mis-capturas/ensayo-real-01.json) y [capturas de terminal](../docs/evidencias/mis-capturas/README.md). |
 | Bloque 14: pruebas unitarias | [Revisar el checklist](#checklist-del-cliente-modular-bloque-14) y ejecutar `uv run python -m pytest tests -v`. | [Resultados y capturas](#resultados-y-capturas-de-las-pruebas), [cliente modular](../tests/clientes/test_cliente_modular.py), [registro de costos](../tests/costos/test_registro_costos.py) y [guía de entrega](../docs/entrega-bloques-13-14.md). |
+| Bloque 18: chain de tres pasos | [Revisar la chain](#orquestación-con-langchain-bloques-18-a-20) y sus pruebas. | [Chain](../src/orquestacion/cadena_tres_pasos.py), [pruebas](../tests/orquestacion/test_cadena_tres_pasos.py) y [entrega](../docs/entrega-bloques-18-20.md). |
+| Bloque 19: enrutamiento | [Revisar la clasificación y las rutas](#orquestación-con-langchain-bloques-18-a-20). | [Enrutamiento](../src/orquestacion/enrutamiento.py), [pruebas](../tests/orquestacion/test_enrutamiento.py) y [entrega](../docs/entrega-bloques-18-20.md). |
+| Bloque 20: manejo de errores | [Revisar los fallbacks](#orquestación-con-langchain-bloques-18-a-20) y ejecutar `uv run python -m pytest tests/orquestacion -v`. | [Pruebas de extremo a extremo](../tests/orquestacion/test_orquestacion.py) y [entrega con checklist y límites](../docs/entrega-bloques-18-20.md). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -191,6 +195,7 @@ Ejecuta los comandos desde la raíz del repositorio, después de completar la pr
 | Consultar el catálogo accesible de Gemini | `uv run python -m scripts.comparar_modelos --listar-modelos` |
 | Comparar modelos | `uv run python -m scripts.comparar_modelos --repeticiones 3 --salida docs/evaluaciones/gemini-nueva-ejecucion.json` |
 | Evaluar el banco de prompts | `uv run python -m scripts.evaluar_prompts --salida docs/evaluaciones/prompts-nueva-ejecucion.json` |
+| Orquestar una consulta de Ley REP | `uv run python -m src.orquestacion.enrutamiento "Resume el artículo 9"` |
 | Ejecutar pruebas sin llamadas reales | `uv run python -m pytest tests -v` |
 | Ejecutar mediante el runner anterior | `uv run python -m tests -v` |
 | Ensayo de 429 sin consumir tokens | `uv run python -m scripts.ensayo_rate_limit --simulado --salida docs/evidencias/ensayo-nuevo.json` |
@@ -651,6 +656,34 @@ La [ejecución inicial](../docs/evaluaciones/prompts-inicial.json) del 21 de oct
 
 La evaluación posterior también obtuvo **9/9**, con un costo estimado de **US$ 0.0039965**. En sus textos ya no aparecieron los ejemplos de SDK ni la supuesta expiración del token local observados en la primera muestra. Las dos corridas suman **18 llamadas y US$ 0.0081206 estimados**; no constituyen una evaluación exhaustiva de exactitud.
 
+### Orquestación con LangChain: bloques 18 a 20
+
+`src/orquestacion/` responde consultas de Ley REP por terminal con un flujo de varios pasos. Es independiente de la API y usa `ChatGoogleGenerativeAI`, no el cliente propio. Requiere `GEMINI_API_KEY` en `.env` y consume cuota.
+
+```bash
+uv run python -m src.orquestacion.enrutamiento "Importo neumáticos a Chile y los vendo a talleres. ¿Qué obligaciones me impone la Ley REP y quién fija las metas que debo cumplir?"
+```
+
+La respuesta sale por stdout y el resumen de consumo por stderr. Sin `GEMINI_API_KEY`, el comando termina con un mensaje que lo indica.
+
+Cada consulta se clasifica primero, con el modelo `flash-lite`:
+
+| Categoría | Ruta | Llamadas al modelo |
+| --- | --- | --- |
+| `normativa` | Chain de tres pasos: interpretar, responder con los 50 fragmentos de la ley y simplificar. | 4, incluida la clasificación. |
+| `resumen` con un artículo existente | Resume ese artículo e indica lo que no permite concluir. | 2. |
+| Cualquier otro caso | Pide antecedentes y no responde. | 2. |
+
+Si una ruta falla, se repite con `flash` y, si este también falla, entrega un texto de respaldo que aclara que la consulta quedó sin responder. Si falla la clasificación o algo no previsto, `procesar_consulta_segura()` registra el error y devuelve un mensaje seguro. En el peor caso, una consulta normativa hace 7 llamadas, cada una con un límite de 30 segundos.
+
+Para ejecutar solo la chain del Bloque 18, sin clasificación ni fallbacks:
+
+```bash
+uv run python -m src.orquestacion.cadena_tres_pasos "¿Quién fija las metas de recolección?"
+```
+
+La respuesta es texto libre: nada verifica que los artículos citados respalden lo que dice. No es asesoría legal. Los resultados, el checklist y los límites están en la [entrega de los bloques 18 a 20](../docs/entrega-bloques-18-20.md), y la comparación con el cliente propio en la [arquitectura](../docs/arquitectura.md#flujo-orquestado-bloques-18-a-20).
+
 ## Pruebas y comprobaciones
 
 ### Pruebas automatizadas
@@ -670,6 +703,8 @@ El Bloque 10 agrega cobertura de sistema y esquema enviados, salidas válidas y 
 El Bloque 12 agrega recuperación tras 429 y 5xx, agotamiento, autenticación sin reintentos, conexión y lectura, `Retry-After`, backoff con jitter, reloj virtual, presupuesto de tiempo, errores HTTP locales y conservación de las evaluaciones sin reintentos.
 
 Los bloques 13 y 14 agregan pruebas unitarias directas del transporte y la fachada, acumulación exacta, sesiones independientes, sumas concurrentes, consumo desconocido, registro previo al rechazo del contenido y ausencia de doble contabilización después de reintentos. También comprueban que el ensayo respete el máximo de envíos y preserve archivos anteriores.
+
+Los bloques 18 a 20 agregan 33 pruebas en `tests/orquestacion/`: conexión de los tres pasos, normalización, una prueba por ruta, búsqueda de artículos, fallbacks con fallos simulados, respuesta vacía, entrada segura, registros y consumo. Usan modelos falsos, así que comprueban el flujo, no la calidad de las respuestas reales.
 
 Para revisar el código con las herramientas de desarrollo:
 
@@ -962,6 +997,10 @@ Cuando el mensaje de la prueba Python o `detalles.causa` indique HTTP 400, 401 o
 │   │   ├── calculadora.py     # Tarifas y costos USD/CLP
 │   │   ├── registro.py        # Acumulado por sesión
 │   │   └── tipo_cambio.py     # Dólar observado o tasa manual
+│   ├── orquestacion/
+│   │   ├── modelo.py          # Modelo de LangChain y registro de consumo
+│   │   ├── cadena_tres_pasos.py # Chain de tres pasos
+│   │   └── enrutamiento.py    # Clasificación, rutas, fallbacks y terminal
 │   ├── prompts/
 │   │   ├── banco.py           # Catálogo de prompts
 │   │   ├── base.py            # Tipos y reglas compartidas
@@ -974,6 +1013,7 @@ Cuando el mensaje de la prueba Python o `detalles.causa` indique HTTP 400, 401 o
 │   ├── api/                  # Autenticación, consultas y validaciones
 │   ├── clientes/             # HTTP, CLI y reintentos
 │   ├── costos/               # Tarifas, sesiones y tipo de cambio
+│   ├── orquestacion/         # Chain, rutas, fallbacks y entrada segura
 │   ├── prompts/              # Prompts y contexto de Ley REP
 │   ├── scripts/              # Comparación y ensayo de rate limit
 │   ├── conftest.py           # Bloqueo de red para toda la suite pytest
@@ -1016,6 +1056,7 @@ El modelo predeterminado es `gemini-3.5-flash-lite`. La [decisión de arquitectu
 - `requests` para realizar la petición HTTP autenticada a Gemini.
 - `python-dotenv` para cargar las credenciales desde `.env`.
 - FastAPI y Uvicorn para exponer la API local.
+- LangChain y `langchain-google-genai` para el flujo orquestado de los bloques 18 a 20.
 - `unittest` para ejecutar pruebas con la comunicación a Gemini simulada.
 
 ## Proyecto final de Skillnest: asistente RAG para Ley REP

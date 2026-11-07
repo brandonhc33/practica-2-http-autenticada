@@ -1,0 +1,27 @@
+$ uv run python -m pytest tests/orquestacion/test_enrutamiento.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.2.0, pluggy-1.7.0 -- /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada
+configfile: pyproject.toml
+plugins: anyio-4.15.1, langsmith-0.14.17
+collecting ... collected 11 items
+
+tests/orquestacion/test_enrutamiento.py::TestClasificacion::test_clasificacion_normaliza_antes_de_comparar 
+tests/orquestacion/test_enrutamiento.py::TestClasificacion::test_clasificacion_normaliza_antes_de_comparar PASSED [  9%]
+tests/orquestacion/test_enrutamiento.py::TestBuscarFragmento::test_buscar_fragmento_rechaza_casos_ambiguos 
+tests/orquestacion/test_enrutamiento.py::TestBuscarFragmento::test_buscar_fragmento_rechaza_casos_ambiguos PASSED [ 18%]
+tests/orquestacion/test_enrutamiento.py::TestBuscarFragmento::test_buscar_fragmento_reconoce_formas_validas 
+tests/orquestacion/test_enrutamiento.py::TestBuscarFragmento::test_buscar_fragmento_reconoce_formas_validas PASSED [ 27%]
+tests/orquestacion/test_enrutamiento.py::TestEnrutamiento::test_enrutamiento_conserva_mensaje PASSED [ 36%]
+tests/orquestacion/test_enrutamiento.py::TestEnrutamiento::test_enrutamiento_usa_default_ante_categoria_desconocida PASSED [ 45%]
+tests/orquestacion/test_enrutamiento.py::TestEnrutamiento::test_enrutamiento_va_a_cadena_normativa PASSED [ 54%]
+tests/orquestacion/test_enrutamiento.py::TestEnrutamiento::test_enrutamiento_va_a_cadena_resumen PASSED [ 63%]
+tests/orquestacion/test_enrutamiento.py::TestEnrutamiento::test_resumen_sin_articulo_va_a_aclaracion 
+tests/orquestacion/test_enrutamiento.py::TestEnrutamiento::test_resumen_sin_articulo_va_a_aclaracion PASSED [ 72%]
+tests/orquestacion/test_enrutamiento.py::TestRutas::test_cada_ruta_usa_un_prompt_distinto PASSED [ 81%]
+tests/orquestacion/test_enrutamiento.py::TestRutas::test_ruta_aclaracion_no_recibe_fragmentos PASSED [ 90%]
+tests/orquestacion/test_enrutamiento.py::TestRutas::test_ruta_resumen_recibe_solo_su_fragmento PASSED [100%]
+
+==================== 11 passed, 21 subtests passed in 0.45s ====================
+código de salida: 0

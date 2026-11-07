@@ -1,0 +1,31 @@
+$ uv run python -m pytest tests/orquestacion/test_orquestacion.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.2.0, pluggy-1.7.0 -- /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada
+configfile: pyproject.toml
+plugins: anyio-4.15.1, langsmith-0.14.17
+collecting ... collected 16 items
+
+tests/orquestacion/test_orquestacion.py::TestRegistroLlamadas::test_registro_cuenta_respuestas_y_fallos PASSED [  6%]
+tests/orquestacion/test_orquestacion.py::TestRegistroLlamadas::test_respuesta_sin_uso_queda_sin_costo PASSED [ 12%]
+tests/orquestacion/test_orquestacion.py::TestCrearModelo::test_crear_modelo_limita_reintentos_y_tiempo 
+tests/orquestacion/test_orquestacion.py::TestCrearModelo::test_crear_modelo_limita_reintentos_y_tiempo PASSED [ 18%]
+tests/orquestacion/test_orquestacion.py::TestCrearModelo::test_modelo_envia_limites_sin_temperatura 
+tests/orquestacion/test_orquestacion.py::TestCrearModelo::test_modelo_envia_limites_sin_temperatura PASSED [ 25%]
+tests/orquestacion/test_orquestacion.py::TestCrearModelo::test_registro_incluye_razonamiento_y_cache PASSED [ 31%]
+tests/orquestacion/test_orquestacion.py::TestRutaSegura::test_cadena_normativa_usa_fallback_ante_fallo_del_modelo PASSED [ 37%]
+tests/orquestacion/test_orquestacion.py::TestRutaSegura::test_camino_normal_no_usa_respaldo PASSED [ 43%]
+tests/orquestacion/test_orquestacion.py::TestRutaSegura::test_fallback_registra_el_fallo_del_modelo_principal PASSED [ 50%]
+tests/orquestacion/test_orquestacion.py::TestRutaSegura::test_respuesta_vacia_activa_el_fallback PASSED [ 56%]
+tests/orquestacion/test_orquestacion.py::TestRutaSegura::test_ruta_sin_alternativa_usa_texto_de_respaldo PASSED [ 62%]
+tests/orquestacion/test_orquestacion.py::TestRutaSegura::test_ruta_usa_texto_de_respaldo_si_fallan_ambos_modelos PASSED [ 68%]
+tests/orquestacion/test_orquestacion.py::TestProcesarConsultaSegura::test_consulta_vacia_no_llama_al_modelo 
+tests/orquestacion/test_orquestacion.py::TestProcesarConsultaSegura::test_consulta_vacia_no_llama_al_modelo PASSED [ 75%]
+tests/orquestacion/test_orquestacion.py::TestProcesarConsultaSegura::test_procesar_consulta_segura_no_propaga_excepciones PASSED [ 81%]
+tests/orquestacion/test_orquestacion.py::TestProcesarConsultaSegura::test_registro_no_incluye_la_consulta_y_traza_solo_en_debug PASSED [ 87%]
+tests/orquestacion/test_orquestacion.py::TestMain::test_main_imprime_respuesta_y_consumo PASSED [ 93%]
+tests/orquestacion/test_orquestacion.py::TestMain::test_main_sin_clave_termina_con_mensaje PASSED [100%]
+
+==================== 16 passed, 6 subtests passed in 0.63s =====================
+código de salida: 0

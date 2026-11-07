@@ -1,0 +1,18 @@
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=222, costo_usd=0.000071, acumulado_usd=0.000071, intentos=1
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=279, costo_usd=0.0002553, acumulado_usd=0.0003263, intentos=1
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=11817, costo_usd=0.0040423, acumulado_usd=0.0043686, intentos=1
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=592, costo_usd=0.0005714, acumulado_usd=0.00494, intentos=1
+* Inscribirse en el registro correspondiente, según el Artículo 9, letra a.
+* Organizar y financiar la recolección, almacenamiento, transporte y tratamiento de los residuos de los neumáticos a través de un sistema de gestión individual o colectivo, obligación exigible con la entrada en vigencia del decreto supremo respectivo, según los Artículos 9, letra b y 19.
+* Cumplir con las metas de recolección y valorización y otras obligaciones asociadas en los plazos y condiciones establecidos, según el Artículo 9, letra c.
+* Asegurar que la gestión de los residuos se realice mediante gestores autorizados y registrados, según el Artículo 9, letra d.
+* Las metas de recolección y valorización son establecidas por el Ministerio mediante decretos supremos, según los Artículos 4 y 12.
+{'respuestas_con_costo': 4, 'respuestas_sin_costo': 0, 'consultas_fallidas': 0, 'intentos_http': 4, 'intentos_sin_uso': 0, 'tokens_entrada': 12425, 'tokens_salida': 485, 'tokens_total': 12910, 'costo_conocido_usd': '0.00494'}

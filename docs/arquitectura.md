@@ -56,6 +56,39 @@ El presupuesto se comprueba antes de cada intento y espera y reduce los timeouts
 
 Si faltan metadatos válidos, `uso` y `costo_estimado` quedan en `null`. Si hay consumo válido pero no existen tarifas para el modelo, solo `costo_estimado` queda en `null`. En ambos casos se conserva el texto generado.
 
+## Flujo orquestado: bloques 18 a 20
+
+`src/orquestacion/` es una segunda entrada, solo por terminal, para consultas de Ley REP. No pasa por la API ni por `consultar_gemini_raw()`, y el diagrama de esta nota no la representa. Por eso las secciones anteriores sobre reintentos, categorías de error y cuerpos del proveedor no se aplican a este flujo.
+
+```mermaid
+flowchart TD
+    A[Consulta por terminal] --> B{¿Texto vacío?}
+    B -->|Sí| V[Pide una consulta sin llamar al modelo]
+    B -->|No| C[Clasificar y normalizar]
+    C --> D{¿Qué ruta?}
+    D -->|normativa| N[Chain de tres pasos]
+    D -->|resumen con artículo válido| R[Resumir el artículo]
+    D -->|cualquier otro caso| Q[Pedir aclaración]
+    N --> S[Respuesta en stdout y consumo en stderr]
+    R --> S
+    Q --> S
+```
+
+Cada ruta está protegida por `construir_ruta_segura()`: si falla, se repite con el modelo secundario y, si este también falla, entrega un texto de respaldo. Un fallo fuera de las rutas, como el de la clasificación, llega al `try/except` de `procesar_consulta_segura()`.
+
+| Aspecto | Cliente propio | Flujo orquestado |
+| --- | --- | --- |
+| Entrada | API local y terminal. | Solo terminal. |
+| Conexión con Gemini | Endpoint compatible con OpenAI, con `requests`. | API nativa, con `ChatGoogleGenerativeAI`. |
+| Reintentos | Hasta 3 intentos con backoff, salvo política distinta. | Un intento por llamada: un fallo pasa directamente al modelo secundario. |
+| Tiempo | Presupuesto compartido de 90 s. | 30 s por llamada, sin límite común para todo el flujo. |
+| Errores | Categorías de `src/clientes/errores.py`. | Excepciones del conector, registradas por `registrar_error()`. |
+| Cuerpos del proveedor | No se leen ni se exponen. | El registro incluye el mensaje del error, que puede traer ese cuerpo. |
+| Salida | JSON con respuesta, uso y costo. | Texto libre, sin validar las citas. |
+| Costos | Se registran después de los reintentos. | `RegistroLlamadas` registra cada llamada en el mismo registro de sesión. |
+
+Una respuesta vacía no lanza una excepción en el conector, así que `exigir_texto()` la convierte en error para que actúe el fallback. Las decisiones están en el [PRD 02](prd-02-orquestacion-langchain.md) y los resultados y límites en la [entrega de los bloques 18 a 20](entrega-bloques-18-20.md).
+
 ## Alcance y entrega
 
 La imagen muestra el flujo base de `POST /consultar`; la selección opcional de prompts se describe arriba. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.

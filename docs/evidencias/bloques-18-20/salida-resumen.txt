@@ -1,0 +1,10 @@
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=199, costo_usd=0.0000641, acumulado_usd=0.0000641, intentos=1
+INFO:google_genai.models:AFC is enabled with max remote calls: 10.
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:src.costos.registro:Operación: tokens=583, costo_usd=0.0004807, acumulado_usd=0.0005448, intentos=1
+Según el artículo 9 de la Ley 20.920, la responsabilidad extendida del productor es un régimen especial donde los productores de productos prioritarios deben organizar y financiar la gestión de sus residuos. El artículo detalla que estos productores deben inscribirse en un registro, organizar y financiar la recolección, almacenamiento, transporte y tratamiento de los residuos mediante sistemas de gestión, cumplir con metas y plazos, y asegurar que la gestión sea realizada por gestores autorizados y registrados.
+
+Este fragmento no permite concluir cuáles son los productos específicos considerados prioritarios ni los plazos y porcentajes exactos de las metas, ya que estos dependen de decretos supremos específicos.
+{'respuestas_con_costo': 2, 'respuestas_sin_costo': 0, 'consultas_fallidas': 0, 'intentos_http': 2, 'intentos_sin_uso': 0, 'tokens_entrada': 641, 'tokens_salida': 141, 'tokens_total': 782, 'costo_conocido_usd': '0.0005448'}
