@@ -7,6 +7,7 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 ## Índice
 
 - [Inicio rápido](#inicio-rápido)
+- [Actividades por bloque](#actividades-por-bloque)
 - [Comandos útiles](#comandos-útiles)
 - [Levantar y detener la API](#levantar-y-detener-la-api)
 - [Probar la API con curl](#probar-la-api-con-curl)
@@ -51,6 +52,21 @@ Necesitas Python 3.12 y `uv`. Si no los tienes, sigue la [instalación](docs/gui
    ```
 
    Debe responder HTTP 200. Sin token o con uno incorrecto responde HTTP 401. Esta comprobación no consulta Gemini. Para enviar preguntas, usa la [guía de peticiones](docs/guia-completa.md#consulta-mediante-la-api-python) o importa [la colección de Postman](api.postman_collection.json).
+
+## Actividades por bloque
+
+Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El detalle completo está en las [actividades de la guía](docs/guia-completa.md#actividades-del-curso).
+
+| Bloque | Actividad | Dónde revisarla |
+| --- | --- | --- |
+| 4 | Consulta HTTP autenticada | [Desde Python](docs/guia-completa.md#consultar-gemini-desde-python) y [API local](docs/guia-completa.md#iniciar-la-api-local). |
+| 8 | Arquitectura de la aplicación | [Explicación](docs/arquitectura.md) y [diagrama](docs/diagrama_arquitectura.png). |
+| 9 | Elección de modelo | [Decisión de arquitectura](docs/decision-arquitectura.md). |
+| 10 | Prompts con salida JSON | [Guía de prompts](docs/bloque-10-prompts.md) y [uso del banco](docs/guia-completa.md#banco-de-prompts-y-salida-estructurada-bloque-10). |
+| 12 | Cliente con reintentos | [Política de reintentos](docs/guia-completa.md#cliente-con-reintentos-bloque-12). |
+| 13 y 14 | Costos, backoff y pruebas unitarias | [Entrega](docs/entrega-bloques-13-14.md) y [capturas](docs/evidencias/mis-capturas/README.md). |
+| 15 a 17 | Evaluación de respuestas de Ley REP | [Evaluación y resultados](docs/evaluacion-respuestas.md). |
+| 18 a 20 | Chain, enrutamiento y manejo de errores | [Uso](docs/guia-completa.md#orquestación-con-langchain-bloques-18-a-20), [entrega](docs/entrega-bloques-18-20.md) y [preguntas y respuestas](docs/preguntas-bloques-18-20.md). |
 
 ## Comandos útiles
 
