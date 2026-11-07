@@ -1,15 +1,41 @@
-"""Clasificación y rutas del Bloque 19 para consultas de Ley REP."""
+"""Clasificación, rutas y manejo de errores de los bloques 19 y 20 para Ley REP."""
 
+import argparse
+import logging
+import os
 import re
+import sys
+from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import Runnable, RunnableBranch, RunnablePassthrough
+from langchain_core.runnables import (
+    Runnable,
+    RunnableBranch,
+    RunnableLambda,
+    RunnablePassthrough,
+)
 
+from src.catalogo import AGENTES
+from src.costos.registro import sesion_costos
 from src.evaluacion.texto import limpiar_texto
-from src.orquestacion.cadena_tres_pasos import REGLAS_TEXTO
+from src.orquestacion.cadena_tres_pasos import REGLAS_TEXTO, construir_cadena
+from src.orquestacion.modelo import crear_modelo, exigir_texto
 from src.prompts.contexto_ley_rep import obtener_fragmento_ley_rep
+
+logger = logging.getLogger(__name__)
+
+TEXTO_RESPALDO = (
+    "No pudimos responder tu consulta en este momento. Eso no significa que no existan "
+    "obligaciones para tu caso: intenta de nuevo más tarde o revisa la Ley 20.920."
+)
+MENSAJE_SEGURO = (
+    "No pudimos procesar tu consulta en este momento. Eso no significa que no existan "
+    "obligaciones para tu caso: intenta de nuevo más tarde."
+)
+MENSAJE_VACIO = "Escribe una consulta sobre la Ley REP para poder ayudarte."
 
 # Los grupos capturan el artículo, si dice "transitorio" y si enumera otro: "artículo 9 y 10".
 PATRON_ARTICULO = re.compile(
@@ -74,12 +100,13 @@ def construir_cadena_resumen(modelo: Runnable) -> Runnable:
         | plantilla_resumen
         | modelo
         | StrOutputParser()
+        | exigir_texto
     )
 
 
 def construir_cadena_aclaracion(modelo: Runnable) -> Runnable:
     """Arma la ruta por defecto: pide antecedentes y no recibe texto de la ley."""
-    return plantilla_aclaracion | modelo | StrOutputParser()
+    return plantilla_aclaracion | modelo | StrOutputParser() | exigir_texto
 
 
 def construir_cadena_con_enrutamiento(
@@ -104,3 +131,62 @@ def construir_cadena_con_enrutamiento(
         )
         | bifurcacion
     )
+
+
+def registrar_error(entrada: dict[str, Any]) -> dict[str, Any]:
+    """Registra el tipo y el mensaje del error; la traza solo aparece en nivel DEBUG."""
+    error = entrada["error"]
+    logger.error("Falló el flujo (%s): %s", type(error).__name__, error)
+    logger.debug("Traza del error", exc_info=error)
+    return entrada
+
+
+def construir_ruta_segura(ruta: Runnable, alternativa: Runnable | None = None) -> Runnable:
+    """Protege una ruta: primero la alternativa, si existe, y después el texto de respaldo."""
+    respaldo = RunnableLambda(registrar_error) | (lambda _: TEXTO_RESPALDO)
+    alternativas = [respaldo]
+    if alternativa is not None:
+        # exception_key solo entrega el último error: el del principal se registra aquí.
+        alternativas.insert(0, RunnableLambda(registrar_error) | alternativa)
+    return ruta.with_fallbacks(alternativas, exception_key="error")
+
+
+def procesar_consulta_segura(cadena: Runnable, mensaje: str) -> str:
+    """Ejecuta el flujo completo y devuelve siempre un texto, sin propagar excepciones."""
+    if not mensaje.strip():
+        return MENSAJE_VACIO
+    try:
+        return cadena.invoke({"mensaje": mensaje})
+    except Exception as error:
+        registrar_error({"error": error})
+        return MENSAJE_SEGURO
+
+
+def main() -> None:
+    """Responde una consulta por terminal y muestra el consumo en stderr."""
+    parser = argparse.ArgumentParser(description="Responde una consulta de Ley REP.")
+    parser.add_argument("consulta", help="Consulta sobre la Ley REP.")
+    consulta = parser.parse_args().consulta
+    load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+    clave = AGENTES["gemini"]["clave"]
+    if not os.getenv(clave, "").strip():
+        sys.exit(f"Falta configurar {clave} en el archivo .env.")
+    logging.basicConfig(level=logging.INFO)
+    principal, secundario = crear_modelo(), crear_modelo("flash")
+    cadena = construir_cadena_con_enrutamiento(
+        construir_paso_clasificacion(principal),
+        construir_ruta_segura(construir_cadena(principal), construir_cadena(secundario)),
+        construir_ruta_segura(
+            construir_cadena_resumen(principal), construir_cadena_resumen(secundario)
+        ),
+        construir_ruta_segura(
+            construir_cadena_aclaracion(principal), construir_cadena_aclaracion(secundario)
+        ),
+    )
+    with sesion_costos() as registro:
+        print(procesar_consulta_segura(cadena, consulta))
+    print(registro.resumen().como_dict(), file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

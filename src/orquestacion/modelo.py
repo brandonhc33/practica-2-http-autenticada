@@ -53,6 +53,14 @@ class RegistroLlamadas(BaseCallbackHandler):
         obtener_registro_costos().registrar_fallo(intentos=INTENTOS_POR_LLAMADA)
 
 
+def exigir_texto(texto: str) -> str:
+    """Convierte una respuesta vacía en un error para que actúe el fallback."""
+    # Un bloqueo del proveedor no lanza excepción: el conector entrega un mensaje vacío.
+    if not texto.strip():
+        raise ValueError("El modelo devolvió una respuesta vacía.")
+    return texto
+
+
 def crear_modelo(alias: str = "flash-lite") -> ChatGoogleGenerativeAI:
     """Crea un modelo del catálogo con un solo intento, tiempo límite y registro de consumo."""
     nombre_modelo = AGENTES["gemini"]["modelos"][alias]

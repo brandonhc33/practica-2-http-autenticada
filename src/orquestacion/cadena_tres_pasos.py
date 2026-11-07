@@ -11,7 +11,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import Runnable, RunnablePassthrough
 
 from src.costos.registro import sesion_costos
-from src.orquestacion.modelo import crear_modelo
+from src.orquestacion.modelo import crear_modelo, exigir_texto
 from src.prompts.contexto_ley_rep import cargar_documento_ley_rep
 
 REGLAS_TEXTO = (
@@ -61,9 +61,9 @@ def formatear_fragmentos() -> str:
 
 def construir_cadena(modelo: Runnable) -> Runnable:
     """Arma la chain sin ejecutarla: recibe {"mensaje": str} y devuelve el texto final."""
-    paso_interpretar = plantilla_interpretar | modelo | StrOutputParser()
-    paso_responder = plantilla_responder | modelo | StrOutputParser()
-    paso_simplificar = plantilla_simplificar | modelo | StrOutputParser()
+    paso_interpretar = plantilla_interpretar | modelo | StrOutputParser() | exigir_texto
+    paso_responder = plantilla_responder | modelo | StrOutputParser() | exigir_texto
+    paso_simplificar = plantilla_simplificar | modelo | StrOutputParser() | exigir_texto
     return (
         RunnablePassthrough.assign(interpretacion=paso_interpretar)
         | RunnablePassthrough.assign(fragmentos=lambda _: formatear_fragmentos())
