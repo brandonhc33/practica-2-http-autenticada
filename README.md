@@ -211,5 +211,6 @@ Las pruebas siguen las mismas áreas del código; `tests/conftest.py` bloquea la
 - [Entrega de bloques 13 y 14: pruebas, costos y backoff](docs/entrega-bloques-13-14.md).
 - [PRD 02: orquestación de consultas con LangChain](docs/prd-02-orquestacion-langchain.md).
 - [Entrega de bloques 18 a 20: resultados y límites de la orquestación](docs/entrega-bloques-18-20.md).
+- [Preguntas y respuestas de los bloques 18 a 20](docs/preguntas-bloques-18-20.md).
 - [Capturas y resultados de ejecución](docs/evidencias/mis-capturas/README.md).
 - [Propuesta del proyecto final: asistente RAG para Ley REP](docs/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

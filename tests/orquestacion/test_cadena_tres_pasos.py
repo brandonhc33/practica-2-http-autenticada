@@ -91,7 +91,7 @@ class TestCadenaTresPasos(unittest.TestCase):
         self.assertIn(f"<consulta>{CONSULTA}</consulta>", prompt_1)
         self.assertNotIn("<fragmentos>", prompt_1)
         self.assertIn(f"<consulta>{CONSULTA}</consulta>", prompt_2)
-        # La etiqueta completa detecta un StrOutputParser olvidado: pegaría "content='...'" dentro.
+        # La etiqueta completa exige solo el texto del paso 1, sin el resto del AIMessage.
         self.assertIn("<interpretacion>salida del paso 1</interpretacion>", prompt_2)
         self.assertIn("<fragmentos>[Artículo 1]\n", prompt_2)
         self.assertIn("<respuesta>salida del paso 2</respuesta>", prompt_3)
