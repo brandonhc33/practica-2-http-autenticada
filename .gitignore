@@ -23,3 +23,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Trazas, aprobaciones e informes simulados del agente (bloques 21 a 23)
+output/agente/
