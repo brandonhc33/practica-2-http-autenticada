@@ -1,11 +1,12 @@
 # Entrega de los bloques 21 a 23 — agente de Ley REP
 
-**Estado: implementación y validación funcional de los bloques 21 a 23
-completadas, incluido el rechazo explícito con `n` usando Gemini.** La decisión,
-la traza y la ausencia del informe de `rechazo-final-23` se contrastaron con la
-salida del alumno. Quedan la publicación de la rama y la instalación desde un
-clon de GitHub. Se conservan los intentos anteriores con sus diferencias, sin
-atribuirles retroactivamente una `n` ni una causa al rechazo inmediato.
+**Estado: entrega completada, integrada y publicada en `main`, con instalación y
+pruebas desde un clon de GitHub verificadas.** La rama `bloques-21-23` se conserva
+local. La validación funcional incluye la aprobación y el rechazo explícito con
+`n` usando Gemini, contrastados con sus archivos. Ver
+[publicación e instalación limpia](evidencias/bloques-21-23/verificacion-github.md).
+Los intentos anteriores se conservan con sus diferencias, sin atribuirles
+retroactivamente una `n` ni una causa al rechazo inmediato.
 
 ## Entregables
 
@@ -53,7 +54,7 @@ sesión, pero otro proceso empieza sin historial aunque use el mismo identificad
 | [23, intento 2](evidencias/bloques-21-23/ensayo-bloque-23-intento-02.json) | 2 de 2 automáticos; no prueba rechazo explícito | 6 | 6.656 | 0,0034708 |
 | [23, control de rechazo](evidencias/bloques-21-23/diagnostico-aprobacion.md) | No aprobado, sin `n` comprobada | 3 | 3.457 | 0,0020491 |
 | [23, rechazo final](evidencias/bloques-21-23/rechazo-explicito-gemini.md) | `n` explícita, registro negativo y archivo ausente | 3 | 3.402 | 0,0019512 |
-| Total registrado | Validación funcional completada; publicación por comprobar | 27 intentos | 24.936 registrados | 0,0136782 conocidos |
+| Total registrado | Validación funcional completada; publicación y clon verificados | 27 intentos | 24.936 registrados | 0,0136782 conocidos |
 
 Los intentos del Bloque 23 fueron ejecutados por el alumno. En el primero hubo un
 503 de Gemini y una aprobación donde se esperaba rechazo. En el segundo sí se
@@ -192,9 +193,9 @@ La explicación completa está en [límites de autonomía](limites-autonomia-age
 - [x] Trazas y decisiones de esos intentos conservadas, sin claves.
 - [x] Diagnóstico humano sin Gemini: `s` y `n` explícitas con modelo falso y archivos temporales.
 - [x] Rechazo explícito con `n` en el agente con Gemini y ausencia de su archivo verificados.
-- [ ] Publicación de la rama autorizada por el alumno.
-- [ ] Clonado desde GitHub, `uv sync --locked` y suite en una instalación limpia.
+- [x] Merge autorizado en `main` y publicación únicamente de `main`; rama de bloques conservada local.
+- [x] Clonado desde GitHub, `uv sync --locked` y suite en una instalación limpia.
 
-No se hace push ni merge a `main` como parte de preparar estos cambios. La
-instalación desde un archivo local sin `.venv` es una comprobación complementaria;
-no sustituye el clonado desde GitHub exigido en la Fase 4.
+El [registro de publicación](evidencias/bloques-21-23/verificacion-github.md)
+documenta el merge, el push y la comprobación desde un clon real de GitHub.
+La instalación local anterior se conserva como evidencia complementaria.

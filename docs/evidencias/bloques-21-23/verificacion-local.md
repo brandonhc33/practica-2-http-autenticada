@@ -107,4 +107,5 @@ Finalmente el alumno completó el
 [rechazo explícito con Gemini](rechazo-explicito-gemini.md): `n` leída en la
 terminal, decisión negativa, traza sin error e informe ausente. Esa comprobación
 funcional no modifica el alcance histórico de la instalación local anterior;
-la validación de un clon desde GitHub sigue pendiente de publicación.
+la [validación posterior desde GitHub](verificacion-github.md) registra el merge
+publicado en `main` y la instalación y pruebas desde un clon real.

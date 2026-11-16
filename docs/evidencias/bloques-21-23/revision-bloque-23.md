@@ -115,5 +115,6 @@ de entrada del ensayo.
 El alumno completó después el diagnóstico con modelo falso y la consulta
 `rechazo-final-23` con Gemini. Esta última leyó `n` explícita; se conservaron la
 traza y la decisión nuevas y se comprobó que el informe no existe. Ver
-[rechazo final verificado](rechazo-explicito-gemini.md). La comprobación desde
-GitHub sigue pendiente de publicación autorizada.
+[rechazo final verificado](rechazo-explicito-gemini.md). La publicación autorizada
+de `main` y la comprobación desde un clon de GitHub se registran en
+[verificación desde GitHub](verificacion-github.md).

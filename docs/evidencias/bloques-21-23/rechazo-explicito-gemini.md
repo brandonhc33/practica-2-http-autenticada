@@ -140,5 +140,6 @@ No se infiere una `n` solo a partir de `false`.
 
 Esto no identifica retroactivamente la causa del rechazo inmediato anterior, no
 convierte este ensayo en asesoría legal ni añade un envío real a terceros.
-La publicación de la rama y la instalación desde un clon de GitHub siguen
-pendientes; ver el [checklist de entrega](../../entrega-bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada).
+Después se completaron el merge y la publicación únicamente de `main`, además de
+la [instalación desde un clon de GitHub](verificacion-github.md). La rama de bloques
+se conserva local; ver el [checklist de entrega](../../entrega-bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada).

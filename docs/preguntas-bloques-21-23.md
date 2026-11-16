@@ -329,10 +329,12 @@ El detalle y la revisión de instalación local están en
 | Comprobado sin red | Controles, errores, aislamiento y flujo con modelo falso; diagnóstico humano con `s` y `n`. |
 | Comprobado con Gemini | Ensayos de 21 y 22, una entrega aprobada y rechazo explícito con `n` en `rechazo-final-23`, contrastado con decisión, traza y archivo ausente. Se conservan los intentos anteriores con sus diferencias. |
 | Validación funcional | Completada para el alcance de los bloques 21 a 23. No se requiere repetir las consultas. |
-| Pendiente de publicación | Autorizar el push de la rama y comprobar un clon desde GitHub con instalación y pruebas. No se ha hecho push ni merge. |
+| Publicación e instalación | Merge autorizado y publicado únicamente en `main`; rama de bloques conservada local. Instalación y pruebas verificadas desde un clon limpio de GitHub. |
 
 Las decisiones humanas de las corridas reales las tomó el alumno; no se
 automatizaron ni se hicieron nuevas llamadas para redactar esta guía.
+La [comprobación desde GitHub](evidencias/bloques-21-23/verificacion-github.md)
+completó el cierre sin usar claves ni consumir tokens.
 El [checklist de entrega](entrega-bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada)
 es la referencia para declarar el trabajo cerrado.
 
