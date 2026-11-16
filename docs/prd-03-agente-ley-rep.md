@@ -1,6 +1,6 @@
 # PRD 03: agente de consultas de Ley REP con herramientas, memoria y supervisión
 
-- **Estado:** propuesto.
+- **Estado:** fases 0 a 3 implementadas y validación funcional completada; aprobación y `n` explícita con Gemini comprobadas por el alumno y contrastadas con sus archivos. Quedan la publicación de la rama y la instalación desde GitHub. Ver [estado de entrega](entrega-bloques-21-23.md).
 - **Fecha:** 14 de noviembre de 2026.
 - **Bloques cubiertos:** 21, 22 y 23 (Unidad 2.4).
 - **Primera versión:** agente de terminal con tres herramientas, memoria por sesión, aprobación humana y trazas. La API y el flujo del PRD 02 no cambian.
@@ -36,6 +36,9 @@
 | Documento de límites de autonomía, entrega y evidencias de los bloques 21 a 23. | El banco de prompts y las evaluaciones de los bloques 15 a 17. |
 
 ## 2. Situación actual
+
+Esta sección describe la línea base al redactar el PRD, antes de implementar el
+agente. El avance posterior se registra en [la entrega](entrega-bloques-21-23.md).
 
 1. Los bloques 18 a 20 están cerrados: [modelo.py](../src/orquestacion/modelo.py) ofrece `crear_modelo()`, `RegistroLlamadas` y `exigir_texto()`, y [enrutamiento.py](../src/orquestacion/enrutamiento.py) clasifica entre tres rutas con fallbacks. La suite tiene 199 pruebas y 422 subpruebas en verde al 14 de noviembre.
 2. El enrutamiento elige entre rutas fijas. No hay agente, herramientas, memoria entre consultas ni aprobación humana.
@@ -312,8 +315,8 @@ Si la revisión exige los archivos en la raíz del repositorio, habrá que confi
 ## 11. Riesgos y limitaciones
 
 1. **Elección variable.** Las pruebas con el modelo falso comprueban las conexiones, no que Gemini elija bien. Los ensayos reales son una muestra: otra corrida puede elegir distinto.
-2. **Consumo con streaming.** El agente pide la respuesta por partes. El conector calcula el consumo por diferencias entre las partes, pero `RegistroLlamadas` solo se probó con respuestas completas. Se verificará en la Fase 1.
-3. **Firmas de razonamiento.** Gemini 3 devuelve firmas que deben reenviarse junto con las llamadas a herramientas. El conector las conserva, pero no se ha probado con una llamada real.
+2. **Consumo con streaming.** Verificado en los ensayos de las fases 1 y 2: las sumas del conector y del registro coinciden. También tiene una prueba con el SDK simulado.
+3. **Firmas de razonamiento.** Verificadas en el ensayo de la Fase 2: dos firmas originales reenviadas, sin comodín. Aceptar una petición no era prueba suficiente; se conserva la observación del pedido saliente.
 4. **Costo creciente.** Cada consulta usa de 1 a 4 llamadas, cada turno reenvía el historial y una observación puede llegar a unos 4.700 caracteres con la búsqueda, o a 7.000 al leer completo el artículo 3.
 5. **Acciones perdidas en la traza.** Si el agente falla después de entregar un informe, el usuario recibe el mensaje seguro y la traza no registra la entrega. El registro de aprobaciones sí la conserva.
 6. **Aprobación solo en terminal.** `select` sobre la entrada estándar funciona en Linux y macOS. En Windows, o sin una terminal interactiva, nunca se aprueba: es una falla segura, no una función.

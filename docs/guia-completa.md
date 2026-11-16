@@ -33,6 +33,7 @@ El recorrido de este README es: actividades del curso, instalación, preparació
         1. [Prompts para el proyecto final de Ley REP](#prompts-para-el-proyecto-final-de-ley-rep)
         2. [Evaluar el banco](#evaluar-el-banco)
     9. [Orquestación con LangChain: bloques 18 a 20](#orquestación-con-langchain-bloques-18-a-20)
+    10. [Agente con herramientas, memoria y supervisión: bloques 21 a 23](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23)
 6. [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
     1. [Pruebas automatizadas](#pruebas-automatizadas)
         1. [Checklist del cliente modular: Bloque 14](#checklist-del-cliente-modular-bloque-14)
@@ -73,6 +74,8 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloque 18: chain de tres pasos | [Revisar la chain](#orquestación-con-langchain-bloques-18-a-20) y sus pruebas. | [Chain](../src/orquestacion/cadena_tres_pasos.py), [pruebas](../tests/orquestacion/test_cadena_tres_pasos.py) y [entrega](../docs/entrega-bloques-18-20.md). |
 | Bloque 19: enrutamiento | [Revisar la clasificación y las rutas](#orquestación-con-langchain-bloques-18-a-20). | [Enrutamiento](../src/orquestacion/enrutamiento.py), [pruebas](../tests/orquestacion/test_enrutamiento.py) y [entrega](../docs/entrega-bloques-18-20.md). |
 | Bloque 20: manejo de errores | [Revisar los fallbacks](#orquestación-con-langchain-bloques-18-a-20) y ejecutar `uv run python -m pytest tests/orquestacion -v`. | [Pruebas de extremo a extremo](../tests/orquestacion/test_orquestacion.py) y [entrega con checklist y límites](../docs/entrega-bloques-18-20.md). |
+| Bloques 21 y 22: herramientas y memoria | [Consultar con el agente](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). | [Entrega y ensayos](entrega-bloques-21-23.md). |
+| Bloque 23: supervisión humana | Revisar y decidir sobre cada entrega simulada. | [Límites de autonomía](limites-autonomia-agente.md) y [verificación final con Gemini](entrega-bloques-21-23.md#verificación-final-del-bloque-23-con-gemini). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -683,6 +686,43 @@ uv run python -m src.orquestacion.cadena_tres_pasos "¿Quién fija las metas de 
 ```
 
 La respuesta es texto libre: nada verifica que los artículos citados respalden lo que dice. No es asesoría legal. Los resultados, el checklist y los límites están en la [entrega de los bloques 18 a 20](../docs/entrega-bloques-18-20.md), y la comparación con el cliente propio en la [arquitectura](../docs/arquitectura.md#flujo-orquestado-bloques-18-a-20).
+
+### Agente con herramientas, memoria y supervisión: bloques 21 a 23
+
+El modelo decide si busca por tema, lee un artículo completo o propone una entrega
+simulada de informe. Usa la copia local de la ley. Es un comando separado del
+enrutamiento anterior, sin fallback para evitar repetir acciones.
+
+```bash
+uv run python -m src.orquestacion.agente_con_herramientas --sesion cliente-1 \
+  "¿Qué establece el artículo primero transitorio de la Ley REP?" \
+  "¿Y qué dice el artículo transitorio siguiente?"
+```
+
+Este comando requiere `GEMINI_API_KEY` y consume cuota. Cada turno reenvía el
+historial de su sesión. Al terminar el proceso se pierde la memoria; no sirve
+repetir `--sesion` en otro proceso para recuperarla. La respuesta y las observaciones
+se registran completas en `output/agente/`: no introducir datos privados.
+
+Para una entrega simulada, la herramienta muestra el título y el contenido en
+stderr y espera hasta 300 segundos. Solo `s` y Enter aprueban; `n`, silencio, EOF
+o entrada no interactiva rechazan. El archivo aprobado se guarda localmente y no se
+envía a nadie. La respuesta sale por stdout; herramientas y consumo, por stderr.
+
+El alumno ya comprobó una aprobación y un rechazo explícito con Gemini. La
+[verificación final](entrega-bloques-21-23.md#verificación-final-del-bloque-23-con-gemini)
+conserva el resultado y sus controles; no hace falta repetir el ensayo. Cualquier
+nueva corrida real requiere autorización y no debe automatizar las respuestas.
+Para revisar las trazas sin llamar al modelo:
+
+```bash
+uv run python -m src.orquestacion.supervision
+```
+
+Para estudiar los conceptos y la relación con la actividad, consulta la
+[guía de estudio de los bloques 21 a 23](preguntas-bloques-21-23.md).
+Ver también [entrega y evidencias](entrega-bloques-21-23.md) y
+[límites de autonomía](limites-autonomia-agente.md).
 
 ## Pruebas y comprobaciones
 

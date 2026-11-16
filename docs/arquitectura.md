@@ -89,6 +89,46 @@ Cada ruta está protegida por `construir_ruta_segura()`: si falla, se repite con
 
 Una respuesta vacía no lanza una excepción en el conector, así que `exigir_texto()` la convierte en error para que actúe el fallback. Las decisiones están en el [PRD 02](prd-02-orquestacion-langchain.md) y los resultados y límites en la [entrega de los bloques 18 a 20](entrega-bloques-18-20.md).
 
+## Agente con supervisión: bloques 21 a 23
+
+Es otra entrada por terminal, independiente de la API y del enrutamiento del PRD 02.
+Reutiliza `crear_modelo()` y el registro de costos, pero no repite el flujo ni cambia
+de modelo cuando falla: podría duplicar una entrega ya aprobada.
+
+```mermaid
+flowchart TD
+    A["Consulta y sesión"] --> B["Historial de esa sesión"]
+    B --> C["AgentExecutor decide con máximo cuatro iteraciones"]
+    C -->|Leer| D["Buscar por tema o leer un artículo local"]
+    D --> C
+    C -->|Entregar informe| E["Mostrar contenido completo al supervisor"]
+    E --> F{"¿Aprueba con s en 300 segundos?"}
+    F -->|Sí| G["Registrar aprobación y guardar informe local"]
+    F -->|No| H["Registrar rechazo sin entregar"]
+    G --> C
+    H --> C
+    C -->|Respuesta| I["Convertir a texto y guardar turno en memoria"]
+    I --> J["Registrar traza y devolver respuesta"]
+    C -->|Error| K["Mensaje seguro y traza sin guardar el turno"]
+```
+
+La memoria guarda solo consulta y respuesta final y se pierde al terminar el
+proceso. Las herramientas y observaciones quedan en la traza, no en el historial.
+Cada sesión se identifica mediante la configuración del runnable; la herramienta
+de entrega obtiene ese identificador del contexto, sin pedírselo al modelo.
+
+`supervision.py` escribe decisiones y trazas JSONL en `output/agente/`, ignorado por
+Git. El registro de aprobación es previo e independiente de la respuesta final del
+modelo. Si este falla después de actuar, puede perderse la acción en los
+`intermediate_steps`, pero se conserva su decisión y el archivo entregado. El
+registro de aprobación no es una transacción con el archivo: un fallo de guardado
+no se presenta como entrega confirmada.
+
+La entrega es simulada y requiere una terminal interactiva; solo crea un Markdown
+local, sin contacto con clientes. Los límites y el estado de la verificación humana
+se detallan en [límites de autonomía](limites-autonomia-agente.md) y en
+[la entrega](entrega-bloques-21-23.md).
+
 ## Alcance y entrega
 
 La imagen muestra el flujo base de `POST /consultar`; la selección opcional de prompts se describe arriba. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.

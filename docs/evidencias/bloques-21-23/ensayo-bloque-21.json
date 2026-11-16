@@ -1,0 +1,98 @@
+{
+  "bloque": 21,
+  "modelo": "gemini-3.5-flash-lite",
+  "fecha": "2026-11-14T15:36:17.484453+00:00",
+  "coincidencias": 3,
+  "casos": [
+    {
+      "consulta": "¿Qué obligaciones tienen los consumidores según la Ley REP?",
+      "herramienta_esperada": "buscar_en_ley",
+      "herramienta_elegida": "buscar_en_ley",
+      "coincide": true,
+      "pasos": [
+        {
+          "herramienta": "buscar_en_ley",
+          "argumentos": {
+            "consulta": "consumidores obligaciones"
+          },
+          "caracteres_observacion": 2940
+        }
+      ],
+      "respuesta": "Según la Ley REP, las obligaciones de los consumidores son las siguientes:\n\n* **Entrega del residuo:** Todo consumidor está obligado a entregar el residuo de un producto prioritario al respectivo sistema de gestión, bajo las condiciones básicas establecidas por estos y previamente informadas (Artículo 34).\n* **Valorización por consumidores industriales:** Los consumidores industriales pueden optar por valorizar, por sí mismos o mediante gestores autorizados y registrados, los residuos de productos prioritarios que generen. En tal caso, deben informar al Ministerio sobre dicha valorización a través del Registro de Emisiones y Transferencias de Contaminantes (Artículo 34).\n* **Cumplimiento para grandes generadores industriales:** Los consumidores industriales que generen una cantidad de residuos superior a la indicada en el decreto supremo de metas y obligaciones asociadas, y que incumplan con la entrega al sistema de gestión o la valorización propia/autorizada, serán sancionados conforme a la ley (Artículo 34).",
+      "llamadas_esperadas": 2,
+      "llamadas_registradas": 2,
+      "consumo": {
+        "respuestas_con_costo": 2,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 2,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 1511,
+        "tokens_salida": 224,
+        "tokens_total": 1735,
+        "costo_conocido_usd": "0.0010133"
+      }
+    },
+    {
+      "consulta": "¿Qué establece el artículo 12 de la Ley REP?",
+      "herramienta_esperada": "obtener_articulo",
+      "herramienta_elegida": "obtener_articulo",
+      "coincide": true,
+      "pasos": [
+        {
+          "herramienta": "obtener_articulo",
+          "argumentos": {
+            "numero": "12"
+          },
+          "caracteres_observacion": 723
+        }
+      ],
+      "respuesta": "Según el **Artículo 12**, las metas de recolección y valorización de los residuos de productos prioritarios son establecidas mediante decretos supremos dictados por el Ministerio. Estas metas se fijan en relación con la cantidad de productos prioritarios introducidos en el mercado nacional por cada productor, aplicando los principios de gradualismo y de jerarquía en el manejo de residuos, y considerando las mejores técnicas disponibles y las mejores prácticas ambientales. Además, dichos decretos pueden establecer diferencias en las metas basándose en consideraciones demográficas, geográficas y de conectividad.",
+      "llamadas_esperadas": 2,
+      "llamadas_registradas": 2,
+      "consumo": {
+        "respuestas_con_costo": 2,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 2,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 1046,
+        "tokens_salida": 134,
+        "tokens_total": 1180,
+        "costo_conocido_usd": "0.0006488"
+      }
+    },
+    {
+      "consulta": "Hola, ¿qué tipo de consultas puedes responder?",
+      "herramienta_esperada": null,
+      "herramienta_elegida": null,
+      "coincide": true,
+      "pasos": [],
+      "respuesta": "¡Hola! Puedo ayudarte a responder consultas sobre la Ley REP (Ley 20.920) de Chile, basada en su texto y artículos. Puedes preguntarme sobre los temas, actores, obligaciones y disposiciones que contiene la ley. ¿En qué te puedo ayudar?",
+      "llamadas_esperadas": 1,
+      "llamadas_registradas": 1,
+      "consumo": {
+        "respuestas_con_costo": 1,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 1,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 433,
+        "tokens_salida": 57,
+        "tokens_total": 490,
+        "costo_conocido_usd": "0.0002724"
+      }
+    }
+  ],
+  "consumo_total": {
+    "respuestas_con_costo": 5,
+    "respuestas_sin_costo": 0,
+    "consultas_fallidas": 0,
+    "intentos_http": 5,
+    "intentos_sin_uso": 0,
+    "tokens_entrada": 2990,
+    "tokens_salida": 415,
+    "tokens_total": 3405,
+    "costo_conocido_usd": "0.0019345"
+  }
+}

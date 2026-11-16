@@ -1,0 +1,124 @@
+{
+  "llamadas": [
+    {
+      "pedido": {
+        "reenviadas": 0,
+        "firma_original": 0,
+        "firma_comodin": 0,
+        "sin_firma": 0
+      },
+      "partes": 2,
+      "herramientas_pedidas": 1,
+      "herramientas_con_firma": 1,
+      "uso_informado_por_gemini": {
+        "candidates_token_count": 24,
+        "prompt_token_count": 526,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 526
+          }
+        ],
+        "total_token_count": 550
+      }
+    },
+    {
+      "pedido": {
+        "reenviadas": 1,
+        "firma_original": 1,
+        "firma_comodin": 0,
+        "sin_firma": 0
+      },
+      "partes": 8,
+      "herramientas_pedidas": 0,
+      "herramientas_con_firma": 0,
+      "uso_informado_por_gemini": {
+        "candidates_token_count": 123,
+        "prompt_token_count": 697,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 697
+          }
+        ],
+        "total_token_count": 820
+      }
+    },
+    {
+      "pedido": {
+        "reenviadas": 0,
+        "firma_original": 0,
+        "firma_comodin": 0,
+        "sin_firma": 0
+      },
+      "partes": 2,
+      "herramientas_pedidas": 1,
+      "herramientas_con_firma": 1,
+      "uso_informado_por_gemini": {
+        "candidates_token_count": 24,
+        "prompt_token_count": 661,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 661
+          }
+        ],
+        "total_token_count": 685
+      }
+    },
+    {
+      "pedido": {
+        "reenviadas": 1,
+        "firma_original": 1,
+        "firma_comodin": 0,
+        "sin_firma": 0
+      },
+      "partes": 10,
+      "herramientas_pedidas": 0,
+      "herramientas_con_firma": 0,
+      "uso_informado_por_gemini": {
+        "candidates_token_count": 184,
+        "prompt_token_count": 902,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 902
+          }
+        ],
+        "total_token_count": 1086
+      }
+    },
+    {
+      "pedido": {
+        "reenviadas": 0,
+        "firma_original": 0,
+        "firma_comodin": 0,
+        "sin_firma": 0
+      },
+      "partes": 4,
+      "herramientas_pedidas": 0,
+      "herramientas_con_firma": 0,
+      "uso_informado_por_gemini": {
+        "candidates_token_count": 33,
+        "prompt_token_count": 522,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 522
+          }
+        ],
+        "total_token_count": 555
+      }
+    }
+  ],
+  "suma": {
+    "llamadas": 5,
+    "entrada": 3308,
+    "salida": 388,
+    "total": 3696,
+    "herramientas_pedidas": 2,
+    "herramientas_con_firma": 2,
+    "reenviadas_con_firma_original": 2,
+    "reenviadas_con_comodin": 0
+  }
+}
