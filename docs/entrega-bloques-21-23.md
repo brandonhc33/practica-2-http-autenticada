@@ -1,8 +1,9 @@
 # Entrega de los bloques 21 a 23 — agente de Ley REP
 
-**Estado: implementación preparada; cierre pendiente de ensayo humano del Bloque 23
-y comprobación desde GitHub después de publicar.** No se declara la entrega cerrada
-sin esas evidencias.
+**Estado: implementación y corridas humanas revisadas; falta verificar el rechazo
+explícito con `n` dentro del agente y comprobar la instalación desde GitHub después
+de publicar.** El segundo intento produjo una entrega aprobada y otra sin aprobar,
+pero no demuestra que esta última haya leído `n`.
 
 ## Entregables
 
@@ -44,8 +45,21 @@ sesión, pero otro proceso empieza sin historial aunque use el mismo identificad
 | --- | --- | --- | --- | --- |
 | [21](evidencias/bloques-21-23/ensayo-bloque-21.json) | 3 de 3 | 5 | 3.405 | 0,0019345 |
 | [22](evidencias/bloques-21-23/ensayo-bloque-22.json) | 3 de 3 | 5 | 3.696 | 0,0019624 |
-| Total observado | 6 de 6 | 10 | 7.101 | 0,0038969 |
-| 23 | Pendiente de decisiones humanas | — | — | — |
+| [23, intento 1](evidencias/bloques-21-23/ensayo-bloque-23.json) | 0 de 2 | 5 intentos, uno sin uso informado | 4.320 registrados | 0,0023102 conocidos |
+| [23, intento 2](evidencias/bloques-21-23/ensayo-bloque-23-intento-02.json) | 2 de 2 automáticos; no prueba rechazo explícito | 6 | 6.656 | 0,0034708 |
+| Total registrado | No equivale a aceptación completa | 21 intentos | 18.077 registrados | 0,0096779 conocidos |
+
+Los intentos del Bloque 23 fueron ejecutados por el alumno. En el primero hubo un
+503 de Gemini y una aprobación donde se esperaba rechazo. En el segundo sí se
+guardó el informe del artículo 12 y no se guardó el del artículo 34. El registro
+solo distingue `true` de `false`; los tiempos son compatibles con un timeout en
+el segundo aviso, y el alumno no reportó haber introducido `n` en ese caso.
+
+Se conservan ambos resultados sin corregirlos, junto con las
+[trazas y decisiones revisadas](evidencias/bloques-21-23/revision-bloque-23.md).
+El intento fallido sin metadatos no se considera de costo cero; el total de USD es
+solo el costo conocido. La [prueba local de entrada](evidencias/bloques-21-23/prueba-entrada-terminal.md)
+sí leyó `s` y `n`, sin Gemini, pero no sustituye el rechazo de un informe del agente.
 
 En el Bloque 21 se comprobaron búsqueda por tema, lectura de un artículo y una
 respuesta sin herramienta. El [consumo del conector](evidencias/bloques-21-23/consumo-gemini-bloque-21.json)
@@ -62,7 +76,7 @@ originales, sin comodín. Que Gemini aceptara los pedidos del Bloque 21 no proba
 por sí solo ese reenvío. Gemini no informó tokens de razonamiento en esas diez
 llamadas; no se infiere por ello que no haya razonado.
 
-Estas evidencias son históricas: se generaron antes de incorporar la tercera
+Las evidencias de 21 y 22 son históricas: se generaron antes de incorporar la tercera
 herramienta y sus instrucciones. No se han repetido con el prompt final ni se
 espera obtener exactamente el mismo consumo al repetirlas.
 
@@ -93,8 +107,8 @@ Los resultados de esta revisión se conservan en
 | CA-13 y CA-14 | Aprobación, rechazo, timeout, EOF, cancelación, errores y entrada no interactiva. |
 | CA-15 y CA-16 | JSONL completo, error sin pasos, repeticiones dentro de un turno y entre turnos por sesión. |
 | CA-17 y CA-18 | Ensayos con modelo falso para los tres bloques y suite completa sin red. |
-| CA-19 | Ensayos reales de 21 y 22 conservados; falta el de 23. |
-| CA-20 | Control de aprobación presente en código; falta contrastarlo con las trazas reales de 23. |
+| CA-19 | Ensayos reales de los tres bloques conservados; falta verificar `n` explícita dentro del agente. |
+| CA-20 | Control contrastado con las trazas reales: lecturas y propuestas de entrega presentes. Ver [revisión](evidencias/bloques-21-23/revision-bloque-23.md). |
 
 También se prueba el caso en que el modelo falla después de una entrega aprobada:
 no se repite el flujo y sobreviven el informe y la aprobación, aunque la traza
@@ -107,24 +121,30 @@ Este paso lo ejecuta el alumno en **su terminal interactiva**, desde la raíz de
 worktree que contiene estos cambios, no desde otra copia antigua del proyecto.
 No usar tuberías, `echo s`, respuestas automáticas ni pedir a un agente que apruebe.
 
+Ya se verificó la aprobación real y la función leyó dos entradas consecutivas en
+la prueba local. **No hace falta repetir las dos consultas del ensayo completo.**
+Solo queda una consulta nueva para comprobar el rechazo explícito dentro del agente:
+
 1. Configurar `GEMINI_API_KEY` localmente. No hace falta iniciar la API.
-2. Confirmar que se autoriza esta corrida: son unas seis llamadas, hasta ocho
-   iteraciones de modelo entre los dos casos; el costo final depende del consumo.
-3. Ejecutar con una ruta de salida nueva:
+   Un worktree no hereda el `.env` ignorado por Git de la carpeta original.
+   `uv run --env-file /ruta/a/tu/.env ...` permite usar ese archivo sin copiarlo.
+2. El siguiente comando consume cuota: se esperan tres llamadas, con un máximo
+   de cuatro iteraciones. Reemplazar la ruta del `.env` por la propia:
 
    ```bash
-   uv run python -m scripts.ensayo_agente --bloque 23 \
-     --salida docs/evidencias/bloques-21-23/ensayo-bloque-23.json
+   uv run --env-file /ruta/a/tu/.env \
+     python -m src.orquestacion.agente_con_herramientas \
+     --sesion rechazo-manual-23 \
+     "Lee el artículo 34 de la Ley REP y entrega un informe breve titulado 'Prueba de rechazo manual', citando ese artículo. Solicita mi aprobación mediante entregar_informe."
    ```
 
-4. Leer el primer informe, sobre el artículo 12. Si es correcto, escribir `s` y
-   Enter. Si no lo es, rechazarlo y conservar la diferencia, no aprobar solo para
-   hacer pasar el ensayo.
-5. Leer el segundo informe, sobre el artículo 34, y escribir `n` y Enter.
-6. Revisar el JSON del ensayo: dos casos, secuencias
-   `obtener_articulo` → `entregar_informe`, una aprobación y un rechazo. Si Gemini
-   toma otro recorrido, queda como diferencia; no se modifica la evidencia.
-7. Contrastar los archivos locales y revisar repeticiones:
+3. Cuando aparezca **sesión: `rechazo-manual-23`**, leer el informe, escribir `n` y
+   pulsar Enter antes de 300 segundos. El caso se considera comprobado si la
+   terminal muestra esa entrada, la decisión queda en `false` y no se crea su
+   archivo. Un nuevo timeout no se presenta como rechazo explícito.
+4. Compartir la salida sin claves. Revisar las nuevas líneas de aprobación y
+   traza, el identificador del informe ausente y el consumo mostrado en stderr.
+5. Contrastar los archivos locales y revisar repeticiones:
 
    ```bash
    grep -n "esperar_aprobacion(" src/orquestacion/herramientas.py
@@ -135,15 +155,19 @@ No usar tuberías, `echo s`, respuestas automáticas ni pedir a un agente que ap
    ```
 
 Los JSONL acumulan ejecuciones anteriores: los conteos son de líneas, no de acciones,
-y no bastan por sí solos para probar el caso. Hay que revisar las sesiones
-`informe-aprobado` e `informe-rechazado`, sus decisiones y los identificadores. El
-ensayo guarda solo las decisiones nuevas de cada caso. Debe haber un archivo del
-caso aprobado y ninguno del rechazado.
+y no bastan por sí solos para probar el caso. Hay que revisar sesión, fecha e
+identificador: `informe-rechazado` se usó en dos intentos con decisiones distintas.
+`coincide` compara el booleano, no distingue `n` de timeout o EOF. La confirmación
+del alumno es necesaria para no presentar estos últimos como rechazo explícito.
 
-Después, revisar que las trazas no tengan información privada y conservar solo
-los eventos de este ensayo en `docs/evidencias/bloques-21-23/trazas_agente.jsonl` y
-`aprobaciones.jsonl`. No sobrescribir evidencias previas. Ese paso y la actualización
-del estado de entrega se harán al revisar el resultado con el alumno.
+Los eventos de los dos intentos ya están conservados en
+`docs/evidencias/bloques-21-23/trazas_agente.jsonl` y `aprobaciones.jsonl`.
+Después del control pendiente se agregarán solo los eventos nuevos revisados, sin
+alterar las decisiones anteriores ni introducir claves.
+
+Para repetir el ensayo completo en el futuro, usar una ruta JSON nueva y guiarse
+por la sesión mostrada, no por el orden de los avisos: un caso puede fallar sin
+llegar a pedir aprobación. No sobrescribir los dos JSON ya conservados.
 
 ## Diferencias y límites relevantes
 
@@ -170,8 +194,9 @@ La explicación completa está en [límites de autonomía](limites-autonomia-age
 - [x] Pruebas sin red y comandos de revisión preparados.
 - [x] Evidencias reales de 21 y 22 conservadas.
 - [x] Documentación, guía y arquitectura del nuevo flujo.
-- [ ] Ensayo real de 23 ejecutado por el alumno y revisado.
-- [ ] Trazas y decisiones de ese ensayo conservadas, sin datos privados.
+- [x] Dos intentos reales de 23 ejecutados por el alumno y revisados, con sus diferencias.
+- [x] Trazas y decisiones de esos intentos conservadas, sin claves.
+- [ ] Rechazo explícito con `n` dentro del agente y ausencia de su archivo verificados.
 - [ ] Publicación de la rama autorizada por el alumno.
 - [ ] Clonado desde GitHub, `uv sync --locked` y suite en una instalación limpia.
 

@@ -100,9 +100,14 @@ puede ser correcto. No bloquea acciones, no revoca aprobaciones ni repite consul
 ## Estado de la comprobación
 
 La aprobación, el rechazo, el tiempo agotado, el fin de entrada, el aislamiento de
-sesiones, las trazas y las repeticiones tienen pruebas sin red. La comprobación
-humana con Gemini del Bloque 23 sigue pendiente: no se presenta una simulación como
-evidencia real. El estado y los pasos de cierre están en
+sesiones, las trazas y las repeticiones tienen pruebas sin red. Las corridas humanas
+del Bloque 23 ya comprobaron una entrega aprobada y una no aprobada, con su archivo
+presente y ausente respectivamente. Está pendiente el rechazo explícito con `n`
+dentro del agente: el registro booleano no distingue una `n` de un timeout o EOF.
+La prueba local sin Gemini sí leyó `s` y luego `n`, pero no explica la dificultad
+reportada durante la corrida ni reemplaza ese control. Ver
+[revisión de evidencias](evidencias/bloques-21-23/revision-bloque-23.md).
+El estado y los pasos de cierre están en
 [la entrega de los bloques 21 a 23](entrega-bloques-21-23.md).
 
 Para contrastar el control con el código:
@@ -111,5 +116,5 @@ Para contrastar el control con el código:
 grep -n "esperar_aprobacion(" src/orquestacion/herramientas.py
 ```
 
-Después del ensayo humano se contrastarán también las trazas con `wc -l` y
-`grep -c`, como establece el PRD 03.
+Las trazas humanas ya se contrastaron con `wc -l` y `grep -c`, como establece el
+PRD 03. Los conteos y el resultado del detector están en la revisión de evidencias.

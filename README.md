@@ -174,6 +174,10 @@ Entrada adicional de los bloques 21 a 23: el modelo elige herramientas para leer
 ley y recuerda los turnos de una sesión dentro del mismo proceso. Requiere
 `GEMINI_API_KEY` y consume cuota; no reemplaza la API ni el flujo anterior.
 
+Si ejecutas desde un worktree, el `.env` ignorado de tu carpeta original no se
+copia automáticamente. Puedes cargarlo para ese comando con
+`uv run --env-file /ruta/a/tu/.env python -m ...`, sin copiar ni compartir la clave.
+
 ```bash
 uv run python -m src.orquestacion.agente_con_herramientas --sesion cliente-1 \
   "¿Qué establece el artículo primero transitorio de la Ley REP?" \
@@ -191,8 +195,9 @@ uv run python -m src.orquestacion.supervision
 
 Consulta la [guía](docs/guia-completa.md#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23),
 los [límites](docs/limites-autonomia-agente.md) y el
-[estado de entrega](docs/entrega-bloques-21-23.md). Falta el ensayo humano del Bloque 23;
-no se presenta como una entrega ya cerrada.
+[estado de entrega](docs/entrega-bloques-21-23.md). Las corridas humanas ya están
+revisadas; falta verificar el rechazo explícito con `n` dentro del agente y la
+instalación desde GitHub. No se presenta como una entrega ya cerrada.
 
 ### Evaluaciones y ensayos
 

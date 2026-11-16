@@ -1,0 +1,110 @@
+{
+  "bloque": 23,
+  "modelo": "gemini-3.5-flash-lite",
+  "fecha": "2026-11-16T17:25:15.428359+00:00",
+  "coincidencias": 0,
+  "casos": [
+    {
+      "sesion": "informe-aprobado",
+      "consulta": "Lee el artículo 12 de la Ley REP y entrega un informe breve con el título 'Metas de recolección y valorización', citando ese artículo. Solicita mi aprobación mediante entregar_informe.",
+      "herramienta_esperada": "obtener_articulo",
+      "herramientas_esperadas": [
+        "obtener_articulo",
+        "entregar_informe"
+      ],
+      "aprobacion_esperada": true,
+      "herramienta_elegida": null,
+      "coincide": false,
+      "pasos": [],
+      "respuesta": "No pudimos procesar tu consulta en este momento. Eso no significa que no existan obligaciones para tu caso: intenta de nuevo más tarde.",
+      "llamadas_esperadas": 1,
+      "llamadas_registradas": 2,
+      "consumo": {
+        "respuestas_con_costo": 1,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 1,
+        "intentos_http": 2,
+        "intentos_sin_uso": 1,
+        "tokens_entrada": 773,
+        "tokens_salida": 19,
+        "tokens_total": 792,
+        "costo_conocido_usd": "0.0002794"
+      },
+      "aprobaciones": [],
+      "aprobacion_coincide": false,
+      "secuencia_coincide": false,
+      "mensajes_en_historial_antes": 0
+    },
+    {
+      "sesion": "informe-rechazado",
+      "consulta": "Lee el artículo 34 de la Ley REP y entrega un informe breve con el título 'Obligaciones de los consumidores', citando ese artículo. Solicita mi aprobación mediante entregar_informe.",
+      "herramienta_esperada": "obtener_articulo",
+      "herramientas_esperadas": [
+        "obtener_articulo",
+        "entregar_informe"
+      ],
+      "aprobacion_esperada": false,
+      "herramienta_elegida": "obtener_articulo",
+      "coincide": false,
+      "pasos": [
+        {
+          "herramienta": "obtener_articulo",
+          "argumentos": {
+            "numero": "34"
+          },
+          "caracteres_observacion": 902,
+          "primera_linea": "[Artículo 34]"
+        },
+        {
+          "herramienta": "entregar_informe",
+          "argumentos": {
+            "contenido": "Informe basado en el artículo 34 de la Ley 20.920:\n\n1. Obligación general: Todo consumidor está obligado a entregar el residuo de un producto prioritario al respectivo sistema de gestión, bajo las condiciones básicas establecidas por estos y comunicadas a los involucrados.\n2. Consumidores industriales: Tienen la opción de valorizar por sí mismos o mediante gestores autorizados y registrados los residuos de productos prioritarios que generen, informando dicha valorización al Ministerio a través del Registro de Emisiones y Transferencias de Contaminantes.\n3. Sanciones: Los consumidores industriales que generen una cantidad de residuos superior a la indicada en el decreto supremo de metas y otras obligaciones asociadas, y que incumplan lo dispuesto en los incisos anteriores, serán sancionados de acuerdo con la ley.\n\nRespaldo normativo: Artículo 34 de la Ley REP.",
+            "titulo": "Obligaciones de los consumidores"
+          },
+          "caracteres_observacion": 278,
+          "primera_linea": "Entrega simulada aprobada: informe guardado en /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada/.delta/worktrees/1k5bteg17we3/practica-2-http-autenticada/output/agente/informes_entregados/896930a914ce46bb90f27fd1da87a7fe.md. No se envió a ningún destinatario real."
+        }
+      ],
+      "respuesta": "El informe titulado **'Obligaciones de los consumidores'** ha sido guardado exitosamente tras su aprobación. \n\nA continuación se resumen los puntos principales del **artículo 34** de la Ley REP:\n\n* **Obligación general:** Todo consumidor tiene la obligación de entregar el residuo de un producto prioritario al respectivo sistema de gestión, conforme a las condiciones básicas fijadas por ellos e informadas a los involucrados (inciso primero).\n* **Consumidores industriales:** Pueden optar por valorizar por sí mismos o mediante gestores autorizados y registrados los residuos que generen, debiendo informar de esto al Ministerio mediante el Registro de Emisiones y Transferencias de Contaminantes (inciso segundo).\n* **Sanciones:** Aquellos consumidores industriales que superen la cantidad de residuos señalada en el decreto supremo de metas y obligaciones y no cumplan con lo anterior serán sancionados según lo dispuesto en la ley (inciso tercero).",
+      "llamadas_esperadas": 3,
+      "llamadas_registradas": 3,
+      "consumo": {
+        "respuestas_con_costo": 3,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 3,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 3086,
+        "tokens_salida": 442,
+        "tokens_total": 3528,
+        "costo_conocido_usd": "0.0020308"
+      },
+      "aprobaciones": [
+        {
+          "id_aprobacion": "896930a914ce46bb90f27fd1da87a7fe",
+          "fecha": "2026-11-16T17:25:34.419317+00:00",
+          "session_id": "informe-rechazado",
+          "supervisor_local": "brandonhc",
+          "herramienta": "entregar_informe",
+          "titulo": "Obligaciones de los consumidores",
+          "contenido": "Informe basado en el artículo 34 de la Ley 20.920:\n\n1. Obligación general: Todo consumidor está obligado a entregar el residuo de un producto prioritario al respectivo sistema de gestión, bajo las condiciones básicas establecidas por estos y comunicadas a los involucrados.\n2. Consumidores industriales: Tienen la opción de valorizar por sí mismos o mediante gestores autorizados y registrados los residuos de productos prioritarios que generen, informando dicha valorización al Ministerio a través del Registro de Emisiones y Transferencias de Contaminantes.\n3. Sanciones: Los consumidores industriales que generen una cantidad de residuos superior a la indicada en el decreto supremo de metas y otras obligaciones asociadas, y que incumplan lo dispuesto en los incisos anteriores, serán sancionados de acuerdo con la ley.\n\nRespaldo normativo: Artículo 34 de la Ley REP.",
+          "aprobado": true
+        }
+      ],
+      "aprobacion_coincide": false,
+      "secuencia_coincide": true,
+      "mensajes_en_historial_antes": 0
+    }
+  ],
+  "consumo_total": {
+    "respuestas_con_costo": 4,
+    "respuestas_sin_costo": 0,
+    "consultas_fallidas": 1,
+    "intentos_http": 5,
+    "intentos_sin_uso": 1,
+    "tokens_entrada": 3859,
+    "tokens_salida": 461,
+    "tokens_total": 4320,
+    "costo_conocido_usd": "0.0023102"
+  }
+}

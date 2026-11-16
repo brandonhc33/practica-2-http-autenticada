@@ -1,0 +1,139 @@
+{
+  "bloque": 23,
+  "modelo": "gemini-3.5-flash-lite",
+  "fecha": "2026-11-16T17:44:51.387923+00:00",
+  "coincidencias": 2,
+  "casos": [
+    {
+      "sesion": "informe-aprobado",
+      "consulta": "Lee el artículo 12 de la Ley REP y entrega un informe breve con el título 'Metas de recolección y valorización', citando ese artículo. Solicita mi aprobación mediante entregar_informe.",
+      "herramienta_esperada": "obtener_articulo",
+      "herramientas_esperadas": [
+        "obtener_articulo",
+        "entregar_informe"
+      ],
+      "aprobacion_esperada": true,
+      "herramienta_elegida": "obtener_articulo",
+      "coincide": true,
+      "pasos": [
+        {
+          "herramienta": "obtener_articulo",
+          "argumentos": {
+            "numero": "12"
+          },
+          "caracteres_observacion": 723,
+          "primera_linea": "[Artículo 12]"
+        },
+        {
+          "herramienta": "entregar_informe",
+          "argumentos": {
+            "titulo": "Metas de recolección y valorización",
+            "contenido": "Informe basado en el Artículo 12 de la Ley REP (Ley 20.920):\n\n- Las metas de recolección y valorización de los residuos de productos prioritarios se establecen mediante decretos supremos del Ministerio (inciso 1°).\n- Se calculan según la cantidad de productos prioritarios introducidos en el mercado nacional por cada productor, aplicando gradualismo, jerarquía en el manejo de residuos, las mejores técnicas disponibles y mejores prácticas ambientales (inciso 2°).\n- Los decretos supremos pueden diferenciar las metas según consideraciones demográficas, geográficas y de conectividad (inciso 3°)."
+          },
+          "caracteres_observacion": 278,
+          "primera_linea": "Entrega simulada aprobada: informe guardado en /home/brandonhc/proyectos/curso-ia/practica-2-http-autenticada/.delta/worktrees/1k5bteg17we3/practica-2-http-autenticada/output/agente/informes_entregados/7fc1a0078c724945a8bec1a6e60dd8dd.md. No se envió a ningún destinatario real."
+        }
+      ],
+      "respuesta": "Se ha preparado el informe solicitado basado en el artículo 12 de la Ley REP y se ha completado su entrega simulada.",
+      "llamadas_esperadas": 3,
+      "llamadas_registradas": 3,
+      "consumo": {
+        "respuestas_con_costo": 3,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 3,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 2964,
+        "tokens_salida": 213,
+        "tokens_total": 3177,
+        "costo_conocido_usd": "0.0014217"
+      },
+      "aprobaciones": [
+        {
+          "id_aprobacion": "7fc1a0078c724945a8bec1a6e60dd8dd",
+          "fecha": "2026-11-16T17:45:19.161216+00:00",
+          "session_id": "informe-aprobado",
+          "supervisor_local": "brandonhc",
+          "herramienta": "entregar_informe",
+          "titulo": "Metas de recolección y valorización",
+          "contenido": "Informe basado en el Artículo 12 de la Ley REP (Ley 20.920):\n\n- Las metas de recolección y valorización de los residuos de productos prioritarios se establecen mediante decretos supremos del Ministerio (inciso 1°).\n- Se calculan según la cantidad de productos prioritarios introducidos en el mercado nacional por cada productor, aplicando gradualismo, jerarquía en el manejo de residuos, las mejores técnicas disponibles y mejores prácticas ambientales (inciso 2°).\n- Los decretos supremos pueden diferenciar las metas según consideraciones demográficas, geográficas y de conectividad (inciso 3°).",
+          "aprobado": true
+        }
+      ],
+      "aprobacion_coincide": true,
+      "secuencia_coincide": true,
+      "mensajes_en_historial_antes": 0
+    },
+    {
+      "sesion": "informe-rechazado",
+      "consulta": "Lee el artículo 34 de la Ley REP y entrega un informe breve con el título 'Obligaciones de los consumidores', citando ese artículo. Solicita mi aprobación mediante entregar_informe.",
+      "herramienta_esperada": "obtener_articulo",
+      "herramientas_esperadas": [
+        "obtener_articulo",
+        "entregar_informe"
+      ],
+      "aprobacion_esperada": false,
+      "herramienta_elegida": "obtener_articulo",
+      "coincide": true,
+      "pasos": [
+        {
+          "herramienta": "obtener_articulo",
+          "argumentos": {
+            "numero": "34"
+          },
+          "caracteres_observacion": 902,
+          "primera_linea": "[Artículo 34]"
+        },
+        {
+          "herramienta": "entregar_informe",
+          "argumentos": {
+            "titulo": "Obligaciones de los consumidores",
+            "contenido": "Informe basado en el Artículo 34 de la Ley REP (Ley 20.920):\n\n1. Obligación general: Todo consumidor está obligado a entregar el residuo de un producto prioritario al respectivo sistema de gestión, bajo las condiciones básicas establecidas por estos y comunicadas a los involucrados.\n2. Consumidores industriales: Tienen la opción de valorizar por sí mismos o mediante gestores autorizados y registrados los residuos de productos prioritarios generados, debiendo informar dicha valorización al Ministerio a través del Registro de Emisiones y Transferencias de Contaminantes.\n3. Sanciones: Los consumidores industriales que generen una cantidad de residuos superior al umbral establecido en el decreto supremo de metas y otras obligaciones asociadas, y que incumplan las disposiciones anteriores, serán sancionados conforme a la ley.\n\nRespaldo normativo: Artículo 34 de la Ley 20.920."
+          },
+          "caracteres_observacion": 92,
+          "primera_linea": "Entrega no aprobada (748a6fe671114492a27dea7241599692). No se guardó ni se envió el informe."
+        }
+      ],
+      "respuesta": "El informe con el título **'Obligaciones de los consumidores'** no pudo ser entregado, ya que la aprobación fue rechazada. A continuación, presento el contenido basado en el artículo solicitado:\n\n* **Obligación general de los consumidores:** Todo consumidor está obligado a entregar el residuo de un producto prioritario al respectivo sistema de gestión, conforme a las condiciones básicas establecidas por estos y que sean informadas a todos los involucrados (Artículo 34, inciso primero).\n* **Consumidores industriales:** Pueden valorizar por sí mismos o mediante gestores autorizados y registrados los residuos que generen, debiendo informar esta valorización al Ministerio a través del Registro de Emisiones y Transferencias de Contaminantes (Artículo 34, inciso segundo).\n* **Sanciones:** Los consumidores industriales que superen la cantidad de residuos señalada en el decreto supremo de metas y otras obligaciones asociadas y no cumplan con estas disposiciones serán sancionados según la ley (Artículo 34, inciso tercero).",
+      "llamadas_esperadas": 3,
+      "llamadas_registradas": 3,
+      "consumo": {
+        "respuestas_con_costo": 3,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 3,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 3022,
+        "tokens_salida": 457,
+        "tokens_total": 3479,
+        "costo_conocido_usd": "0.0020491"
+      },
+      "aprobaciones": [
+        {
+          "id_aprobacion": "748a6fe671114492a27dea7241599692",
+          "fecha": "2026-11-16T17:50:44.102159+00:00",
+          "session_id": "informe-rechazado",
+          "supervisor_local": "brandonhc",
+          "herramienta": "entregar_informe",
+          "titulo": "Obligaciones de los consumidores",
+          "contenido": "Informe basado en el Artículo 34 de la Ley REP (Ley 20.920):\n\n1. Obligación general: Todo consumidor está obligado a entregar el residuo de un producto prioritario al respectivo sistema de gestión, bajo las condiciones básicas establecidas por estos y comunicadas a los involucrados.\n2. Consumidores industriales: Tienen la opción de valorizar por sí mismos o mediante gestores autorizados y registrados los residuos de productos prioritarios generados, debiendo informar dicha valorización al Ministerio a través del Registro de Emisiones y Transferencias de Contaminantes.\n3. Sanciones: Los consumidores industriales que generen una cantidad de residuos superior al umbral establecido en el decreto supremo de metas y otras obligaciones asociadas, y que incumplan las disposiciones anteriores, serán sancionados conforme a la ley.\n\nRespaldo normativo: Artículo 34 de la Ley 20.920.",
+          "aprobado": false
+        }
+      ],
+      "aprobacion_coincide": true,
+      "secuencia_coincide": true,
+      "mensajes_en_historial_antes": 0
+    }
+  ],
+  "consumo_total": {
+    "respuestas_con_costo": 6,
+    "respuestas_sin_costo": 0,
+    "consultas_fallidas": 0,
+    "intentos_http": 6,
+    "intentos_sin_uso": 0,
+    "tokens_entrada": 5986,
+    "tokens_salida": 670,
+    "tokens_total": 6656,
+    "costo_conocido_usd": "0.0034708"
+  }
+}

@@ -80,7 +80,7 @@ Esto demuestra instalación y pruebas desde los archivos versionados, sin depend
 del entorno del worktree. **No sustituye el clonado desde GitHub** solicitado por
 la Fase 4: no hubo push ni se comprobó una publicación remota.
 
-## Lo que no se ejecutó
+## Lo que no se ejecutó durante esta verificación de código
 
 - Ensayo real del Bloque 23: requiere las decisiones del alumno en su terminal.
 - Captura de trazas y aprobaciones humanas de ese ensayo.
@@ -90,3 +90,7 @@ la Fase 4: no hubo push ni se comprobó una publicación remota.
 Los resultados reales anteriores de 21 y 22 se conservan sin modificarlos. El
 [estado de entrega](../../entrega-bloques-21-23.md) mantiene pendientes los pasos que
 no se han comprobado.
+
+Posteriormente el alumno ejecutó dos intentos reales de 23 y una prueba local de
+entrada. Sus resultados, las decisiones y los límites de lo que demuestran se
+registran aparte en [la revisión del Bloque 23](revision-bloque-23.md).
