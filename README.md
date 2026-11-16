@@ -13,6 +13,7 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 - [Probar la API con curl](#probar-la-api-con-curl)
 - [Consultar Gemini desde terminal](#consultar-gemini-desde-terminal)
 - [Orquestar consultas de Ley REP](#orquestar-consultas-de-ley-rep)
+- [Agente con memoria y supervisión](#agente-con-memoria-y-supervisión)
 - [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
 - [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
 - [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
@@ -67,6 +68,8 @@ Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El
 | 13 y 14 | Costos, backoff y pruebas unitarias | [Entrega](docs/entrega-bloques-13-14.md) y [capturas](docs/evidencias/mis-capturas/README.md). |
 | 15 a 17 | Evaluación de respuestas de Ley REP | [Evaluación y resultados](docs/evaluacion-respuestas.md). |
 | 18 a 20 | Chain, enrutamiento y manejo de errores | [Uso](docs/guia-completa.md#orquestación-con-langchain-bloques-18-a-20), [entrega](docs/entrega-bloques-18-20.md) y [preguntas y respuestas](docs/preguntas-bloques-18-20.md). |
+| 21 y 22 | Agente con herramientas y memoria por sesión | [Uso](#agente-con-memoria-y-supervisión), [entrega y evidencias](docs/entrega-bloques-21-23.md). |
+| 23 | Supervisión humana y límites de autonomía | [Límites](docs/limites-autonomia-agente.md) y [ensayo humano pendiente](docs/entrega-bloques-21-23.md#ensayo-humano-pendiente--bloque-23). |
 
 ## Comandos útiles
 
@@ -165,6 +168,32 @@ uv run python -m src.orquestacion.enrutamiento "Resume el artículo 9"
 
 La respuesta sale por stdout y el consumo por stderr. Una consulta normativa usa 4 llamadas y las otras rutas 2. Si Gemini falla, el flujo prueba con el modelo secundario y después entrega un texto de respaldo. Consulta la [guía de uso](docs/guia-completa.md#orquestación-con-langchain-bloques-18-a-20).
 
+### Agente con memoria y supervisión
+
+Entrada adicional de los bloques 21 a 23: el modelo elige herramientas para leer la
+ley y recuerda los turnos de una sesión dentro del mismo proceso. Requiere
+`GEMINI_API_KEY` y consume cuota; no reemplaza la API ni el flujo anterior.
+
+```bash
+uv run python -m src.orquestacion.agente_con_herramientas --sesion cliente-1 \
+  "¿Qué establece el artículo primero transitorio de la Ley REP?" \
+  "¿Y qué dice el artículo transitorio siguiente?"
+```
+
+Una entrega de informe solo guarda un archivo local después de mostrar su contenido
+y recibir `s` de una persona en una terminal interactiva. Nunca envía informes a
+destinatarios reales. Las trazas, decisiones e informes quedan en `output/agente/`,
+ignorado por Git. Para revisar repeticiones, sin llamar a Gemini:
+
+```bash
+uv run python -m src.orquestacion.supervision
+```
+
+Consulta la [guía](docs/guia-completa.md#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23),
+los [límites](docs/limites-autonomia-agente.md) y el
+[estado de entrega](docs/entrega-bloques-21-23.md). Falta el ensayo humano del Bloque 23;
+no se presenta como una entrega ya cerrada.
+
 ### Evaluaciones y ensayos
 
 Comparar modelos y evaluar prompts realiza consultas reales a Gemini. El ensayo con `--simulado` no usa red ni consume tokens. Elige un archivo de salida nuevo en cada ejecución para conservar las evidencias anteriores.
@@ -228,5 +257,7 @@ Las pruebas siguen las mismas áreas del código; `tests/conftest.py` bloquea la
 - [PRD 02: orquestación de consultas con LangChain](docs/prd-02-orquestacion-langchain.md).
 - [Entrega de bloques 18 a 20: resultados y límites de la orquestación](docs/entrega-bloques-18-20.md).
 - [Preguntas y respuestas de los bloques 18 a 20](docs/preguntas-bloques-18-20.md).
+- [Agente de Ley REP: entrega de los bloques 21 a 23 y pasos pendientes](docs/entrega-bloques-21-23.md).
+- [Límites de autonomía y supervisión humana](docs/limites-autonomia-agente.md).
 - [Capturas y resultados de ejecución](docs/evidencias/mis-capturas/README.md).
 - [Propuesta del proyecto final: asistente RAG para Ley REP](docs/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).
