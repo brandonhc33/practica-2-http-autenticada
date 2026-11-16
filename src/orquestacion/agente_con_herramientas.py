@@ -1,4 +1,4 @@
-"""Agente de Ley REP de los bloques 21 y 22: elige herramientas y recuerda cada sesión."""
+"""Agente de Ley REP de los bloques 21 a 23: herramientas, memoria y supervisión."""
 
 import argparse
 import logging
@@ -22,12 +22,13 @@ from src.catalogo import AGENTES
 from src.costos.registro import sesion_costos
 from src.orquestacion.cadena_tres_pasos import REGLAS_TEXTO
 from src.orquestacion.enrutamiento import MENSAJE_SEGURO, MENSAJE_VACIO
-from src.orquestacion.herramientas import buscar_en_ley, obtener_articulo
+from src.orquestacion.herramientas import buscar_en_ley, entregar_informe, obtener_articulo
 from src.orquestacion.modelo import crear_modelo, exigir_texto
+from src.orquestacion.supervision import registrar_traza
 
 logger = logging.getLogger(__name__)
 
-HERRAMIENTAS: list[BaseTool] = [buscar_en_ley, obtener_articulo]
+HERRAMIENTAS: list[BaseTool] = [buscar_en_ley, obtener_articulo, entregar_informe]
 # Cada paso es una llamada al modelo: el peor caso cuesta 4 llamadas, no las 15 por defecto.
 LIMITE_PASOS = 4
 # AgentExecutor entrega este texto, en inglés, cuando se agota max_iterations.
@@ -43,7 +44,12 @@ INSTRUCCIONES_AGENTE = (
     "herramientas. Basa cada afirmación sobre la ley solo en lo que devolvieron las herramientas "
     "e indica el artículo que la respalda. Si no alcanza, dilo: la falta de evidencia no "
     "significa que no existan obligaciones. La conversación anterior solo sirve para entender a "
-    "qué se refiere la consulta; no es evidencia de lo que dice la ley."
+    "qué se refiere la consulta; no es evidencia de lo que dice la ley. "
+    "Solo usa entregar_informe cuando el usuario pida expresamente entregar o enviar un informe. "
+    "Antes de proponerlo, lee la ley con las herramientas y cita sus artículos. La entrega es "
+    "simulada: solo guarda un archivo local después de la aprobación humana. Si se rechaza, "
+    "no vuelvas a solicitar la misma entrega en este turno. No afirmes que entregaste un informe "
+    "si la herramienta no confirma que lo guardó; nunca se envía a un destinatario real."
 )
 
 prompt_agente = ChatPromptTemplate.from_messages(
@@ -117,17 +123,29 @@ def consultar_agente(
     """Ejecuta una consulta y devuelve output e intermediate_steps, sin propagar excepciones."""
     if not entrada.strip():
         return {"output": MENSAJE_VACIO, "intermediate_steps": []}
+    historial = historiales.get(session_id)
+    previos = len(historial.messages) if historial is not None else 0
+    fallo = None
     try:
         # Sin memoria, el ejecutor ignora session_id. Con memoria, el texto ya viene convertido
         # y salida_como_texto lo deja igual.
         resultado = agente.invoke(
             {"entrada": entrada}, config={"configurable": {"session_id": session_id}}
         )
-        return salida_como_texto(resultado)
+        resultado = salida_como_texto(resultado)
     except Exception as error:
         logger.error("Falló el agente (%s): %s", type(error).__name__, error)
         logger.debug("Traza del error", exc_info=error)
-        return {"output": MENSAJE_SEGURO, "intermediate_steps": []}
+        fallo = {"tipo": type(error).__name__, "mensaje": str(error)}
+        resultado = {"output": MENSAJE_SEGURO, "intermediate_steps": []}
+    try:
+        registrar_traza(
+            session_id, entrada, resultado, mensajes_en_historial_antes=previos, error=fallo
+        )
+    except Exception as error:
+        # No se repite la consulta: podría haber ejecutado una entrega ya aprobada.
+        logger.error("No pude guardar la traza (%s): %s", type(error).__name__, error)
+    return resultado
 
 
 def describir_pasos(pasos: list[tuple[AgentAction, Any]]) -> str:

@@ -3,10 +3,7 @@
 import io
 import json
 import os
-import tempfile
-import unittest
 from contextlib import redirect_stderr, redirect_stdout
-from pathlib import Path
 from unittest.mock import patch
 
 from langchain_core.messages import AIMessage
@@ -19,9 +16,9 @@ from src.orquestacion.agente_con_herramientas import (
 )
 from src.orquestacion.modelo import RegistroLlamadas
 from tests.orquestacion.modelo_falso import ModeloFalso, crear_modelo_falso, pedir_herramienta
+from tests.orquestacion.soporte_agente import PruebaAgente
 
 ENSAYO = "scripts.ensayo_agente"
-HISTORIALES = "src.orquestacion.agente_con_herramientas.historiales"
 USO = {"input_tokens": 1_000, "output_tokens": 2_000, "total_tokens": 3_000}
 
 
@@ -40,10 +37,7 @@ def crear_modelo_del_ensayo() -> ModeloFalso:
     )
 
 
-class TestEnsayoAgente(unittest.TestCase):
-    def setUp(self):
-        self.enterContext(patch.dict(HISTORIALES, clear=True))
-
+class TestEnsayoAgente(PruebaAgente):
     def test_ensayo_agente_compara_herramienta_esperada(self):
         ejecutor = construir_ejecutor(crear_modelo_del_ensayo(), HERRAMIENTAS)
 
@@ -104,11 +98,47 @@ class TestEnsayoAgente(unittest.TestCase):
         self.assertIn("certificación de recicladores", str(modelo.recibidos[2]))
         self.assertNotIn("certificación de recicladores", str(modelo.recibidos[4]))
 
+    def test_ensayo_bloque_23_contrasta_secuencia_y_decisiones(self):
+        respuestas = []
+        for numero in ("12", "34"):
+            respuestas.extend([
+                pedir_herramienta("obtener_articulo", numero=numero),
+                pedir_herramienta(
+                    "entregar_informe", titulo=f"Artículo {numero}", contenido=f"Ver artículo {numero}."
+                ),
+                AIMessage(content="Resultado de la entrega simulada."),
+            ])
+        agente = construir_agente_con_memoria(
+            construir_ejecutor(crear_modelo_falso(respuestas), HERRAMIENTAS)
+        )
+        # Solo pruebas automáticas con modelo falso; el ensayo real no reemplaza la aprobación.
+        with patch(
+            "src.orquestacion.herramientas.esperar_aprobacion", side_effect=[True, False]
+        ):
+            resultado = ejecutar_ensayo(agente, CASOS[23])
+        self.assertEqual(resultado["coincidencias"], 2)
+        self.assertEqual(
+            [caso["aprobaciones"][0]["aprobado"] for caso in resultado["casos"]], [True, False]
+        )
+        self.assertEqual(len(list(self.informes.glob("*.md"))), 1)
+        self.assertEqual(len(self.trazas.read_text().splitlines()), 2)
 
-class TestMain(unittest.TestCase):
+    def test_ensayo_bloque_23_no_oculta_aprobacion_inesperada(self):
+        modelo = crear_modelo_falso([
+            pedir_herramienta("obtener_articulo", numero="12"),
+            pedir_herramienta("entregar_informe", titulo="Título", contenido="Ver artículo 12."),
+            AIMessage(content="No aprobado."),
+        ])
+        with patch("src.orquestacion.herramientas.esperar_aprobacion", return_value=False):
+            resultado = ejecutar_ensayo(construir_ejecutor(modelo, HERRAMIENTAS), CASOS[23][:1])
+        self.assertEqual(resultado["coincidencias"], 0)
+        self.assertFalse(resultado["casos"][0]["aprobacion_coincide"])
+        self.assertTrue(resultado["casos"][0]["secuencia_coincide"])
+
+
+class TestMain(PruebaAgente):
     def setUp(self):
-        self.enterContext(patch.dict(HISTORIALES, clear=True))
-        self.directorio = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        super().setUp()
         self.cargar = self.enterContext(patch(f"{ENSAYO}.load_dotenv"))
         self.enterContext(patch(f"{ENSAYO}.logging.basicConfig"))
 
@@ -161,4 +191,17 @@ class TestMain(unittest.TestCase):
 
         self.assertIn("Falta configurar GEMINI_API_KEY", errores.getvalue())
         crear.assert_not_called()
+        self.assertFalse((self.directorio / "x").exists())
+
+    def test_main_bloque_23_sin_terminal_no_consume_cuota(self):
+        with (
+            patch("sys.argv", ["ensayo", "--bloque", "23", "--salida", str(self.directorio / "x")]),
+            patch(f"{ENSAYO}.sys.stdin.isatty", return_value=False),
+            patch(f"{ENSAYO}.crear_modelo") as crear,
+            redirect_stderr(io.StringIO()),
+            self.assertRaises(SystemExit),
+        ):
+            main()
+        crear.assert_not_called()
+        self.cargar.assert_not_called()
         self.assertFalse((self.directorio / "x").exists())

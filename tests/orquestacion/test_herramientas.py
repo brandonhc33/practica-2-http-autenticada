@@ -1,3 +1,5 @@
+import io
+import json
 import re
 import unittest
 from pathlib import Path
@@ -8,11 +10,15 @@ from langchain_core.utils.function_calling import convert_to_openai_tool
 from src.orquestacion.herramientas import (
     LIMITE_CARACTERES,
     ArgumentosArticulo,
+    ArgumentosInforme,
     buscar_en_ley,
+    entregar_informe,
     extraer_palabras,
     obtener_articulo,
 )
+from src.orquestacion.supervision import esperar_aprobacion, registrar_aprobacion
 from src.prompts.contexto_ley_rep import obtener_fragmento_ley_rep
+from tests.orquestacion.soporte_agente import PruebaAgente
 
 CORPUS = "src.prompts.contexto_ley_rep.RUTA_CORPUS"
 
@@ -142,6 +148,102 @@ class TestArgumentosArticulo(unittest.TestCase):
 
 class TestDescripciones(unittest.TestCase):
     def test_cada_herramienta_dice_cuando_usarla(self):
-        for herramienta in (buscar_en_ley, obtener_articulo):
+        for herramienta in (buscar_en_ley, obtener_articulo, entregar_informe):
             with self.subTest(herramienta=herramienta.name):
                 self.assertIn("Usar cuando", herramienta.description)
+
+
+class TestEntregarInforme(PruebaAgente):
+    def setUp(self):
+        super().setUp()
+        self.argumentos = {"titulo": "../../Título", "contenido": "Texto íntegro (artículo 12)."}
+        self.aprobar = self.enterContext(
+            patch("src.orquestacion.herramientas.esperar_aprobacion", return_value=True)
+        )
+
+    def entregar(self) -> str:
+        return entregar_informe.invoke(
+            self.argumentos, config={"configurable": {"session_id": "cliente-informe"}}
+        )
+
+    def test_entregar_informe_solo_expone_titulo_y_contenido(self):
+        self.assertIs(entregar_informe.args_schema, ArgumentosInforme)
+        parametros = convert_to_openai_tool(entregar_informe)["function"]["parameters"]
+        self.assertEqual(set(parametros["properties"]), {"titulo", "contenido"})
+        self.assertEqual(parametros["required"], ["titulo", "contenido"])
+        for esquema in parametros["properties"].values():
+            self.assertTrue(esquema["description"])
+
+    def test_entregar_informe_aprobado_registra_antes_de_escribir(self):
+        originales: list[bool] = []
+
+        def registrar(*args):
+            originales.append(self.informes.exists())
+            return registrar_aprobacion(*args)
+
+        with patch("src.orquestacion.herramientas.registrar_aprobacion", side_effect=registrar):
+            resultado = self.entregar()
+        evento = json.loads(self.aprobaciones.read_text())
+        informe = self.informes / f"{evento['id_aprobacion']}.md"
+        self.assertEqual(originales, [False])
+        self.assertEqual(informe.read_text(), "# ../../Título\n\nTexto íntegro (artículo 12).\n")
+        self.assertEqual(evento["session_id"], "cliente-informe")
+        self.assertTrue(evento["aprobado"])
+        self.assertIn("Entrega simulada aprobada", resultado)
+        self.assertIn("No se envió a ningún destinatario real", resultado)
+        self.assertIn(self.argumentos["contenido"], self.aprobar.call_args.args[0])
+        self.assertIn(self.argumentos["titulo"], self.aprobar.call_args.args[0])
+
+    def test_entregar_informe_rechazado_no_escribe(self):
+        self.aprobar.return_value = False
+        self.assertIn("Entrega no aprobada", self.entregar())
+        self.assertFalse(self.informes.exists())
+        self.assertFalse(json.loads(self.aprobaciones.read_text())["aprobado"])
+
+    def test_entregar_informe_sin_terminal_registra_rechazo(self):
+        self.aprobar.side_effect = esperar_aprobacion
+        with (
+            patch("src.orquestacion.supervision.sys.stdin", io.StringIO("s\n")),
+            patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertIn("Entrega no aprobada", self.entregar())
+        self.assertFalse(self.informes.exists())
+        self.assertFalse(json.loads(self.aprobaciones.read_text())["aprobado"])
+
+    def test_entregar_informe_tiempo_agotado_no_escribe(self):
+        self.aprobar.side_effect = esperar_aprobacion
+        with (
+            patch("src.orquestacion.supervision.sys.stdin.isatty", return_value=True),
+            patch("src.orquestacion.supervision.select.select", return_value=([], [], [])),
+            patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertIn("Entrega no aprobada", self.entregar())
+        self.assertFalse(self.informes.exists())
+        self.assertFalse(json.loads(self.aprobaciones.read_text())["aprobado"])
+
+    def test_entregar_informe_sin_registro_no_escribe(self):
+        with patch(
+            "src.orquestacion.herramientas.registrar_aprobacion",
+            side_effect=OSError("sin permisos"),
+        ):
+            self.assertIn("No se entregó", self.entregar())
+        self.assertFalse(self.informes.exists())
+
+    def test_entregar_informe_fallo_de_guardado_conserva_aprobacion(self):
+        self.informes.write_text("impide crear el directorio")
+        self.assertIn("No se confirma la entrega", self.entregar())
+        self.assertTrue(json.loads(self.aprobaciones.read_text())["aprobado"])
+
+    def test_entregar_informe_no_sobrescribe_otra_entrega(self):
+        self.entregar()
+        self.entregar()
+        self.assertEqual(len(list(self.informes.glob("*.md"))), 2)
+        self.assertEqual(len(self.aprobaciones.read_text().splitlines()), 2)
+
+    def test_entregar_informe_argumentos_invalidos_no_piden_aprobacion(self):
+        for argumentos in ({"titulo": "  ", "contenido": "texto"}, {"titulo": "Título"}):
+            with self.subTest(argumentos=argumentos):
+                resultado = entregar_informe.invoke(argumentos)
+                self.assertTrue(resultado.startswith("Argumentos inválidos"))
+        self.aprobar.assert_not_called()
+        self.assertFalse(self.aprobaciones.exists())

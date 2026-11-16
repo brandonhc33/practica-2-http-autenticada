@@ -1,14 +1,20 @@
-"""Herramientas del agente de Ley REP: buscar por tema y leer un artículo de la copia local."""
+"""Lectura de la Ley REP y entrega simulada de informes con aprobación humana."""
 
 import re
 import unicodedata
 from typing import Any
 
+from langchain_core.runnables.config import ensure_config
 from langchain_core.tools import tool
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from pydantic.v1 import ValidationError as ValidationErrorV1
 
 from src.evaluacion.texto import limpiar_texto
+from src.orquestacion.supervision import (
+    DIRECTORIO_SALIDA,
+    esperar_aprobacion,
+    registrar_aprobacion,
+)
 from src.prompts.contexto_ley_rep import (
     TRANSITORIOS,
     cargar_documento_ley_rep,
@@ -17,6 +23,7 @@ from src.prompts.contexto_ley_rep import (
 
 MAXIMO_ARTICULOS = 3
 LIMITE_CARACTERES = 1_500
+DIRECTORIO_INFORMES = DIRECTORIO_SALIDA / "informes_entregados"
 # Palabras sin tema propio. "ley", "rep" y "artículo" aparecen en casi cualquier consulta, y
 # los números de artículo los resuelve obtener_articulo: así las dos herramientas no compiten.
 PALABRAS_VACIAS = frozenset(
@@ -154,3 +161,49 @@ def obtener_articulo(numero: str, transitorio: bool = False) -> str:
 
 # @tool no recibe esta opción. Sin ella, un argumento inválido corta toda la ejecución del agente.
 obtener_articulo.handle_validation_error = explicar_argumentos_invalidos
+
+
+class ArgumentosInforme(BaseModel):
+    """Título y contenido exactos que verá el supervisor antes de decidir."""
+
+    model_config = ConfigDict(str_strip_whitespace=True)
+    titulo: str = Field(min_length=1, description="Título no vacío del informe que se pide entregar.")
+    contenido: str = Field(
+        min_length=1,
+        description="Informe completo, con artículos de respaldo; el supervisor leerá este texto.",
+    )
+
+
+@tool(args_schema=ArgumentosInforme)
+def entregar_informe(titulo: str, contenido: str) -> str:
+    """Entrega simulada de un informe, solo tras aprobación humana.
+    Usar cuando el usuario pide expresamente entregar o enviar un informe; no para responder."""
+    # AgentExecutor usa tool.run sin config explícita; LangChain conserva el contexto padre.
+    sesion = str(ensure_config().get("configurable", {}).get("session_id", "terminal"))
+    aprobado = esperar_aprobacion(
+        f"ENTREGA SIMULADA — sesión: {sesion}\nTítulo: {titulo}\n\n{contenido}"
+    )
+    try:
+        identificador = registrar_aprobacion(sesion, titulo, contenido, aprobado)
+    except OSError:
+        return "No pude registrar la decisión de aprobación. No se entregó el informe."
+    if not aprobado:
+        return f"Entrega no aprobada ({identificador}). No se guardó ni se envió el informe."
+    try:
+        DIRECTORIO_INFORMES.mkdir(parents=True, exist_ok=True)
+        # Ni el modelo ni el título eligen la ruta; una entrega nunca sobrescribe otra.
+        destino = DIRECTORIO_INFORMES / f"{identificador}.md"
+        with destino.open("x", encoding="utf-8") as archivo:
+            archivo.write(f"# {titulo}\n\n{contenido}\n")
+    except OSError:
+        return (
+            f"Aprobación registrada ({identificador}), pero falló el guardado. "
+            "No se confirma la entrega; revisa los archivos antes de repetirla."
+        )
+    return (
+        f"Entrega simulada aprobada: informe guardado en {destino}. "
+        "No se envió a ningún destinatario real."
+    )
+
+
+entregar_informe.handle_validation_error = explicar_argumentos_invalidos

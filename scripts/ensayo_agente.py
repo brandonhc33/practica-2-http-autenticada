@@ -4,6 +4,7 @@ import argparse
 import json
 import logging
 import os
+import sys
 from dataclasses import astuple
 from datetime import UTC, datetime
 from pathlib import Path
@@ -14,6 +15,7 @@ from langchain_core.runnables import Runnable
 
 from src.catalogo import AGENTES
 from src.costos.registro import ResumenCostosSesion, sesion_costos
+from src.orquestacion import supervision
 from src.orquestacion.agente_con_herramientas import (
     HERRAMIENTAS,
     construir_agente_con_memoria,
@@ -61,6 +63,30 @@ CASOS: dict[int, tuple[dict[str, Any], ...]] = {
             "herramienta_esperada": None,
         },
     ),
+    23: (
+        {
+            "sesion": "informe-aprobado",
+            "consulta": (
+                "Lee el artículo 12 de la Ley REP y entrega un informe breve con el título "
+                "'Metas de recolección y valorización', citando ese artículo. "
+                "Solicita mi aprobación mediante entregar_informe."
+            ),
+            "herramienta_esperada": "obtener_articulo",
+            "herramientas_esperadas": ["obtener_articulo", "entregar_informe"],
+            "aprobacion_esperada": True,
+        },
+        {
+            "sesion": "informe-rechazado",
+            "consulta": (
+                "Lee el artículo 34 de la Ley REP y entrega un informe breve con el título "
+                "'Obligaciones de los consumidores', citando ese artículo. "
+                "Solicita mi aprobación mediante entregar_informe."
+            ),
+            "herramienta_esperada": "obtener_articulo",
+            "herramientas_esperadas": ["obtener_articulo", "entregar_informe"],
+            "aprobacion_esperada": False,
+        },
+    ),
 }
 
 
@@ -104,17 +130,42 @@ def sumar_consumos(consumos: list[ResumenCostosSesion]) -> ResumenCostosSesion:
     return total
 
 
+def leer_aprobaciones() -> list[dict[str, Any]]:
+    """Lee las decisiones locales para contrastarlas con el ensayo, sin inventar aprobaciones."""
+    ruta = supervision.RUTA_APROBACIONES
+    if not ruta.exists():
+        return []
+    return [json.loads(linea) for linea in ruta.read_text(encoding="utf-8").splitlines()]
+
+
 def ejecutar_ensayo(agente: Runnable, casos: tuple[dict[str, Any], ...]) -> dict[str, Any]:
     """Ejecuta los casos en orden, cada uno con su propio registro de consumo."""
     descritos, consumos = [], []
     for numero, caso in enumerate(casos, 1):
         sesion = caso.get("sesion", f"caso-{numero}")
         previos = len(obtener_historial(sesion).messages)
+        antes = len(leer_aprobaciones()) if "aprobacion_esperada" in caso else 0
         # Un registro de costos por caso; el total se suma al final.
         with sesion_costos() as registro:
             resultado = consultar_agente(agente, caso["consulta"], sesion)
         consumos.append(registro.resumen())
         descrito = describir_caso(caso, resultado, consumos[-1])
+        if "aprobacion_esperada" in caso:
+            decisiones = leer_aprobaciones()[antes:]
+            secuencia = [paso["herramienta"] for paso in descrito["pasos"]]
+            decision_coincide = (
+                len(decisiones) == 1
+                and decisiones[0]["session_id"] == sesion
+                and decisiones[0]["aprobado"] == caso["aprobacion_esperada"]
+            )
+            descrito.update(
+                aprobaciones=decisiones,
+                aprobacion_coincide=decision_coincide,
+                secuencia_coincide=secuencia == caso["herramientas_esperadas"],
+                coincide=descrito["coincide"]
+                and decision_coincide
+                and secuencia == caso["herramientas_esperadas"],
+            )
         descritos.append({**descrito, "sesion": sesion, "mensajes_en_historial_antes": previos})
     return {
         "coincidencias": sum(caso["coincide"] for caso in descritos),
@@ -133,6 +184,16 @@ def main() -> None:
     args = parser.parse_args()
     if args.salida.exists():
         parser.error("La salida ya existe. Usa otra ruta para conservar la evidencia.")
+    if args.bloque == 23:
+        if not sys.stdin.isatty():
+            parser.error("El Bloque 23 requiere una terminal interactiva y decisiones humanas.")
+        print(
+            "Ensayo humano del Bloque 23: revisa el primer informe y apruébalo con s; "
+            "revisa el segundo y recházalo con n. Si un informe no es correcto, recházalo "
+            "aunque el caso espere aprobación. No automatices estas respuestas.",
+            file=sys.stderr,
+            flush=True,
+        )
     load_dotenv(RAIZ / ".env")
     clave = AGENTES["gemini"]["clave"]
     if not os.getenv(clave, "").strip():

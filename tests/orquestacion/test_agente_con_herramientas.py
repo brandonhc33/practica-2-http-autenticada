@@ -1,7 +1,7 @@
 import io
 import itertools
+import json
 import os
-import unittest
 from collections.abc import Iterator
 from contextlib import redirect_stderr, redirect_stdout
 from decimal import Decimal
@@ -29,6 +29,7 @@ from src.orquestacion.agente_con_herramientas import (
 from src.orquestacion.enrutamiento import MENSAJE_SEGURO, MENSAJE_VACIO
 from src.orquestacion.modelo import RegistroLlamadas, crear_modelo
 from tests.orquestacion.modelo_falso import ModeloFalso, crear_modelo_falso, pedir_herramienta
+from tests.orquestacion.soporte_agente import PruebaAgente
 
 AGENTE = "src.orquestacion.agente_con_herramientas"
 USO = {"input_tokens": 1_000, "output_tokens": 2_000, "total_tokens": 3_000}
@@ -39,7 +40,7 @@ def fallar_por_conexion() -> Iterator[AIMessage]:
     yield  # Convierte la función en un generador: falla al pedir la respuesta.
 
 
-class TestEjecutor(unittest.TestCase):
+class TestEjecutor(PruebaAgente):
     def test_agente_registra_la_herramienta_elegida(self):
         modelo = crear_modelo_falso(
             [
@@ -112,11 +113,11 @@ class TestEjecutor(unittest.TestCase):
         self.assertEqual(ejecutor.max_iterations, 4)
         self.assertEqual(
             [herramienta.name for herramienta in ejecutor.tools],
-            ["buscar_en_ley", "obtener_articulo"],
+            ["buscar_en_ley", "obtener_articulo", "entregar_informe"],
         )
 
 
-class TestSalidaComoTexto(unittest.TestCase):
+class TestSalidaComoTexto(PruebaAgente):
     def test_salida_como_texto_convierte_bloques(self):
         casos: tuple[tuple[Any, str], ...] = (
             (
@@ -148,7 +149,7 @@ class TestSalidaComoTexto(unittest.TestCase):
                 self.assertIn("ValueError", registros.output[0])
 
 
-class TestConsultarAgente(unittest.TestCase):
+class TestConsultarAgente(PruebaAgente):
     def test_consultar_agente_no_propaga_excepciones(self):
         modelo = crear_modelo_falso(fallar_por_conexion())
         ejecutor = construir_ejecutor(modelo, HERRAMIENTAS)
@@ -162,6 +163,10 @@ class TestConsultarAgente(unittest.TestCase):
         self.assertIn("ConnectionError", registros.output[0])
         self.assertIn("simulado", registros.output[0])
         self.assertNotIn("consulta-privada", "\n".join(registros.output))
+        traza = json.loads(self.trazas.read_text())
+        self.assertEqual(traza["entrada"], "consulta-privada")
+        self.assertEqual(traza["error"], {"tipo": "ConnectionError", "mensaje": "simulado"})
+        self.assertEqual(traza["pasos"], [])
 
     def test_consulta_vacia_no_llama_al_modelo(self):
         for entrada in ("", "   \n"):
@@ -173,12 +178,37 @@ class TestConsultarAgente(unittest.TestCase):
 
                 self.assertEqual(resultado, {"output": MENSAJE_VACIO, "intermediate_steps": []})
                 self.assertEqual(modelo.recibidos, [])
+                self.assertFalse(self.trazas.exists())
+
+    def test_error_de_traza_no_repite_la_consulta(self):
+        modelo = crear_modelo_falso([AIMessage(content="Respuesta única")])
+        ejecutor = construir_ejecutor(modelo, HERRAMIENTAS)
+        with (
+            patch(f"{AGENTE}.registrar_traza", side_effect=OSError("sin espacio")),
+            self.assertLogs(AGENTE, level="ERROR"),
+        ):
+            resultado = consultar_agente(ejecutor, "Consulta")
+        self.assertEqual(resultado["output"], "Respuesta única")
+        self.assertEqual(len(modelo.recibidos), 1)
+
+    def test_fallo_tras_entrega_conserva_aprobacion_y_no_repite(self):
+        modelo = crear_modelo_falso([
+            pedir_herramienta("entregar_informe", titulo="Título", contenido="Contenido"),
+            # Al agotarse el iterador, falla la respuesta posterior a la entrega.
+        ])
+        with (
+            patch("src.orquestacion.herramientas.esperar_aprobacion", return_value=True) as aprobar,
+            self.assertLogs(AGENTE, level="ERROR"),
+        ):
+            resultado = consultar_agente(construir_ejecutor(modelo, HERRAMIENTAS), "Enviar")
+        self.assertEqual(resultado["output"], MENSAJE_SEGURO)
+        aprobar.assert_called_once()
+        self.assertEqual(len(list(self.informes.glob("*.md"))), 1)
+        self.assertTrue(json.loads(self.aprobaciones.read_text())["aprobado"])
+        self.assertEqual(json.loads(self.trazas.read_text())["pasos"], [])
 
 
-class TestMemoria(unittest.TestCase):
-    def setUp(self):
-        self.enterContext(patch.dict(f"{AGENTE}.historiales", clear=True))
-
+class TestMemoria(PruebaAgente):
     def crear_agente(self, *respuestas: AIMessage) -> tuple[Any, ModeloFalso]:
         modelo = crear_modelo_falso(respuestas)
         return construir_agente_con_memoria(construir_ejecutor(modelo, HERRAMIENTAS)), modelo
@@ -204,6 +234,8 @@ class TestMemoria(unittest.TestCase):
         )
         self.assertEqual(segunda_llamada[3].content, "<consulta>¿Y qué exige?</consulta>")
         self.assertEqual(len(obtener_historial("cliente-1").messages), 4)
+        trazas = [json.loads(linea) for linea in self.trazas.read_text().splitlines()]
+        self.assertEqual([t["mensajes_en_historial_antes"] for t in trazas], [0, 2])
 
     def test_sesiones_distintas_no_comparten_historial(self):
         agente, modelo = self.crear_agente(
@@ -304,10 +336,11 @@ def respuesta_por_partes(
     )
 
 
-class TestConectorGemini(unittest.TestCase):
+class TestConectorGemini(PruebaAgente):
     """El conector real con el SDK simulado: así se ve lo que de verdad se enviaría."""
 
     def setUp(self):
+        super().setUp()
         self.enterContext(patch.dict(os.environ, {"GEMINI_API_KEY": "clave-ficticia"}, clear=True))
         llamada_herramienta = types.Part(
             function_call=types.FunctionCall(name="obtener_articulo", args={"numero": "12"}),
@@ -370,9 +403,9 @@ class TestConectorGemini(unittest.TestCase):
         self.assertEqual(llamadas[0].thought_signature, b"firma-de-razonamiento")
 
 
-class TestMain(unittest.TestCase):
+class TestMain(PruebaAgente):
     def setUp(self):
-        self.enterContext(patch.dict(f"{AGENTE}.historiales", clear=True))
+        super().setUp()
         self.enterContext(patch(f"{AGENTE}.load_dotenv"))
         self.enterContext(patch(f"{AGENTE}.logging.basicConfig"))
 
