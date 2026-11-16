@@ -3,7 +3,8 @@
 **Estado: implementación y corridas humanas revisadas; falta verificar el rechazo
 explícito con `n` dentro del agente y comprobar la instalación desde GitHub después
 de publicar.** El segundo intento produjo una entrega aprobada y otra sin aprobar,
-pero no demuestra que esta última haya leído `n`.
+pero no demuestra que esta última haya leído `n`. La consulta adicional se rechazó
+de inmediato; antes de gastar más cuota se hará el diagnóstico gratuito descrito abajo.
 
 ## Entregables
 
@@ -47,7 +48,8 @@ sesión, pero otro proceso empieza sin historial aunque use el mismo identificad
 | [22](evidencias/bloques-21-23/ensayo-bloque-22.json) | 3 de 3 | 5 | 3.696 | 0,0019624 |
 | [23, intento 1](evidencias/bloques-21-23/ensayo-bloque-23.json) | 0 de 2 | 5 intentos, uno sin uso informado | 4.320 registrados | 0,0023102 conocidos |
 | [23, intento 2](evidencias/bloques-21-23/ensayo-bloque-23-intento-02.json) | 2 de 2 automáticos; no prueba rechazo explícito | 6 | 6.656 | 0,0034708 |
-| Total registrado | No equivale a aceptación completa | 21 intentos | 18.077 registrados | 0,0096779 conocidos |
+| [23, control de rechazo](evidencias/bloques-21-23/diagnostico-aprobacion.md) | No aprobado, sin `n` comprobada | 3 | 3.457 | 0,0020491 |
+| Total registrado | No equivale a aceptación completa | 24 intentos | 21.534 registrados | 0,0117270 conocidos |
 
 Los intentos del Bloque 23 fueron ejecutados por el alumno. En el primero hubo un
 503 de Gemini y una aprobación donde se esperaba rechazo. En el segundo sí se
@@ -123,7 +125,21 @@ No usar tuberías, `echo s`, respuestas automáticas ni pedir a un agente que ap
 
 Ya se verificó la aprobación real y la función leyó dos entradas consecutivas en
 la prueba local. **No hace falta repetir las dos consultas del ensayo completo.**
-Solo queda una consulta nueva para comprobar el rechazo explícito dentro del agente:
+Sin embargo, la consulta adicional terminó en unos siete segundos sin dejar
+introducir `n`. Eso descarta el timeout de 300 segundos para esa ejecución.
+**Antes de repetir una consulta pagada**, ejecutar:
+
+```bash
+uv run python -m tests.orquestacion.ensayo_terminal
+```
+
+Es un modelo falso con el circuito del agente, red bloqueada y archivos
+temporales: no requiere clave ni consume cuota. Pedirá `s` y luego `n`; si un
+aviso se cierra solo, mostrará el motivo. Compartir esa salida antes de continuar.
+Ver [diagnóstico y pruebas con pseudoterminal](evidencias/bloques-21-23/diagnostico-aprobacion.md).
+
+Solo después de resolver la entrada, se coordinará una nueva consulta para
+comprobar el rechazo explícito dentro del agente:
 
 1. Configurar `GEMINI_API_KEY` localmente. No hace falta iniciar la API.
    Un worktree no hereda el `.env` ignorado por Git de la carpeta original.
@@ -134,11 +150,11 @@ Solo queda una consulta nueva para comprobar el rechazo explícito dentro del ag
    ```bash
    uv run --env-file /ruta/a/tu/.env \
      python -m src.orquestacion.agente_con_herramientas \
-     --sesion rechazo-manual-23 \
+     --sesion rechazo-manual-23-verificado \
      "Lee el artículo 34 de la Ley REP y entrega un informe breve titulado 'Prueba de rechazo manual', citando ese artículo. Solicita mi aprobación mediante entregar_informe."
    ```
 
-3. Cuando aparezca **sesión: `rechazo-manual-23`**, leer el informe, escribir `n` y
+3. Cuando aparezca **sesión: `rechazo-manual-23-verificado`**, leer el informe, escribir `n` y
    pulsar Enter antes de 300 segundos. El caso se considera comprobado si la
    terminal muestra esa entrada, la decisión queda en `false` y no se crea su
    archivo. Un nuevo timeout no se presenta como rechazo explícito.
@@ -160,7 +176,7 @@ identificador: `informe-rechazado` se usó en dos intentos con decisiones distin
 `coincide` compara el booleano, no distingue `n` de timeout o EOF. La confirmación
 del alumno es necesaria para no presentar estos últimos como rechazo explícito.
 
-Los eventos de los dos intentos ya están conservados en
+Los eventos de los dos intentos y del control de rechazo inmediato están conservados en
 `docs/evidencias/bloques-21-23/trazas_agente.jsonl` y `aprobaciones.jsonl`.
 Después del control pendiente se agregarán solo los eventos nuevos revisados, sin
 alterar las decisiones anteriores ni introducir claves.
@@ -185,6 +201,9 @@ llegar a pedir aprobación. No sobrescribir los dos JSON ya conservados.
   persona. La aprobación usa la sesión del contexto, no una sesión elegida por
   el modelo.
 - Los avisos de deprecación se conservan y se documentan, no se ocultan.
+- La espera de aprobación ahora explica en stderr si leyó `s`, `n`, una línea
+  vacía, EOF, agotó el tiempo o encontró una condición de terminal inválida. Los
+  JSONL conservan el contrato booleano; los motivos antiguos siguen siendo desconocidos.
 
 La explicación completa está en [límites de autonomía](limites-autonomia-agente.md).
 

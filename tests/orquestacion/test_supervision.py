@@ -68,6 +68,35 @@ class TestEsperarAprobacion(unittest.TestCase):
                 self.assertFalse(esperar_aprobacion("Informe"))
         self.entrada.readline.assert_not_called()
 
+    def test_esperar_aprobacion_explica_entrada_vacia_eof_y_rechazo(self):
+        for entrada, motivo in (
+            ("\n", "línea vacía recibida"),
+            ("", "fin de entrada (EOF)"),
+            ("n\n", "n recibida: rechazo explícito"),
+            ("s\n", "s recibida: aprobación explícita"),
+            ("dato-privado\n", "respuesta distinta de s o n"),
+        ):
+            with self.subTest(entrada=entrada):
+                self.errores.seek(0)
+                self.errores.truncate()
+                self.entrada.readline.return_value = entrada
+                esperar_aprobacion("Informe")
+                self.assertIn(motivo, self.errores.getvalue())
+                self.assertNotIn("dato-privado", self.errores.getvalue())
+
+    def test_esperar_aprobacion_explica_timeout_y_error_de_terminal(self):
+        self.esperar.return_value = ([], [], [])
+        esperar_aprobacion("Informe", 0.1)
+        self.assertIn("tiempo agotado sin respuesta", self.errores.getvalue())
+        self.esperar.side_effect = ValueError("descriptor cerrado")
+        esperar_aprobacion("Informe")
+        self.assertIn("error de terminal (ValueError: descriptor cerrado)", self.errores.getvalue())
+
+    def test_esperar_aprobacion_sin_salida_disponible_rechaza(self):
+        with patch(f"{SUPERVISION}.sys.stderr.write", side_effect=ValueError("salida cerrada")):
+            self.assertFalse(esperar_aprobacion("Informe"))
+        self.esperar.assert_not_called()
+
 
 class TestRegistros(PruebaAgente):
     def test_registrar_aprobacion_conserva_decisiones_y_contenido(self):

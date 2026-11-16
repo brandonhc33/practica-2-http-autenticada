@@ -33,6 +33,11 @@ Las pruebas automáticas simulan las decisiones; no constituyen aprobación huma
 para una ejecución real. En Windows la espera con `select` puede fallar y rechaza
 la acción de manera segura.
 
+La espera muestra ahora en stderr el motivo de salida y su duración. Una línea
+vacía recibida rechaza de inmediato; no se ignora ni se convierte en aprobación.
+Este diagnóstico permite distinguirla de `n`, EOF o un error, pero el motivo no
+se agrega retrospectivamente a las decisiones booleanas ya registradas.
+
 El nombre de archivo se genera en el programa: el modelo no elige rutas y el título
 no se interpreta como una ruta. Cada archivo se abre en modo exclusivo, sin
 sobrescribir una entrega anterior. No hay garantía de idempotencia: otra llamada
@@ -107,6 +112,10 @@ dentro del agente: el registro booleano no distingue una `n` de un timeout o EOF
 La prueba local sin Gemini sí leyó `s` y luego `n`, pero no explica la dificultad
 reportada durante la corrida ni reemplaza ese control. Ver
 [revisión de evidencias](evidencias/bloques-21-23/revision-bloque-23.md).
+La consulta adicional también terminó sin `n` en unos siete segundos; se conserva
+como no aprobada y no como rechazo explícito. El
+[diagnóstico con modelo falso](evidencias/bloques-21-23/diagnostico-aprobacion.md)
+permite revisar la entrada sin seguir gastando cuota.
 El estado y los pasos de cierre están en
 [la entrega de los bloques 21 a 23](entrega-bloques-21-23.md).
 

@@ -94,3 +94,11 @@ no se han comprobado.
 Posteriormente el alumno ejecutó dos intentos reales de 23 y una prueba local de
 entrada. Sus resultados, las decisiones y los límites de lo que demuestran se
 registran aparte en [la revisión del Bloque 23](revision-bloque-23.md).
+
+Tras la consulta adicional que rechazó de inmediato, se agregó diagnóstico del
+motivo de salida y una prueba del circuito del agente con pseudoterminal. La suite
+actual pasa **263 pruebas y 481 subpruebas**, con los mismos 11 avisos; `ruff` y
+`basedpyright` siguen sin errores. Ver
+[verificación del cambio de diagnóstico](diagnostico-aprobacion.md).
+La instalación limpia de este documento corresponde al commit `4557845`; no se
+presenta como comprobación de instalación limpia de los cambios posteriores.

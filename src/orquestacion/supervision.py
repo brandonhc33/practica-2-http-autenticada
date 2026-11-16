@@ -8,6 +8,7 @@ import select
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+from time import monotonic
 from typing import Any
 from uuid import uuid4
 
@@ -17,21 +18,55 @@ RUTA_APROBACIONES = DIRECTORIO_SALIDA / "aprobaciones.jsonl"
 RUTA_TRAZAS = DIRECTORIO_SALIDA / "trazas_agente.jsonl"
 
 
-def esperar_aprobacion(mensaje: str, tiempo_limite_segundos: float = 300) -> bool:
-    """Aprueba solo con s en una terminal interactiva; cualquier fallo rechaza la acción."""
+def _leer_aprobacion(mensaje: str, tiempo_limite_segundos: float) -> tuple[bool, str]:
+    """Lee una decisión y su motivo sin confundir una n con EOF, silencio o error."""
     try:
         print(
             f"{mensaje}\n¿Aprobar esta entrega simulada? [s/N] "
-            f"(límite: {tiempo_limite_segundos:g} s)",
+            f"(límite: {tiempo_limite_segundos:g} s)\n"
+            "Escribe s o n y pulsa Enter; no es un menú de selección.",
             file=sys.stderr,
             flush=True,
         )
-        if tiempo_limite_segundos <= 0 or not sys.stdin.isatty():
-            return False
+        if tiempo_limite_segundos <= 0:
+            return False, "límite no positivo"
+        if not sys.stdin.isatty():
+            return False, "entrada no interactiva"
         disponibles, _, _ = select.select([sys.stdin], [], [], tiempo_limite_segundos)
-        return bool(disponibles) and sys.stdin.readline().strip().lower() == "s"
-    except (OSError, ValueError, KeyboardInterrupt):
+        if not disponibles:
+            return False, "tiempo agotado sin respuesta"
+        linea = sys.stdin.readline()
+        if linea == "":
+            return False, "fin de entrada (EOF)"
+        respuesta = linea.strip().lower()
+        if respuesta == "s":
+            return True, "s recibida: aprobación explícita"
+        if respuesta == "n":
+            return False, "n recibida: rechazo explícito"
+        if not respuesta:
+            return False, "línea vacía recibida (Enter sin s ni n)"
+        # No registrar el texto: el usuario podría haber pegado un dato privado por error.
+        return False, "respuesta distinta de s o n"
+    except KeyboardInterrupt:
+        return False, "cancelación con Ctrl+C"
+    except (OSError, ValueError) as error:
+        return False, f"error de terminal ({type(error).__name__}: {error})"
+
+
+def esperar_aprobacion(mensaje: str, tiempo_limite_segundos: float = 300) -> bool:
+    """Aprueba solo con s y muestra por qué terminó la espera; cualquier fallo rechaza."""
+    inicio = monotonic()
+    aprobado, motivo = _leer_aprobacion(mensaje, tiempo_limite_segundos)
+    # Visible también al invocarla sin configurar logging; no cambia el contrato booleano.
+    try:
+        print(
+            f"Resultado de aprobación: {motivo}; espera: {monotonic() - inicio:.1f} s.",
+            file=sys.stderr,
+            flush=True,
+        )
+    except (OSError, ValueError):
         return False
+    return aprobado
 
 
 def _agregar_jsonl(ruta: Path, evento: dict[str, Any]) -> None:

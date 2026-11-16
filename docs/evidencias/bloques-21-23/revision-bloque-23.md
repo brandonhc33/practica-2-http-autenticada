@@ -7,6 +7,11 @@ sin corregir sus resultados, junto con copias de los cuatro eventos de traza y
 las tres decisiones locales. Se verificó la igualdad de los JSONL conservados
 con los de `output/agente/` al hacer esta revisión.
 
+Los conteos de esta sección corresponden a esa primera revisión. Posteriormente se
+agregaron una quinta traza y una cuarta decisión de `rechazo-manual-23`; el
+[diagnóstico posterior](diagnostico-aprobacion.md) documenta por qué esa consulta
+tampoco certifica una `n` explícita.
+
 No se incluyeron claves ni archivos `.env`. Los registros sí identifican la
 cuenta local del supervisor y contienen las rutas locales y el contenido de los
 informes, como prevé D-12. No se publicaron archivos en un servicio externo.
@@ -103,7 +108,8 @@ La [prueba local de dos entradas](prueba-entrada-terminal.md), sin Gemini, sí l
 de entrada del ensayo.
 
 Está pendiente una única consulta con sesión nueva para rechazar expresamente con
-`n` dentro del agente. No hace falta repetir la aprobación ni los dos casos enteros.
+`n` dentro del agente, después de resolver la entrada mediante el diagnóstico
+sin Gemini. No hace falta repetir la aprobación ni los dos casos enteros.
 Después se conservarán la traza y la decisión nuevas, contrastándolas con la
 ausencia de su archivo. La comprobación desde GitHub sigue pendiente de autorización
 para publicar.
