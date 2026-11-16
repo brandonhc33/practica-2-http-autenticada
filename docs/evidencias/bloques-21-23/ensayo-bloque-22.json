@@ -1,0 +1,108 @@
+{
+  "bloque": 22,
+  "modelo": "gemini-3.5-flash-lite",
+  "fecha": "2026-11-14T19:02:02.758605+00:00",
+  "coincidencias": 3,
+  "casos": [
+    {
+      "sesion": "cliente-1",
+      "consulta": "¿Qué establece el artículo primero transitorio de la Ley REP?",
+      "herramienta_esperada": "obtener_articulo",
+      "herramienta_elegida": "obtener_articulo",
+      "coincide": true,
+      "pasos": [
+        {
+          "herramienta": "obtener_articulo",
+          "argumentos": {
+            "numero": "primero",
+            "transitorio": true
+          },
+          "caracteres_observacion": 663,
+          "primera_linea": "[Artículo primero transitorio]"
+        }
+      ],
+      "respuesta": "El artículo primero transitorio de la Ley REP establece que, durante los primeros cinco años de vigencia de la ley, los recicladores de base podrán registrarse sin contar con la certificación exigida en el artículo 32. Transcurrido ese plazo sin haber acreditado dicho requisito ante el Ministerio, caducará su inscripción. \n\nAsimismo, dispone que el Ministerio impulsará la creación de un proyecto de competencias laborales para que los recicladores de base adquieran las aptitudes, conocimientos y destrezas necesarias para gestionar residuos conforme a la normativa vigente y obtener la certificación del artículo 32.",
+      "llamadas_esperadas": 2,
+      "llamadas_registradas": 2,
+      "consumo": {
+        "respuestas_con_costo": 2,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 2,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 1223,
+        "tokens_salida": 147,
+        "tokens_total": 1370,
+        "costo_conocido_usd": "0.0007344"
+      },
+      "mensajes_en_historial_antes": 0
+    },
+    {
+      "sesion": "cliente-1",
+      "consulta": "¿Y qué dice el artículo transitorio siguiente?",
+      "herramienta_esperada": "obtener_articulo",
+      "herramienta_elegida": "obtener_articulo",
+      "coincide": true,
+      "pasos": [
+        {
+          "herramienta": "obtener_articulo",
+          "argumentos": {
+            "transitorio": true,
+            "numero": "segundo"
+          },
+          "caracteres_observacion": 954,
+          "primera_linea": "[Artículo segundo transitorio]"
+        }
+      ],
+      "respuesta": "El artículo segundo transitorio de la Ley REP establece que, mientras no entren en vigencia los decretos supremos que fijen las metas y otras obligaciones asociadas a cada producto prioritario, el Ministerio podrá exigir a los productores señalados en el artículo 10 que informen anualmente a través del Registro de Emisiones y Transferencias de Contaminantes lo siguiente:\n\na) La cantidad de productos prioritarios comercializados en el país en el año anterior.\nb) Las actividades y el costo de la recolección, valorización y eliminación realizadas en dicho periodo.\nc) La cantidad de residuos recolectados, valorizados y eliminados.\nd) Si la gestión para la recolección y valorización es de carácter individual o colectivo.\n\nAdemás, señala que esta información debe entregarse por primera vez en un plazo máximo de doce meses contado desde la publicación de la ley.",
+      "llamadas_esperadas": 2,
+      "llamadas_registradas": 2,
+      "consumo": {
+        "respuestas_con_costo": 2,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 2,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 1563,
+        "tokens_salida": 208,
+        "tokens_total": 1771,
+        "costo_conocido_usd": "0.0009889"
+      },
+      "mensajes_en_historial_antes": 2
+    },
+    {
+      "sesion": "cliente-2",
+      "consulta": "¿Sobre qué artículo te pregunté recién?",
+      "herramienta_esperada": null,
+      "herramienta_elegida": null,
+      "coincide": true,
+      "pasos": [],
+      "respuesta": "En nuestra conversación anterior no me preguntaste por ningún artículo específico de la Ley REP. ¿Hay algún tema o artículo de la ley sobre el que te gustaría consultar?",
+      "llamadas_esperadas": 1,
+      "llamadas_registradas": 1,
+      "consumo": {
+        "respuestas_con_costo": 1,
+        "respuestas_sin_costo": 0,
+        "consultas_fallidas": 0,
+        "intentos_http": 1,
+        "intentos_sin_uso": 0,
+        "tokens_entrada": 522,
+        "tokens_salida": 33,
+        "tokens_total": 555,
+        "costo_conocido_usd": "0.0002391"
+      },
+      "mensajes_en_historial_antes": 0
+    }
+  ],
+  "consumo_total": {
+    "respuestas_con_costo": 5,
+    "respuestas_sin_costo": 0,
+    "consultas_fallidas": 0,
+    "intentos_http": 5,
+    "intentos_sin_uso": 0,
+    "tokens_entrada": 3308,
+    "tokens_salida": 388,
+    "tokens_total": 3696,
+    "costo_conocido_usd": "0.0019624"
+  }
+}

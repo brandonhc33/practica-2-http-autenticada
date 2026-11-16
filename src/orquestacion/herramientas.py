@@ -5,9 +5,15 @@ import unicodedata
 from typing import Any
 
 from langchain_core.tools import tool
+from pydantic import BaseModel, Field, ValidationError
+from pydantic.v1 import ValidationError as ValidationErrorV1
 
 from src.evaluacion.texto import limpiar_texto
-from src.prompts.contexto_ley_rep import cargar_documento_ley_rep, obtener_fragmento_ley_rep
+from src.prompts.contexto_ley_rep import (
+    TRANSITORIOS,
+    cargar_documento_ley_rep,
+    obtener_fragmento_ley_rep,
+)
 
 MAXIMO_ARTICULOS = 3
 LIMITE_CARACTERES = 1_500
@@ -22,6 +28,8 @@ PALABRAS_VACIAS = frozenset(
 )
 # "Artículo 12º.- Metas de recolección y valorización." -> el título llega hasta el primer punto.
 PATRON_TITULO = re.compile(r"Art[ií]culo [^.]*?\.-\s*([^.]*)")
+# {"primero": "1", ..., "cuarto": "4"}: el ordinal solo indica un transitorio si transitorio=true.
+POSICION_DEL_ORDINAL = {ordinal: str(i) for i, ordinal in enumerate(TRANSITORIOS, 1)}
 
 
 def _raiz(palabra: str) -> str:
@@ -59,11 +67,12 @@ def _recortar(fragmento: dict[str, Any]) -> str:
     if len(texto) <= LIMITE_CARACTERES:
         return f"[{fragmento['referencia']}]\n{texto}"
     # "ley20920-articulo-20" -> "20"; "ley20920-transitorio-primero" -> "primero".
-    numero = fragmento["id_fragmento"].rsplit("-", 1)[1]
+    _, tipo, numero = fragmento["id_fragmento"].split("-")
+    argumentos = f'numero="{numero}"' + (", transitorio=true" if tipo == "transitorio" else "")
     return (
         f"[{fragmento['referencia']}]\n{texto[:LIMITE_CARACTERES]}…\n"
         f"(Recortado: se muestran {LIMITE_CARACTERES} de {len(texto)} caracteres. "
-        f'Para leerlo completo, usa obtener_articulo con "{numero}".)'
+        f"Para leerlo completo, usa obtener_articulo con {argumentos}.)"
     )
 
 
@@ -93,13 +102,55 @@ def buscar_en_ley(consulta: str) -> str:
     return "\n\n".join(_recortar(f) for _, f in encontrados[:MAXIMO_ARTICULOS])
 
 
-@tool
-def obtener_articulo(numero: str) -> str:
-    """Lee completo un artículo de la Ley REP (Ley 20.920) por su número, como "12".
+class ArgumentosArticulo(BaseModel):
+    """Argumentos de obtener_articulo, cada uno con la descripción que lee el modelo."""
+
+    numero: str = Field(
+        description=(
+            'Solo el número del artículo, como "12". Para un transitorio, su número ("1") '
+            'o su ordinal ("primero"), del primero al cuarto.'
+        )
+    )
+    transitorio: bool = Field(
+        default=False,
+        description=(
+            'true solo si la consulta pide un artículo transitorio, como "artículo primero '
+            'transitorio". Sin él, "primero" se lee como el artículo 1.'
+        ),
+    )
+
+
+def explicar_argumentos_invalidos(error: ValidationError | ValidationErrorV1) -> str:
+    """Devuelve el error de validación como observación, para que el agente corrija la llamada."""
+    detalles = "; ".join(
+        f"{'.'.join(str(parte) for parte in detalle['loc'])}: {detalle['msg']}"
+        for detalle in error.errors()
+    )
+    return f"Argumentos inválidos ({detalles}). Revisa la descripción de cada campo."
+
+
+def _identificar(numero: str, transitorio: bool) -> str:
+    """Traduce número y tipo al identificador de la copia local: "12" o "primero"."""
+    posicion = POSICION_DEL_ORDINAL.get(numero, numero)
+    if not transitorio:
+        return posicion
+    if posicion not in POSICION_DEL_ORDINAL.values():
+        raise ValueError("Artículo no disponible. Los transitorios van del primero al cuarto.")
+    return TRANSITORIOS[int(posicion) - 1]
+
+
+@tool(args_schema=ArgumentosArticulo)
+def obtener_articulo(numero: str, transitorio: bool = False) -> str:
+    """Lee completo un artículo de la Ley REP (Ley 20.920) por su número.
     Usar cuando la consulta nombra un artículo, o para leer entero uno que buscar_en_ley
-    mostró recortado. Para los artículos transitorios, usa "primero" a "cuarto"."""
+    mostró recortado."""
+    tipo = " transitorio" if transitorio else ""
     try:
-        fragmento = obtener_fragmento_ley_rep(numero.strip())
+        fragmento = obtener_fragmento_ley_rep(_identificar(numero.strip().lower(), transitorio))
     except ValueError as error:
-        return f"No pude leer el artículo {numero}: {error}"
+        return f"No pude leer el artículo {numero}{tipo}: {error}"
     return f"[{fragmento['referencia']}]\n{fragmento['texto']}"
+
+
+# @tool no recibe esta opción. Sin ella, un argumento inválido corta toda la ejecución del agente.
+obtener_articulo.handle_validation_error = explicar_argumentos_invalidos

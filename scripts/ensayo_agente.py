@@ -16,14 +16,17 @@ from src.catalogo import AGENTES
 from src.costos.registro import ResumenCostosSesion, sesion_costos
 from src.orquestacion.agente_con_herramientas import (
     HERRAMIENTAS,
+    construir_agente_con_memoria,
     construir_ejecutor,
     consultar_agente,
+    obtener_historial,
 )
 from src.orquestacion.modelo import crear_modelo
 
 RAIZ = Path(__file__).resolve().parent.parent
 
-# Cada caso fija la herramienta que debería elegir el agente; None es "ninguna".
+# Cada caso fija la herramienta que debería elegir el agente; None es "ninguna". Los casos con
+# la misma "sesion" comparten historial; sin "sesion", cada caso empieza una conversación nueva.
 CASOS: dict[int, tuple[dict[str, Any], ...]] = {
     21: (
         {
@@ -39,6 +42,25 @@ CASOS: dict[int, tuple[dict[str, Any], ...]] = {
             "herramienta_esperada": None,
         },
     ),
+    22: (
+        {
+            "sesion": "cliente-1",
+            "consulta": "¿Qué establece el artículo primero transitorio de la Ley REP?",
+            "herramienta_esperada": "obtener_articulo",
+        },
+        {
+            # Depende del turno anterior: "el siguiente" es el segundo transitorio.
+            "sesion": "cliente-1",
+            "consulta": "¿Y qué dice el artículo transitorio siguiente?",
+            "herramienta_esperada": "obtener_articulo",
+        },
+        {
+            # Otra sesión: no debería saber qué se preguntó en cliente-1.
+            "sesion": "cliente-2",
+            "consulta": "¿Sobre qué artículo te pregunté recién?",
+            "herramienta_esperada": None,
+        },
+    ),
 }
 
 
@@ -51,6 +73,8 @@ def describir_caso(
             "herramienta": accion.tool,
             "argumentos": accion.tool_input,
             "caracteres_observacion": len(str(observacion)),
+            # Basta para ver qué artículo leyó, sin copiar el texto de la ley.
+            "primera_linea": str(observacion).split("\n", 1)[0],
         }
         for accion, observacion in resultado["intermediate_steps"]
     ]
@@ -83,12 +107,15 @@ def sumar_consumos(consumos: list[ResumenCostosSesion]) -> ResumenCostosSesion:
 def ejecutar_ensayo(agente: Runnable, casos: tuple[dict[str, Any], ...]) -> dict[str, Any]:
     """Ejecuta los casos en orden, cada uno con su propio registro de consumo."""
     descritos, consumos = [], []
-    for caso in casos:
-        # Una sesión por caso: así cada caso tiene su consumo, y el total se suma al final.
+    for numero, caso in enumerate(casos, 1):
+        sesion = caso.get("sesion", f"caso-{numero}")
+        previos = len(obtener_historial(sesion).messages)
+        # Un registro de costos por caso; el total se suma al final.
         with sesion_costos() as registro:
-            resultado = consultar_agente(agente, caso["consulta"])
+            resultado = consultar_agente(agente, caso["consulta"], sesion)
         consumos.append(registro.resumen())
-        descritos.append(describir_caso(caso, resultado, consumos[-1]))
+        descrito = describir_caso(caso, resultado, consumos[-1])
+        descritos.append({**descrito, "sesion": sesion, "mensajes_en_historial_antes": previos})
     return {
         "coincidencias": sum(caso["coincide"] for caso in descritos),
         "casos": descritos,
@@ -113,12 +140,12 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO)
 
     alias = "flash-lite"
-    ejecutor = construir_ejecutor(crear_modelo(alias), HERRAMIENTAS)
+    agente = construir_agente_con_memoria(construir_ejecutor(crear_modelo(alias), HERRAMIENTAS))
     evidencia = {
         "bloque": args.bloque,
         "modelo": AGENTES["gemini"]["modelos"][alias],
         "fecha": datetime.now(UTC).isoformat(),
-        **ejecutar_ensayo(ejecutor, CASOS[args.bloque]),
+        **ejecutar_ensayo(agente, CASOS[args.bloque]),
     }
     args.salida.parent.mkdir(parents=True, exist_ok=True)
     with args.salida.open("x", encoding="utf-8") as archivo:

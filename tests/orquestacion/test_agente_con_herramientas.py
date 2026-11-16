@@ -9,21 +9,26 @@ from typing import Any
 from unittest.mock import patch
 
 from google.genai import types
-from langchain_core.messages import AIMessage, ToolMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
+from langchain_core.prompts import MessagesPlaceholder
 
 from src.costos.registro import sesion_costos
 from src.orquestacion.agente_con_herramientas import (
     AVISO_LIMITE_PASOS,
     HERRAMIENTAS,
     LIMITE_PASOS,
+    cerrar_sesion,
+    construir_agente_con_memoria,
     construir_ejecutor,
     consultar_agente,
     main,
+    obtener_historial,
+    prompt_agente,
     salida_como_texto,
 )
 from src.orquestacion.enrutamiento import MENSAJE_SEGURO, MENSAJE_VACIO
 from src.orquestacion.modelo import RegistroLlamadas, crear_modelo
-from tests.orquestacion.modelo_falso import crear_modelo_falso, pedir_herramienta
+from tests.orquestacion.modelo_falso import ModeloFalso, crear_modelo_falso, pedir_herramienta
 
 AGENTE = "src.orquestacion.agente_con_herramientas"
 USO = {"input_tokens": 1_000, "output_tokens": 2_000, "total_tokens": 3_000}
@@ -80,6 +85,26 @@ class TestEjecutor(unittest.TestCase):
         self.assertEqual(len(resultado["intermediate_steps"]), 4)
         self.assertEqual(resultado["output"], AVISO_LIMITE_PASOS)
 
+    def test_argumentos_invalidos_vuelven_como_observacion(self):
+        modelo = crear_modelo_falso(
+            [
+                pedir_herramienta("obtener_articulo", numero="1", transitorio="tal vez"),
+                pedir_herramienta("obtener_articulo", numero="1", transitorio=True),
+                AIMessage(content="El primero transitorio trata de los recicladores de base."),
+            ]
+        )
+        ejecutor = construir_ejecutor(modelo, HERRAMIENTAS)
+
+        resultado = consultar_agente(ejecutor, "¿Qué dice el artículo primero transitorio?")
+
+        # El error no corta la ejecución: llega como observación y el agente corrige la llamada.
+        (_, primera), (_, segunda) = resultado["intermediate_steps"]
+        self.assertTrue(primera.startswith("Argumentos inválidos (transitorio:"))
+        self.assertTrue(segunda.startswith("[Artículo primero transitorio]\n"))
+        self.assertEqual(
+            resultado["output"], "El primero transitorio trata de los recicladores de base."
+        )
+
     def test_ejecutor_devuelve_la_traza(self):
         ejecutor = construir_ejecutor(crear_modelo_falso([]), HERRAMIENTAS)
 
@@ -98,7 +123,10 @@ class TestSalidaComoTexto(unittest.TestCase):
                 [{"type": "text", "text": "El artículo 12 ", "index": 0}, "fija metas."],
                 "El artículo 12 fija metas.",
             ),
-            ([{"type": "thinking", "thinking": "razono"}, {"type": "text", "text": "Hola"}], "Hola"),
+            (
+                [{"type": "thinking", "thinking": "razono"}, {"type": "text", "text": "Hola"}],
+                "Hola",
+            ),
             ("Texto que ya venía plano.", "Texto que ya venía plano."),
             ("Agent stopped due to max iterations.", AVISO_LIMITE_PASOS),
         )
@@ -145,6 +173,114 @@ class TestConsultarAgente(unittest.TestCase):
 
                 self.assertEqual(resultado, {"output": MENSAJE_VACIO, "intermediate_steps": []})
                 self.assertEqual(modelo.recibidos, [])
+
+
+class TestMemoria(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(patch.dict(f"{AGENTE}.historiales", clear=True))
+
+    def crear_agente(self, *respuestas: AIMessage) -> tuple[Any, ModeloFalso]:
+        modelo = crear_modelo_falso(respuestas)
+        return construir_agente_con_memoria(construir_ejecutor(modelo, HERRAMIENTAS)), modelo
+
+    def test_segundo_turno_recibe_el_primero(self):
+        agente, modelo = self.crear_agente(
+            AIMessage(content="El primero transitorio trata de los recicladores de base."),
+            AIMessage(content="Se refiere a su certificación."),
+        )
+
+        consultar_agente(agente, "¿Qué dice el primero transitorio?", "cliente-1")
+        resultado = consultar_agente(agente, "¿Y qué exige?", "cliente-1")
+
+        self.assertEqual(resultado["output"], "Se refiere a su certificación.")
+        segunda_llamada = modelo.recibidos[1]
+        self.assertEqual(
+            [type(mensaje) for mensaje in segunda_llamada],
+            [SystemMessage, HumanMessage, AIMessage, HumanMessage],
+        )
+        self.assertEqual(segunda_llamada[1].content, "¿Qué dice el primero transitorio?")
+        self.assertEqual(
+            segunda_llamada[2].content, "El primero transitorio trata de los recicladores de base."
+        )
+        self.assertEqual(segunda_llamada[3].content, "<consulta>¿Y qué exige?</consulta>")
+        self.assertEqual(len(obtener_historial("cliente-1").messages), 4)
+
+    def test_sesiones_distintas_no_comparten_historial(self):
+        agente, modelo = self.crear_agente(
+            AIMessage(content="Anotado: preguntas por el artículo 12."),
+            AIMessage(content="No me has preguntado por ningún artículo."),
+        )
+
+        consultar_agente(agente, "Pregunto por el artículo 12.", "cliente-1")
+        consultar_agente(agente, "¿Por qué artículo te pregunté?", "cliente-2")
+
+        self.assertEqual(
+            [type(mensaje) for mensaje in modelo.recibidos[1]], [SystemMessage, HumanMessage]
+        )
+        self.assertNotIn("artículo 12", str(modelo.recibidos[1]))
+        self.assertEqual(len(obtener_historial("cliente-1").messages), 2)
+        self.assertEqual(len(obtener_historial("cliente-2").messages), 2)
+
+    def test_prompt_ordena_historial_y_scratchpad(self):
+        nombres = [
+            mensaje.variable_name if isinstance(mensaje, MessagesPlaceholder) else type(mensaje)
+            for mensaje in prompt_agente.messages
+        ]
+        self.assertEqual(nombres[1], "chat_history")
+        self.assertEqual(nombres[3], "agent_scratchpad")
+        self.assertEqual(prompt_agente.optional_variables, ["chat_history"])
+
+        mensajes = prompt_agente.format_messages(
+            entrada="¿Y el siguiente?",
+            chat_history=[HumanMessage(content="turno 1"), AIMessage(content="respuesta 1")],
+            agent_scratchpad=[ToolMessage(content="observación", tool_call_id="llamada-1")],
+        )
+        self.assertEqual(
+            [type(mensaje) for mensaje in mensajes],
+            [SystemMessage, HumanMessage, AIMessage, HumanMessage, ToolMessage],
+        )
+        self.assertEqual(mensajes[3].content, "<consulta>¿Y el siguiente?</consulta>")
+
+    def test_historial_guarda_solo_texto(self):
+        # Respuesta final en bloques, como la entrega Gemini 3, después de usar una herramienta.
+        agente, _ = self.crear_agente(
+            pedir_herramienta("obtener_articulo", numero="12"),
+            AIMessage(content=[{"type": "text", "text": "Fija metas (artículo 12)."}]),
+        )
+
+        consultar_agente(agente, "¿Qué dice el artículo 12?", "cliente-1")
+
+        pregunta, respuesta = obtener_historial("cliente-1").messages
+        self.assertEqual(pregunta.content, "¿Qué dice el artículo 12?")
+        # Ni la llamada a la herramienta ni la observación quedan en el historial.
+        self.assertIsInstance(respuesta, AIMessage)
+        self.assertEqual(respuesta.content, "Fija metas (artículo 12).")
+
+    def test_turno_fallido_no_se_guarda(self):
+        for respuestas in (fallar_por_conexion(), iter([AIMessage(content="")])):
+            with self.subTest(respuestas=respuestas):
+                agente = construir_agente_con_memoria(
+                    construir_ejecutor(crear_modelo_falso(respuestas), HERRAMIENTAS)
+                )
+
+                with self.assertLogs(AGENTE, level="ERROR"):
+                    resultado = consultar_agente(agente, "¿Qué dice la ley?", "cliente-1")
+
+                self.assertEqual(resultado["output"], MENSAJE_SEGURO)
+                self.assertEqual(obtener_historial("cliente-1").messages, [])
+
+    def test_cerrar_sesion_borra_solo_esa_sesion(self):
+        agente, _ = self.crear_agente(
+            AIMessage(content="respuesta 1"), AIMessage(content="respuesta 2")
+        )
+        consultar_agente(agente, "turno 1", "cliente-1")
+        consultar_agente(agente, "turno 1", "cliente-2")
+
+        cerrar_sesion("cliente-1")
+        cerrar_sesion("sesion-inexistente")
+
+        self.assertEqual(obtener_historial("cliente-1").messages, [])
+        self.assertEqual(len(obtener_historial("cliente-2").messages), 2)
 
 
 def respuesta_por_partes(
@@ -236,6 +372,7 @@ class TestConectorGemini(unittest.TestCase):
 
 class TestMain(unittest.TestCase):
     def setUp(self):
+        self.enterContext(patch.dict(f"{AGENTE}.historiales", clear=True))
         self.enterContext(patch(f"{AGENTE}.load_dotenv"))
         self.enterContext(patch(f"{AGENTE}.logging.basicConfig"))
 
@@ -252,7 +389,7 @@ class TestMain(unittest.TestCase):
         salida, errores = io.StringIO(), io.StringIO()
 
         with (
-            patch("sys.argv", ["agente", "¿Qué dice el artículo 12?", "Hola"]),
+            patch("sys.argv", ["agente", "--sesion", "cli", "¿Qué dice el artículo 12?", "Hola"]),
             patch.dict(os.environ, {"GEMINI_API_KEY": "clave-ficticia"}, clear=True),
             patch(f"{AGENTE}.crear_modelo", return_value=modelo),
             redirect_stdout(salida),
@@ -264,8 +401,14 @@ class TestMain(unittest.TestCase):
             salida.getvalue().splitlines(),
             ["Fija metas de recolección.", "Respondo consultas de Ley REP."],
         )
-        self.assertIn("Herramientas: obtener_articulo({'numero': '12'})", errores.getvalue())
-        self.assertIn("Herramientas: ninguna", errores.getvalue())
+        self.assertIn(
+            "Herramientas: obtener_articulo({'numero': '12'}) | historial previo: 0 mensajes",
+            errores.getvalue(),
+        )
+        self.assertIn("Herramientas: ninguna | historial previo: 2 mensajes", errores.getvalue())
+        # Las dos consultas comparten la sesión "cli": la segunda recibe el primer turno.
+        self.assertIn("Fija metas de recolección.", str(modelo.recibidos[2]))
+        self.assertEqual(len(obtener_historial("cli").messages), 4)
         self.assertIn("'respuestas_con_costo': 3", errores.getvalue())
         self.assertIn("'tokens_total': 9000", errores.getvalue())
 

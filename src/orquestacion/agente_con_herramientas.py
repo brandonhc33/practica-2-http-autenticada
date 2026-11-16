@@ -1,4 +1,4 @@
-"""Agente de Ley REP del Bloque 21: elige herramientas y deja su traza en intermediate_steps."""
+"""Agente de Ley REP de los bloques 21 y 22: elige herramientas y recuerda cada sesión."""
 
 import argparse
 import logging
@@ -11,9 +11,11 @@ from typing import Any
 from dotenv import load_dotenv
 from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.agents import AgentAction
+from langchain_core.chat_history import InMemoryChatMessageHistory
 from langchain_core.language_models import BaseChatModel
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables import Runnable
+from langchain_core.runnables import Runnable, RunnableLambda
+from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.tools import BaseTool
 
 from src.catalogo import AGENTES
@@ -40,7 +42,8 @@ INSTRUCCIONES_AGENTE = (
     "necesita, como un saludo o una pregunta sobre lo que puedes hacer, responde sin "
     "herramientas. Basa cada afirmación sobre la ley solo en lo que devolvieron las herramientas "
     "e indica el artículo que la respalda. Si no alcanza, dilo: la falta de evidencia no "
-    "significa que no existan obligaciones."
+    "significa que no existan obligaciones. La conversación anterior solo sirve para entender a "
+    "qué se refiere la consulta; no es evidencia de lo que dice la ley."
 )
 
 prompt_agente = ChatPromptTemplate.from_messages(
@@ -79,12 +82,48 @@ def salida_como_texto(resultado: dict[str, Any]) -> dict[str, Any]:
     return {**resultado, "output": exigir_texto(salida)}
 
 
-def consultar_agente(agente: Runnable, entrada: str) -> dict[str, Any]:
+# Un historial por session_id, solo en memoria: ninguno sobrevive al proceso.
+historiales: dict[str, InMemoryChatMessageHistory] = {}
+
+
+def obtener_historial(session_id: str) -> InMemoryChatMessageHistory:
+    """Devuelve el historial de la sesión; si es nueva, lo crea vacío."""
+    if session_id not in historiales:
+        historiales[session_id] = InMemoryChatMessageHistory()
+    return historiales[session_id]
+
+
+def cerrar_sesion(session_id: str) -> None:
+    """Borra el historial de una sesión, sin tocar las demás."""
+    historiales.pop(session_id, None)
+
+
+def construir_agente_con_memoria(ejecutor: AgentExecutor) -> RunnableWithMessageHistory:
+    """Envuelve el ejecutor con un historial por session_id que guarda solo texto."""
+    # salida_como_texto va antes de la memoria: el historial no acepta la lista de bloques.
+    # Si falla, el turno no se guarda.
+    return RunnableWithMessageHistory(
+        ejecutor | RunnableLambda(salida_como_texto),
+        obtener_historial,
+        input_messages_key="entrada",
+        output_messages_key="output",
+        history_messages_key="chat_history",
+    )
+
+
+def consultar_agente(
+    agente: Runnable, entrada: str, session_id: str = "terminal"
+) -> dict[str, Any]:
     """Ejecuta una consulta y devuelve output e intermediate_steps, sin propagar excepciones."""
     if not entrada.strip():
         return {"output": MENSAJE_VACIO, "intermediate_steps": []}
     try:
-        return salida_como_texto(agente.invoke({"entrada": entrada}))
+        # Sin memoria, el ejecutor ignora session_id. Con memoria, el texto ya viene convertido
+        # y salida_como_texto lo deja igual.
+        resultado = agente.invoke(
+            {"entrada": entrada}, config={"configurable": {"session_id": session_id}}
+        )
+        return salida_como_texto(resultado)
     except Exception as error:
         logger.error("Falló el agente (%s): %s", type(error).__name__, error)
         logger.debug("Traza del error", exc_info=error)
@@ -101,21 +140,28 @@ def describir_pasos(pasos: list[tuple[AgentAction, Any]]) -> str:
 def main() -> None:
     """Responde consultas por terminal; las herramientas usadas y el consumo van a stderr."""
     parser = argparse.ArgumentParser(description="Responde consultas de Ley REP con un agente.")
-    parser.add_argument("consultas", nargs="+", help="Una o más consultas sobre la Ley REP.")
-    consultas = parser.parse_args().consultas
+    parser.add_argument("consultas", nargs="+", help="Consultas, en orden, de una misma sesión.")
+    parser.add_argument("--sesion", default="terminal", help="Identificador de la sesión.")
+    argumentos = parser.parse_args()
     load_dotenv(Path(__file__).resolve().parents[2] / ".env")
     clave = AGENTES["gemini"]["clave"]
     if not os.getenv(clave, "").strip():
         sys.exit(f"Falta configurar {clave} en el archivo .env.")
     # En nivel INFO, el registro de costos muestra los tokens de cada llamada al modelo.
     logging.basicConfig(level=logging.INFO)
-    ejecutor = construir_ejecutor(crear_modelo(), HERRAMIENTAS)
+    agente = construir_agente_con_memoria(construir_ejecutor(crear_modelo(), HERRAMIENTAS))
     with sesion_costos() as registro:
-        for consulta in consultas:
-            resultado = consultar_agente(ejecutor, consulta)
+        for consulta in argumentos.consultas:
+            # Cada turno reenvía el historial completo: por eso un turno tardío cuesta más.
+            previos = len(obtener_historial(argumentos.sesion).messages)
+            resultado = consultar_agente(agente, consulta, argumentos.sesion)
             print(resultado["output"], flush=True)
             pasos = describir_pasos(resultado["intermediate_steps"])
-            print(f"Herramientas: {pasos}", file=sys.stderr, flush=True)
+            print(
+                f"Herramientas: {pasos} | historial previo: {previos} mensajes",
+                file=sys.stderr,
+                flush=True,
+            )
     print(registro.resumen().como_dict(), file=sys.stderr)
 
 

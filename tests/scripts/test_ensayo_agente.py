@@ -12,11 +12,16 @@ from unittest.mock import patch
 from langchain_core.messages import AIMessage
 
 from scripts.ensayo_agente import CASOS, ejecutar_ensayo, main
-from src.orquestacion.agente_con_herramientas import HERRAMIENTAS, construir_ejecutor
+from src.orquestacion.agente_con_herramientas import (
+    HERRAMIENTAS,
+    construir_agente_con_memoria,
+    construir_ejecutor,
+)
 from src.orquestacion.modelo import RegistroLlamadas
 from tests.orquestacion.modelo_falso import ModeloFalso, crear_modelo_falso, pedir_herramienta
 
 ENSAYO = "scripts.ensayo_agente"
+HISTORIALES = "src.orquestacion.agente_con_herramientas.historiales"
 USO = {"input_tokens": 1_000, "output_tokens": 2_000, "total_tokens": 3_000}
 
 
@@ -36,6 +41,9 @@ def crear_modelo_del_ensayo() -> ModeloFalso:
 
 
 class TestEnsayoAgente(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(patch.dict(HISTORIALES, clear=True))
+
     def test_ensayo_agente_compara_herramienta_esperada(self):
         ejecutor = construir_ejecutor(crear_modelo_del_ensayo(), HERRAMIENTAS)
 
@@ -47,12 +55,18 @@ class TestEnsayoAgente(unittest.TestCase):
             ["buscar_en_ley", "obtener_articulo", None],
         )
         self.assertEqual(
-            [caso["herramienta_elegida"] for caso in casos], ["buscar_en_ley", "buscar_en_ley", None]
+            [caso["herramienta_elegida"] for caso in casos],
+            ["buscar_en_ley", "buscar_en_ley", None],
         )
         self.assertEqual([caso["coincide"] for caso in casos], [True, False, True])
         self.assertEqual(resultado["coincidencias"], 2)
-        self.assertEqual(casos[0]["pasos"][0]["argumentos"], {"consulta": "obligaciones consumidores"})
-        self.assertGreater(casos[0]["pasos"][0]["caracteres_observacion"], 0)
+        primer_paso = casos[0]["pasos"][0]
+        self.assertEqual(primer_paso["argumentos"], {"consulta": "obligaciones consumidores"})
+        self.assertEqual(primer_paso["primera_linea"], "[Artículo 34]")
+        self.assertGreater(primer_paso["caracteres_observacion"], 0)
+        # Sin "sesion", cada caso empieza una conversación nueva.
+        self.assertEqual([caso["sesion"] for caso in casos], ["caso-1", "caso-2", "caso-3"])
+        self.assertEqual([caso["mensajes_en_historial_antes"] for caso in casos], [0, 0, 0])
         self.assertEqual(casos[2]["pasos"], [])
         self.assertEqual(casos[2]["respuesta"], "Respondo consultas sobre la Ley REP.")
         for caso, llamadas in zip(casos, (2, 2, 1), strict=True):
@@ -65,9 +79,35 @@ class TestEnsayoAgente(unittest.TestCase):
         # 5 x (1.000 x 0,30 + 2.000 x 2,50) / 1.000.000
         self.assertEqual(resultado["consumo_total"]["costo_conocido_usd"], "0.0265")
 
+    def test_ensayo_bloque_22_mantiene_y_aisla_sesiones(self):
+        modelo = crear_modelo_falso(
+            [
+                pedir_herramienta("obtener_articulo", numero="primero", transitorio=True),
+                AIMessage(content="Trata de la certificación de recicladores de base."),
+                pedir_herramienta("obtener_articulo", numero="2", transitorio=True),
+                AIMessage(content="El segundo transitorio trata de la obligación de informar."),
+                AIMessage(content="En esta conversación no me has preguntado por un artículo."),
+            ]
+        )
+        agente = construir_agente_con_memoria(construir_ejecutor(modelo, HERRAMIENTAS))
+
+        resultado = ejecutar_ensayo(agente, CASOS[22])
+
+        casos = resultado["casos"]
+        self.assertEqual(resultado["coincidencias"], 3)
+        self.assertEqual(
+            [caso["sesion"] for caso in casos], ["cliente-1", "cliente-1", "cliente-2"]
+        )
+        self.assertEqual([caso["mensajes_en_historial_antes"] for caso in casos], [0, 2, 0])
+        self.assertEqual(casos[1]["pasos"][0]["primera_linea"], "[Artículo segundo transitorio]")
+        # La segunda llamada del turno 2 de cliente-1 recibe el turno 1; cliente-2 no.
+        self.assertIn("certificación de recicladores", str(modelo.recibidos[2]))
+        self.assertNotIn("certificación de recicladores", str(modelo.recibidos[4]))
+
 
 class TestMain(unittest.TestCase):
     def setUp(self):
+        self.enterContext(patch.dict(HISTORIALES, clear=True))
         self.directorio = Path(self.enterContext(tempfile.TemporaryDirectory()))
         self.cargar = self.enterContext(patch(f"{ENSAYO}.load_dotenv"))
         self.enterContext(patch(f"{ENSAYO}.logging.basicConfig"))
