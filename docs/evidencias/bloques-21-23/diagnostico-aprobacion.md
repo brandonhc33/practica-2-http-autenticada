@@ -60,9 +60,35 @@ Decisiones simuladas: [true, false]
 ```
 
 Si termina antes de dejar escribir, la línea `Resultado de aprobación:` indicará
-la condición que hizo cerrar el aviso. Se necesita esa salida del alumno antes
-de repetir una consulta pagada. Que funcione con el falso no descarta un problema
-específico del SDK de Gemini o de la terminal en otra ejecución.
+la condición que hizo cerrar el aviso. Que funcione con el falso no descarta un
+problema específico del SDK de Gemini o de la terminal en otra ejecución.
+
+## Resultado compartido por el alumno
+
+El alumno ejecutó el comando anterior en el worktree y compartió la salida en
+este hilo. Pudo escribir las dos respuestas; el extracto relevante es:
+
+```text
+s
+Resultado de aprobación: s recibida: aprobación explícita; espera: 5.6 s.
+Fin del turno simulado.
+n
+Resultado de aprobación: n recibida: rechazo explícito; espera: 4.4 s.
+Fin del turno simulado.
+Decisiones simuladas: [true, false]
+Fin del diagnóstico; los archivos temporales se eliminaron.
+```
+
+Esto confirma la lectura humana de `s` y `n` en el circuito del agente con el
+modelo falso. No hubo una llamada a Gemini ni consumo de cuota. Los registros y
+los informes de este diagnóstico eran temporales; no se agregaron decisiones de
+prueba a los JSONL de operación ni a sus copias versionadas.
+
+El resultado **no identifica la causa del incidente anterior** ni reproduce el
+conector real de Gemini. Posteriormente el alumno completó el
+[rechazo explícito con Gemini](rechazo-explicito-gemini.md), contrastado con su
+registro y la ausencia del archivo. Esa corrida cierra el control funcional;
+no hace falta repetir el diagnóstico ni el ensayo completo de ambos informes.
 
 ## Verificación automática
 
@@ -97,8 +123,11 @@ Los avisos son las deprecaciones ya documentadas de la memoria. Las pruebas de
 pseudoterminal se omiten en plataformas no POSIX. No se hicieron nuevas llamadas
 reales a Gemini durante este diagnóstico.
 
-Las copias de evidencia se contrastaron otra vez con los archivos de operación:
+En esta revisión previa, las copias se contrastaron con los archivos de operación:
 5 eventos de traza y 4 decisiones, idénticos a sus originales. Los bytes de los
 eventos ya guardados en `4605dda` se conservan como prefijo; solo se agregó el
 control posterior. Los enlaces de la documentación y `git diff --check` también
 pasaron.
+
+Después del rechazo final se conservaron seis trazas y cinco decisiones. Los
+controles nuevos y su consumo están en la evidencia enlazada arriba.

@@ -102,3 +102,9 @@ actual pasa **263 pruebas y 481 subpruebas**, con los mismos 11 avisos; `ruff` y
 [verificación del cambio de diagnóstico](diagnostico-aprobacion.md).
 La instalación limpia de este documento corresponde al commit `4557845`; no se
 presenta como comprobación de instalación limpia de los cambios posteriores.
+
+Finalmente el alumno completó el
+[rechazo explícito con Gemini](rechazo-explicito-gemini.md): `n` leída en la
+terminal, decisión negativa, traza sin error e informe ausente. Esa comprobación
+funcional no modifica el alcance histórico de la instalación local anterior;
+la validación de un clon desde GitHub sigue pendiente de publicación.

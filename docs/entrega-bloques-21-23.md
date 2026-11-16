@@ -1,10 +1,11 @@
 # Entrega de los bloques 21 a 23 — agente de Ley REP
 
-**Estado: implementación y corridas humanas revisadas; falta verificar el rechazo
-explícito con `n` dentro del agente y comprobar la instalación desde GitHub después
-de publicar.** El segundo intento produjo una entrega aprobada y otra sin aprobar,
-pero no demuestra que esta última haya leído `n`. La consulta adicional se rechazó
-de inmediato; antes de gastar más cuota se hará el diagnóstico gratuito descrito abajo.
+**Estado: implementación y validación funcional de los bloques 21 a 23
+completadas, incluido el rechazo explícito con `n` usando Gemini.** La decisión,
+la traza y la ausencia del informe de `rechazo-final-23` se contrastaron con la
+salida del alumno. Quedan la publicación de la rama y la instalación desde un
+clon de GitHub. Se conservan los intentos anteriores con sus diferencias, sin
+atribuirles retroactivamente una `n` ni una causa al rechazo inmediato.
 
 ## Entregables
 
@@ -12,10 +13,12 @@ de inmediato; antes de gastar más cuota se hará el diagnóstico gratuito descr
 | --- | --- |
 | 21 — agente con herramientas | [Herramientas](../src/orquestacion/herramientas.py), [agente](../src/orquestacion/agente_con_herramientas.py), límite de cuatro iteraciones y `intermediate_steps`. |
 | 22 — herramienta estructurada y memoria | `ArgumentosArticulo`, validación como observación y memoria separada por `session_id`, en los mismos módulos. |
-| 23 — supervisión y límites | `entregar_informe`, [supervisión y registros](../src/orquestacion/supervision.py), [límites de autonomía](limites-autonomia-agente.md) y ensayo preparado para aprobar y rechazar. |
+| 23 — supervisión y límites | `entregar_informe`, [supervisión y registros](../src/orquestacion/supervision.py), [límites de autonomía](limites-autonomia-agente.md), aprobación y [rechazo explícito comprobado](evidencias/bloques-21-23/rechazo-explicito-gemini.md). |
 
 La API y el flujo de los bloques 18 a 20 no se reemplazan. El agente es una entrada
 adicional por terminal, con `langchain-classic` y el conector nativo de Gemini.
+La [guía de estudio](preguntas-bloques-21-23.md) explica los conceptos y cómo cada
+implementación responde a la actividad.
 
 ## Uso
 
@@ -49,7 +52,8 @@ sesión, pero otro proceso empieza sin historial aunque use el mismo identificad
 | [23, intento 1](evidencias/bloques-21-23/ensayo-bloque-23.json) | 0 de 2 | 5 intentos, uno sin uso informado | 4.320 registrados | 0,0023102 conocidos |
 | [23, intento 2](evidencias/bloques-21-23/ensayo-bloque-23-intento-02.json) | 2 de 2 automáticos; no prueba rechazo explícito | 6 | 6.656 | 0,0034708 |
 | [23, control de rechazo](evidencias/bloques-21-23/diagnostico-aprobacion.md) | No aprobado, sin `n` comprobada | 3 | 3.457 | 0,0020491 |
-| Total registrado | No equivale a aceptación completa | 24 intentos | 21.534 registrados | 0,0117270 conocidos |
+| [23, rechazo final](evidencias/bloques-21-23/rechazo-explicito-gemini.md) | `n` explícita, registro negativo y archivo ausente | 3 | 3.402 | 0,0019512 |
+| Total registrado | Validación funcional completada; publicación por comprobar | 27 intentos | 24.936 registrados | 0,0136782 conocidos |
 
 Los intentos del Bloque 23 fueron ejecutados por el alumno. En el primero hubo un
 503 de Gemini y una aprobación donde se esperaba rechazo. En el segundo sí se
@@ -62,6 +66,11 @@ Se conservan ambos resultados sin corregirlos, junto con las
 El intento fallido sin metadatos no se considera de costo cero; el total de USD es
 solo el costo conocido. La [prueba local de entrada](evidencias/bloques-21-23/prueba-entrada-terminal.md)
 sí leyó `s` y `n`, sin Gemini, pero no sustituye el rechazo de un informe del agente.
+
+El control final `rechazo-final-23` sí leyó una `n` con Gemini, tras 21,6 segundos
+de espera. Su decisión fue negativa y no existe el informe correspondiente. La
+[evidencia final](evidencias/bloques-21-23/rechazo-explicito-gemini.md) completa ese
+control sin modificar los resultados de los intentos previos.
 
 En el Bloque 21 se comprobaron búsqueda por tema, lectura de un artículo y una
 respuesta sin herramienta. El [consumo del conector](evidencias/bloques-21-23/consumo-gemini-bloque-21.json)
@@ -109,7 +118,7 @@ Los resultados de esta revisión se conservan en
 | CA-13 y CA-14 | Aprobación, rechazo, timeout, EOF, cancelación, errores y entrada no interactiva. |
 | CA-15 y CA-16 | JSONL completo, error sin pasos, repeticiones dentro de un turno y entre turnos por sesión. |
 | CA-17 y CA-18 | Ensayos con modelo falso para los tres bloques y suite completa sin red. |
-| CA-19 | Ensayos reales de los tres bloques conservados; falta verificar `n` explícita dentro del agente. |
+| CA-19 | Ensayos reales de los tres bloques conservados; aprobación y `n` explícita con Gemini comprobadas, con archivo presente y ausente respectivamente. |
 | CA-20 | Control contrastado con las trazas reales: lecturas y propuestas de entrega presentes. Ver [revisión](evidencias/bloques-21-23/revision-bloque-23.md). |
 
 También se prueba el caso en que el modelo falla después de una entrega aprobada:
@@ -117,58 +126,25 @@ no se repite el flujo y sobreviven el informe y la aprobación, aunque la traza
 pierda los pasos. Un error al escribir la aprobación impide entregar; un error al
 escribir el informe no se presenta como éxito.
 
-## Ensayo humano pendiente — Bloque 23
+## Verificación final del Bloque 23 con Gemini
 
-Este paso lo ejecuta el alumno en **su terminal interactiva**, desde la raíz del
-worktree que contiene estos cambios, no desde otra copia antigua del proyecto.
-No usar tuberías, `echo s`, respuestas automáticas ni pedir a un agente que apruebe.
+**Completada por el alumno. No se requiere otra consulta pagada.**
 
-Ya se verificó la aprobación real y la función leyó dos entradas consecutivas en
-la prueba local. **No hace falta repetir las dos consultas del ensayo completo.**
-Sin embargo, la consulta adicional terminó en unos siete segundos sin dejar
-introducir `n`. Eso descarta el timeout de 300 segundos para esa ejecución.
-**Antes de repetir una consulta pagada**, ejecutar:
+En `rechazo-final-23`, Gemini leyó el artículo 34 y propuso la entrega. La terminal
+recibió `n` y mostró:
 
-```bash
-uv run python -m tests.orquestacion.ensayo_terminal
+```text
+Resultado de aprobación: n recibida: rechazo explícito; espera: 21.6 s.
 ```
 
-Es un modelo falso con el circuito del agente, red bloqueada y archivos
-temporales: no requiere clave ni consume cuota. Pedirá `s` y luego `n`; si un
-aviso se cierra solo, mostrará el motivo. Compartir esa salida antes de continuar.
-Ver [diagnóstico y pruebas con pseudoterminal](evidencias/bloques-21-23/diagnostico-aprobacion.md).
+Se comprobó una decisión `aprobado: false` con identificador
+`171c1f416a5349dfae1a3ff708696abc`, la traza sin error y la ausencia de
+`output/agente/informes_entregados/171c1f416a5349dfae1a3ff708696abc.md`.
+Se conservan la [salida, el consumo y los controles](evidencias/bloques-21-23/rechazo-explicito-gemini.md).
 
-Solo después de resolver la entrada, se coordinará una nueva consulta para
-comprobar el rechazo explícito dentro del agente:
-
-1. Configurar `GEMINI_API_KEY` localmente. No hace falta iniciar la API.
-   Un worktree no hereda el `.env` ignorado por Git de la carpeta original.
-   `uv run --env-file /ruta/a/tu/.env ...` permite usar ese archivo sin copiarlo.
-2. El siguiente comando consume cuota: se esperan tres llamadas, con un máximo
-   de cuatro iteraciones. Reemplazar la ruta del `.env` por la propia:
-
-   ```bash
-   uv run --env-file /ruta/a/tu/.env \
-     python -m src.orquestacion.agente_con_herramientas \
-     --sesion rechazo-manual-23-verificado \
-     "Lee el artículo 34 de la Ley REP y entrega un informe breve titulado 'Prueba de rechazo manual', citando ese artículo. Solicita mi aprobación mediante entregar_informe."
-   ```
-
-3. Cuando aparezca **sesión: `rechazo-manual-23-verificado`**, leer el informe, escribir `n` y
-   pulsar Enter antes de 300 segundos. El caso se considera comprobado si la
-   terminal muestra esa entrada, la decisión queda en `false` y no se crea su
-   archivo. Un nuevo timeout no se presenta como rechazo explícito.
-4. Compartir la salida sin claves. Revisar las nuevas líneas de aprobación y
-   traza, el identificador del informe ausente y el consumo mostrado en stderr.
-5. Contrastar los archivos locales y revisar repeticiones:
-
-   ```bash
-   grep -n "esperar_aprobacion(" src/orquestacion/herramientas.py
-   wc -l output/agente/trazas_agente.jsonl output/agente/aprobaciones.jsonl
-   grep -c '"herramienta": "obtener_articulo"' output/agente/trazas_agente.jsonl
-   grep -c '"herramienta": "entregar_informe"' output/agente/trazas_agente.jsonl
-   uv run python -m src.orquestacion.supervision
-   ```
+Antes de esta corrida, el diagnóstico con modelo falso también leyó `s` y `n`.
+La nueva evidencia comprueba el recorrido con el conector real, pero no explica
+retroactivamente por qué una corrida anterior rechazó de inmediato.
 
 Los JSONL acumulan ejecuciones anteriores: los conteos son de líneas, no de acciones,
 y no bastan por sí solos para probar el caso. Hay que revisar sesión, fecha e
@@ -176,10 +152,9 @@ identificador: `informe-rechazado` se usó en dos intentos con decisiones distin
 `coincide` compara el booleano, no distingue `n` de timeout o EOF. La confirmación
 del alumno es necesaria para no presentar estos últimos como rechazo explícito.
 
-Los eventos de los dos intentos y del control de rechazo inmediato están conservados en
-`docs/evidencias/bloques-21-23/trazas_agente.jsonl` y `aprobaciones.jsonl`.
-Después del control pendiente se agregarán solo los eventos nuevos revisados, sin
-alterar las decisiones anteriores ni introducir claves.
+Los eventos de los dos intentos y de ambos controles posteriores están conservados
+en `docs/evidencias/bloques-21-23/trazas_agente.jsonl` y `aprobaciones.jsonl`:
+seis trazas y cinco decisiones, sin alterar las anteriores ni introducir claves.
 
 Para repetir el ensayo completo en el futuro, usar una ruta JSON nueva y guiarse
 por la sesión mostrada, no por el orden de los avisos: un caso puede fallar sin
@@ -215,7 +190,8 @@ La explicación completa está en [límites de autonomía](limites-autonomia-age
 - [x] Documentación, guía y arquitectura del nuevo flujo.
 - [x] Dos intentos reales de 23 ejecutados por el alumno y revisados, con sus diferencias.
 - [x] Trazas y decisiones de esos intentos conservadas, sin claves.
-- [ ] Rechazo explícito con `n` dentro del agente y ausencia de su archivo verificados.
+- [x] Diagnóstico humano sin Gemini: `s` y `n` explícitas con modelo falso y archivos temporales.
+- [x] Rechazo explícito con `n` en el agente con Gemini y ausencia de su archivo verificados.
 - [ ] Publicación de la rama autorizada por el alumno.
 - [ ] Clonado desde GitHub, `uv sync --locked` y suite en una instalación limpia.
 

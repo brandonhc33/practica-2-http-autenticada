@@ -1,6 +1,6 @@
 # PRD 03: agente de consultas de Ley REP con herramientas, memoria y supervisión
 
-- **Estado:** fases 0 a 3 implementadas y corridas humanas revisadas; falta comprobar `n` explícita dentro del agente y la instalación desde GitHub. Ver [estado de entrega](entrega-bloques-21-23.md).
+- **Estado:** fases 0 a 3 implementadas y validación funcional completada; aprobación y `n` explícita con Gemini comprobadas por el alumno y contrastadas con sus archivos. Quedan la publicación de la rama y la instalación desde GitHub. Ver [estado de entrega](entrega-bloques-21-23.md).
 - **Fecha:** 14 de noviembre de 2026.
 - **Bloques cubiertos:** 21, 22 y 23 (Unidad 2.4).
 - **Primera versión:** agente de terminal con tres herramientas, memoria por sesión, aprobación humana y trazas. La API y el flujo del PRD 02 no cambian.

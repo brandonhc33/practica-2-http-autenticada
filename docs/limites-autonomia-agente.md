@@ -106,16 +106,17 @@ puede ser correcto. No bloquea acciones, no revoca aprobaciones ni repite consul
 
 La aprobación, el rechazo, el tiempo agotado, el fin de entrada, el aislamiento de
 sesiones, las trazas y las repeticiones tienen pruebas sin red. Las corridas humanas
-del Bloque 23 ya comprobaron una entrega aprobada y una no aprobada, con su archivo
-presente y ausente respectivamente. Está pendiente el rechazo explícito con `n`
-dentro del agente: el registro booleano no distingue una `n` de un timeout o EOF.
-La prueba local sin Gemini sí leyó `s` y luego `n`, pero no explica la dificultad
-reportada durante la corrida ni reemplaza ese control. Ver
-[revisión de evidencias](evidencias/bloques-21-23/revision-bloque-23.md).
-La consulta adicional también terminó sin `n` en unos siete segundos; se conserva
-como no aprobada y no como rechazo explícito. El
+del Bloque 23 comprobaron una entrega aprobada y un rechazo explícito con Gemini,
+con su archivo presente y ausente respectivamente. En `rechazo-final-23`, la
+terminal leyó `n` tras 21,6 segundos, registró `false` y no creó el informe:
+ver [evidencia final](evidencias/bloques-21-23/rechazo-explicito-gemini.md).
+
+Los rechazos anteriores se conservan como no aprobados, sin atribuirles una `n`
+ni una causa que no quedó registrada. El
 [diagnóstico con modelo falso](evidencias/bloques-21-23/diagnostico-aprobacion.md)
-permite revisar la entrada sin seguir gastando cuota.
+también leyó `s` y `n`, pero no sustituye esa evidencia con Gemini. El registro
+booleano por sí solo sigue sin distinguir una `n` de un timeout o EOF; se contrastó
+con la salida de terminal, la traza y el archivo ausente.
 El estado y los pasos de cierre están en
 [la entrega de los bloques 21 a 23](entrega-bloques-21-23.md).
 

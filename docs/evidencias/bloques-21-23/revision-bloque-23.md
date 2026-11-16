@@ -12,6 +12,11 @@ agregaron una quinta traza y una cuarta decisión de `rechazo-manual-23`; el
 [diagnóstico posterior](diagnostico-aprobacion.md) documenta por qué esa consulta
 tampoco certifica una `n` explícita.
 
+Finalmente se agregaron una sexta traza y una quinta decisión de `rechazo-final-23`,
+que sí recibió `n` explícita con Gemini. Su
+[verificación final](rechazo-explicito-gemini.md) está separada de los intentos
+históricos descritos aquí.
+
 No se incluyeron claves ni archivos `.env`. Los registros sí identifican la
 cuenta local del supervisor y contienen las rutas locales y el contenido de los
 informes, como prevé D-12. No se publicaron archivos en un servicio externo.
@@ -101,15 +106,14 @@ de acciones. Las tres trazas exitosas contienen una lectura y una propuesta de
 entrega cada una. La traza del 503 no contiene pasos: el ejecutor los pierde al
 fallar, como se documentó en los límites.
 
-## Prueba de entrada y siguiente control
+## Prueba de entrada y control posterior
 
 La [prueba local de dos entradas](prueba-entrada-terminal.md), sin Gemini, sí leyó
 `s` y luego `n`, en 4,5 y 1,9 segundos respectivamente. No reprodujo la dificultad
 de entrada del ensayo.
 
-Está pendiente una única consulta con sesión nueva para rechazar expresamente con
-`n` dentro del agente, después de resolver la entrada mediante el diagnóstico
-sin Gemini. No hace falta repetir la aprobación ni los dos casos enteros.
-Después se conservarán la traza y la decisión nuevas, contrastándolas con la
-ausencia de su archivo. La comprobación desde GitHub sigue pendiente de autorización
-para publicar.
+El alumno completó después el diagnóstico con modelo falso y la consulta
+`rechazo-final-23` con Gemini. Esta última leyó `n` explícita; se conservaron la
+traza y la decisión nuevas y se comprobó que el informe no existe. Ver
+[rechazo final verificado](rechazo-explicito-gemini.md). La comprobación desde
+GitHub sigue pendiente de publicación autorizada.

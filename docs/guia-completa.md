@@ -75,7 +75,7 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloque 19: enrutamiento | [Revisar la clasificación y las rutas](#orquestación-con-langchain-bloques-18-a-20). | [Enrutamiento](../src/orquestacion/enrutamiento.py), [pruebas](../tests/orquestacion/test_enrutamiento.py) y [entrega](../docs/entrega-bloques-18-20.md). |
 | Bloque 20: manejo de errores | [Revisar los fallbacks](#orquestación-con-langchain-bloques-18-a-20) y ejecutar `uv run python -m pytest tests/orquestacion -v`. | [Pruebas de extremo a extremo](../tests/orquestacion/test_orquestacion.py) y [entrega con checklist y límites](../docs/entrega-bloques-18-20.md). |
 | Bloques 21 y 22: herramientas y memoria | [Consultar con el agente](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). | [Entrega y ensayos](entrega-bloques-21-23.md). |
-| Bloque 23: supervisión humana | Revisar y decidir sobre cada entrega simulada. | [Límites de autonomía](limites-autonomia-agente.md) y [pasos pendientes](entrega-bloques-21-23.md#ensayo-humano-pendiente--bloque-23). |
+| Bloque 23: supervisión humana | Revisar y decidir sobre cada entrega simulada. | [Límites de autonomía](limites-autonomia-agente.md) y [verificación final con Gemini](entrega-bloques-21-23.md#verificación-final-del-bloque-23-con-gemini). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -709,16 +709,19 @@ stderr y espera hasta 300 segundos. Solo `s` y Enter aprueban; `n`, silencio, EO
 o entrada no interactiva rechazan. El archivo aprobado se guarda localmente y no se
 envía a nadie. La respuesta sale por stdout; herramientas y consumo, por stderr.
 
-El ensayo real del Bloque 23 debe hacerlo el alumno: aprobar un caso y rechazar
-otro. Los [pasos de cierre](entrega-bloques-21-23.md#ensayo-humano-pendiente--bloque-23)
-incluyen el comando y los controles. No ejecutar una corrida real sin autorización
-ni automatizar las respuestas. Para revisar las trazas sin llamar al modelo:
+El alumno ya comprobó una aprobación y un rechazo explícito con Gemini. La
+[verificación final](entrega-bloques-21-23.md#verificación-final-del-bloque-23-con-gemini)
+conserva el resultado y sus controles; no hace falta repetir el ensayo. Cualquier
+nueva corrida real requiere autorización y no debe automatizar las respuestas.
+Para revisar las trazas sin llamar al modelo:
 
 ```bash
 uv run python -m src.orquestacion.supervision
 ```
 
-Ver [entrega y evidencias](entrega-bloques-21-23.md) y
+Para estudiar los conceptos y la relación con la actividad, consulta la
+[guía de estudio de los bloques 21 a 23](preguntas-bloques-21-23.md).
+Ver también [entrega y evidencias](entrega-bloques-21-23.md) y
 [límites de autonomía](limites-autonomia-agente.md).
 
 ## Pruebas y comprobaciones
