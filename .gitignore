@@ -26,3 +26,10 @@ Thumbs.db
 
 # Trazas, aprobaciones e informes simulados del agente (bloques 21 a 23)
 output/agente/
+
+# Índices, consultas y mediciones locales del RAG (bloques 24 a 28)
+vectorstore/
+output/rag/
+
+# Paquetes locales de entrega; el código y las evidencias se versionan por separado
+output/entrega-bloques-*.zip

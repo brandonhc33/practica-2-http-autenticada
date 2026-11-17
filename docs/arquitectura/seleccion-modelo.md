@@ -6,19 +6,19 @@
 
 **Estado:** aceptada para el alcance actual de la miniaplicación.
 
-Este registro corresponde a la práctica HTTP. La selección de modelos para el [proyecto RAG de Ley REP](guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) requiere una evaluación específica de calidad normativa.
+Este registro corresponde a la práctica HTTP. La selección de modelos para el [proyecto RAG de Ley REP](../guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) requiere una evaluación específica de calidad normativa.
 
 ## Modelo elegido
 
-Se elige **Gemini 3.5 Flash-Lite**, identificador `gemini-3.5-flash-lite`. La API lo resuelve mediante `agente: "gemini"` y `modelo: "flash-lite"` en [src/catalogo.py](../src/catalogo.py). La prueba por terminal utiliza el mismo modelo.
+Se elige **Gemini 3.5 Flash-Lite**, identificador `gemini-3.5-flash-lite`. La API lo resuelve mediante `agente: "gemini"` y `modelo: "flash-lite"` en [src/catalogo.py](../../src/catalogo.py). La prueba por terminal utiliza el mismo modelo.
 
 La miniaplicación atiende preguntas breves de aprendizaje sobre Python, APIs y autenticación. Para ese uso se prioriza el costo por consulta, seguido del tiempo de respuesta, con una revisión de calidad del contenido. Los importes que publica la aplicación se calculan con código y `Decimal`, a partir del consumo informado por Gemini.
 
 ## Diagrama de arquitectura
 
-![Arquitectura de la miniaplicación, Bloque 8](diagrama_arquitectura.png)
+![Arquitectura de la miniaplicación, Bloque 8](diagramas/flujo-api.png)
 
-Se reutiliza el diagrama del Bloque 8, guardado en esta misma carpeta. Están disponibles su [fuente editable en draw.io](diagrama_arquitectura.drawio) y la [explicación del recorrido y manejo de errores](arquitectura.md).
+Se reutiliza el diagrama del Bloque 8, guardado en `diagramas/`. Están disponibles su [fuente editable en draw.io](diagramas/flujo-api.drawio) y la [explicación del recorrido y manejo de errores](vision-general.md).
 
 La evaluación llama al cliente `consultar_gemini_raw()` que usa la aplicación. Después del tramo HTTP procesa el consumo y aplica `calcular_costo_gemini()`. Los dos candidatos usan el mismo endpoint compatible con OpenAI de Gemini, `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`, con la misma clave de proveedor. El Bearer token de la API local se valida antes de ese tramo y no se envía a Google.
 
@@ -26,16 +26,16 @@ La evaluación llama al cliente `consultar_gemini_raw()` que usa la aplicación.
 
 ### Disponibilidad y selección
 
-El endpoint `GET /v1beta/models`, autenticado con la clave de este proyecto, devolvió **63 entradas**. El inventario completo, con nombres, límites y métodos, está en [la evidencia de la evaluación](evaluaciones/gemini-2026-10-20.json), campo `modelos_disponibles`. Entre otros, enumera modelos de texto como `gemini-3.1-flash-lite`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.8-flash` y `gemini-4-argon`, además de modelos de imagen, audio, video y embeddings.
+El endpoint `GET /v1beta/models`, autenticado con la clave de este proyecto, devolvió **63 entradas**. El inventario completo, con nombres, límites y métodos, está en [la evidencia de la evaluación](../evaluaciones/gemini-2026-10-20.json), campo `modelos_disponibles`. Entre otros, enumera modelos de texto como `gemini-3.1-flash-lite`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.8-flash` y `gemini-4-argon`, además de modelos de imagen, audio, video y embeddings.
 
 Se compararon el modelo ya integrado, **Gemini 3.5 Flash-Lite**, y una alternativa de la familia Flash, **Gemini 3.6 Flash**. Es una comparación acotada de dos candidatos para esta aplicación, no una búsqueda del modelo óptimo entre todo el catálogo. Se mantienen identificadores de versión, en lugar de alias `latest`, para identificar qué se evaluó. Las fichas oficiales documentan ambos como versiones estables: [Flash-Lite](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite) y [Flash](https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash).
 
-Inicialmente se intentó comparar Flash-Lite con **Gemini 3.8 Flash**. Este último devolvió dos HTTP 503 consecutivos, después de **50.685 s** y **39.686 s**. Se detuvo esa serie durante una tercera solicitud a Flash 3.8, cuyo resultado y consumo son desconocidos. La [evidencia de esa serie interrumpida](evaluaciones/gemini-3.8-evaluacion-interrumpida-2026-10-20.json) conserva los cinco intentos finalizados y registra por separado la solicitud interrumpida. Se sustituyó el candidato para poder medir respuestas reales; esto no demuestra indisponibilidad permanente ni global de Flash 3.8. Figurar en el inventario no garantiza cuota ni éxito al generar una respuesta.
+Inicialmente se intentó comparar Flash-Lite con **Gemini 3.8 Flash**. Este último devolvió dos HTTP 503 consecutivos, después de **50.685 s** y **39.686 s**. Se detuvo esa serie durante una tercera solicitud a Flash 3.8, cuyo resultado y consumo son desconocidos. La [evidencia de esa serie interrumpida](../evaluaciones/gemini-3.8-evaluacion-interrumpida-2026-10-20.json) conserva los cinco intentos finalizados y registra por separado la solicitud interrumpida. Se sustituyó el candidato para poder medir respuestas reales; esto no demuestra indisponibilidad permanente ni global de Flash 3.8. Figurar en el inventario no garantiza cuota ni éxito al generar una respuesta.
 
 ### Método de medición
 
 - **Ejecución:** 20 de octubre de 2026, de 21:07:11 a 21:10:12 en Santiago; los registros usan UTC, del `2026-10-21T00:07:11` al `2026-10-21T00:10:12`.
-- **Carga:** tres preguntas en español: explicar una API, diagnosticar errores HTTP y calcular un costo con datos fijados en la pregunta. Se pidieron secciones breves y entre 150 y 200 palabras. Los textos exactos están en `casos` del JSON y en [scripts/comparar_modelos.py](../scripts/comparar_modelos.py).
+- **Carga:** tres preguntas en español: explicar una API, diagnosticar errores HTTP y calcular un costo con datos fijados en la pregunta. Se pidieron secciones breves y entre 150 y 200 palabras. Los textos exactos están en `casos` del JSON y en [scripts/comparar_modelos.py](../../scripts/comparar_modelos.py).
 - **Muestra:** tres repeticiones por caso y modelo: nueve intentos por candidato, **18 consultas reales** en la serie principal. La serie inicial interrumpida se conserva aparte y no participa en sus promedios.
 - **Condiciones:** solicitudes independientes, secuenciales, sin historial ni streaming; se intercalaron los modelos y se rotó quién consultaba primero. Se usó el mismo cuerpo de petición que la aplicación, con los parámetros predeterminados de cada modelo, sin ajustar temperatura, longitud máxima ni presupuesto de razonamiento. No hubo calentamiento ni reintentos automáticos.
 - **Latencia:** `perf_counter()` alrededor de `consultar_gemini_raw()`, hasta recibir y decodificar el JSON completo. Incluye red y conexión HTTP; excluye el cálculo de costos y la consulta del dólar. No es tiempo al primer token ni latencia completa de `POST /consultar`. Los timeouts son 10 s de conexión y 60 s de lectura; el timeout de lectura no es un límite total de ejecución.
@@ -82,7 +82,7 @@ En las tablas se usa punto decimal. Los valores de presentación se redondean; l
 | Proyección de 1.000 respuestas equivalentes, USD | **0.78495** | **12.478** |
 | Proyección de 1.000 respuestas equivalentes, CLP | **770.711007** | **12251.64908** |
 
-Los valores comparables salen de `resumen_pares_completos` del [JSON de evidencia](evaluaciones/gemini-2026-10-20.json). Los costos incluyen los tokens consumidos realmente por cada respuesta, no un supuesto de igual cantidad de salida. La mayor salida facturable de Flash explica que la diferencia por request sea mayor que la diferencia de tarifa por token.
+Los valores comparables salen de `resumen_pares_completos` del [JSON de evidencia](../evaluaciones/gemini-2026-10-20.json). Los costos incluyen los tokens consumidos realmente por cada respuesta, no un supuesto de igual cantidad de salida. La mayor salida facturable de Flash explica que la diferencia por request sea mayor que la diferencia de tarifa por token.
 
 Como comprobación con toda la muestra, las nueve respuestas completas de Flash-Lite promedian **2.783 s** y **USD 0.000786478** por request; las seis completas de Flash promedian **16.070 s** y **USD 0.012478**. El campo `resumen` conserva esos resultados. Los HTTP 503 de Flash están en las mediciones **6, 10 y 14**, con duraciones de **8.339, 13.660 y 37.049 s**. Esas duraciones no se mezclan con la latencia de las respuestas exitosas.
 
@@ -143,7 +143,7 @@ El evaluador conserva cada intento antes de continuar. Si hay errores o respuest
 Para registrar y publicar esta entrega completa, incluyendo su herramienta de reproducción:
 
 ```bash
-git add .env.example README.md docs/arquitectura.md docs/decision-arquitectura.md \
+git add .env.example README.md docs/arquitectura/vision-general.md docs/arquitectura/seleccion-modelo.md \
     docs/evaluaciones/ src/catalogo.py scripts/comparar_modelos.py src/costos/calculadora.py \
     tests/scripts/test_comparar_modelos.py tests/api/test_consultas.py tests/api/test_consultas_raw.py \
     tests/api/test_validaciones.py

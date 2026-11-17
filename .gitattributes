@@ -1,2 +1,5 @@
 # Conserva los PDF como binarios, sin conversiones de fin de línea.
 *.pdf binary
+
+# Los paquetes exportados no deben contener salidas locales ni ZIP de entregas anteriores.
+/output export-ignore

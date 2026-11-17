@@ -1,0 +1,45 @@
+{
+  "tipo_ejecucion": "real",
+  "copiado_utc": "2026-11-17T01:25:43.553678+00:00",
+  "commit_codigo": "31c6af4ea08aeffabbe898a34e00e8fe85fb611c",
+  "huella_indice": "43559c52b3c6cae8f14afb38aec54afc2488393bd5c9f725b0c4b4f86c88f794",
+  "tratamiento": "Copias byte a byte de salidas generadas con Gemini; consultas de estudio y ley pública, sin credenciales ni binarios del índice. El intento de evaluación 01 interrumpido se describe aparte.",
+  "archivos": [
+    {
+      "origen": "output/rag/indexacion-01.json",
+      "archivo": "indexacion-01.json",
+      "bytes": 966,
+      "sha256": "06b425dc0066f26fb37aae8842bd36ffaecfd4fdac655ad8017fa4dd01249d3e"
+    },
+    {
+      "origen": "output/rag/recarga-01.json",
+      "archivo": "recarga-01.json",
+      "bytes": 942,
+      "sha256": "34c2ea72e04b09b847b77cf7f8f0b65a9b4ee7886e517ab67be58d9472cb88a6"
+    },
+    {
+      "origen": "output/rag/resultados_evaluacion-02.txt",
+      "archivo": "resultados-evaluacion-02.txt",
+      "bytes": 5517,
+      "sha256": "f3a2c682fbf5173d7726023c10a31ee9271aab4236ed4d13074b67ddca9b3e65"
+    },
+    {
+      "origen": "output/rag/resultados_evaluacion-02.json",
+      "archivo": "resultados-evaluacion-02.json",
+      "bytes": 23029,
+      "sha256": "42503016b2faa428d6e25f6db468aee48a1891c7c47934cb80d3c9dcbfc56ff3"
+    },
+    {
+      "origen": "output/rag/registros_latencia_costo-01.jsonl",
+      "archivo": "registros_latencia_costo.jsonl",
+      "bytes": 25460,
+      "sha256": "0c6d59a4c8d119a56faec20c049c77c46c15d154fd1711313c6268d6bfc8c2f6"
+    },
+    {
+      "origen": "output/rag/fuera-corpus-01.jsonl",
+      "archivo": "fuera-corpus-01.jsonl",
+      "bytes": 5165,
+      "sha256": "8bb2fdc6ad1655a5118a8c5f44f65b45e326f866eaa10bfbb16fecf1824e510f"
+    }
+  ]
+}

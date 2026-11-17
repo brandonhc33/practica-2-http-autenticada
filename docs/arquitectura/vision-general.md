@@ -2,11 +2,11 @@
 
 Actividad práctica del Bloque 8: recorrido de una pregunta desde el usuario hasta la respuesta, con credenciales, manejo de errores, consumo de tokens y costo estimado.
 
-La [decisión de arquitectura del Bloque 9](decision-arquitectura.md) utiliza este diagrama y documenta la comparación de modelos con mediciones reales de costo y latencia.
+La [decisión de arquitectura del Bloque 9](seleccion-modelo.md) utiliza este diagrama y documenta la comparación de modelos con mediciones reales de costo y latencia.
 
-![Diagrama de arquitectura de POST /consultar](diagrama_arquitectura.png)
+![Diagrama de arquitectura de POST /consultar](diagramas/flujo-api.png)
 
-El diagrama representa el flujo base entregado en el Bloque 8. El Bloque 10 agrega la selección opcional de prompts, las instrucciones de sistema y la validación del contenido JSON, descritas en esta nota y en la [guía de prompts](bloque-10-prompts.md). El Bloque 12 incorpora la política interna de reintentos descrita abajo y en el [README](guia-completa.md#cliente-con-reintentos-bloque-12). El archivo [editable de draw.io](diagrama_arquitectura.drawio) permite modificar las cajas, los textos y las conexiones. Para abrirlo, usa **Archivo → Abrir desde → Dispositivo** en diagrams.net.
+El diagrama representa el flujo base entregado en el Bloque 8. El Bloque 10 agrega la selección opcional de prompts, las instrucciones de sistema y la validación del contenido JSON, descritas en esta nota y en la [guía de prompts](../estudio/bloque-10-prompts.md). El Bloque 12 incorpora la política interna de reintentos descrita abajo y en la [guía de uso](../guias/guia-completa.md#cliente-con-reintentos-bloque-12). El archivo [editable de draw.io](diagramas/flujo-api.drawio) permite modificar las cajas, los textos y las conexiones. Para abrirlo, usa **Archivo → Abrir desde → Dispositivo** en diagrams.net.
 
 ## Correspondencia con la actividad
 
@@ -87,7 +87,7 @@ Cada ruta está protegida por `construir_ruta_segura()`: si falla, se repite con
 | Salida | JSON con respuesta, uso y costo. | Texto libre, sin validar las citas. |
 | Costos | Se registran después de los reintentos. | `RegistroLlamadas` registra cada llamada en el mismo registro de sesión. |
 
-Una respuesta vacía no lanza una excepción en el conector, así que `exigir_texto()` la convierte en error para que actúe el fallback. Las decisiones están en el [PRD 02](prd-02-orquestacion-langchain.md) y los resultados y límites en la [entrega de los bloques 18 a 20](entrega-bloques-18-20.md).
+Una respuesta vacía no lanza una excepción en el conector, así que `exigir_texto()` la convierte en error para que actúe el fallback. Las decisiones están en el [PRD 02](../planes/prd-02-orquestacion-langchain.md) y los resultados y límites en la [entrega de los bloques 18 a 20](../entregas/bloques-18-20.md).
 
 ## Agente con supervisión: bloques 21 a 23
 
@@ -127,18 +127,56 @@ no se presenta como entrega confirmada.
 La entrega es simulada y requiere una terminal interactiva; solo crea un Markdown
 local, sin contacto con clientes. Los límites y el estado de la verificación humana
 se detallan en [límites de autonomía](limites-autonomia-agente.md) y en
-[la entrega](entrega-bloques-21-23.md).
+[la entrega](../entregas/bloques-21-23.md).
+
+## RAG medido: bloques 24 a 28
+
+Otra entrada de terminal, separada del agente y de la API. No ejecuta herramientas
+ni envía informes. `src/rag/corpus.py` carga los 50 documentos existentes y genera
+99 chunks con fuente, artículo, páginas, versión, ID y offset. La indexación con
+`scripts/indexar_corpus.py` calcula embeddings de documentos una vez y persiste
+vectores, textos y metadata en Chroma. Un manifiesto verifica configuración y
+contenido al recargar; no se crean índices vacíos durante una consulta.
+
+```mermaid
+flowchart TD
+    A["Pregunta e índice verificado"] --> B["Embedding de consulta una sola vez"]
+    B --> C["Búsqueda local por vector y distancia coseno"]
+    C --> D["Contexto numerado y mapa de fuentes"]
+    D --> E["Una generación sin fallback"]
+    E --> F["Revisión de números de cita"]
+    F --> G["JSONL con respuesta, fuentes, tiempos y consumo"]
+```
+
+`scripts/evaluacion_recuperacion.py` se detiene tras recuperar: compara los IDs con
+diez casos etiquetados y guarda precisión/recall. `scripts/registro_rag.py` ejecuta
+el flujo completo, cronometra las tres etapas y conserva tokens reales de
+generación. No se repite el embedding dentro de la búsqueda.
+
+Los registros distinguen tiempo de pared de la suma de etapas y costo conocido
+de generación del costo completo desconocido. El SDK de embeddings puede
+reintentar internamente; no se afirma una única petición HTTP ni se estima su
+consumo como cero. La indexación y la carga inicial no se incluyen en el tiempo
+de una consulta con el sistema ya cargado.
+
+Índice en `vectorstore/`, registros en `output/rag/`, ambos ignorados. Se
+deshabilita la telemetría anónima de Chroma; las pruebas bloquean red y usan
+embeddings/modelos falsos con Chroma real en temporales. Las consultas y respuestas
+se guardan completas: no se ha implementado anonimización ni operación pública.
+El texto sigue siendo una copia de 2016; citas existentes no prueban respaldo
+semántico o vigencia. Ver [PRD 04](../planes/prd-04-rag-ley-rep.md), [guía de estudio](../estudio/bloques-24-28.md)
+y [entrega con estado de las corridas reales](../entregas/bloques-24-28.md).
 
 ## Alcance y entrega
 
 La imagen muestra el flujo base de `POST /consultar`; la selección opcional de prompts se describe arriba. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.
 
-Los archivos de entrega son `docs/diagrama_arquitectura.png` y su fuente editable `docs/diagrama_arquitectura.drawio`. Esta nota documenta cómo se adaptó la consigna al proyecto.
+Los archivos de entrega son `docs/arquitectura/diagramas/flujo-api.png` y su fuente editable `docs/arquitectura/diagramas/flujo-api.drawio`. Esta nota documenta cómo se adaptó la consigna al proyecto.
 
 Para registrar y publicar únicamente esta documentación, desde la raíz del repositorio:
 
 ```bash
-git add docs/diagrama_arquitectura.png docs/diagrama_arquitectura.drawio docs/arquitectura.md
+git add docs/arquitectura/diagramas/flujo-api.png docs/arquitectura/diagramas/flujo-api.drawio docs/arquitectura/vision-general.md
 git commit -m "agrega diagrama de arquitectura de la miniaplicación"
 git push
 ```

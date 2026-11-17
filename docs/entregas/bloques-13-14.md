@@ -6,14 +6,14 @@ La implementación completa los requisitos de costo acumulado, pruebas automatiz
 
 ## Qué se incorporó
 
-- [`src/costos/registro.py`](../src/costos/registro.py): acumulado exacto de USD y tokens, intentos sin uso reportado y sesiones aisladas. Protege las sumas cuando se comparte la instancia entre hilos.
-- [`src/costos/calculadora.py`](../src/costos/calculadora.py): cálculo puro de USD reutilizado por el registro; el cálculo y la conversión a CLP siguen ofreciendo el mismo resultado.
-- [`src/clientes/gemini.py`](../src/clientes/gemini.py): registro de una respuesta después de los reintentos y antes de procesar su contenido. El recorrido raw conserva el JSON original y no consulta el dólar.
-- [`tests/clientes/test_cliente_modular.py`](../tests/clientes/test_cliente_modular.py): pruebas unitarias directas de transporte y fachada, usando el contrato de errores del proyecto.
-- [`tests/costos/test_registro_costos.py`](../tests/costos/test_registro_costos.py): acumulación, aislamiento, concurrencia, costo desconocido y ausencia de duplicados.
-- [`scripts/ensayo_rate_limit.py`](../scripts/ensayo_rate_limit.py): ensayo manual acotado, con ejecución real o simulada y evidencia incremental en JSON.
-- [`tests/scripts/test_ensayo_rate_limit.py`](../tests/scripts/test_ensayo_rate_limit.py): límites y conservación de evidencias del ensayo.
-- `pytest` declarado en desarrollo y fijado en los archivos de dependencias. [`tests/conftest.py`](../tests/conftest.py) impide conexiones externas durante la suite de pytest.
+- [`src/costos/registro.py`](../../src/costos/registro.py): acumulado exacto de USD y tokens, intentos sin uso reportado y sesiones aisladas. Protege las sumas cuando se comparte la instancia entre hilos.
+- [`src/costos/calculadora.py`](../../src/costos/calculadora.py): cálculo puro de USD reutilizado por el registro; el cálculo y la conversión a CLP siguen ofreciendo el mismo resultado.
+- [`src/clientes/gemini.py`](../../src/clientes/gemini.py): registro de una respuesta después de los reintentos y antes de procesar su contenido. El recorrido raw conserva el JSON original y no consulta el dólar.
+- [`tests/clientes/test_cliente_modular.py`](../../tests/clientes/test_cliente_modular.py): pruebas unitarias directas de transporte y fachada, usando el contrato de errores del proyecto.
+- [`tests/costos/test_registro_costos.py`](../../tests/costos/test_registro_costos.py): acumulación, aislamiento, concurrencia, costo desconocido y ausencia de duplicados.
+- [`scripts/ensayo_rate_limit.py`](../../scripts/ensayo_rate_limit.py): ensayo manual acotado, con ejecución real o simulada y evidencia incremental en JSON.
+- [`tests/scripts/test_ensayo_rate_limit.py`](../../tests/scripts/test_ensayo_rate_limit.py): límites y conservación de evidencias del ensayo.
+- `pytest` declarado en desarrollo y fijado en los archivos de dependencias. [`tests/conftest.py`](../../tests/conftest.py) impide conexiones externas durante la suite de pytest.
 
 El recorrido conserva una sola capa de reintentos:
 
@@ -52,26 +52,26 @@ La política mantiene su lista explícita de 5xx recuperables. HTTP 501 y 505 si
 
 | Evidencia | Resultado | Archivos |
 | --- | --- | --- |
-| Suite completa | 152 pruebas y 389 subcasos correctos, 1,08 segundos en la ejecución capturada por el usuario. | [Captura de terminal](evidencias/mis-capturas/bloque-14/01-suite-completa.png). |
-| Checklist seleccionado | 36 pruebas y 38 subcasos correctos en 0,32 segundos, incluyendo transporte, fachada, reintentos y registro. | [Comando e inicio](evidencias/mis-capturas/bloque-14/02-checklist-inicio.png), [continuación y resumen](evidencias/mis-capturas/bloque-14/03-checklist-resumen.png). |
-| Ensayo simulado | 200, luego 429→503→200; dos respuestas, cuatro envíos, US$ 0.0106 de costo de prueba. | [Captura de terminal](evidencias/mis-capturas/bloque-13/01-ensayo-simulado.png), [JSON original](evidencias/mis-capturas/ensayo-simulado-01.json). |
-| Ensayo real | Primer 429 en la consulta 16; agotamiento de tres intentos, 15 respuestas exitosas y US$ 0.0000888 conocidos estimados. | [Comando e inicio](evidencias/mis-capturas/bloque-13/02-ensayo-real-inicio.png), [429 y resultado](evidencias/mis-capturas/bloque-13/03-ensayo-real-resultado.png), [JSON original](evidencias/mis-capturas/ensayo-real-01.json). |
+| Suite completa | 152 pruebas y 389 subcasos correctos, 1,08 segundos en la ejecución capturada por el usuario. | [Captura de terminal](../evidencias/mis-capturas/bloque-14/01-suite-completa.png). |
+| Checklist seleccionado | 36 pruebas y 38 subcasos correctos en 0,32 segundos, incluyendo transporte, fachada, reintentos y registro. | [Comando e inicio](../evidencias/mis-capturas/bloque-14/02-checklist-inicio.png), [continuación y resumen](../evidencias/mis-capturas/bloque-14/03-checklist-resumen.png). |
+| Ensayo simulado | 200, luego 429→503→200; dos respuestas, cuatro envíos, US$ 0.0106 de costo de prueba. | [Captura de terminal](../evidencias/mis-capturas/bloque-13/01-ensayo-simulado.png), [JSON original](../evidencias/mis-capturas/ensayo-simulado-01.json). |
+| Ensayo real | Primer 429 en la consulta 16; agotamiento de tres intentos, 15 respuestas exitosas y US$ 0.0000888 conocidos estimados. | [Comando e inicio](../evidencias/mis-capturas/bloque-13/02-ensayo-real-inicio.png), [429 y resultado](../evidencias/mis-capturas/bloque-13/03-ensayo-real-resultado.png), [JSON original](../evidencias/mis-capturas/ensayo-real-01.json). |
 
-Las seis capturas principales fueron tomadas directamente desde la terminal por el usuario y copiadas sin modificar su contenido ni resolución. El [índice de capturas](evidencias/mis-capturas/README.md) las organiza por bloque y explica cada imagen. Su [manifiesto](evidencias/mis-capturas/manifest.json) conserva los nombres originales, dimensiones y SHA-256 para comprobar las copias.
+Las seis capturas principales fueron tomadas directamente desde la terminal por el usuario y copiadas sin modificar su contenido ni resolución. El [índice de capturas](../evidencias/mis-capturas/README.md) las organiza por bloque y explica cada imagen. Su [manifiesto](../evidencias/mis-capturas/manifest.json) conserva los nombres originales, dimensiones y SHA-256 para comprobar las copias.
 
 ### Verificaciones complementarias anteriores
 
 | Evidencia | Resultado | Archivos |
 | --- | --- | --- |
-| Ruff | Correcto. | [Salida](evidencias/bloques-13-14/05-comprobaciones.txt). |
-| BasedPyright | 0 errores y 0 advertencias. | [Salida](evidencias/bloques-13-14/06-tipos.txt). |
-| Runner unittest anterior | 152 pruebas correctas. | [Salida](evidencias/bloques-13-14/07-unittest.txt). |
+| Ruff | Correcto. | [Salida](../evidencias/bloques-13-14/05-comprobaciones.txt). |
+| BasedPyright | 0 errores y 0 advertencias. | [Salida](../evidencias/bloques-13-14/06-tipos.txt). |
+| Runner unittest anterior | 152 pruebas correctas. | [Salida](../evidencias/bloques-13-14/07-unittest.txt). |
 
-El directorio [bloques-13-14](evidencias/bloques-13-14/) conserva las salidas de una ejecución anterior y sus capturas de un visor HTML local mediante Chromium. Esas imágenes son complementarias y se distinguen de las capturas de terminal del usuario en `mis-capturas/`. Cada visor identifica su archivo fuente y SHA-256; la captura real anterior muestra expresamente las últimas 40 líneas y conserva la salida íntegra en texto.
+El directorio [bloques-13-14](../evidencias/bloques-13-14/) conserva las salidas de una ejecución anterior y sus capturas de un visor HTML local mediante Chromium. Esas imágenes son complementarias y se distinguen de las capturas de terminal del usuario en `mis-capturas/`. Cada visor identifica su archivo fuente y SHA-256; la captura real anterior muestra expresamente las últimas 40 líneas y conserva la salida íntegra en texto.
 
 ## Ensayo real de HTTP 429
 
-- **Evidencia principal:** [capturas de terminal y JSON del usuario](evidencias/mis-capturas/README.md#bloque-13-backoff-límite-de-uso-y-costo-acumulado).
+- **Evidencia principal:** [capturas de terminal y JSON del usuario](../evidencias/mis-capturas/README.md#bloque-13-backoff-límite-de-uso-y-costo-acumulado).
 - **Fecha local:** 28 de octubre de 2026, de 22:13:34 a 22:14:19, America/Santiago.
 - **Fechas del JSON:** UTC, desde `2026-10-29T01:13:34.924255+00:00` hasta `2026-10-29T01:14:19.453482+00:00`.
 - **Modelo:** `gemini-3.5-flash-lite`, alias `flash-lite` del catálogo existente.
@@ -95,7 +95,7 @@ El umbral de costo conocido del script se comprueba entre consultas y no es un t
 
 ### Recuperación observada en la ejecución complementaria
 
-La ejecución anterior, de 21:54:50 a 21:55:33 del mismo día, sí se recuperó: recibió dos HTTP 429 en la consulta 20 y completó el tercer intento, con esperas de 1,154 y 2,120 segundos. Terminó con 20 respuestas exitosas, 22 envíos, 251 tokens reportados y US$ 0.0001193 conocidos estimados. Se conservan su [JSON](evidencias/bloques-13-14/04-ensayo-real-flash-lite.json), [salida de texto](evidencias/bloques-13-14/04-ensayo-real-flash-lite.txt) y [captura del visor](evidencias/bloques-13-14/04-ensayo-real-flash-lite.png).
+La ejecución anterior, de 21:54:50 a 21:55:33 del mismo día, sí se recuperó: recibió dos HTTP 429 en la consulta 20 y completó el tercer intento, con esperas de 1,154 y 2,120 segundos. Terminó con 20 respuestas exitosas, 22 envíos, 251 tokens reportados y US$ 0.0001193 conocidos estimados. Se conservan su [JSON](../evidencias/bloques-13-14/04-ensayo-real-flash-lite.json), [salida de texto](../evidencias/bloques-13-14/04-ensayo-real-flash-lite.txt) y [captura del visor](../evidencias/bloques-13-14/04-ensayo-real-flash-lite.png).
 
 Las dos ejecuciones documentan los desenlaces previstos por la política: recuperación o agotamiento controlado. Sus resultados y capturas se presentan por separado.
 
@@ -134,6 +134,9 @@ Para nuevas capturas de entrega, ejecutar estos comandos desde la terminal y fot
 
 ## Entrega preparada
 
-El paquete [`entrega-bloques-13-14.zip`](../output/entrega-bloques-13-14.zip) contiene el código, pruebas, dependencias, documentación, capturas y salidas originales. Conserva la estructura del proyecto para ejecutar las pruebas después de extraerlo. No contiene `.env`, el entorno virtual ni el historial Git.
+El paquete local `output/entrega-bloques-13-14.zip` se preparó para aquella entrega
+con código, pruebas, dependencias, documentación y salidas originales, sin `.env`,
+entorno virtual ni historial Git. Es un artefacto ignorado, no se distribuye en
+un clon del repositorio ni sustituye las evidencias versionadas.
 
-La [revisión inicial de los PDF](revision-bloques-13-14.md) se conserva como antecedente. El [PRD de control preventivo](prd-01-control-consumo-gemini.md) continúa propuesto: frecuencia, concurrencia y pausas compartidas entre consultas son una ampliación distinta del registro de costos implementado aquí.
+La [revisión inicial de los PDF](../planes/revision-bloques-13-14.md) se conserva como antecedente. El [PRD de control preventivo](../planes/prd-01-control-consumo-gemini.md) continúa propuesto: frecuencia, concurrencia y pausas compartidas entre consultas son una ampliación distinta del registro de costos implementado aquí.

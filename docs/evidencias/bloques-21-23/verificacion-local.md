@@ -88,7 +88,7 @@ la Fase 4: no hubo push ni se comprobó una publicación remota.
 - Push, merge o clonado desde GitHub.
 
 Los resultados reales anteriores de 21 y 22 se conservan sin modificarlos. El
-[estado de entrega](../../entrega-bloques-21-23.md) mantiene pendientes los pasos que
+[estado de entrega](../../entregas/bloques-21-23.md) mantiene pendientes los pasos que
 no se han comprobado.
 
 Posteriormente el alumno ejecutó dos intentos reales de 23 y una prueba local de

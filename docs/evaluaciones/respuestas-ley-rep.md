@@ -10,17 +10,17 @@ para evaluar y no se envía al modelo. La referencia es una respuesta esperada c
 la que se compara lo que generó Gemini.
 
 Para revisar el trabajo, este documento explica el funcionamiento y los resultados.
-El [análisis de límites](limites_metrica.md) desarrolla los hallazgos; los archivos
+El [análisis de límites](limites-metricas.md) desarrolla los hallazgos; los archivos
 JSON enlazados conservan el detalle de cada caso.
 
 ## Implementación
 
 | Archivo | Función |
 | --- | --- |
-| [texto.py](../src/evaluacion/texto.py) | Limpieza, tokenización, comparación antes/después y métricas. |
-| [casos-ley-rep.json](../datos/evaluacion/casos-ley-rep.json) | Preguntas, referencias y artículos utilizados. |
-| [evaluar_texto.py](../scripts/evaluar_texto.py) | Consultas al cliente, registro de resultados y selección de casos para revisión. |
-| [tests/evaluacion](../tests/evaluacion/) | Pruebas del procesamiento, métricas, reanudación y validación de la revisión. |
+| [texto.py](../../src/evaluacion/texto.py) | Limpieza, tokenización, comparación antes/después y métricas. |
+| [casos-ley-rep.json](../../datos/evaluacion/casos-ley-rep.json) | Preguntas, referencias y artículos utilizados. |
+| [evaluar_texto.py](../../scripts/evaluar_texto.py) | Consultas al cliente, registro de resultados y selección de casos para revisión. |
+| [tests/evaluacion](../../tests/evaluacion/) | Pruebas del procesamiento, métricas, reanudación y validación de la revisión. |
 
 La limpieza pasa el texto a minúsculas, reemplaza la puntuación por espacios y
 agrupa los espacios repetidos. Conserva tildes, ñ, números, guiones bajos y negaciones.
@@ -58,7 +58,7 @@ con sinónimos puede recibir un puntaje bajo aunque conteste correctamente.
 
 ## Resultados registrados
 
-La [ejecución del 4 de noviembre de 2026](evaluaciones/texto-rep-01.json) contiene
+La [ejecución del 4 de noviembre de 2026](texto-rep-01.json) contiene
 20 respuestas procesadas con `gemini-3.5-flash-lite` y ningún caso pendiente.
 
 En los primeros tres casos se observa el efecto de la limpieza del bloque 15:
@@ -79,7 +79,7 @@ bloque 16, calculados sobre las 20 respuestas, son:
 | Cobertura | 0.939 |
 | F1 | 0.593 |
 
-La [revisión de diez casos](evaluaciones/revision-rep-01.json) reúne los cinco F1
+La [revisión de diez casos](revision-rep-01.json) reúne los cinco F1
 más bajos y los cinco más altos, con desempate por identificador. Incluye la pregunta,
 la referencia, el artículo, la respuesta y una justificación de cada calificación.
 La revisión está registrada como asistida por Codex y pendiente de validación por Brandon.
@@ -90,7 +90,7 @@ entre puntaje y contenido es `rep-18`: responde correctamente que la interpretac
 corresponde al Ministerio, pero obtiene F1 de 0.174 porque la referencia solo contiene
 «Al Ministerio» y la respuesta desarrolla la oración completa.
 
-El [documento de límites](limites_metrica.md) explica estos hallazgos y cuándo conviene
+El [documento de límites](limites-metricas.md) explica estos hallazgos y cuándo conviene
 revisar el contenido en lugar de confiar solo en el puntaje.
 
 ## Ejecutar una evaluación

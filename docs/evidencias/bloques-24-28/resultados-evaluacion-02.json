@@ -1,0 +1,652 @@
+{
+  "timestamp": "2026-11-17T01:07:37.278836+00:00",
+  "huella_indice": "43559c52b3c6cae8f14afb38aec54afc2488393bd5c9f725b0c4b4f86c88f794",
+  "configuracion_indice": {
+    "formato": 1,
+    "corpus": "ley-rep",
+    "corpus_sha256": "fa577eca361dcd917a1ed51779f7a3c1f2e86d3167c55b610b796f5da4517ee6",
+    "chunk_size": 800,
+    "chunk_overlap": 100,
+    "estrategia": "recursivo",
+    "modelo_embeddings": "models/gemini-embedding-001",
+    "dimensiones": 3072,
+    "distancia": "cosine",
+    "coleccion": "rag-ley-rep",
+    "chunks_sha256": "16db0a67715d21b66c3f34a61406866a7c19ff99947592b6487b8a1f655c0abf",
+    "cantidad_chunks": 99
+  },
+  "ks": [
+    3,
+    5
+  ],
+  "repeticiones": 2,
+  "repeticiones_identicas": true,
+  "corridas": [
+    {
+      "resultados": [
+        {
+          "id": "rag-01",
+          "pregunta": "¿Cuál es el objeto de la Ley 20.920 y qué busca proteger?",
+          "ids_relevantes": [
+            "ley20920-articulo-1-c000"
+          ],
+          "criterio": "El artículo 1 completo vincula disminución y valorización de residuos con salud y medio ambiente.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-1-c000",
+                "ley20920-articulo-46-c003",
+                "ley20920-articulo-46-c002"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-1-c000",
+                "ley20920-articulo-46-c003",
+                "ley20920-articulo-46-c002",
+                "ley20920-articulo-46-c000",
+                "ley20920-articulo-4-c002"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-02",
+          "pregunta": "¿Qué seis productos prioritarios enumera expresamente la ley?",
+          "ids_relevantes": [
+            "ley20920-articulo-10-c000"
+          ],
+          "criterio": "El primer chunk del artículo 10 contiene la lista completa a–f; el siguiente trata la ampliación, no enumera esos seis.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-10-c000",
+                "ley20920-articulo-11-c001",
+                "ley20920-articulo-11-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-10-c000",
+                "ley20920-articulo-11-c001",
+                "ley20920-articulo-11-c000",
+                "ley20920-articulo-10-c001",
+                "ley20920-articulo-3-c005"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-03",
+          "pregunta": "¿Mediante qué instrumento se establecen las metas de recolección y valorización y qué criterios se consideran?",
+          "ids_relevantes": [
+            "ley20920-articulo-12-c000"
+          ],
+          "criterio": "El artículo 12 contiene instrumento, autoridad y criterios para fijar las metas; no permite inventar porcentajes.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-12-c000",
+                "ley20920-articulo-22-c002",
+                "ley20920-articulo-13-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-12-c000",
+                "ley20920-articulo-22-c002",
+                "ley20920-articulo-13-c001",
+                "ley20920-articulo-17-c000",
+                "ley20920-articulo-14-c000"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-04",
+          "pregunta": "¿A quién debe entregar sus residuos un generador y qué sucede con los residuos domiciliarios?",
+          "ids_relevantes": [
+            "ley20920-articulo-5-c000"
+          ],
+          "criterio": "El artículo 5 distingue entrega a gestor autorizado, manejo propio y residuos domiciliarios.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-5-c000",
+                "ley20920-articulo-3-c002",
+                "ley20920-articulo-34-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-5-c000",
+                "ley20920-articulo-3-c002",
+                "ley20920-articulo-34-c000",
+                "ley20920-articulo-33-c001",
+                "ley20920-articulo-3-c008"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-05",
+          "pregunta": "¿Puede un consumidor industrial valorizar sus propios residuos prioritarios y a quién debe informar?",
+          "ids_relevantes": [
+            "ley20920-articulo-34-c000"
+          ],
+          "criterio": "El segundo párrafo del primer chunk del artículo 34 da la excepción y el deber de informar mediante el RETC.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-34-c000",
+                "ley20920-articulo-11-c000",
+                "ley20920-transitorio-segundo-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-34-c000",
+                "ley20920-articulo-11-c000",
+                "ley20920-transitorio-segundo-c000",
+                "ley20920-articulo-3-c005",
+                "ley20920-articulo-3-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-06",
+          "pregunta": "¿Quién diseña los programas de educación ambiental y quiénes pueden colaborar en implementarlos?",
+          "ids_relevantes": [
+            "ley20920-articulo-29-c000"
+          ],
+          "criterio": "El artículo 29 completo atribuye el diseño al Ministerio y nombra los colaboradores.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-29-c000",
+                "ley20920-articulo-46-c001",
+                "ley20920-articulo-14-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-29-c000",
+                "ley20920-articulo-46-c001",
+                "ley20920-articulo-14-c001",
+                "ley20920-articulo-30-c001",
+                "ley20920-articulo-13-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-07",
+          "pregunta": "¿Cuál es el plazo mínimo del permiso municipal para instalaciones de recepción en bienes nacionales de uso público?",
+          "ids_relevantes": [
+            "ley20920-articulo-23-c001"
+          ],
+          "criterio": "El segundo chunk del artículo 23 dice que el plazo no podrá ser inferior a cinco años; el primero solo introduce el permiso.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-23-c001",
+                "ley20920-articulo-23-c000",
+                "ley20920-articulo-30-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-23-c001",
+                "ley20920-articulo-23-c000",
+                "ley20920-articulo-30-c000",
+                "ley20920-articulo-36-c000",
+                "ley20920-articulo-33-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-08",
+          "pregunta": "¿Qué organismo fiscaliza las metas de residuos prioritarios y qué debe hacer el Ministerio si presume una infracción?",
+          "ids_relevantes": [
+            "ley20920-articulo-38-c000"
+          ],
+          "criterio": "El primer chunk del artículo 38 contiene ambas atribuciones, no solo la definición general de Superintendencia.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-39-c001",
+                "ley20920-articulo-22-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-39-c001",
+                "ley20920-articulo-22-c001",
+                "ley20920-articulo-39-c000",
+                "ley20920-articulo-46-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-09",
+          "pregunta": "¿Qué confidencialidad debe asegurar el reglamento del registro y cómo se procura difundir su información?",
+          "ids_relevantes": [
+            "ley20920-articulo-37-c001"
+          ],
+          "criterio": "El segundo chunk del artículo 37 exige confidencialidad comercial e industrial y difusión comprensible en el sitio del Ministerio.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-37-c001",
+                "ley20920-articulo-37-c000",
+                "ley20920-articulo-26-c003"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-37-c001",
+                "ley20920-articulo-37-c000",
+                "ley20920-articulo-26-c003",
+                "ley20920-transitorio-segundo-c000",
+                "ley20920-articulo-22-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-10",
+          "pregunta": "¿Cuál es la tasa del impuesto a la renta de las empresas chilenas para el año 2027?",
+          "ids_relevantes": [],
+          "criterio": "Ningún artículo de esta copia de Ley REP fija el impuesto a la renta de 2027. Recall no definido; también sirve para ensayar abstención.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-4-c002",
+                "ley20920-articulo-27-c000",
+                "ley20920-articulo-15-c000"
+              ],
+              "precision": 0.0,
+              "recall": null
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-4-c002",
+                "ley20920-articulo-27-c000",
+                "ley20920-articulo-15-c000",
+                "ley20920-transitorio-cuarto-c000",
+                "ley20920-articulo-14-c000"
+              ],
+              "precision": 0.0,
+              "recall": null
+            }
+          }
+        }
+      ],
+      "promedios": {
+        "3": {
+          "precision": 0.3,
+          "recall": 1.0
+        },
+        "5": {
+          "precision": 0.18,
+          "recall": 1.0
+        }
+      }
+    },
+    {
+      "resultados": [
+        {
+          "id": "rag-01",
+          "pregunta": "¿Cuál es el objeto de la Ley 20.920 y qué busca proteger?",
+          "ids_relevantes": [
+            "ley20920-articulo-1-c000"
+          ],
+          "criterio": "El artículo 1 completo vincula disminución y valorización de residuos con salud y medio ambiente.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-1-c000",
+                "ley20920-articulo-46-c003",
+                "ley20920-articulo-46-c002"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-1-c000",
+                "ley20920-articulo-46-c003",
+                "ley20920-articulo-46-c002",
+                "ley20920-articulo-46-c000",
+                "ley20920-articulo-4-c002"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-02",
+          "pregunta": "¿Qué seis productos prioritarios enumera expresamente la ley?",
+          "ids_relevantes": [
+            "ley20920-articulo-10-c000"
+          ],
+          "criterio": "El primer chunk del artículo 10 contiene la lista completa a–f; el siguiente trata la ampliación, no enumera esos seis.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-10-c000",
+                "ley20920-articulo-11-c001",
+                "ley20920-articulo-11-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-10-c000",
+                "ley20920-articulo-11-c001",
+                "ley20920-articulo-11-c000",
+                "ley20920-articulo-10-c001",
+                "ley20920-articulo-3-c005"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-03",
+          "pregunta": "¿Mediante qué instrumento se establecen las metas de recolección y valorización y qué criterios se consideran?",
+          "ids_relevantes": [
+            "ley20920-articulo-12-c000"
+          ],
+          "criterio": "El artículo 12 contiene instrumento, autoridad y criterios para fijar las metas; no permite inventar porcentajes.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-12-c000",
+                "ley20920-articulo-22-c002",
+                "ley20920-articulo-13-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-12-c000",
+                "ley20920-articulo-22-c002",
+                "ley20920-articulo-13-c001",
+                "ley20920-articulo-17-c000",
+                "ley20920-articulo-14-c000"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-04",
+          "pregunta": "¿A quién debe entregar sus residuos un generador y qué sucede con los residuos domiciliarios?",
+          "ids_relevantes": [
+            "ley20920-articulo-5-c000"
+          ],
+          "criterio": "El artículo 5 distingue entrega a gestor autorizado, manejo propio y residuos domiciliarios.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-5-c000",
+                "ley20920-articulo-3-c002",
+                "ley20920-articulo-34-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-5-c000",
+                "ley20920-articulo-3-c002",
+                "ley20920-articulo-34-c000",
+                "ley20920-articulo-33-c001",
+                "ley20920-articulo-3-c008"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-05",
+          "pregunta": "¿Puede un consumidor industrial valorizar sus propios residuos prioritarios y a quién debe informar?",
+          "ids_relevantes": [
+            "ley20920-articulo-34-c000"
+          ],
+          "criterio": "El segundo párrafo del primer chunk del artículo 34 da la excepción y el deber de informar mediante el RETC.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-34-c000",
+                "ley20920-articulo-11-c000",
+                "ley20920-transitorio-segundo-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-34-c000",
+                "ley20920-articulo-11-c000",
+                "ley20920-transitorio-segundo-c000",
+                "ley20920-articulo-3-c005",
+                "ley20920-articulo-3-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-06",
+          "pregunta": "¿Quién diseña los programas de educación ambiental y quiénes pueden colaborar en implementarlos?",
+          "ids_relevantes": [
+            "ley20920-articulo-29-c000"
+          ],
+          "criterio": "El artículo 29 completo atribuye el diseño al Ministerio y nombra los colaboradores.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-29-c000",
+                "ley20920-articulo-46-c001",
+                "ley20920-articulo-14-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-29-c000",
+                "ley20920-articulo-46-c001",
+                "ley20920-articulo-14-c001",
+                "ley20920-articulo-30-c001",
+                "ley20920-articulo-13-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-07",
+          "pregunta": "¿Cuál es el plazo mínimo del permiso municipal para instalaciones de recepción en bienes nacionales de uso público?",
+          "ids_relevantes": [
+            "ley20920-articulo-23-c001"
+          ],
+          "criterio": "El segundo chunk del artículo 23 dice que el plazo no podrá ser inferior a cinco años; el primero solo introduce el permiso.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-23-c001",
+                "ley20920-articulo-23-c000",
+                "ley20920-articulo-30-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-23-c001",
+                "ley20920-articulo-23-c000",
+                "ley20920-articulo-30-c000",
+                "ley20920-articulo-36-c000",
+                "ley20920-articulo-33-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-08",
+          "pregunta": "¿Qué organismo fiscaliza las metas de residuos prioritarios y qué debe hacer el Ministerio si presume una infracción?",
+          "ids_relevantes": [
+            "ley20920-articulo-38-c000"
+          ],
+          "criterio": "El primer chunk del artículo 38 contiene ambas atribuciones, no solo la definición general de Superintendencia.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-39-c001",
+                "ley20920-articulo-22-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-39-c001",
+                "ley20920-articulo-22-c001",
+                "ley20920-articulo-39-c000",
+                "ley20920-articulo-46-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-09",
+          "pregunta": "¿Qué confidencialidad debe asegurar el reglamento del registro y cómo se procura difundir su información?",
+          "ids_relevantes": [
+            "ley20920-articulo-37-c001"
+          ],
+          "criterio": "El segundo chunk del artículo 37 exige confidencialidad comercial e industrial y difusión comprensible en el sitio del Ministerio.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-37-c001",
+                "ley20920-articulo-37-c000",
+                "ley20920-articulo-26-c003"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-37-c001",
+                "ley20920-articulo-37-c000",
+                "ley20920-articulo-26-c003",
+                "ley20920-transitorio-segundo-c000",
+                "ley20920-articulo-22-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-10",
+          "pregunta": "¿Cuál es la tasa del impuesto a la renta de las empresas chilenas para el año 2027?",
+          "ids_relevantes": [],
+          "criterio": "Ningún artículo de esta copia de Ley REP fija el impuesto a la renta de 2027. Recall no definido; también sirve para ensayar abstención.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-4-c002",
+                "ley20920-articulo-27-c000",
+                "ley20920-articulo-15-c000"
+              ],
+              "precision": 0.0,
+              "recall": null
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-4-c002",
+                "ley20920-articulo-27-c000",
+                "ley20920-articulo-15-c000",
+                "ley20920-transitorio-cuarto-c000",
+                "ley20920-articulo-14-c000"
+              ],
+              "precision": 0.0,
+              "recall": null
+            }
+          }
+        }
+      ],
+      "promedios": {
+        "3": {
+          "precision": 0.3,
+          "recall": 1.0
+        },
+        "5": {
+          "precision": 0.18,
+          "recall": 1.0
+        }
+      }
+    }
+  ],
+  "alcance": "Relevancia por chunk; no mide veracidad ni calidad de la respuesta generada.",
+  "tipo_ejecucion": "real"
+}

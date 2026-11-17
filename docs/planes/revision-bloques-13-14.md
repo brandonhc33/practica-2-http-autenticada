@@ -2,7 +2,7 @@
 
 Fecha: 28 de octubre de 2026. Revisión de los seis PDF de Skillnest y del estado actual del proyecto, incluidos los cambios locales que ya existían.
 
-> Revisión inicial, anterior a la implementación. Los pendientes de acumulación, pytest y ensayo real se resolvieron después; el estado final y sus evidencias están en [Entrega de los bloques 13 y 14](entrega-bloques-13-14.md). Las cifras y propuestas que siguen conservan el diagnóstico de partida.
+> Revisión inicial, anterior a la implementación. Los pendientes de acumulación, pytest y ensayo real se resolvieron después; el estado final y sus evidencias están en [Entrega de los bloques 13 y 14](../entregas/bloques-13-14.md). Las cifras y propuestas que siguen conservan el diagnóstico de partida.
 
 **Resultado:** el bloque 13 está implementado en buena parte, pero al cliente general le falta el acumulado de costo por sesión y no encontré evidencia del ensayo real de HTTP 429. El bloque 14 ya tiene una base amplia de pruebas automatizadas con `unittest` y mocks; falta configurar `pytest` para alinearse con la actividad y probar el acumulador cuando se incorpore. Hay diferencias deliberadas entre el contrato del curso y el de este proyecto.
 
@@ -65,10 +65,10 @@ No hace falta renombrar funciones ni reunir todo en un `cliente.py`. La correspo
 
 | Ejemplo del curso | Implementación actual |
 | --- | --- |
-| `enviar_peticion` | [`_enviar_peticion`](../src/clientes/gemini.py), un intento HTTP. |
-| `con_reintento` | [`con_reintento`](../src/clientes/reintentos.py), con `PoliticaReintento`. |
-| `registrar_costo` | [`extraer_uso`](../src/clientes/gemini.py) y [`calcular_costo_gemini`](../src/costos/calculadora.py), para leer consumo y calcular el costo individual. Falta la parte de acumulación del cliente general. |
-| `consultar_modelo` | [`consultar_gemini_raw` y `consultar_gemini`](../src/clientes/gemini.py), con traducción del error en la [API](../src/api/app.py) y el CLI. |
+| `enviar_peticion` | [`_enviar_peticion`](../../src/clientes/gemini.py), un intento HTTP. |
+| `con_reintento` | [`con_reintento`](../../src/clientes/reintentos.py), con `PoliticaReintento`. |
+| `registrar_costo` | [`extraer_uso`](../../src/clientes/gemini.py) y [`calcular_costo_gemini`](../../src/costos/calculadora.py), para leer consumo y calcular el costo individual. Falta la parte de acumulación del cliente general. |
+| `consultar_modelo` | [`consultar_gemini_raw` y `consultar_gemini`](../../src/clientes/gemini.py), con traducción del error en la [API](../../src/api/app.py) y el CLI. |
 
 El proyecto usa el endpoint de Gemini compatible con OpenAI. Por eso lee `usage.prompt_tokens`, `usage.completion_tokens` y `usage.total_tokens`; pegar literalmente el acceso a `usageMetadata.totalTokenCount` no serviría para este contrato.
 
@@ -86,7 +86,7 @@ El proyecto usa el endpoint de Gemini compatible con OpenAI. Por eso lee `usage.
 | Ensayo real de HTTP 429 documentado | Sin evidencia encontrada | Las pruebas simulan 429. No encontré el registro del ensayo solicitado ni un error 429 registrado como resultado en las evidencias JSON revisadas. |
 | Error final comprensible | Implementado con otro contrato | `ReintentosAgotados` conserva intentos y última causa; la API lo traduce a 503 o 504 según corresponda. No es el `RuntimeError` literal del ejemplo. |
 
-El [comparador de modelos](../scripts/comparar_modelos.py) sí calcula `costo_observado_total_usd` y `costo_observado_total_clp` sobre sus mediciones. Ese resumen de una evaluación no constituye un acumulador reutilizable de la sesión del cliente general.
+El [comparador de modelos](../../scripts/comparar_modelos.py) sí calcula `costo_observado_total_usd` y `costo_observado_total_clp` sobre sus mediciones. Ese resumen de una evaluación no constituye un acumulador reutilizable de la sesión del cliente general.
 
 El modo `raw` conserva deliberadamente el JSON del proveedor y no calcula costos ni consulta el dólar. Esa distinción está documentada y probada.
 
@@ -94,17 +94,17 @@ El modo `raw` conserva deliberadamente el JSON del proveedor y no calcula costos
 
 | Escenario | Pruebas actuales | Evaluación |
 | --- | --- | --- |
-| 401/403 no se reintentan | `test_estados_permanentes_no_se_reintentan_ni_exponen_el_cuerpo`, en [cliente resiliente](../tests/clientes/test_cliente_resiliente.py) | Cubierto mediante `ErrorAutenticacion`. |
+| 401/403 no se reintentan | `test_estados_permanentes_no_se_reintentan_ni_exponen_el_cuerpo`, en [cliente resiliente](../../tests/clientes/test_cliente_resiliente.py) | Cubierto mediante `ErrorAutenticacion`. |
 | 429 y errores temporales se recuperan | `test_estados_temporales_se_recuperan_con_una_segunda_llamada`, en cliente resiliente | Cubre 429, 500, 502, 503 y 504. |
-| Respuesta exitosa conserva JSON | `test_devuelve_todos_los_campos_del_proveedor_sin_transformarlos`, en [consultas raw](../tests/api/test_consultas_raw.py) | Cubierto por integración simulada. |
-| Reintentar y esperar entre intentos | `test_recuperacion_respeta_backoff_jitter_y_presupuesto_restante`, en [reintentos](../tests/clientes/test_reintentos.py) | Cubierto con reloj, espera y aleatoriedad simulados. |
+| Respuesta exitosa conserva JSON | `test_devuelve_todos_los_campos_del_proveedor_sin_transformarlos`, en [consultas raw](../../tests/api/test_consultas_raw.py) | Cubierto por integración simulada. |
+| Reintentar y esperar entre intentos | `test_recuperacion_respeta_backoff_jitter_y_presupuesto_restante`, en [reintentos](../../tests/clientes/test_reintentos.py) | Cubierto con reloj, espera y aleatoriedad simulados. |
 | Error permanente se propaga sin repetir | `test_errores_permanentes_y_cancelacion_se_propagan_sin_reintentar`, en reintentos | Comprueba también la identidad del error original. |
 | Agotamiento de intentos | `test_agotamiento_conserva_ultima_causa_sin_esperar_despues_del_ultimo`, en reintentos | Cubierto con `ReintentosAgotados`; guarda el objeto original en `ultimo_error`. |
-| Cálculo de costo conocido | [Pruebas de costos](../tests/costos/test_costos.py), [consultas](../tests/api/test_consultas.py) y [comparador](../tests/scripts/test_comparar_modelos.py) | Cubierto. Incluye caché, razonamiento, consumo ausente y valores pequeños. |
+| Cálculo de costo conocido | [Pruebas de costos](../../tests/costos/test_costos.py), [consultas](../../tests/api/test_consultas.py) y [comparador](../../tests/scripts/test_comparar_modelos.py) | Cubierto. Incluye caché, razonamiento, consumo ausente y valores pequeños. |
 | Suma al costo de sesión | No existe todavía el acumulador general | Pendiente. |
-| Traducción del fallo final al consumidor | `test_gemini_no_disponible_devuelve_503_tras_tres_intentos`, en [Gemini](../tests/clientes/test_gemini.py), y pruebas del CLI en cliente resiliente | Cubierto en los puntos de entrada con el contrato propio. |
+| Traducción del fallo final al consumidor | `test_gemini_no_disponible_devuelve_503_tras_tres_intentos`, en [Gemini](../../tests/clientes/test_gemini.py), y pruebas del CLI en cliente resiliente | Cubierto en los puntos de entrada con el contrato propio. |
 | Propagación del error permanente al consumidor | Pruebas de cliente resiliente y API | Cubierto en el recorrido actual. Puede añadirse una prueba unitaria directa de la fachada si se necesita mostrar explícitamente su contrato Python. |
-| API y tiempo simulados | [Preparación compartida](../tests/base.py) y pruebas de reintentos | Implementado. También se simula el servicio del dólar. |
+| API y tiempo simulados | [Preparación compartida](../../tests/base.py) y pruebas de reintentos | Implementado. También se simula el servicio del dólar. |
 | Ejecución con `pytest` declarado como dependencia | No está en `pyproject.toml`, `uv.lock`, `requirements.txt` ni en el entorno revisado | Pendiente para la entrega que pide el curso. |
 
 La suite mezcla pruebas unitarias y pruebas de integración local con servicios simulados. Una prueba con `TestClient` comprueba varias capas de la aplicación; no es una prueba unitaria aislada, aunque tampoco necesita llamar a Google.

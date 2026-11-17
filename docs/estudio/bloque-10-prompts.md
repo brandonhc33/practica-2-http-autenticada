@@ -1,6 +1,6 @@
 # Bloque 10: aprender los PDF con este proyecto
 
-Las tres lecciones forman una secuencia: separar las instrucciones del contenido, pedir una estructura que Python pueda utilizar y medir si esa combinación funciona repetidamente. El proyecto implementa esa secuencia en [el banco](../src/prompts/banco.py), [el cliente](../src/clientes/gemini.py), [el validador](../src/clientes/salida_estructurada.py) y [el evaluador real](../scripts/evaluar_prompts.py).
+Las tres lecciones forman una secuencia: separar las instrucciones del contenido, pedir una estructura que Python pueda utilizar y medir si esa combinación funciona repetidamente. El proyecto implementa esa secuencia en [el banco](../../src/prompts/banco.py), [el cliente](../../src/clientes/gemini.py), [el validador](../../src/clientes/salida_estructurada.py) y [el evaluador real](../../scripts/evaluar_prompts.py).
 
 ## 1. Prompt de sistema: las reglas de una tarea
 
@@ -24,7 +24,7 @@ Nuestro cliente envía ambos mensajes por separado:
 
 El rol no es parte del texto: es un campo del protocolo. Escribir "SYSTEM: ..." dentro de la pregunta no crea un mensaje de sistema.
 
-El punto de entrada es `src/prompts/banco.py`, que reúne los grupos. En [base.py](../src/prompts/base.py), `REGLAS_DE_SALIDA` reúne idioma y formato; en [educativos.py](../src/prompts/educativos.py), `REGLAS_COMUNES` añade el rol educativo; en [ley_rep.py](../src/prompts/ley_rep.py), `REGLAS_REP` añade el rol documental para Ley REP. Cada tarea añade sus reglas particulares junto a su esquema y ejemplo. Por ejemplo, el diagnóstico HTTP debe distinguir la credencial de Google del token de la API local.
+El punto de entrada es `src/prompts/banco.py`, que reúne los grupos. En [base.py](../../src/prompts/base.py), `REGLAS_DE_SALIDA` reúne idioma y formato; en [educativos.py](../../src/prompts/educativos.py), `REGLAS_COMUNES` añade el rol educativo; en [ley_rep.py](../../src/prompts/ley_rep.py), `REGLAS_REP` añade el rol documental para Ley REP. Cada tarea añade sus reglas particulares junto a su esquema y ejemplo. Por ejemplo, el diagnóstico HTTP debe distinguir la credencial de Google del token de la API local.
 
 La separación permite revisar y versionar las instrucciones. También ayuda a marcar que el texto del usuario es contenido a procesar. No convierte el prompt en una barrera infalible contra instrucciones maliciosas; esa resistencia requeriría pruebas específicas.
 
@@ -123,7 +123,7 @@ Un banco organiza una definición completa por tarea:
 | Ejemplo de usuario. | Probar siempre la misma entrada. |
 | Modelo Pydantic y JSON Schema. | Definir y comprobar la salida. |
 
-El banco contiene seis prompts. Los educativos son `explicar_concepto`, `diagnosticar_error_http` y `resumir_texto_tecnico`. La preparación del proyecto final agrega `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`; sus entradas y ejemplos están en el [README](guia-completa.md#prompts-para-el-proyecto-final-de-ley-rep). Al elegir uno desde la API se envía su nombre, no instrucciones de sistema arbitrarias del cliente.
+El banco contiene seis prompts. Los educativos son `explicar_concepto`, `diagnosticar_error_http` y `resumir_texto_tecnico`. La preparación del proyecto final agrega `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`; sus entradas y ejemplos están en la [guía de uso](../guias/guia-completa.md#prompts-para-el-proyecto-final-de-ley-rep). Al elegir uno desde la API se envía su nombre, no instrucciones de sistema arbitrarias del cliente.
 
 La actividad pide al menos tres repeticiones reales por prompt. La cuenta es:
 
@@ -207,9 +207,13 @@ Elige un nombre de salida que no exista. El script llama a Gemini 18 veces por d
 3. **¿Un JSON completo demuestra que la causa del error es correcta?** No. Estructura y exactitud del contenido se evalúan por separado.
 4. **¿Tres resultados válidos prueban que nunca fallará?** No. Son una muestra inicial de consistencia para la actividad.
 
-Los prompts de Ley REP permiten preparar la consulta, resumir un artículo y devolver respuesta, citas y antecedentes faltantes como campos separados. La [fuente local](../datos/ley_rep/README.md) conserva el PDF aportado, su texto y 50 artículos con páginas y procedencia. Una pregunta normal con `responder_ley_rep` carga todos los artículos; `resumir_fragmento_rep` admite referencias como `artículo 3`. El contexto explícito en JSON sigue disponible. Esta integración usa la copia de 2016 y no comprueba vigencia actual.
+Los prompts de Ley REP permiten preparar la consulta, resumir un artículo y devolver respuesta, citas y antecedentes faltantes como campos separados. La [fuente local](../../datos/ley_rep/README.md) conserva el PDF aportado, su texto y 50 artículos con páginas y procedencia. Una pregunta normal con `responder_ley_rep` carga todos los artículos; `resumir_fragmento_rep` admite referencias como `artículo 3`. El contexto explícito en JSON sigue disponible. Esta integración usa la copia de 2016 y no comprueba vigencia actual.
 
-Pydantic exige citas para el estado `respondida` y antecedentes para `requiere_aclaracion`; no verifica su existencia ni su respaldo documental. La recuperación de documentos y la comprobación de respaldo siguen pendientes para el RAG.
+Pydantic exige citas para el estado `respondida` y antecedentes para
+`requiere_aclaracion`; no verifica su existencia ni su respaldo documental.
+Posteriormente se añadió [recuperación semántica en el RAG de B24–28](bloques-24-28.md),
+como flujo separado del banco. Su control de números de cita tampoco prueba el
+respaldo de todas las afirmaciones.
 
 ## Material de clase consultado
 

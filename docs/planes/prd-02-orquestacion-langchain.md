@@ -39,9 +39,9 @@
 
 1. El proyecto llega al Bloque 17: cliente Gemini, API autenticada, banco de prompts y evaluación de respuestas. La suite tiene 166 pruebas en verde al 5 de noviembre.
 2. No existe ninguna chain, clasificación ni fallback, y LangChain no está entre las dependencias.
-3. [consultar_gemini_raw()](../src/clientes/gemini.py) resuelve una llamada por consulta, con reintentos, errores tipados y registro de costos.
-4. [preparar_respuesta_rep()](../src/prompts/contexto_ley_rep.py) envía los 50 fragmentos de la ley en cada consulta (52.727 caracteres). Todavía no hay recuperación de fragmentos.
-5. Los prompts de [ley_rep.py](../src/prompts/ley_rep.py) exigen JSON validado, por lo que no sirven directamente como pasos de texto. Sí definen los criterios que deben conservarse: no inventar datos, tratar la consulta como dato y no afirmar vigencia.
+3. [consultar_gemini_raw()](../../src/clientes/gemini.py) resuelve una llamada por consulta, con reintentos, errores tipados y registro de costos.
+4. [preparar_respuesta_rep()](../../src/prompts/contexto_ley_rep.py) envía los 50 fragmentos de la ley en cada consulta (52.727 caracteres). Todavía no hay recuperación de fragmentos.
+5. Los prompts de [ley_rep.py](../../src/prompts/ley_rep.py) exigen JSON validado, por lo que no sirven directamente como pasos de texto. Sí definen los criterios que deben conservarse: no inventar datos, tratar la consulta como dato y no afirmar vigencia.
 
 ## 3. Alcance
 
@@ -61,11 +61,11 @@
 | ID | Tema | Decisión | Motivo |
 | --- | --- | --- | --- |
 | D-01 | Cliente del modelo | Usar `ChatGoogleGenerativeAI`, recibido por parámetro en cada `construir_*`. | Lo usan el esqueleto de B18.3 y el agente de B21.3. Envolver `consultar_gemini` conservaría el cliente propio, pero se aparta de la actividad y no sirve para el agente. |
-| D-02 | Modelos | Principal `flash-lite` y secundario `flash`, leídos desde [catalogo.py](../src/catalogo.py). | Son los modelos evaluados en el Bloque 9 y tienen tarifa registrada. |
+| D-02 | Modelos | Principal `flash-lite` y secundario `flash`, leídos desde [catalogo.py](../../src/catalogo.py). | Son los modelos evaluados en el Bloque 9 y tienen tarifa registrada. |
 | D-03 | Reintentos y tiempo | `max_retries=1` y `timeout=30` en cada modelo. | Los valores por defecto son 6 y sin límite: el fallback tardaría en actuar y una llamada colgada nunca lo activaría. Se usa `1` porque `0` significa "valor por defecto de Google". |
 | D-04 | Temperatura | No se configura. | `gemini-3.5-flash-lite` y `gemini-3.6-flash` usan muestreo fijo: la librería descarta `temperature` y emite una advertencia. |
 | D-05 | Costos | Un callback propio, `RegistroLlamadas`, agregado al crear el modelo. | Registra cada llamada, incluidas las fallidas, sin tocar la forma de las chains. `output_tokens` ya incluye el razonamiento, igual que `UsoTokens.salida`. |
-| D-06 | Normalización | Reutilizar `limpiar_texto()` de [texto.py](../src/evaluacion/texto.py). | Quita mayúsculas, espacios y puntuación. `.strip().lower()` deja `"queja."` y la consulta cae sin aviso en la ruta por defecto. |
+| D-06 | Normalización | Reutilizar `limpiar_texto()` de [texto.py](../../src/evaluacion/texto.py). | Quita mayúsculas, espacios y puntuación. `.strip().lower()` deja `"queja."` y la consulta cae sin aviso en la ruta por defecto. |
 | D-07 | Ruta por defecto | `aclaracion`: pide antecedentes y no responde. | Una categoría inesperada no debe terminar en una respuesta legal. |
 | D-08 | Ubicación | `src/orquestacion/` y `tests/orquestacion/`, con los nombres de archivo del curso. | Respeta la estructura del repositorio sin perder la correspondencia con las actividades. |
 | D-09 | Forma de las pruebas | Clases `unittest.TestCase` con los nombres de prueba del curso. | `python -m tests` usa descubrimiento de `unittest` y no encuentra funciones sueltas. `pytest` ejecuta ambas formas. |
@@ -77,7 +77,7 @@ D-01 define la estructura del módulo: si cambia, hay que revisar las fases 1 a 
 
 | Material | En este proyecto | Razón |
 | --- | --- | --- |
-| Modelo `gemini-3.8-flash`. | `gemini-3.5-flash-lite`. | Devolvió dos HTTP 503 en la [evaluación del Bloque 9](decision-arquitectura.md). |
+| Modelo `gemini-3.8-flash`. | `gemini-3.5-flash-lite`. | Devolvió dos HTTP 503 en la [evaluación del Bloque 9](../arquitectura/seleccion-modelo.md). |
 | Modelos `gemini-3.8-flash-lite` y `gemini-2.0-flash`. | `gemini-3.6-flash` como secundario. | No figuran en el inventario del 20 de octubre ni en las tarifas. |
 | `temperature=0` para clasificar. | Sin temperatura. | Ver D-04. |
 | Pruebas de `queja`, `pregunta`, normalización y defecto. | Una prueba por cada ruta, más normalización. | El ejemplo no prueba la segunda condición y repite la rama por defecto. |
@@ -89,7 +89,7 @@ Estas diferencias aparecieron al implementar las fases 1 a 3. El texto original 
 
 | Punto del PRD | En el código | Razón |
 | --- | --- | --- |
-| RF-12: los registros contienen el tipo de error, nunca cuerpos del proveedor. | Registran el tipo y el mensaje del error, que puede incluir el cuerpo del proveedor. El código no registra la consulta y la traza solo aparece en `DEBUG`. | Se siguió el material de B20.1 y B20.3, que registra el error para quien mantiene el proyecto. El límite está en la [entrega](entrega-bloques-18-20.md#límites). |
+| RF-12: los registros contienen el tipo de error, nunca cuerpos del proveedor. | Registran el tipo y el mensaje del error, que puede incluir el cuerpo del proveedor. El código no registra la consulta y la traza solo aparece en `DEBUG`. | Se siguió el material de B20.1 y B20.3, que registra el error para quien mantiene el proyecto. El límite está en la [entrega](../entregas/bloques-18-20.md#límites). |
 | D-03: se usa `1` porque `0` significa "valor por defecto de Google". | Se mantiene `max_retries=1`. | El motivo quedó desactualizado: en `google-genai` 2.34.0, `attempts=0` también es un solo intento. |
 | Fase 1: confirmar que cada paso devuelve `str`. | Se comprueba con `isinstance`. | `StrOutputParser` entrega `TextAccessor`, subclase de `str`. |
 | Sección 5.4: los fallos que activan el fallback. | Se agregó `exigir_texto` después de cada `StrOutputParser` de las rutas. | Un bloqueo del proveedor llega como texto vacío y no activaría el fallback. |
@@ -179,9 +179,9 @@ El texto de respaldo debe dejar claro que la consulta quedó sin responder y que
 | `src/orquestacion/cadena_tres_pasos.py` — nuevo | Plantillas de la chain, `formatear_fragmentos()` y `construir_cadena()`. |
 | `src/orquestacion/enrutamiento.py` — nuevo | Clasificación, rutas, fallbacks, `procesar_consulta_segura()` y entrada por terminal. |
 | `tests/orquestacion/` — nuevo | `test_cadena_tres_pasos.py`, `test_enrutamiento.py` y `test_orquestacion.py`. |
-| `docs/entrega-bloques-18-20.md` — nuevo | Checklist, resultados y límites. |
+| `docs/entregas/bloques-18-20.md` — nuevo | Checklist, resultados y límites. |
 | `docs/evidencias/mis-capturas/bloque-18/` a `bloque-20/` — nuevo | Capturas de pruebas y corridas reales. |
-| `README.md`, `docs/guia-completa.md`, `docs/arquitectura.md` | Comando nuevo, enlaces y descripción del módulo. |
+| `README.md`, `docs/guias/guia-completa.md`, `docs/arquitectura/vision-general.md` | Comando nuevo, enlaces y descripción del módulo. |
 
 ### 7.2. Funciones principales
 
@@ -248,7 +248,7 @@ Cada fase termina con pruebas, `ruff` y `basedpyright` en verde, una revisión d
 
 ### Fase 4: cierre
 
-1. Escribir `docs/entrega-bloques-18-20.md` y actualizar README, guía y arquitectura.
+1. Escribir `docs/entregas/bloques-18-20.md` y actualizar README, guía y arquitectura.
 2. Guardar las capturas de pruebas y corridas reales.
 3. Repetir la instalación desde un clon limpio, como en B11.2.
 4. Hacer una corrida final por terminal.
@@ -280,7 +280,7 @@ Las cuatro preguntas de B20.3 quedan cubiertas por CA-02, CA-03 a CA-05, CA-07 y
 | --- | --- | --- | --- |
 | 18 | Construye tu chain de al menos tres pasos encadenados. | `cadena_tres_pasos.py`, `test_cadena_tres_pasos.py`, `requirements.txt`. | `src/orquestacion/cadena_tres_pasos.py`, `tests/orquestacion/test_cadena_tres_pasos.py`, `requirements.txt`. |
 | 19 | Enrutamiento condicional, ya incorporado a tu chain. | `enrutamiento.py`, `test_enrutamiento.py`. | `src/orquestacion/enrutamiento.py`, `tests/orquestacion/test_enrutamiento.py`. |
-| 20 | Verifica la ejecución de tu chain de extremo a extremo. | `enrutamiento.py`, `test_orquestacion.py`. | `src/orquestacion/enrutamiento.py`, `tests/orquestacion/test_orquestacion.py`, `docs/entrega-bloques-18-20.md`. |
+| 20 | Verifica la ejecución de tu chain de extremo a extremo. | `enrutamiento.py`, `test_orquestacion.py`. | `src/orquestacion/enrutamiento.py`, `tests/orquestacion/test_orquestacion.py`, `docs/entregas/bloques-18-20.md`. |
 
 Si la revisión exige los archivos en la raíz del repositorio, habrá que confirmarlo con el equipo docente antes de entregar.
 
@@ -298,10 +298,10 @@ Si la revisión exige los archivos en la raíz del repositorio, habrá que confi
 ## 12. Referencias
 
 1. Material del curso: B18.1 a B18.3, B19.1 a B19.3 y B20.1 a B20.3.
-2. [Arquitectura actual de la aplicación](arquitectura.md).
-3. [Decisión de arquitectura y modelos](decision-arquitectura.md).
-4. [Evaluación de respuestas de Ley REP](evaluacion-respuestas.md).
-5. [Entrega de los bloques 13 y 14](entrega-bloques-13-14.md).
+2. [Arquitectura actual de la aplicación](../arquitectura/vision-general.md).
+3. [Decisión de arquitectura y modelos](../arquitectura/seleccion-modelo.md).
+4. [Evaluación de respuestas de Ley REP](../evaluaciones/respuestas-ley-rep.md).
+5. [Entrega de los bloques 13 y 14](../entregas/bloques-13-14.md).
 6. [PRD 01: control de consumo de Gemini](prd-01-control-consumo-gemini.md).
 
 D-03, D-04 y D-05 y el diseño de rutas y fallbacks se comprobaron sin red el 5 de noviembre de 2026 con `langchain` 1.4.9, `langchain-core` 1.7.6 y `langchain-google-genai` 4.4.3. No se hizo ninguna llamada real a Gemini para este documento.
