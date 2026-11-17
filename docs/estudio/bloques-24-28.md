@@ -304,7 +304,8 @@ etiquetado, recuperado en ambos k; la décima no tiene respuesta en el corpus y
 su recall es indefinido. No significa que el sistema sea «100 % correcto»:
 medimos recuperación contra un pequeño etiquetado inicial, no la respuesta legal
 ni todos los fragmentos posiblemente útiles. Se conserva también el intento
-previo interrumpido, sin inventarle métricas. Ver [resultados e incidente](../evidencias/bloques-24-28/README.md#b27-resultados-e-incidente-conservado).
+previo interrumpido como antecedente, sin inventarle métricas; la evaluación sí
+se completó. Ver [resultados del B27](../evidencias/bloques-24-28/README.md#b27-evaluación-completada-y-resultados).
 
 ## 6. Bloque 28: latencia, tokens y costo
 

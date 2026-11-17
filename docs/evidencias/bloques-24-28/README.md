@@ -38,27 +38,13 @@ La recarga con `--verificar`, sin cargar la clave, terminó con código 0.
 La comparación gratuita de cortes está [conservada aparte](comparacion-chunking.md).
 No se ejecutó con cuota la réplica opcional de tienda del B25.
 
-## B27: resultados e incidente conservado
+## B27: evaluación completada y resultados
 
-El primer comando, con salida `resultados_evaluacion-01.txt` y su JSON, terminó
-con código 1 y este diagnóstico:
-
-```text
-Evaluación interrumpida: GoogleGenerativeAIError; no se inventan métricas.
-```
-
-Ambos archivos runtime quedaron en cero bytes. No contienen una evaluación
-parcial recuperable y no se presentan como resultados. El diagnóstico no conserva
-código HTTP, pregunta de fallo ni número de solicitudes completadas: **no se
-atribuye a un 429, timeout o cuota sin evidencia**, y su costo es desconocido.
-Es una limitación del reporte agregado actual, no una corrida de costo cero.
-
-Antes de repetir se hizo una única consulta diagnóstica real de embedding con la
-primera pregunta del banco: devolvió un vector de 3072 dimensiones. No hubo
-generación ni métricas de evaluación en ese diagnóstico.
-
-Se volvió a ejecutar el comando del B27 con **otra salida**, `-02`, sin alterar
-corpus, configuración, preguntas ni etiquetas. Terminó con código 0:
+**Resultado: evaluación real completada.** La ejecución `-02` terminó con código 0:
+diez preguntas, k=3 y k=5, en dos repeticiones con resultados idénticos. Los
+resultados completos están en [TXT](resultados-evaluacion-02.txt) y
+[JSON](resultados-evaluacion-02.json). No se alteraron corpus, configuración,
+preguntas ni etiquetas entre los intentos.
 
 | k | Precisión promedio, 10 casos | Recall promedio, 9 casos definidos | Repetición |
 | --- | ---: | ---: | --- |
@@ -76,6 +62,28 @@ en esta muestra. Mantener k=3 es una decisión razonable para estas preguntas,
 no una demostración del k óptimo general. Las etiquetas fueron propuestas por el
 asistente antes de retrieval y siguen pendientes de revisión del alumno. No
 equivalen a una rúbrica jurídica exhaustiva ni a un benchmark independiente.
+
+### Antecedente: primer intento interrumpido
+
+Este antecedente explica por qué los archivos finales llevan `-02`; **no deja
+pendiente la ejecución del B27**.
+
+El primer comando, con salida `resultados_evaluacion-01.txt` y su JSON, terminó
+con código 1 y este diagnóstico:
+
+```text
+Evaluación interrumpida: GoogleGenerativeAIError; no se inventan métricas.
+```
+
+Ambos archivos runtime quedaron en cero bytes. No contienen una evaluación
+parcial recuperable y no se presentan como resultados. El diagnóstico no conserva
+código HTTP, pregunta de fallo ni número de solicitudes completadas: **no se
+atribuye a un 429, timeout o cuota sin evidencia**, y su costo es desconocido.
+Es una limitación del reporte agregado actual, no una corrida de costo cero.
+
+Antes de repetir se hizo una única consulta diagnóstica real de embedding con la
+primera pregunta del banco: devolvió un vector de 3072 dimensiones. No hubo
+generación ni métricas de evaluación en ese diagnóstico.
 
 ## Actividad 28: tiempos, tokens y costo observado
 

@@ -94,9 +94,10 @@ Produce TXT y JSON del mismo nombre. Son **20 invocaciones de embedding de
 pregunta**, sin generación: diez preguntas por dos repeticiones; los dos k usan
 prefijos del mismo ranking. El SDK puede tener reintentos internos.
 
-En la ejecución conservada, la salida `-01` se interrumpió por un error del
-conector. La segunda, `-02`, completó ambas repeticiones sin cambiar etiquetas;
-ver [incidente y resultados](../evidencias/bloques-24-28/README.md#b27-resultados-e-incidente-conservado).
+**Evaluación real completada:** la ejecución `-02` terminó las diez preguntas y
+ambas repeticiones sin cambiar etiquetas. Ver [resultados del B27](../evidencias/bloques-24-28/README.md#b27-evaluación-completada-y-resultados).
+El primer intento, `-01`, quedó documentado como antecedente separado; no es un
+pendiente de ejecución.
 
 Revisar precisión y recall por pregunta, promedios e igualdad de repeticiones.
 Un recall bajo se documenta; no se cambian etiquetas para que coincidan con los
