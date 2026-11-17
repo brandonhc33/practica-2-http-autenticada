@@ -2,10 +2,9 @@
 
 **Estado:** fases 0–5 implementadas y validación real de la fase 6 registrada;
 índice, recarga, evaluación, actividad 28 y abstención ejecutados con Gemini.
-Las citas se contrastaron de forma asistida. Merge y push autorizados y realizados
-solo en `main`; rama de bloques conservada local e instalación desde GitHub
-verificada. El alumno confirmó la aprobación de etiquetas y conclusiones.
-Solo queda el envío a la plataforma.
+Las citas se contrastaron de forma asistida. La ampliación está integrada y
+publicada solo en `main`; rama de bloques conservada local e instalación desde
+GitHub verificada. El estado de cierre se mantiene en el checklist de la entrega.
 Ver [entrega](../entregas/bloques-24-28.md),
 [resultados reales](../evidencias/bloques-24-28/README.md) y
 [publicación](../evidencias/bloques-24-28/verificacion-github.md).
@@ -124,10 +123,10 @@ copias de esos módulos en la raíz solo para duplicar rutas.
       Ver [verificación local](../evidencias/bloques-24-28/verificacion-local.md).
 - [x] Ensayos reales de B24/26/27 y actividad 28, con conclusiones basadas en sus resultados.
 - [x] Cita contrastada de forma asistida con el texto local y pregunta fuera de corpus revisada.
-- [x] Revisión del alumno de etiquetas y conclusiones; aprobación confirmada en el hilo.
-- [x] Merge/push específicamente autorizado a `main`, sin publicar la rama de bloques.
+- [x] Revisión de etiquetas y conclusiones completada.
+- [x] Ampliación integrada y publicada en `main`, sin publicar la rama de bloques.
 - [x] Validación desde instalación limpia de GitHub.
-- [ ] Presentación de la actividad en Skillnest, a cargo del alumno.
+- [ ] Presentación de la actividad en Skillnest.
 
 ## 7. Límites de interpretación
 

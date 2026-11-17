@@ -2,7 +2,7 @@
 
 ## Procedencia y archivos
 
-Ejecuciones autorizadas por el alumno el 16 de noviembre de 2026; los registros
+Ejecuciones reales autorizadas el 16 de noviembre de 2026; los registros
 usan UTC del **17-11-2026**. Código ejecutado:
 `31c6af4ea08aeffabbe898a34e00e8fe85fb611c`, rama local `bloques-24-28`.
 Se cargó el `.env` original con `uv run --env-file`, sin copiarlo ni imprimirlo.
@@ -88,11 +88,10 @@ la cobertura etiquetada con menos contexto adicional en esta muestra. No demuest
 el k óptimo general ni la veracidad de la respuesta generada. Para aprobar una
 respuesta todavía hay que contrastar sus afirmaciones y citas con el texto.
 
-Las etiquetas fueron propuestas por el asistente antes de retrieval; el alumno
-confirmó su aprobación y la de las conclusiones en el hilo. Las métricas dependen
-de ese criterio: un fragmento no etiquetado puede aportar contexto, pero no cuenta
-como acierto en esta evaluación. No se afirma que el etiquetado sea jurídicamente
-exhaustivo.
+Las etiquetas fueron propuestas por el asistente antes de retrieval. Las métricas
+dependen de ese criterio: un fragmento no etiquetado puede aportar contexto, pero
+no cuenta como acierto en esta evaluación. No se afirma que el etiquetado sea
+jurídicamente exhaustivo.
 
 La [guía de estudio desarrolla el cálculo paso a paso](../../estudio/bloques-24-28.md#cómo-se-interpretan-estos-valores),
 incluye un caso real con sus IDs, decisiones de diagnóstico, el complemento F1
@@ -158,8 +157,9 @@ permiten informar p95, capacidad de producción ni un costo típico del dominio.
 
 ## B26: citas contrastadas y abstención
 
-Revisión **asistida**, leyendo respuestas, mapas de fuentes y artículos originales;
-no se atribuye una validación humana al alumno ni una revisión jurídica externa.
+Revisión **asistida** mediante contraste de respuestas, mapas de fuentes y
+artículos originales; no constituye una validación independiente ni una auditoría
+jurídica externa.
 
 En la primera corrida, `02bf818323e44644b1731696a6409056`, se afirma:
 
@@ -190,12 +190,11 @@ No se considera ese booleano una evaluación semántica de la abstención.
 
 ## Qué falta para cerrar administrativamente
 
-La integración y el push a `main`, autorizados explícitamente por el alumno,
-están completados. También se verificaron instalación y pruebas desde un clon
-limpio de GitHub; la rama de bloques se conserva local. Ver
+La integración y el push a `main` están completados. También se verificaron
+instalación y pruebas desde un clon limpio de GitHub; la rama de bloques se
+conserva local. Ver
 [constancia de publicación e instalación](verificacion-github.md).
 
-El alumno confirmó la aprobación de etiquetas y conclusiones. Solo queda el envío
-en la plataforma; no se requiere otra aprobación de lo mismo.
 Estas mediciones no prueban vigencia normativa ni completan el proyecto final
-multifuente. Ver el [checklist de entrega](../../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).
+multifuente. El estado de revisión y presentación se mantiene en el
+[checklist de entrega](../../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).

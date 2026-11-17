@@ -1,12 +1,12 @@
 # Entrega de bloques 24 a 28 — RAG y actividad core 28
 
-**Estado: implementación y mediciones reales completadas; entrega aprobada por el alumno y lista para presentar.**
+**Estado: implementación y mediciones reales completadas; actividad lista para presentar.**
 El índice, recarga, evaluación y las cuatro corridas de la actividad 28 se
 ejecutaron con Gemini, más una prueba de abstención. Las citas se contrastaron
-de forma asistida. La ampliación está integrada y publicada en `main` con
-autorización del alumno; la instalación y las pruebas desde un clon limpio de
-GitHub están verificadas. El alumno confirmó en el hilo la aprobación de las
-etiquetas y conclusiones. Solo queda el envío en la plataforma; no se declara enviada.
+de forma asistida. La ampliación está integrada y publicada en `main`; la
+instalación y las pruebas desde un clon limpio de GitHub están verificadas.
+La revisión de etiquetas y conclusiones está completada. Solo queda el envío
+en la plataforma; no se declara enviada.
 
 Resultados y conclusión: [evidencias reales](../evidencias/bloques-24-28/README.md).
 Constancia de integración e instalación: [verificación desde GitHub](../evidencias/bloques-24-28/verificacion-github.md).
@@ -208,26 +208,21 @@ No mezclar resultados ficticios para completar el JSONL.
 - [x] Comparación local de cortes e integridad del corpus.
 - [x] Diez casos propuestos antes del retrieval.
 - [x] Tests con Chroma local, recarga en otro proceso y modelos falsos.
-- [x] Autorización del alumno para las pruebas reales, sin copiar ni mostrar su `.env`.
-- [x] Revisión del alumno de las etiquetas iniciales y conclusiones; aprobación confirmada en el hilo.
+- [x] Pruebas reales ejecutadas con autorización, sin copiar ni mostrar credenciales.
+- [x] Revisión de las etiquetas iniciales y conclusiones completada.
 - [x] Índice real y recarga real del B24/25.
 - [x] Evaluación real de diez preguntas, k=3/5 y dos repeticiones.
 - [x] Cuatro líneas reales de la actividad 28 y comparación de tokens k=3/6.
 - [x] Abstención real y cita contrastada de forma asistida; conclusiones con tiempos y costos.
 - [x] Evidencias reales revisadas y conservadas con manifiesto; estado y checklist actualizados.
-- [x] Merge/push autorizado de esta ampliación a `main`, sin publicar la rama de bloques.
+- [x] Ampliación integrada y publicada en `main`, sin publicar la rama de bloques.
 - [x] Instalación desde un clon limpio de GitHub.
-- [ ] Enlace/entrega en la plataforma, a cargo del alumno.
-
-**Constancia de aprobación:** el alumno, `brandonhc33`, confirmó en el hilo que
-ya había aprobado las etiquetas y conclusiones. Se registra su aprobación para
-esta actividad; no se afirma una auditoría jurídica externa ni se requiere otra
-confirmación de lo mismo.
+- [ ] Presentación de la actividad en Skillnest.
 
 Las comprobaciones automáticas de esta versión se detallan en
 [verificación local](../evidencias/bloques-24-28/verificacion-local.md).
-No se puede enviar la actividad desde la copia estática del curso; el alumno
-debe presentar el enlace o los archivos en la plataforma que corresponda.
+La presentación del enlace o los archivos se realiza en la plataforma del curso;
+el repositorio no incluye un mecanismo de envío automático.
 
 ## Qué presentar en la actividad 28
 

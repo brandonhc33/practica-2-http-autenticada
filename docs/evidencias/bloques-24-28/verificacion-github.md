@@ -2,8 +2,8 @@
 
 ## Integración y publicación verificadas
 
-**Ampliación integrada y publicada en `main` con autorización explícita del
-alumno.** Incluye el RAG de B24–28, las mediciones reales de la actividad 28,
+**Ampliación integrada y publicada en `main`.**
+Incluye el RAG de B24–28, las mediciones reales de la actividad 28,
 la interpretación de métricas y la reorganización de `docs/`.
 La rama `bloques-24-28` se conserva local; no se publicó su referencia en GitHub.
 
@@ -108,8 +108,6 @@ La integración, el push solo de `main` y la instalación desde GitHub están
 completados. Después se actualizan únicamente documentación y checklist para
 registrarlo; no cambia el código validado.
 
-El alumno confirmó en el hilo que ya había aprobado las etiquetas y conclusiones;
-esa aprobación queda registrada en el checklist. Solo falta el envío de la
-actividad en Skillnest. No se modifican las mediciones ni se repiten llamadas.
-Ver el
+No se modifican las mediciones ni se repiten llamadas. El estado de revisión y
+presentación de la actividad se mantiene en el
 [checklist de entrega](../../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).
