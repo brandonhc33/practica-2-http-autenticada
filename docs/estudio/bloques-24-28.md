@@ -301,11 +301,147 @@ independientes para evaluar esa elección sin sobreajuste.
 Las dos repeticiones reales fueron idénticas: precisión promedio 0,30 con k=3
 y 0,18 con k=5; recall 1,00 en ambos. Nueve preguntas tienen un único relevante
 etiquetado, recuperado en ambos k; la décima no tiene respuesta en el corpus y
-su recall es indefinido. No significa que el sistema sea «100 % correcto»:
-medimos recuperación contra un pequeño etiquetado inicial, no la respuesta legal
-ni todos los fragmentos posiblemente útiles. Se conserva también el intento
-previo interrumpido como antecedente, sin inventarle métricas; la evaluación sí
-se completó. Ver [resultados del B27](../evidencias/bloques-24-28/README.md#b27-evaluación-completada-y-resultados).
+su recall es indefinido. La evaluación sí se completó; el intento previo
+interrumpido se conserva como antecedente, sin inventarle métricas. Ver
+[resultados del B27](../evidencias/bloques-24-28/README.md#b27-evaluación-completada-y-resultados).
+
+### Cómo se interpretan estos valores
+
+**Lo que enseña la clase:** pasar de «estos fragmentos parecen servir» a comprobar
+si un cambio de recuperación trae la evidencia necesaria y cuánto contexto
+adicional introduce. No se busca copiar los números del ejemplo ni conseguir
+una nota de aprobación. Se necesita un criterio de relevancia independiente,
+resultados por pregunta y una línea base para comparar cambios.
+Esta lectura conecta las [métricas de la primera lección](https://learning-pro.skillnest.com/mod/page/view.php?id=20460)
+con la [evaluación de un conjunto](https://learning-pro.skillnest.com/mod/page/view.php?id=20461)
+y la [actividad del B27](https://learning-pro.skillnest.com/mod/page/view.php?id=20462).
+
+#### 1. Precisión y recall hacen preguntas diferentes
+
+| Métrica | Pregunta en palabras simples | Qué problema ayuda a detectar |
+| --- | --- | --- |
+| Precisión | De lo que traje, ¿cuánto estaba etiquetado como relevante? | Contexto adicional sin evidencia directa para la pregunta: puede consumir tokens y distraer al generador. |
+| Recall o exhaustividad | De lo que debía traer, ¿cuánto encontré? | Evidencia necesaria que no llegó al contexto: el generador no podrá apoyarse en ella aunque el prompt sea bueno. |
+
+Ambas se expresan entre 0 y 1: `0,30` equivale a 30 %. Pero **no son un porcentaje
+de respuestas correctas, una probabilidad de veracidad ni la distancia coseno**.
+Su significado depende de qué contamos como relevante y del denominador de cada
+fórmula.
+
+#### 2. Un caso real: por qué 0,333 y 1,00 no se contradicen
+
+Para la pregunta sobre el objeto de la ley, el caso
+[`rag-01`](../../datos/evaluacion/recuperacion_rag.json#L8) etiqueta como relevante
+solo `ley20920-articulo-1-c000`. El
+[reporte real](../evidencias/bloques-24-28/resultados-evaluacion-02.json) devuelve
+estos tres IDs con k=3:
+
+| Posición | Fragmento recuperado | ¿Coincide con el relevante etiquetado? |
+| --- | --- | --- |
+| 1 | `ley20920-articulo-1-c000` | Sí: contiene el objeto de la ley y qué busca proteger. |
+| 2 | `ley20920-articulo-46-c003` | No: trata otra disposición ambiental, no responde directamente esta pregunta. |
+| 3 | `ley20920-articulo-46-c002` | No: tampoco responde directamente al objeto de la ley. |
+
+- **Precisión = 1/3 ≈ 0,333:** uno de los tres fragmentos recuperados coincide
+  con la etiqueta relevante.
+- **Recall = 1/1 = 1,00:** recuperamos el único fragmento que habíamos marcado como
+  necesario. No quedó ningún relevante etiquetado fuera.
+
+En palabras: **trajimos toda la evidencia esperada, pero también dos fragmentos
+adicionales**. Recall alto y precisión menor pueden ocurrir a la vez.
+Esos otros fragmentos no son información falsa por no ser relevantes: simplemente
+no aportan la evidencia directa que este caso evalúa.
+
+#### 3. De dónde salen los promedios 0,30 y 0,18
+
+Se calcula cada métrica por pregunta y después se promedia; cada pregunta pesa
+lo mismo. No se promedian precisión y recall entre sí.
+
+| Grupo | Preguntas | Precisión con k=3 | Precisión con k=5 | Recall en ambos k |
+| --- | ---: | ---: | ---: | --- |
+| Con respuesta y un relevante etiquetado | 9 | 1/3 por pregunta | 1/5 por pregunta | 1/1 = 1 por pregunta |
+| Fuera del corpus | 1 | 0/3 = 0 | 0/5 = 0 | Indefinido: no hay relevantes para usar como denominador. |
+
+Por eso:
+
+$$
+\overline{P}_{k=3}=\frac{9(1/3)+0}{10}=0,30,\qquad
+\overline{P}_{k=5}=\frac{9(1/5)+0}{10}=0,18
+$$
+
+$$
+\overline{R}=\frac{9(1)}{9}=1,00
+$$
+
+El caso fuera del corpus **sí participa con cero en precisión**, según esta
+convención del curso y del evaluador. Su recall se guarda como `null`/`n/a` y
+se excluye del promedio: «no hay evidencia que recuperar» no significa «falló
+al recuperar evidencia existente». La abstención de la respuesta se comprueba
+por separado en B26, no mediante ese recall.
+
+**¿Entonces 0,30 es una mala nota?** No puede juzgarse como una nota sin conocer
+el conjunto. Con exactamente un relevante en cada una de nueve preguntas, ninguno
+en la décima y siempre tres resultados por pregunta, **0,30 es el máximo posible
+de esa precisión promedio**. Para k=5 ese máximo es 0,18. No es un fallo de la
+fórmula: revela que pedir varios vecinos, cuando solo etiquetamos uno como
+relevante, añade contexto que no cuenta como acierto. Tampoco demuestra que las
+etiquetas sean exhaustivas o que el generador vaya a responder correctamente.
+
+#### 4. Qué aprendemos al pasar de k=3 a k=5
+
+El número de aciertos quedó igual; el número de fragmentos recuperados aumentó.
+Por eso el recall no cambió y la precisión bajó. **En esta muestra, k=5 no aportó
+cobertura etiquetada adicional frente a k=3.** Mantener k=3 es razonable entre
+esas dos opciones, pero no prueba que sea el mejor k para otras preguntas ni que
+no convenga ensayar valores menores.
+
+Esto se conecta con B28: más fragmentos pueden ampliar el prompt y su consumo.
+La comparación de **calidad** de B27 usa k=3/5; la de **latencia y tokens** que
+pide B28 usa k=3/6. Son experimentos distintos, no una inconsistencia. En la
+segunda se observaron 1297 → 2540 tokens de entrada, sin una mejora demostrada
+en la respuesta a esa pregunta.
+
+Subir k no siempre baja precisión. Ejemplo didáctico, **no otra corrida real**:
+si los relevantes son `{a, b}`, traer `[a, c, d]` da precisión 1/3 y recall 1/2.
+Ampliar a `[a, c, d, b, e]` da precisión 2/5 y recall 2/2: ambas suben porque
+apareció otro relevante. Hay que interpretar los aciertos, no aplicar una regla
+ciega sobre k.
+
+#### 5. Cómo usar las métricas para depurar
+
+| Observación | Interpretación y siguiente paso |
+| --- | --- |
+| Recall 0 en una pregunta con relevantes | No llegó ninguno de los chunks esperados. Antes de tocar el prompt, revisar ese caso, sus IDs, el índice cargado, chunking y configuración de recuperación. |
+| Recall entre 0 y 1 | Llegó solo una parte de los relevantes etiquetados. Identificar qué evidencia falta y si ampliar k realmente la incorpora. |
+| Recall alto y precisión menor, como aquí | La evidencia esperada llegó con contexto adicional. Comparar k y revisar qué fragmentos aportan algo antes de aumentar el contexto «por si acaso». |
+| Precisión alta y recall bajo | Los fragmentos traídos son pertinentes, pero faltan otros necesarios. Un contexto limpio no basta si deja fuera una excepción u obligación importante. |
+| Recuperación buena, respuesta incorrecta | Revisar cómo el generador utiliza el contexto, conserva condiciones y cita. No culpar automáticamente al índice. |
+| Dos repeticiones idénticas | Hubo estabilidad en estas ejecuciones sin cambios. No prueba calidad en preguntas nuevas ni que Gemini redacte siempre igual. |
+
+La relevancia debe definirse **antes** de recuperar. Si se descubre una etiqueta
+genuinamente incorrecta, se justifica y versiona su revisión; no se cambia solo
+para conseguir mejores números. Nuestro etiquetado inicial sigue pendiente de
+revisión del alumno.
+
+#### 6. El complemento F1 de la primera lección
+
+La clase también presenta F1 como equilibrio entre precisión y recall:
+
+$$
+F1=\frac{2PR}{P+R}
+$$
+
+En el caso individual anterior, k=3 da F1 = 0,50 y k=5 da aproximadamente 0,333.
+Si uno de los dos valores es bajo, F1 no permite ocultarlo con un promedio simple.
+**Es un cálculo didáctico: nuestro reporte actual registra precisión y recall,
+no un F1 medido adicional.** No calcular un supuesto «F1 promedio» mezclando
+nuestros promedios de precisión y recall: usan diez y nueve casos respectivamente;
+además, promediar F1 por caso no equivale en general al F1 de los promedios.
+
+**Para comprobar que lo entendiste:** si existen dos chunks relevantes y llegan
+tres fragmentos de los que solo uno es relevante, ¿cuáles son las métricas y qué
+falta? Respuesta: precisión 1/3, recall 1/2; falta recuperar el otro relevante,
+no solo redactar mejor con el que ya llegó.
 
 ## 6. Bloque 28: latencia, tokens y costo
 

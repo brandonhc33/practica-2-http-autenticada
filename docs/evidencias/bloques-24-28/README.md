@@ -57,11 +57,45 @@ recuperó dentro del top-3 y del top-5. Por caso, precisión fue 1/3 o 1/5 y rec
 en el promedio de recall. Se completaron 20 invocaciones de embedding de pregunta
 en esta segunda ejecución, sin generaciones. El SDK puede reintentar internamente.
 
-**Interpretación:** k=5 añadió vecinos, pero ningún relevante etiquetado extra
-en esta muestra. Mantener k=3 es una decisión razonable para estas preguntas,
-no una demostración del k óptimo general. Las etiquetas fueron propuestas por el
-asistente antes de retrieval y siguen pendientes de revisión del alumno. No
-equivalen a una rúbrica jurídica exhaustiva ni a un benchmark independiente.
+### Cómo se interpretan estos valores
+
+La clase enseña a evaluar **qué evidencia llega al contexto**, no a medir todavía
+si Gemini responde correctamente:
+
+- **Precisión:** de los fragmentos recuperados, qué proporción coincide con los
+  relevantes etiquetados. Con k=3, cada pregunta con respuesta obtuvo un acierto
+  entre tres fragmentos: 1/3 ≈ 33,3 %.
+- **Recall o exhaustividad:** de todos los relevantes etiquetados, qué proporción
+  encontramos. Como cada una de esas preguntas tenía un único relevante y se
+  recuperó, su recall fue 1/1 = 100 %. **No se contradice con la precisión: llegó
+  la evidencia esperada, junto con dos fragmentos adicionales.**
+- **Promedio 0,30:** nueve preguntas con precisión 1/3 y una fuera de corpus con
+  precisión 0: `(9 × 1/3 + 0) / 10 = 0,30`. No significa «30 % de respuestas
+  correctas». Con este etiquetado y tres resultados por pregunta, es el máximo
+  posible de esa precisión promedio.
+- **Promedio 0,18:** con k=5 se siguió encontrando el mismo relevante, pero entre
+  cinco vecinos: `(9 × 1/5 + 0) / 10 = 0,18`. No se perdieron aciertos: aumentó
+  el contexto sin añadir más relevantes etiquetados.
+- **Recall promedio 1,00:** promedia solo las nueve preguntas con relevantes.
+  La pregunta fuera del corpus tiene recall `null`/`n/a`, no cero: no existe
+  evidencia pertinente que recuperar. Su abstención se evalúa por separado.
+- **Repeticiones idénticas:** se observaron los mismos resultados sin cambiar el
+  índice. Es evidencia de estabilidad en esas dos ejecuciones, no una garantía
+  para cualquier pregunta futura.
+
+**Decisión que permiten estos resultados:** entre k=3 y k=5, mantener k=3 conserva
+la cobertura etiquetada con menos contexto adicional en esta muestra. No demuestra
+el k óptimo general ni la veracidad de la respuesta generada. Para aprobar una
+respuesta todavía hay que contrastar sus afirmaciones y citas con el texto.
+
+Las etiquetas fueron propuestas por el asistente antes de retrieval y siguen
+pendientes de revisión del alumno. Las métricas dependen de ese criterio: un
+fragmento no etiquetado puede aportar contexto, pero no cuenta como acierto en
+esta evaluación. No se afirma que el etiquetado sea jurídicamente exhaustivo.
+
+La [guía de estudio desarrolla el cálculo paso a paso](../../estudio/bloques-24-28.md#cómo-se-interpretan-estos-valores),
+incluye un caso real con sus IDs, decisiones de diagnóstico, el complemento F1
+de la clase y un ejercicio de repaso.
 
 ### Antecedente: primer intento interrumpido
 
