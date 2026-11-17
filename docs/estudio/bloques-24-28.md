@@ -18,6 +18,10 @@ Para estudiar el recorrido completo desde B18, consulta el
 Las guías anteriores explican [chains, rutas y fallos](bloques-18-20.md#1-qué-cambia-y-qué-debes-aprender)
 y [herramientas, memoria y supervisión](bloques-21-23.md#mapa-de-la-progresión).
 
+Si necesitas traducir el vocabulario, el
+[glosario de documentos, embeddings y RAG](glosario.md#7-documentos-y-preparación-del-corpus)
+incluye analogías, un diagrama de preparación y consulta, y métricas con fichas de biblioteca.
+
 ## Índice
 
 1. [Qué cambia respecto de los bloques anteriores](#1-qué-cambia-respecto-de-los-bloques-anteriores)
@@ -258,8 +262,9 @@ Se versionan diez casos en
 [`recuperacion_rag.json`](../../datos/evaluacion/recuperacion_rag.json). Los IDs
 relevantes se propusieron leyendo el corpus antes de cualquier recuperación. El
 archivo conserva la procedencia de esa propuesta inicial del asistente.
-El alumno confirmó la aprobación de etiquetas y conclusiones en el hilo de
-entrega; no se afirma una validación docente o jurídica externa.
+El estado de revisión se registra en la
+[entrega](../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre);
+no se afirma una validación docente o jurídica externa.
 
 Se etiqueta por **chunk con evidencia directa**, no por artículo entero. El caso
 del plazo municipal espera `ley20920-articulo-23-c001`, porque allí están los cinco
@@ -426,8 +431,8 @@ ciega sobre k.
 
 La relevancia debe definirse **antes** de recuperar. Si se descubre una etiqueta
 genuinamente incorrecta, se justifica y versiona su revisión; no se cambia solo
-para conseguir mejores números. La aprobación del alumno de nuestro etiquetado
-y conclusiones quedó confirmada en el hilo y registrada en la
+para conseguir mejores números. La revisión del etiquetado y las conclusiones se
+registra en el checklist de la
 [entrega](../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).
 
 #### 6. El complemento F1 de la primera lección

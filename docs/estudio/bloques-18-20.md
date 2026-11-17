@@ -15,6 +15,8 @@ histórico para profundizar después.
 
 Si cuesta ubicar estos conceptos dentro del módulo, empieza por el
 [mapa de estudio desde el bloque 18](modulo-2-desde-bloque-18.md#1-el-recorrido-en-una-sola-idea).
+Para descifrar los nombres, consulta el
+[glosario de orquestación con analogías y diagrama](glosario.md#4-orquestación-chains-y-rutas).
 
 ## Índice
 
@@ -270,7 +272,7 @@ la suite de esa etapa, no el número que debe mostrar hoy todo el repositorio.
 
 ## 7. Laboratorio sin Gemini
 
-Es un repaso opcional, **no otra entrega ni una nueva aprobación**. Desde la
+Es un repaso opcional que **no añade requisitos de entrega**. Desde la
 raíz del repositorio y con las dependencias instaladas, estos comandos usan
 modelos falsos y la red bloqueada por
 [`conftest.py`](../../tests/conftest.py#L8). No necesitan una clave real ni

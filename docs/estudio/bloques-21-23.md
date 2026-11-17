@@ -17,6 +17,10 @@ y la [guía de chains y rutas](bloques-18-20.md#1-qué-cambia-y-qué-debes-apren
 No hace falta dominar primero todos los nombres de LangChain: sigue quién
 propone una acción, quién la ejecuta y qué datos vuelven al modelo.
 
+El [glosario de agentes y herramientas](glosario.md#5-agentes-y-herramientas)
+y el de [memoria y supervisión](glosario.md#6-memoria-sesiones-y-supervisión)
+explican los términos con ejemplos cotidianos y un diagrama del ciclo.
+
 ## Índice
 
 1. [Mapa de la progresión](#mapa-de-la-progresión)

@@ -2,6 +2,9 @@
 
 Las tres lecciones forman una secuencia: separar las instrucciones del contenido, pedir una estructura que Python pueda utilizar y medir si esa combinación funciona repetidamente. El proyecto implementa esa secuencia en [el banco](../../src/prompts/banco.py), [el cliente](../../src/clientes/gemini.py), [el validador](../../src/clientes/salida_estructurada.py) y [el evaluador real](../../scripts/evaluar_prompts.py).
 
+Si prompt, contexto, esquema o parser son términos nuevos, consulta el
+[glosario con definiciones y ejemplos cotidianos](glosario.md#3-instrucciones-y-contexto).
+
 ## 1. Prompt de sistema: las reglas de una tarea
 
 Piensa en una ficha de trabajo. La ficha dice qué debes hacer y cómo entregar el resultado; debajo aparecen los datos del caso. Al cambiar los datos, las reglas de la ficha se reutilizan.

@@ -6,6 +6,10 @@ Conectar las actividades con lo que construimos, sin tener que memorizar primero
 los nombres de LangChain. Este recorrido cubre **los bloques 18 a 28 ya trabajados
 en el repositorio**; no pretende cubrir las unidades posteriores del módulo 2.
 
+Si aparecen demasiados términos nuevos, usa el
+[glosario con ejemplos cotidianos y diagramas](glosario.md#diez-conceptos-para-empezar).
+Puedes empezar por diez conceptos y volver al resto cuando aparezcan en una guía.
+
 Las fuentes son los requisitos conservados en los
 [PRD 02](../planes/prd-02-orquestacion-langchain.md#10-entregables-por-bloque),
 [PRD 03](../planes/prd-03-agente-ley-rep.md#10-entregables-por-bloque) y
@@ -103,7 +107,7 @@ calidad.** Esa es una de las conclusiones que conecta todo el recorrido.
 
 No hace falta ejecutar nuevas consultas pagadas. Los ejercicios de las guías
 usan pruebas sin Gemini o lectura de evidencias ya conservadas. Son repaso
-opcional, no requisitos pendientes ni aprobaciones nuevas.
+opcional y no añaden requisitos de entrega.
 
 | Sesión de estudio | Lectura | Ejercicio antes de avanzar |
 | --- | --- | --- |

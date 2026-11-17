@@ -298,6 +298,9 @@ Las pruebas siguen las mismas áreas del código; `tests/conftest.py` bloquea la
 Las explicaciones conceptuales, la relación con las actividades y las preguntas
 de repaso están separadas de la documentación de uso:
 
+- [Glosario: términos, para qué sirven, ejemplos cotidianos y diagramas](docs/estudio/glosario.md#cómo-usar-este-glosario).
+  Si el vocabulario es nuevo, empieza por sus diez conceptos iniciales y consulta
+  el resto por tema mientras lees las guías.
 - [Empieza aquí: mapa del módulo 2 desde el bloque 18](docs/estudio/modulo-2-desde-bloque-18.md).
   Conecta las etapas, compara una misma consulta en router, agente y RAG, y propone
   un orden de lectura con ejercicios sin Gemini.
