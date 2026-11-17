@@ -2,9 +2,12 @@
 
 **Estado:** fases 0–5 implementadas y validación real de la fase 6 registrada;
 índice, recarga, evaluación, actividad 28 y abstención ejecutados con Gemini.
-Las citas se contrastaron de forma asistida. Pendientes revisión del alumno,
-publicación autorizada y envío a la plataforma. Ver [entrega](../entregas/bloques-24-28.md)
-y [resultados reales](../evidencias/bloques-24-28/README.md).
+Las citas se contrastaron de forma asistida. Merge y push autorizados y realizados
+solo en `main`; rama de bloques conservada local e instalación desde GitHub
+verificada. Pendientes revisión del alumno y envío a la plataforma.
+Ver [entrega](../entregas/bloques-24-28.md),
+[resultados reales](../evidencias/bloques-24-28/README.md) y
+[publicación](../evidencias/bloques-24-28/verificacion-github.md).
 **Línea base:** `607c61f`, 263 pruebas y 481 subpruebas; revisión del 16-11-2026.
 
 ## 1. Objetivo y alcance
@@ -121,7 +124,8 @@ copias de esos módulos en la raíz solo para duplicar rutas.
 - [x] Ensayos reales de B24/26/27 y actividad 28, con conclusiones basadas en sus resultados.
 - [x] Cita contrastada de forma asistida con el texto local y pregunta fuera de corpus revisada.
 - [ ] Revisión del alumno de etiquetas y conclusiones; no se presupone por autorizar cuota.
-- [ ] Solo después: merge/push autorizado a `main` y validación desde instalación limpia.
+- [x] Merge/push específicamente autorizado a `main`, sin publicar la rama de bloques.
+- [x] Validación desde instalación limpia de GitHub.
 
 ## 7. Límites de interpretación
 

@@ -778,8 +778,9 @@ La [guía de estudio](../estudio/bloques-24-28.md) explica cada concepto y los
 trade-offs. La [entrega](../entregas/bloques-24-28.md) contiene el recorrido completo,
 abstención, revisión de una cita y criterios pendientes. Las
 [corridas reales ya conservadas](../evidencias/bloques-24-28/README.md) incluyen
-el incidente inicial, la evaluación repetida y las mediciones del B28. Tener
-esas evidencias no significa que la actividad ya se publicó o se envió.
+el incidente inicial, la evaluación repetida y las mediciones del B28. La ampliación
+ya está [publicada en `main`](../evidencias/bloques-24-28/verificacion-github.md);
+el envío de la actividad en la plataforma sigue a cargo del alumno.
 
 ## Pruebas y comprobaciones
 
@@ -1165,7 +1166,7 @@ El modelo predeterminado es `gemini-3.5-flash-lite`. La [decisión de arquitectu
 
 **Estado: primer RAG implementado y medido con Gemini para los bloques 24–28.**
 La entrada por terminal usa Chroma y la copia local de Ley 20.920 de 2016;
-ver [entrega y pendientes de publicación](../entregas/bloques-24-28.md).
+ver [entrega publicada y pendientes de envío](../entregas/bloques-24-28.md).
 La ampliación a múltiples fuentes y búsqueda híbrida sigue siendo un proyecto
 posterior. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
 

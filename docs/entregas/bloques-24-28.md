@@ -3,10 +3,13 @@
 **Estado: implementación y mediciones reales completadas; entrega preparada para revisión.**
 El índice, recarga, evaluación y las cuatro corridas de la actividad 28 se
 ejecutaron con Gemini, más una prueba de abstención. Las citas se contrastaron
-de forma asistida. Falta la revisión del alumno, publicación autorizada y envío
-en la plataforma; no se declara enviada ni integrada en `main`.
+de forma asistida. La ampliación está integrada y publicada en `main` con
+autorización del alumno; la instalación y las pruebas desde un clon limpio de
+GitHub están verificadas. Faltan su revisión de las etiquetas y conclusiones y
+el envío en la plataforma; no se declara enviada.
 
 Resultados y conclusión: [evidencias reales](../evidencias/bloques-24-28/README.md).
+Constancia de integración e instalación: [verificación desde GitHub](../evidencias/bloques-24-28/verificacion-github.md).
 
 ## Entregables y correspondencia
 
@@ -212,8 +215,9 @@ No mezclar resultados ficticios para completar el JSONL.
 - [x] Cuatro líneas reales de la actividad 28 y comparación de tokens k=3/6.
 - [x] Abstención real y cita contrastada de forma asistida; conclusiones con tiempos y costos.
 - [x] Evidencias reales revisadas y conservadas con manifiesto; estado y checklist actualizados.
-- [ ] Merge/push autorizado de esta ampliación a `main`, sin publicar la rama de bloques.
-- [ ] Instalación desde clon limpio y enlace/entrega en la plataforma.
+- [x] Merge/push autorizado de esta ampliación a `main`, sin publicar la rama de bloques.
+- [x] Instalación desde un clon limpio de GitHub.
+- [ ] Enlace/entrega en la plataforma, a cargo del alumno.
 
 Las comprobaciones automáticas de esta versión se detallan en
 [verificación local](../evidencias/bloques-24-28/verificacion-local.md).
@@ -237,5 +241,6 @@ histórico del B13–14 que ya estaba versionado; no se borra ese antecedente.
 La actividad pide ejecución con una clave propia: el índice se reconstruye,
 no se distribuye el almacenamiento binario de Chroma.
 
-El paquete local no implica publicación ni envío. Para presentar un enlace de
-`main`, primero falta autorizar e integrar esta ampliación.
+El paquete local no implica envío a la plataforma. La ampliación ya está publicada
+y se puede presentar el [enlace de `main`](https://github.com/brandonhc33/practica-2-http-autenticada/tree/main)
+o los archivos requeridos por el formulario de Skillnest.

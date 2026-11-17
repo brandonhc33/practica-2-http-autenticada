@@ -88,8 +88,10 @@ conexión real con Gemini. Después solo se añade esta constancia documental.
 La revisión inicial no ejecutó índice real, evaluación semántica, abstención ni
 las cuatro mediciones del B28. Esos pasos se realizaron después y están en el
 [registro de corridas reales](README.md), separados de las pruebas con fakes.
-No se hizo merge/push ni clon desde GitHub de esta ampliación. Esta verificación
-no es evidencia de CI ni de actividad enviada en la plataforma.
+En esa revisión inicial tampoco se hizo merge/push ni clon desde GitHub.
+La [publicación y validación posterior desde GitHub](verificacion-github.md)
+se registran aparte. Esta verificación no es evidencia de CI ni de actividad
+enviada en la plataforma.
 
 Ver el [checklist de entrega](../../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).
 
@@ -114,7 +116,8 @@ Se repitieron las comprobaciones en esta continuación:
 | Copias de evidencia real | Seis archivos cotejados byte a byte con `output/rag/` y con los tamaños y SHA-256 del manifiesto. |
 | Esquema de actividad 28 | Cuatro líneas reales exitosas, tres preguntas, k=3/3/3/6, uso informado y tres tiempos no negativos por corrida. |
 
-No se volvió a ejecutar una instalación desde GitHub: la rama de bloques
-continúa local y falta autorización para publicar esta ampliación. Los detalles
-del fallo real inicial y los límites de los costos están en el [reporte real](README.md);
-no se mezclan con resultados de la suite.
+La continuación descrita arriba fue anterior a la autorización del merge.
+Después se publicaron los cambios solo en `main` y se verificó un clon limpio:
+ver [constancia de GitHub](verificacion-github.md). La rama de bloques sigue
+local. Los detalles del fallo real inicial y los límites de los costos están en
+el [reporte real](README.md); no se mezclan con resultados de la suite.

@@ -211,7 +211,8 @@ Entrada de terminal de los bloques 24–28: índice Chroma persistente de la cop
 local de 2016, recuperación semántica y respuesta con fuentes numeradas. No
 reemplaza la API ni el agente anterior. La implementación se puede probar sin red;
 las [mediciones reales de la actividad 28](docs/entregas/bloques-24-28.md) ya están
-registradas. La publicación y el envío a la plataforma siguen pendientes.
+registradas y la ampliación está publicada en `main`. El envío a la plataforma
+sigue pendiente.
 
 Preparación local, sin cuota:
 

@@ -189,7 +189,12 @@ No se considera ese booleano una evaluación semántica de la abstención.
 
 ## Qué falta para cerrar administrativamente
 
-Revisión del alumno de etiquetas y conclusiones, autorización de merge/push a
-`main`, comprobación desde GitHub tras publicar y envío en la plataforma.
+La integración y el push a `main`, autorizados explícitamente por el alumno,
+están completados. También se verificaron instalación y pruebas desde un clon
+limpio de GitHub; la rama de bloques se conserva local. Ver
+[constancia de publicación e instalación](verificacion-github.md).
+
+Siguen pendientes la revisión del alumno de etiquetas y conclusiones y el envío
+en la plataforma.
 Estas mediciones no prueban vigencia normativa ni completan el proyecto final
 multifuente. Ver el [checklist de entrega](../../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).
