@@ -1,16 +1,325 @@
-# Preguntas y respuestas: bloques 18 a 20
+# Guía de estudio: bloques 18 a 20
 
-Guía de estudio para defender la orquestación con LangChain. Intenta responder cada pregunta antes de leer su respuesta.
+## Objetivo y fuentes
 
-Las respuestas se redactaron con ayuda de Claude y se comprobaron el 7 de noviembre de 2026 contra el commit `4a2622c`, con `langchain` 1.4.9, `langchain-core` 1.7.6, `langchain-google-genai` 4.4.3 y `google-genai` 2.34.0. Las mediciones de esta guía no usaron Gemini: se hicieron en una copia temporal del código y con un servidor local que siempre responde HTTP 503. Los resultados de las corridas reales están en la [entrega](../entregas/bloques-18-20.md).
+Entender cómo pasamos de pedir una respuesta a Gemini a **organizar varios pasos,
+elegir una ruta y responder de forma controlada si algo falla**. LangChain conecta
+las piezas; no hace verdadero lo que diga el modelo.
+
+Esta guía contrasta la Unidad 2.3, recogida en el
+[PRD 02](../planes/prd-02-orquestacion-langchain.md#10-entregables-por-bloque),
+con el código y las [evidencias de la entrega](../entregas/bloques-18-20.md).
+No es una transcripción de videos ni agrega requisitos docentes. La primera
+parte explica el recorrido; las fases del final conservan el análisis técnico
+histórico para profundizar después.
+
+Si cuesta ubicar estos conceptos dentro del módulo, empieza por el
+[mapa de estudio desde el bloque 18](modulo-2-desde-bloque-18.md#1-el-recorrido-en-una-sola-idea).
 
 ## Índice
 
-1. [Fase 0: dependencias](#fase-0-dependencias)
-2. [Fase 1: chain de tres pasos](#fase-1-chain-de-tres-pasos)
-3. [Fase 2: clasificación y rutas](#fase-2-clasificación-y-rutas)
-4. [Fase 3: manejo de errores](#fase-3-manejo-de-errores)
-5. [Fase 4: entrega y clon limpio](#fase-4-entrega-y-clon-limpio)
+1. [Qué cambia y qué debes aprender](#1-qué-cambia-y-qué-debes-aprender)
+2. [Las piezas mínimas de LangChain](#2-las-piezas-mínimas-de-langchain)
+3. [Bloque 18: seguir los datos de una chain](#3-bloque-18-seguir-los-datos-de-una-chain)
+4. [Bloque 19: clasificar no es decidir toda la ruta](#4-bloque-19-clasificar-no-es-decidir-toda-la-ruta)
+5. [Bloque 20: fallar sin inventar una respuesta](#5-bloque-20-fallar-sin-inventar-una-respuesta)
+6. [Interpretar los resultados reales](#6-interpretar-los-resultados-reales)
+7. [Laboratorio sin Gemini](#7-laboratorio-sin-gemini)
+8. Análisis avanzado conservado:
+   [dependencias](#fase-0-dependencias),
+   [chain](#fase-1-chain-de-tres-pasos),
+   [rutas](#fase-2-clasificación-y-rutas),
+   [errores](#fase-3-manejo-de-errores) y
+   [clon limpio](#fase-4-entrega-y-clon-limpio).
+
+## 1. Qué cambia y qué debes aprender
+
+Antes teníamos un cliente que enviaba una consulta y recibía una respuesta.
+Ahora el programa coordina varias llamadas, cada una con una responsabilidad.
+La API y el cliente HTTP anterior siguen existiendo: esta etapa agrega otra
+entrada, por terminal.
+
+| Bloque | Qué pedía la actividad | Cómo lo resolvimos | Qué debes poder explicar |
+| --- | --- | --- | --- |
+| 18 | Chain de al menos tres pasos conectados. | Interpretar → responder con la ley → simplificar. Cada paso recibe información del anterior. | Qué entra y sale de cada paso y por qué una transformación puede perder información. |
+| 19 | Enrutamiento condicional incorporado a la chain. | Clasificación y tres rutas: normativa, resumen y aclaración. | El modelo propone una categoría; el código comprueba condiciones y elige la ruta. |
+| 20 | Comprobar el flujo completo y su manejo de errores. | Rutas con modelo secundario y texto de respaldo, más captura general de errores y pruebas sin red. | Disponibilidad, corrección del recorrido y exactitud legal son propiedades diferentes. |
+
+**No es todavía un agente:** el modelo no elige una secuencia libre de
+herramientas. Tampoco hay búsqueda semántica ni memoria entre consultas.
+
+## 2. Las piezas mínimas de LangChain
+
+| Pieza | En palabras simples | En nuestro proyecto |
+| --- | --- | --- |
+| `PromptTemplate` | Texto con casillas que se completan con datos. | La plantilla de interpretar usa `{mensaje}`. |
+| Modelo | Recibe el prompt y devuelve un mensaje del asistente. | Lo configura [`crear_modelo`](../../src/orquestacion/modelo.py#L64). |
+| `StrOutputParser` | Extrae texto de la respuesta del modelo. | Permite que el siguiente paso reciba texto, no un objeto `AIMessage`. |
+| `Runnable` | Pieza que puede ejecutarse con una entrada. | Un modelo, una función adaptada o una chain completa. |
+| `\|` | Conecta la salida de una pieza con la entrada de la siguiente. | `plantilla \| modelo \| StrOutputParser()`. |
+| `.invoke(...)` | Ejecuta la pieza con esos datos. | `.invoke({"mensaje": consulta})`. |
+| `RunnablePassthrough.assign` | Conserva los campos de entrada y agrega campos calculados. | Mantiene `mensaje` y agrega `interpretacion`. |
+| `RunnableBranch` | Ejecuta la primera rama cuya condición se cumple; si ninguna, la rama por defecto. | Escoge una de las tres rutas. |
+
+Una **chain** es esa composición ejecutable. Construirla no llama al modelo;
+invocarla sí puede hacerlo. Un operador `|` no equivale a una llamada a Gemini:
+parsear texto o agregar un campo son operaciones locales.
+
+Tampoco usamos `consultar_gemini_raw` por debajo de este flujo: LangChain tiene su
+propio conector. Reutilizamos el catálogo y el registro de costos, no toda la
+política de reintentos del cliente HTTP anterior. El
+[análisis de dependencias](#fase-0-dependencias) explica esa decisión y sus límites.
+
+## 3. Bloque 18: seguir los datos de una chain
+
+### ¿Qué recibe cada paso y para qué sirve?
+
+La [`construcción de la chain`](../../src/orquestacion/cadena_tres_pasos.py#L62)
+define este recorrido:
+
+| Paso | Entrada | Salida | Lo que no debe hacer |
+| --- | --- | --- | --- |
+| Interpretar | Consulta original. | Reformulación y conceptos que revisar. | Contestar la pregunta o inventar datos del caso. |
+| Responder | Consulta, interpretación y los artículos locales. | Respuesta documental con artículos y límites. | Tratar la interpretación como fuente legal. |
+| Simplificar | Solo la respuesta anterior. | Texto en viñetas y lenguaje simple. | Agregar información o quitar condiciones y referencias. |
+
+Ejemplo **didáctico del movimiento de datos**, no otra respuesta real de Gemini:
+
+```text
+{"mensaje": "¿Quién fija las metas de recolección?"}
+→ assign agrega interpretacion sin borrar mensaje
+{"mensaje": "...", "interpretacion": "..."}
+→ assign agrega fragmentos de la copia local
+{"mensaje": "...", "interpretacion": "...", "fragmentos": "..."}
+→ paso_responder produce texto
+"respuesta documental..."
+→ una función lo envuelve en el campo que espera la última plantilla
+{"respuesta": "respuesta documental..."}
+→ paso_simplificar produce el texto final
+```
+
+El envoltorio `{"respuesta": respuesta}` no consulta al modelo: adapta la forma de
+los datos. Si borrásemos `mensaje` al guardar la interpretación, el segundo paso
+perdería la pregunta original. Si pasásemos un `AIMessage` sin parser, el contrato
+de texto dejaría de cumplirse.
+
+### ¿Interpretar significa buscar documentos?
+
+No. La interpretación orienta la respuesta, pero
+[`formatear_fragmentos`](../../src/orquestacion/cadena_tres_pasos.py#L55) carga
+**los 50 artículos/transitorios** de la copia local. No selecciona fragmentos
+por significado. Aún no hay embeddings, Chroma ni top-k.
+
+Esta diferencia explica el consumo: el segundo paso recibe mucha más entrada
+que interpretar o simplificar. Dividir una tarea en tres llamadas no ahorra
+tokens automáticamente.
+
+### ¿Por qué el tercer paso es un riesgo además de una ayuda?
+
+Simplificar puede mejorar la lectura, pero también borrar una condición legal.
+El tercer paso no vuelve a leer la ley: trabaja solo con lo que produjo el
+segundo. Si ahí faltaba una excepción, no tiene una fuente para recuperarla.
+
+En las corridas conservadas se perdió la referencia al artículo 37 y se
+simplificaron condiciones indebidamente. Reforzar el prompt busca reducir ese riesgo,
+pero **no equivale a validar la respuesta**. Es un ejemplo de propagación de
+errores: más pasos no significan necesariamente más exactitud.
+
+**Comprueba que lo entendiste:** la chain sola hace tres llamadas al modelo.
+Si luego agregamos una clasificación previa, la ruta normativa completa hace
+cuatro, no tres.
+
+## 4. Bloque 19: clasificar no es decidir toda la ruta
+
+### ¿Qué hace el modelo y qué hace Python?
+
+El modelo propone `normativa`, `resumen` o `aclaracion`. La
+[`clasificación`](../../src/orquestacion/enrutamiento.py#L74) extrae el texto y lo
+normaliza. Después la
+[`bifurcación`](../../src/orquestacion/enrutamiento.py#L112) aplica condiciones:
+
+```text
+Consulta
+→ obtener categoría normalizada y buscar artículo nombrado
+→ categoría normativa: ejecutar chain de tres pasos
+→ categoría resumen Y artículo encontrado: resumir ese artículo
+→ cualquier otro caso: pedir aclaración
+```
+
+Normalizar `" NORMATIVA. "` a `"normativa"` evita un fallo de formato.
+No corrige una clasificación equivocada ni transforma cualquier palabra en una
+categoría válida. Una categoría desconocida cae en aclaración.
+
+### Ejemplos de recorrido
+
+La categoría de la tabla es una **entrada supuesta para explicar el router**;
+no prometemos que Gemini clasifique siempre así:
+
+| Consulta | Categoría supuesta | Comprobación local | Ruta y llamadas sin fallos |
+| --- | --- | --- | --- |
+| «¿Quién fija las metas?» | `normativa` | No exige un artículo nombrado. | Normativa: 1 de clasificación + 3 de la chain = 4. |
+| «Resume el artículo 9» | `resumen` | El artículo existe. | Resumen: 1 + 1 = 2. |
+| «Resume el artículo 99» | `resumen` | No existe en la copia. | Aclaración: 1 + 1 = 2. |
+| «Tengo una duda sobre mi empresa» | `aclaracion` | No basta para saber qué revisar. | Aclaración: 1 + 1 = 2. |
+| «Resume el artículo 9» | `categoria_inventada` | Aunque exista el artículo, no hay categoría válida. | Aclaración: 1 + 1 = 2. |
+| Solo espacios | No se clasifica. | El envoltorio detecta entrada vacía. | Mensaje local: 0. |
+
+La última fila corresponde a
+[`procesar_consulta_segura`](../../src/orquestacion/enrutamiento.py#L154), no a
+invocar directamente cualquier pieza de la chain.
+
+### ¿Por qué las rutas no reciben lo mismo?
+
+- Normativa recibe la ley local completa para elaborar una respuesta.
+- Resumen recibe solo el artículo encontrado y su referencia.
+- Aclaración no recibe artículos: su trabajo es pedir antecedentes, no hacer
+  afirmaciones legales.
+
+No son tres nombres para el mismo prompt. La especialización cambia qué
+información y qué tarea recibe el modelo.
+
+**Comprueba que lo entendiste:** clasificar «resumen» no demuestra que el artículo
+exista. La existencia se decide contra los datos locales, no por confianza en
+la respuesta del clasificador.
+
+## 5. Bloque 20: fallar sin inventar una respuesta
+
+### Tres defensas, no tres garantías de verdad
+
+| Defensa | Qué hace | Qué no hace |
+| --- | --- | --- |
+| [`exigir_texto`](../../src/orquestacion/modelo.py#L56) | Convierte una salida vacía en excepción. | No comprueba citas, condiciones ni veracidad del texto no vacío. |
+| [`construir_ruta_segura`](../../src/orquestacion/enrutamiento.py#L144) | Si la ruta falla, intenta su versión con otro modelo; si también falla, devuelve respaldo local. | No detecta una respuesta incorrecta que no lance error. |
+| [`procesar_consulta_segura`](../../src/orquestacion/enrutamiento.py#L154) | Captura fallos del flujo invocado, incluida la clasificación. | No protege la creación de modelos, que ocurre antes en `main`. |
+
+**El fallback envuelve la ruta completa, no cada paso individual.** Si el modelo
+principal interpreta bien y falla al responder o simplificar, el secundario
+empieza de nuevo esa ruta. No continúa automáticamente desde el paso fallido.
+
+```text
+Clasificación correcta
+→ ruta con principal
+   → éxito: respuesta
+   → excepción: repetir ruta con secundario
+      → éxito: respuesta
+      → excepción: texto fijo de respaldo
+
+Fallo de clasificación
+→ captura general y mensaje seguro, sin llegar a las rutas
+```
+
+Un **reintento** repite una llamada; un **fallback** cambia a una alternativa.
+Aquí cada modelo tiene un intento y 30 segundos por llamada. No heredamos el
+backoff del cliente anterior ni tenemos un presupuesto global de 30 segundos.
+En la ruta normativa, contando clasificación, pueden producirse hasta
+`1 + 3 + 3 = 7` llamadas si el principal falla en su tercer paso y el secundario
+recorre los tres. El respaldo fijo no llama a Gemini.
+
+### ¿Qué significa recibir un mensaje seguro?
+
+Significa que el sistema comunica que no pudo responder. No significa que
+respondió jurídicamente bien ni que el usuario no tenga obligaciones. Por eso
+el texto de respaldo distingue una falla técnica de una conclusión sobre la ley.
+
+La respuesta de contenido puede fallar sin excepción: una cita equivocada es
+texto válido para Python. Hay que revisar **dos ejes distintos**:
+
+1. ¿Funcionó el recorrido, incluidos sus controles?
+2. ¿La respuesta conserva lo que realmente dice la fuente?
+
+## 6. Interpretar los resultados reales
+
+La [corrida final](../entregas/bloques-18-20.md#corrida-final) conserva las tres
+rutas:
+
+| Ruta | Llamadas observadas | Tokens totales | Costo estimado USD |
+| --- | ---: | ---: | ---: |
+| Normativa | 4 | 12.910 | 0,0049400 |
+| Resumen | 2 | 782 | 0,0005448 |
+| Aclaración | 2 | 445 | 0,0002985 |
+| Total de esa corrida final | 8 | 14.137 | 0,0057833 |
+
+### ¿Cómo leer esos números sin sacar una conclusión falsa?
+
+- **4 + 2 + 2 = 8:** confirma el recorrido esperado en esos casos, sin fallback.
+  No son ocho preguntas ni ocho llamadas por cada consulta.
+- **12.910 tokens en normativa:** suman entrada y salida de sus cuatro llamadas,
+  no solo el texto visible de la respuesta. La etapa de responder registró
+  11.817 tokens; es consistente con enviar la ley completa.
+- **Normativa consume más en esa corrida:** tiene más llamadas y más contexto.
+  No es una comparación controlada de calidad: las preguntas y tareas difieren.
+- **Costo estimado:** se calcula con uso informado y tarifas del repositorio,
+  no con una factura. Un error sin uso informado queda como costo desconocido,
+  no como una llamada demostrablemente gratuita.
+- **Cero fallos observados:** el proveedor respondió en esos casos. No prueba
+  que el fallback actuara; eso se comprueba con fallos simulados.
+
+### ¿Por qué pasar las pruebas no eliminó los errores legales?
+
+En normativa faltó el artículo 37, se citó el 4 para la fijación de metas y
+quedaron condiciones insuficientes. La
+[revisión de la salida](../entregas/bloques-18-20.md#corrida-final) lo registra.
+Como no se guardó la respuesta intermedia del segundo paso, no podemos afirmar
+en qué etapa de esa corrida se perdió el artículo 37.
+
+Las pruebas con modelo falso fijan la respuesta: demuestran conexiones, rutas,
+contratos y errores, **no la calidad de lo que Gemini elegirá escribir**.
+El clon limpio comprueba instalación y archivos necesarios; tampoco certifica
+la exactitud legal. La entrega histórica registró 199 pruebas: es el tamaño de
+la suite de esa etapa, no el número que debe mostrar hoy todo el repositorio.
+
+## 7. Laboratorio sin Gemini
+
+Es un repaso opcional, **no otra entrega ni una nueva aprobación**. Desde la
+raíz del repositorio y con las dependencias instaladas, estos comandos usan
+modelos falsos y la red bloqueada por
+[`conftest.py`](../../tests/conftest.py#L8). No necesitan una clave real ni
+consumen cuota de Gemini:
+
+```bash
+uv run python -m pytest tests/orquestacion/test_cadena_tres_pasos.py -v
+uv run python -m pytest tests/orquestacion/test_enrutamiento.py -v
+uv run python -m pytest tests/orquestacion/test_orquestacion.py -v
+```
+
+No te quedes solo con `PASSED`: lee la prueba indicada y trata de anticipar qué
+comprobará antes de ejecutarla.
+
+| Ejercicio | Dónde mirar | Qué debes observar |
+| --- | --- | --- |
+| Dibujar la entrada de cada paso. | [`test_cada_paso_recibe_la_salida_del_anterior`](../../tests/orquestacion/test_cadena_tres_pasos.py#L84). | El segundo recibe consulta e interpretación; el tercero solo la respuesta. |
+| Predecir «Resume el artículo 99» aunque la categoría sea `resumen`. | [`test_resumen_sin_articulo_va_a_aclaracion`](../../tests/orquestacion/test_enrutamiento.py#L97). | Se elige aclaración porque no hay artículo válido. |
+| Predecir qué hace una respuesta vacía en el segundo paso. | [`test_respuesta_vacia_activa_el_fallback`](../../tests/orquestacion/test_orquestacion.py#L210). | El principal se detiene y el secundario recorre su propia chain. |
+| Distinguir un fallo antes de elegir ruta. | [`test_procesar_consulta_segura_no_propaga_excepciones`](../../tests/orquestacion/test_orquestacion.py#L227). | Falla la clasificación y responde la captura general. |
+
+### Preguntas de repaso y respuestas cortas
+
+Intenta contestar primero sin leer la segunda columna:
+
+| Pregunta | Respuesta |
+| --- | --- |
+| ¿Cada `\|` gasta una llamada? | No; solo las piezas que invocan al modelo. |
+| ¿`assign` reemplaza toda la entrada? | No; agrega campos y conserva los anteriores, salvo que se reasigne el mismo nombre. |
+| ¿La interpretación es evidencia de la ley? | No; la fuente es el texto local aportado. |
+| ¿La ruta normativa de B18 recupera solo artículos pertinentes? | No; envía todos los artículos de la copia. |
+| ¿Normalizar equivale a clasificar bien? | No; arregla formato, no intención. |
+| ¿Una salida no vacía evita errores legales? | No; `exigir_texto` solo rechaza vacío. |
+| ¿El secundario retoma en el tercer paso si ese falló? | No; repite la ruta normativa completa. |
+| ¿30 segundos es el máximo de toda la consulta? | No; es el límite configurado por llamada. |
+| ¿8 llamadas exitosas demuestran que el fallback funciona con Gemini? | No; no hubo una falla real que lo activara. |
+
+Al terminar, continúa con [herramientas, memoria y supervisión](bloques-21-23.md#mapa-de-la-progresión).
+Para profundizar, las fases siguientes conservan las preguntas y hallazgos de la
+revisión anterior.
+
+**Procedencia del análisis histórico:** las respuestas de las fases 0 a 4 se
+redactaron con ayuda de Claude y se comprobaron el 7 de noviembre de 2026 contra
+el commit `4a2622c`, con `langchain` 1.4.9, `langchain-core` 1.7.6,
+`langchain-google-genai` 4.4.3 y `google-genai` 2.34.0. Sus mediciones de
+comportamiento no usaron Gemini: se hicieron en una copia temporal y con un
+servidor local que siempre responde HTTP 503. No son mediciones nuevas de esta
+ampliación didáctica; las corridas reales están en la
+[entrega](../entregas/bloques-18-20.md).
 
 ## Fase 0: dependencias
 

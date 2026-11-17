@@ -298,6 +298,9 @@ Las pruebas siguen las mismas áreas del código; `tests/conftest.py` bloquea la
 Las explicaciones conceptuales, la relación con las actividades y las preguntas
 de repaso están separadas de la documentación de uso:
 
+- [Empieza aquí: mapa del módulo 2 desde el bloque 18](docs/estudio/modulo-2-desde-bloque-18.md).
+  Conecta las etapas, compara una misma consulta en router, agente y RAG, y propone
+  un orden de lectura con ejercicios sin Gemini.
 - [Bloque 10: prompts y salida JSON](docs/estudio/bloque-10-prompts.md).
 - [Bloques 18 a 20: chains, enrutamiento y manejo de errores](docs/estudio/bloques-18-20.md).
 - [Bloques 21 a 23: herramientas, memoria y supervisión humana](docs/estudio/bloques-21-23.md).

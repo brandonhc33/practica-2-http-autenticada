@@ -4,7 +4,8 @@
 índice, recarga, evaluación, actividad 28 y abstención ejecutados con Gemini.
 Las citas se contrastaron de forma asistida. Merge y push autorizados y realizados
 solo en `main`; rama de bloques conservada local e instalación desde GitHub
-verificada. Pendientes revisión del alumno y envío a la plataforma.
+verificada. El alumno confirmó la aprobación de etiquetas y conclusiones.
+Solo queda el envío a la plataforma.
 Ver [entrega](../entregas/bloques-24-28.md),
 [resultados reales](../evidencias/bloques-24-28/README.md) y
 [publicación](../evidencias/bloques-24-28/verificacion-github.md).
@@ -123,9 +124,10 @@ copias de esos módulos en la raíz solo para duplicar rutas.
       Ver [verificación local](../evidencias/bloques-24-28/verificacion-local.md).
 - [x] Ensayos reales de B24/26/27 y actividad 28, con conclusiones basadas en sus resultados.
 - [x] Cita contrastada de forma asistida con el texto local y pregunta fuera de corpus revisada.
-- [ ] Revisión del alumno de etiquetas y conclusiones; no se presupone por autorizar cuota.
+- [x] Revisión del alumno de etiquetas y conclusiones; aprobación confirmada en el hilo.
 - [x] Merge/push específicamente autorizado a `main`, sin publicar la rama de bloques.
 - [x] Validación desde instalación limpia de GitHub.
+- [ ] Presentación de la actividad en Skillnest, a cargo del alumno.
 
 ## 7. Límites de interpretación
 

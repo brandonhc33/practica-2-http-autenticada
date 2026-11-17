@@ -9,13 +9,18 @@ comprobó. Para ejecutar la aplicación, empieza por el [README del proyecto](..
 | --- | --- | --- |
 | [`guias/`](guias/guia-completa.md) | Instalación, comandos, API y resolución de problemas. | Quiero usar o ejecutar el proyecto. |
 | [`arquitectura/`](arquitectura/vision-general.md) | Flujos, selección de modelo, límites de autonomía y diagramas editables. | Quiero entender cómo está diseñado y qué permite. |
-| [`estudio/`](estudio/bloques-24-28.md) | Explicaciones, relación con las clases y preguntas de repaso, por bloque. | Quiero aprender, no solo copiar un comando. |
+| [`estudio/`](estudio/modulo-2-desde-bloque-18.md) | Mapa del módulo desde B18, explicaciones y preguntas de repaso por bloque. | Quiero aprender, no solo copiar un comando. |
 | [`planes/`](planes/prd-04-rag-ley-rep.md) | PRD, decisiones, fases y revisiones iniciales. | Quiero entender el alcance y por qué se eligió una solución. |
 | [`entregas/`](entregas/bloques-24-28.md) | Correspondencia con las actividades, checklist y estado comprobado. | Quiero revisar o preparar una entrega. |
 | [`evaluaciones/`](evaluaciones/respuestas-ley-rep.md) | Resultados de modelos/prompts/respuestas y límites de sus métricas. | Quiero analizar calidad y comparar resultados. |
 | [`evidencias/`](evidencias/) | Registros, capturas y verificaciones conservadas. | Quiero comprobar una afirmación o el resultado de una ejecución. |
 
 ## Recorrido por bloques
+
+Para estudiar el módulo 2 desde el bloque 18, empieza por el
+[mapa de progresión y orden de lectura](estudio/modulo-2-desde-bloque-18.md).
+Conecta chains, rutas, agentes y RAG; las guías por bloque desarrollan el código,
+los resultados y sus límites con ejercicios sin Gemini.
 
 | Bloques | Aprender o usar | Diseño y planificación | Entrega o evidencia |
 | --- | --- | --- | --- |

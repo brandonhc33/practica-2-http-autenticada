@@ -108,7 +108,8 @@ La integración, el push solo de `main` y la instalación desde GitHub están
 completados. Después se actualizan únicamente documentación y checklist para
 registrarlo; no cambia el código validado.
 
-Siguen pendientes la revisión del alumno de las etiquetas y conclusiones y el
-envío de la actividad en Skillnest. No se marca una revisión humana como cumplida
-solo por autorizar la publicación. Ver el
+El alumno confirmó en el hilo que ya había aprobado las etiquetas y conclusiones;
+esa aprobación queda registrada en el checklist. Solo falta el envío de la
+actividad en Skillnest. No se modifican las mediciones ni se repiten llamadas.
+Ver el
 [checklist de entrega](../../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).

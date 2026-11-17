@@ -11,6 +11,23 @@ Esta guía explica los requisitos del curso recogidos en el
 código. No es una transcripción de la clase ni una rúbrica docente adicional.
 Los resultados concretos están en la [entrega](../entregas/bloques-21-23.md).
 
+Para ubicar esta etapa, consulta el
+[mapa del módulo desde B18](modulo-2-desde-bloque-18.md#1-el-recorrido-en-una-sola-idea)
+y la [guía de chains y rutas](bloques-18-20.md#1-qué-cambia-y-qué-debes-aprender).
+No hace falta dominar primero todos los nombres de LangChain: sigue quién
+propone una acción, quién la ejecuta y qué datos vuelven al modelo.
+
+## Índice
+
+1. [Mapa de la progresión](#mapa-de-la-progresión)
+2. [Bloque 21: del flujo fijo al agente](#bloque-21-del-flujo-fijo-al-agente)
+3. [Bloque 22: contratos de herramientas y memoria](#bloque-22-contratos-de-herramientas-y-memoria)
+4. [Bloque 23: autonomía con supervisión](#bloque-23-autonomía-con-supervisión)
+5. [Qué acabamos de depurar](#qué-acabamos-de-depurar)
+6. [Costos y alcance de la evidencia](#costos-y-evidencia-qué-conclusiones-son-válidas)
+7. [Laboratorio sin Gemini](#laboratorio-sin-gemini)
+8. [Preguntas y respuestas de repaso](#preguntas-para-comprobar-que-lo-entendiste)
+
 ## Mapa de la progresión
 
 | Etapa | Quién decide el recorrido | Qué aporta |
@@ -94,6 +111,39 @@ Usarlas siempre también sería un error de diseño.
 privado del modelo. Los pasos intermedios permiten auditar acciones, no leer su
 pensamiento interno.
 
+### Seguir una llamada sin confundir al modelo con Python
+
+Para «¿Qué dice el artículo 34?», esta tabla muestra una secuencia posible,
+**didáctica, no una nueva corrida real**:
+
+| Momento | Quién trabaja | Qué entra | Qué sale |
+| --- | --- | --- | --- |
+| 1. Decidir | Modelo. | Reglas, consulta y descripción de herramientas; historial si existe. | Solicitud de `obtener_articulo` con `numero="34"` y `transitorio=false`. |
+| 2. Ejecutar | Python, mediante el ejecutor. | Nombre y argumentos de la herramienta. | Texto del artículo local con su referencia, o aviso de problema. |
+| 3. Responder | Modelo. | El contexto de la consulta más la solicitud y su observación. | Respuesta final basada en ese resultado. |
+
+Dos llamadas al modelo y una ejecución local **no son tres llamadas a Gemini**.
+La función no consulta al proveedor; las llamadas son las de decidir y redactar.
+Si la primera observación no alcanza y el modelo pide otra herramienta, habrá
+otra vuelta, dentro del límite.
+
+El ejecutor no es otro modelo que piensa en paralelo: es el componente que
+coordina el ciclo. `agent_scratchpad` transporta solicitudes y observaciones del
+turno actual; `chat_history` aporta mensajes de turnos anteriores.
+
+### Buscar por palabras todavía no es recuperar por embeddings
+
+[`buscar_en_ley`](../../src/orquestacion/herramientas.py#L86) normaliza palabras,
+quita términos sin tema y puntúa coincidencias en los artículos; una palabra
+del título pesa el triple. Devuelve hasta tres artículos con puntaje positivo
+y recorta los largos a 1.500 caracteres.
+
+Eso puede fallar ante sinónimos sin coincidencia literal. El agente puede
+reformular la búsqueda, pero no transforma esa función en un buscador vectorial.
+La recuperación por significado llega en B24–28 como flujo separado.
+Leer por número, por su parte, evita depender de un ranking si ya sabemos qué
+artículo necesitamos.
+
 ### ¿Qué debes aprender y qué comprobamos?
 
 Debes distinguir una secuencia definida por el programador de una selección de
@@ -137,6 +187,18 @@ Un argumento inválido vuelve al agente como observación explicativa, para que
 pueda corregir la solicitud dentro del límite de pasos. **Validar el formato no
 garantiza que el artículo sea pertinente ni que una afirmación sea verdadera.**
 
+### Tres controles distintos: forma, existencia y pertinencia
+
+| Pregunta | Quién la responde | Ejemplo |
+| --- | --- | --- |
+| ¿Los argumentos cumplen el esquema? | Pydantic y la configuración de la herramienta. | Deben incluir `numero`; `transitorio` tiene valor por defecto. |
+| ¿Existe ese artículo en nuestra copia? | La lógica local de lectura. | `{"numero": "99"}` cumple la forma, pero la lectura informa que no está disponible. |
+| ¿Ese artículo respalda lo que estoy afirmando? | Revisión del texto y su uso en la respuesta. | Un artículo existente y bien leído puede ser irrelevante para la pregunta. |
+
+Un error de argumentos puede volver al modelo como observación para corregirlo.
+No garantiza que lo corrija, y la vuelta adicional consume parte del presupuesto
+de llamadas. Un esquema no reemplaza una evaluación del contenido.
+
 ### ¿Qué significa que el agente tenga memoria?
 
 No significa que Gemini aprendió ni que cambiamos sus pesos. El programa guarda
@@ -178,6 +240,33 @@ aviso de límite de pasos.
 El ensayo real coincidió en 3 de 3 casos: el segundo turno de `cliente-1` consultó
 el segundo transitorio y `cliente-2` empezó sin historial ajeno. No es una prueba
 de persistencia entre reinicios, porque esa función no existe.
+
+### Interpretar los mensajes y tokens de la corrida real
+
+El [ensayo conservado de B22](../evidencias/bloques-21-23/ensayo-bloque-22.json)
+permite leer algo más que «3 de 3»:
+
+| Consulta | Sesión | Mensajes previos | Acción observada | Llamadas al modelo | Tokens de entrada / salida |
+| --- | --- | ---: | --- | ---: | ---: |
+| Primero transitorio. | `cliente-1` | 0 | Lee el primero transitorio. | 2 | 1.223 / 147 |
+| «El transitorio siguiente». | `cliente-1` | 2 | Lee el segundo transitorio. | 2 | 1.563 / 208 |
+| «¿Sobre qué artículo te pregunté recién?». | `cliente-2` | 0 | Responde sin herramienta ni historial de la otra sesión. | 1 | 522 / 33 |
+
+Después del primer turno exitoso hay **dos mensajes**: pregunta y respuesta final.
+Después del segundo hay cuatro en esa sesión; las observaciones no se agregan
+como mensajes permanentes de ese historial. Por eso dos llamadas al modelo
+en un turno no implican cuatro mensajes nuevos guardados.
+
+Los totales fueron 1.370 → 1.771 tokens en `cliente-1`. No podemos atribuir
+los 401 adicionales solo a memoria: también cambiaron el artículo leído y
+la respuesta. Sabemos por el código que se reenvía el historial, pero esa
+comparación no aísla su costo. Para medirlo necesitaríamos mantener iguales
+consulta, observación y demás condiciones, variando solo el historial.
+
+Los casos prueban continuidad e aislamiento en esa ejecución. No prueban que
+`session_id` autentique usuarios, que el modelo nunca confunda referencias o que
+el historial persista al reiniciar. Tampoco hacen de una respuesta previa una
+fuente de lo que dice la ley.
 
 ## Bloque 23: autonomía con supervisión
 
@@ -221,6 +310,30 @@ Usuario pide un informe del artículo 34
 
 Ni siquiera con `s` se envía algo a un cliente real: solo se autoriza el guardado
 local de esta simulación.
+
+### Leer la aprobación como un proceso, no como un solo booleano
+
+La propuesta, la autorización y el guardado son eventos distintos. La
+[`herramienta de entrega`](../../src/orquestacion/herramientas.py#L177) los
+ordena para no confundir intención con efecto:
+
+| Situación | ¿Puede existir decisión registrada? | ¿Qué podemos afirmar del informe? |
+| --- | --- | --- |
+| La persona escribe `n` y se registra la decisión. | Sí, `aprobado: false`. | La herramienta no lo guarda; hubo rechazo explícito observado. |
+| Se agota el tiempo o llega EOF y se registra la decisión. | Sí, también `false`. | No se guarda, pero no demuestra que una persona escribió `n`. |
+| La persona escribe `s`, pero falla el registro. | No hay confirmación del registro. | No se intenta guardar el informe. |
+| Se registra `true`, pero falla la escritura del informe. | Sí, `aprobado: true`. | La autorización existe; la entrega no está confirmada. |
+| Se registra `true` y se escribe el archivo. | Sí. | Se completó el guardado local, no un envío externo. |
+| Se guarda y después falla el modelo al responder. | Sí; el archivo puede seguir presente. | El mensaje seguro del agente no revierte la acción ya hecha. |
+
+Por eso «el ensayo coincide con el booleano esperado» no basta para afirmar
+«el alumno rechazó con `n`». En nuestro cierre se contrastaron entrada humana,
+decisión, sesión/identificador y presencia o ausencia del archivo. Los intentos
+anteriores no se borraron para que pareciera que todo funcionó a la primera.
+
+Tampoco hay que esperar necesariamente 300 segundos para obtener `false`: EOF,
+entrada no interactiva o Enter vacío terminan antes. El tiempo máximo no es
+una demora obligatoria ni prueba de la causa de una corrida antigua.
 
 ### ¿Por qué el control debe estar dentro de la herramienta?
 
@@ -315,8 +428,9 @@ consulta pagada.
   automático coincidente no reemplaza observar la entrada humana explícita.
 - Un fallo sin metadatos de uso no se registra como si costara cero.
 
-La última validación de código registrada fue de **263 pruebas y 481 subpruebas**
-sin red, con `ruff` y `basedpyright` sin errores. Los avisos de memoria son
+El cierre de B21–23 registró **263 pruebas y 481 subpruebas** sin red, con `ruff`
+y `basedpyright` sin errores; es un conteo histórico, no el tamaño actual de la
+suite completa tras agregar RAG. Los avisos de memoria son
 deprecaciones: no invalidan esa ejecución, pero anticipan una migración futura.
 El detalle y la revisión de instalación local están en
 [verificación local](../evidencias/bloques-21-23/verificacion-local.md).
@@ -343,6 +457,36 @@ memoria persistente, un endpoint para el agente, envío real a clientes o migrac
 a LangGraph. Son extensiones fuera del alcance actual, no funciones ya construidas.
 Los riesgos vigentes se detallan en [límites de autonomía](../arquitectura/limites-autonomia-agente.md).
 
+## Laboratorio sin Gemini
+
+Estos ejercicios son repaso opcional, no otra entrega ni una solicitud de repetir
+la aprobación o el rechazo real. Desde la raíz, con dependencias instaladas:
+
+```bash
+uv run python -m pytest tests/orquestacion/test_herramientas.py -v
+uv run python -m pytest tests/orquestacion/test_agente_con_herramientas.py -v
+uv run python -m pytest tests/orquestacion/test_supervision.py -v
+```
+
+La [suite bloquea la red](../../tests/conftest.py#L8), sustituye las respuestas del
+modelo y usa archivos temporales para las acciones. No necesita una clave real
+ni llama a Gemini. La instalación de dependencias, si faltaran, es un paso aparte.
+
+| Repaso | Prueba para leer | Pregunta antes de ejecutarla |
+| --- | --- | --- |
+| Propuesta y observación. | [`test_agente_registra_la_herramienta_elegida`](../../tests/orquestacion/test_agente_con_herramientas.py#L44). | ¿Qué eligió el modelo falso y qué ejecutó Python? |
+| Límite de autonomía. | [`test_agente_se_detiene_en_el_limite_de_pasos`](../../tests/orquestacion/test_agente_con_herramientas.py#L76). | ¿Qué devuelve el agente si sigue solicitando herramientas? |
+| Continuidad. | [`test_segundo_turno_recibe_el_primero`](../../tests/orquestacion/test_agente_con_herramientas.py#L216). | ¿Qué mensajes debe recibir el segundo turno? |
+| Aislamiento. | [`test_sesiones_distintas_no_comparten_historial`](../../tests/orquestacion/test_agente_con_herramientas.py#L240). | ¿Qué debe quedar fuera de la segunda sesión? |
+| Fallo tras autorización. | [`test_entregar_informe_fallo_de_guardado_conserva_aprobacion`](../../tests/orquestacion/test_herramientas.py#L232). | ¿Por qué una aprobación no demuestra un archivo guardado? |
+| Fallo después de actuar. | [`test_fallo_tras_entrega_conserva_aprobacion_y_no_repite`](../../tests/orquestacion/test_agente_con_herramientas.py#L194). | ¿Por qué repetir todo podría duplicar una acción? |
+
+Para analizar evidencia real sin nuevas llamadas, abre el
+[ensayo de memoria](../evidencias/bloques-21-23/ensayo-bloque-22.json) y el
+[rechazo final](../evidencias/bloques-21-23/rechazo-explicito-gemini.md).
+Busca sesión, argumentos, mensajes previos y resultado, no solo el contador de
+coincidencias. Es lectura de resultados históricos, no reproducción del ensayo.
+
 ## Preguntas para comprobar que lo entendiste
 
 Intenta responder sin mirar las secciones anteriores:
@@ -364,3 +508,30 @@ Si puedes explicar el recorrido **consulta → propuesta de herramienta → ejec
 → observación → aprobación cuando corresponda → respuesta y registros**, y
 distinguir lo implementado de lo realmente observado, comprendiste la idea
 central de estos tres bloques.
+
+### Respuestas breves para contrastar
+
+1. El modelo produce una solicitud estructurada; el ejecutor llama a una función
+   permitida. El modelo no dispone por ello de ejecución arbitraria.
+2. Por tema, cuando no conocemos el artículo; por número, cuando está nombrado o
+   hay que leer completo un resultado recortado.
+3. Pydantic valida la forma de los argumentos según el esquema. No demuestra
+   existencia, pertinencia ni exactitud jurídica.
+4. `chat_history` contiene los turnos guardados de la sesión; `agent_scratchpad`,
+   solicitudes y observaciones del turno actual. No son razonamiento privado.
+5. En un proceso nuevo el historial está vacío, aunque se reutilice el nombre.
+6. Una conversación puede contener errores o afirmaciones del usuario: hay que
+   contrastar la ley con una herramienta, no citar la memoria como fuente.
+7. La herramienta exige aprobación afirmativa y registro exitoso antes de
+   intentar escribir. Un prompt por sí solo no impone esa barrera.
+8. El mismo `false` representa rechazo explícito o distintas formas de no obtener
+   autorización. Hace falta evidencia del motivo.
+9. El efecto puede haberse completado antes del fallo final; repetir todo
+   podría crear una segunda entrega.
+10. El diagnóstico falso verifica el circuito de entrada sin proveedor; el
+    control posterior comprueba el caso con Gemini. Ninguno explica por sí solo
+    la causa del incidente anterior.
+
+**Siguiente paso:** [RAG, evaluación y mediciones de B24–28](bloques-24-28.md#1-qué-cambia-respecto-de-los-bloques-anteriores).
+Ahora cambiamos cómo obtenemos evidencia, no convertimos el historial en ley
+ni damos más permisos al agente.

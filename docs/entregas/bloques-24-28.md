@@ -1,12 +1,12 @@
 # Entrega de bloques 24 a 28 — RAG y actividad core 28
 
-**Estado: implementación y mediciones reales completadas; entrega preparada para revisión.**
+**Estado: implementación y mediciones reales completadas; entrega aprobada por el alumno y lista para presentar.**
 El índice, recarga, evaluación y las cuatro corridas de la actividad 28 se
 ejecutaron con Gemini, más una prueba de abstención. Las citas se contrastaron
 de forma asistida. La ampliación está integrada y publicada en `main` con
 autorización del alumno; la instalación y las pruebas desde un clon limpio de
-GitHub están verificadas. Faltan su revisión de las etiquetas y conclusiones y
-el envío en la plataforma; no se declara enviada.
+GitHub están verificadas. El alumno confirmó en el hilo la aprobación de las
+etiquetas y conclusiones. Solo queda el envío en la plataforma; no se declara enviada.
 
 Resultados y conclusión: [evidencias reales](../evidencias/bloques-24-28/README.md).
 Constancia de integración e instalación: [verificación desde GitHub](../evidencias/bloques-24-28/verificacion-github.md).
@@ -206,10 +206,10 @@ No mezclar resultados ficticios para completar el JSONL.
 - [x] Material de los cinco bloques y actividad 28 analizados y planificados.
 - [x] Código de indexación, recuperación, evaluación e instrumentación.
 - [x] Comparación local de cortes e integridad del corpus.
-- [x] Diez casos propuestos antes del retrieval; pendiente revisión del alumno.
+- [x] Diez casos propuestos antes del retrieval.
 - [x] Tests con Chroma local, recarga en otro proceso y modelos falsos.
 - [x] Autorización del alumno para las pruebas reales, sin copiar ni mostrar su `.env`.
-- [ ] Revisión del alumno de las etiquetas iniciales y conclusiones.
+- [x] Revisión del alumno de las etiquetas iniciales y conclusiones; aprobación confirmada en el hilo.
 - [x] Índice real y recarga real del B24/25.
 - [x] Evaluación real de diez preguntas, k=3/5 y dos repeticiones.
 - [x] Cuatro líneas reales de la actividad 28 y comparación de tokens k=3/6.
@@ -218,6 +218,11 @@ No mezclar resultados ficticios para completar el JSONL.
 - [x] Merge/push autorizado de esta ampliación a `main`, sin publicar la rama de bloques.
 - [x] Instalación desde un clon limpio de GitHub.
 - [ ] Enlace/entrega en la plataforma, a cargo del alumno.
+
+**Constancia de aprobación:** el alumno, `brandonhc33`, confirmó en el hilo que
+ya había aprobado las etiquetas y conclusiones. Se registra su aprobación para
+esta actividad; no se afirma una auditoría jurídica externa ni se requiere otra
+confirmación de lo mismo.
 
 Las comprobaciones automáticas de esta versión se detallan en
 [verificación local](../evidencias/bloques-24-28/verificacion-local.md).

@@ -13,6 +13,11 @@ transcripción de los videos ni una rúbrica docente adicional.
 La [entrega](../entregas/bloques-24-28.md) separa implementación, pruebas y
 [mediciones reales ya conservadas](../evidencias/bloques-24-28/README.md).
 
+Para estudiar el recorrido completo desde B18, consulta el
+[mapa del módulo 2](modulo-2-desde-bloque-18.md#1-el-recorrido-en-una-sola-idea).
+Las guías anteriores explican [chains, rutas y fallos](bloques-18-20.md#1-qué-cambia-y-qué-debes-aprender)
+y [herramientas, memoria y supervisión](bloques-21-23.md#mapa-de-la-progresión).
+
 ## Índice
 
 1. [Qué cambia respecto de los bloques anteriores](#1-qué-cambia-respecto-de-los-bloques-anteriores)
@@ -252,8 +257,9 @@ distintos: **calidad del retrieval** y **fidelidad de la generación**.
 Se versionan diez casos en
 [`recuperacion_rag.json`](../../datos/evaluacion/recuperacion_rag.json). Los IDs
 relevantes se propusieron leyendo el corpus antes de cualquier recuperación. El
-archivo declara que el etiquetado inicial es del asistente y requiere revisión
-del alumno: no se finge una validación docente o jurídica.
+archivo conserva la procedencia de esa propuesta inicial del asistente.
+El alumno confirmó la aprobación de etiquetas y conclusiones en el hilo de
+entrega; no se afirma una validación docente o jurídica externa.
 
 Se etiqueta por **chunk con evidencia directa**, no por artículo entero. El caso
 del plazo municipal espera `ley20920-articulo-23-c001`, porque allí están los cinco
@@ -420,8 +426,9 @@ ciega sobre k.
 
 La relevancia debe definirse **antes** de recuperar. Si se descubre una etiqueta
 genuinamente incorrecta, se justifica y versiona su revisión; no se cambia solo
-para conseguir mejores números. Nuestro etiquetado inicial sigue pendiente de
-revisión del alumno.
+para conseguir mejores números. La aprobación del alumno de nuestro etiquetado
+y conclusiones quedó confirmada en el hilo y registrada en la
+[entrega](../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).
 
 #### 6. El complemento F1 de la primera lección
 
