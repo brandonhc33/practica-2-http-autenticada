@@ -34,6 +34,7 @@ El recorrido de este README es: actividades del curso, instalación, preparació
         2. [Evaluar el banco](#evaluar-el-banco)
     9. [Orquestación con LangChain: bloques 18 a 20](#orquestación-con-langchain-bloques-18-a-20)
     10. [Agente con herramientas, memoria y supervisión: bloques 21 a 23](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23)
+    11. [RAG de Ley REP: bloques 24 a 28](#rag-de-ley-rep-bloques-24-a-28)
 6. [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
     1. [Pruebas automatizadas](#pruebas-automatizadas)
         1. [Checklist del cliente modular: Bloque 14](#checklist-del-cliente-modular-bloque-14)
@@ -76,6 +77,9 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloque 20: manejo de errores | [Revisar los fallbacks](#orquestación-con-langchain-bloques-18-a-20) y ejecutar `uv run python -m pytest tests/orquestacion -v`. | [Pruebas de extremo a extremo](../tests/orquestacion/test_orquestacion.py) y [entrega con checklist y límites](../docs/entrega-bloques-18-20.md). |
 | Bloques 21 y 22: herramientas y memoria | [Consultar con el agente](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). | [Entrega y ensayos](entrega-bloques-21-23.md). |
 | Bloque 23: supervisión humana | Revisar y decidir sobre cada entrega simulada. | [Límites de autonomía](limites-autonomia-agente.md) y [verificación final con Gemini](entrega-bloques-21-23.md#verificación-final-del-bloque-23-con-gemini). |
+| Bloques 24 y 25: indexación | Comparar chunking, indexar con embeddings reales y recargar sin reindexar. | [Uso del RAG](#rag-de-ley-rep-bloques-24-a-28) y [comparación local](evidencias/bloques-24-28/comparacion-chunking.md). |
+| Bloques 26 y 27: recuperación y evaluación | Recuperar por significado, generar con citas y evaluar diez preguntas etiquetadas. | [Guía de estudio](preguntas-bloques-24-28.md) y [entrega](entrega-bloques-24-28.md). |
+| Bloque 28: actividad core de latencia y costo | Ejecutar cuatro corridas reales y revisar tiempos, tokens, costo conocido y límites. | [Comandos y checklist de cierre](entrega-bloques-24-28.md#recorrido-de-ejecución). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -724,6 +728,51 @@ Para estudiar los conceptos y la relación con la actividad, consulta la
 Ver también [entrega y evidencias](entrega-bloques-21-23.md) y
 [límites de autonomía](limites-autonomia-agente.md).
 
+### RAG de Ley REP: bloques 24 a 28
+
+Flujo de terminal independiente: `src/rag/` prepara documentos y chunks, persiste
+embeddings en Chroma, recupera por vector, genera con fuentes y mide cada etapa.
+Usa la copia de 2016, sin comprobar vigencia actual. No modifica los endpoints.
+
+```bash
+# Sin API: comparar cortes antes de indexar.
+uv run python -m scripts.indexar_corpus --comparar
+
+# Con API y cuota: construir una sola vez.
+uv run python -m scripts.indexar_corpus --confirmar-consumo \
+  --salida output/rag/indexacion-01.json
+
+# Sin API: recargar y verificar desde otro proceso.
+uv run python -m scripts.indexar_corpus --verificar
+
+# Con API de embeddings, sin generación: evaluar el conjunto etiquetado.
+uv run python -m scripts.evaluacion_recuperacion --k 3 5 --repeticiones 2 \
+  --salida output/rag/resultados_evaluacion-01.txt --confirmar-consumo
+
+# Con embeddings y generación: actividad 28, tres preguntas y comparación k=3/6.
+uv run python -m scripts.registro_rag --actividad-28 \
+  --salida output/rag/registros_latencia_costo-01.jsonl --confirmar-consumo
+```
+
+Los comandos reales requieren `GEMINI_API_KEY` en el entorno o `.env`; desde un
+worktree puedes usar `uv run --env-file /ruta/al/.env ...`. `--confirmar-consumo`
+es una confirmación del operador, no una sustitución de la clave ni un modo fake.
+
+`vectorstore/` y `output/rag/` están ignorados. Los archivos de resultados deben
+ser nuevos. Un índice incompatible o incompleto falla antes de consultar; para
+reconstruir, usar una carpeta nueva con `--directorio` en todos los comandos.
+Un fallo de consulta deja una línea parcial y detiene el ensayo.
+
+Los registros incluyen consultas, fuentes y respuestas completas: no introducir
+datos privados. El costo de generación utiliza tokens reales y tarifas de pago;
+el costo completo queda desconocido porque el conector de embeddings no informa
+tokens. La validación numérica de citas no garantiza fidelidad jurídica.
+
+La [guía de estudio](preguntas-bloques-24-28.md) explica cada concepto y los
+trade-offs. La [entrega](entrega-bloques-24-28.md) contiene el recorrido completo,
+abstención, revisión de una cita y criterios pendientes: la implementación local
+no sustituye las corridas reales ni significa que la actividad ya se envió.
+
 ## Pruebas y comprobaciones
 
 ### Pruebas automatizadas
@@ -1101,9 +1150,9 @@ El modelo predeterminado es `gemini-3.5-flash-lite`. La [decisión de arquitectu
 
 ## Proyecto final de Skillnest: asistente RAG para Ley REP
 
-**Estado: preparación del RAG.** Este repositorio implementa consultas HTTP a Gemini y preguntas con el texto de una copia local de Ley REP. La recuperación de fragmentos y el RAG con múltiples fuentes se desarrollarán como proyecto final. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
+**Estado: primer RAG implementado para los bloques 24–28, pendiente de validación real.** La entrada por terminal usa Chroma y la copia local de Ley 20.920 de 2016; ver [entrega](entrega-bloques-24-28.md). La ampliación a múltiples fuentes y búsqueda híbrida sigue siendo un proyecto posterior. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
 
-Como preparación, el banco incluye `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`. Utilizan el [PDF convertido a texto y artículos](../datos/ley_rep/README.md), además de permitir contexto explícito. La recuperación documental y la verificación de citas están pendientes.
+El banco anterior conserva `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`. Utilizan el [PDF convertido a texto y artículos](../datos/ley_rep/README.md), además de permitir contexto explícito. El nuevo RAG recupera chunks y comprueba referencias numéricas; la verificación semántica de cada afirmación sigue pendiente y no se confunde con existencia de la cita.
 
 ### Objetivo y justificación
 
@@ -1161,7 +1210,7 @@ La salida incluirá respuesta, documento y artículo o sección, enlace oficial,
 | --- | --- | --- |
 | Generar respuestas | `gemini-3.5-flash-lite` | Candidato por costo y latencia; falta validar calidad normativa. |
 | Comparar calidad de generación | `gemini-3.6-flash` | Alternativa para evaluar con el mismo contexto e instrucciones. |
-| Crear embeddings | `gemini-embedding-001` | Propuesto para recuperación semántica; pendiente de implementación. |
+| Crear embeddings | `gemini-embedding-001` | Implementado en el RAG de bloques 24–28; pendiente de ejecución y evaluación real. |
 
 El modelo de [embeddings](https://ai.google.dev/gemini-api/docs/embeddings) cumple una función distinta del generativo. Los documentos y las consultas deberán usar un espacio vectorial compatible.
 

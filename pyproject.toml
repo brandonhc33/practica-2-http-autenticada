@@ -5,10 +5,13 @@ description = "Consulta a Gemini y API Python con Bearer token para el Bloque 4 
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "chromadb>=1.5.9,<2",
     "fastapi>=0.115,<1",
     "langchain>=1.4.9,<2",
+    "langchain-chroma>=1.0,<2",
     "langchain-classic>=1.0.8,<2",
     "langchain-google-genai>=4.4.3,<5",
+    "langchain-text-splitters>=1.1.3,<2",
     "python-dotenv>=1.0,<2",
     "requests>=2.32,<3",
     "urllib3>=2.8,<3",
@@ -29,7 +32,7 @@ dev = [
 ]
 
 [tool.basedpyright]
-include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py"]
+include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py", "scripts/indexar_corpus.py", "scripts/evaluacion_recuperacion.py", "scripts/registro_rag.py", "scripts/rag_comun.py"]
 pythonVersion = "3.12"
 typeCheckingMode = "standard"
 venvPath = "."

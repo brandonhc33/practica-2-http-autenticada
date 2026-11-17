@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "huella_indice": "43559c52b3c6cae8f14afb38aec54afc2488393bd5c9f725b0c4b4f86c88f794",
+  "metodo": "Etiquetado inicial propuesto por el asistente leyendo los chunks locales, antes de cualquier recuperación real o simulada. El alumno debe revisar los criterios; no se ajustan a los resultados del retriever.",
+  "unidad_relevancia": "chunk que contiene evidencia directa para la pregunta; no todos los chunks del artículo por pertenecer a él",
+  "casos": [
+    {
+      "id": "rag-01",
+      "pregunta": "¿Cuál es el objeto de la Ley 20.920 y qué busca proteger?",
+      "ids_relevantes": ["ley20920-articulo-1-c000"],
+      "criterio": "El artículo 1 completo vincula disminución y valorización de residuos con salud y medio ambiente."
+    },
+    {
+      "id": "rag-02",
+      "pregunta": "¿Qué seis productos prioritarios enumera expresamente la ley?",
+      "ids_relevantes": ["ley20920-articulo-10-c000"],
+      "criterio": "El primer chunk del artículo 10 contiene la lista completa a–f; el siguiente trata la ampliación, no enumera esos seis."
+    },
+    {
+      "id": "rag-03",
+      "pregunta": "¿Mediante qué instrumento se establecen las metas de recolección y valorización y qué criterios se consideran?",
+      "ids_relevantes": ["ley20920-articulo-12-c000"],
+      "criterio": "El artículo 12 contiene instrumento, autoridad y criterios para fijar las metas; no permite inventar porcentajes."
+    },
+    {
+      "id": "rag-04",
+      "pregunta": "¿A quién debe entregar sus residuos un generador y qué sucede con los residuos domiciliarios?",
+      "ids_relevantes": ["ley20920-articulo-5-c000"],
+      "criterio": "El artículo 5 distingue entrega a gestor autorizado, manejo propio y residuos domiciliarios."
+    },
+    {
+      "id": "rag-05",
+      "pregunta": "¿Puede un consumidor industrial valorizar sus propios residuos prioritarios y a quién debe informar?",
+      "ids_relevantes": ["ley20920-articulo-34-c000"],
+      "criterio": "El segundo párrafo del primer chunk del artículo 34 da la excepción y el deber de informar mediante el RETC."
+    },
+    {
+      "id": "rag-06",
+      "pregunta": "¿Quién diseña los programas de educación ambiental y quiénes pueden colaborar en implementarlos?",
+      "ids_relevantes": ["ley20920-articulo-29-c000"],
+      "criterio": "El artículo 29 completo atribuye el diseño al Ministerio y nombra los colaboradores."
+    },
+    {
+      "id": "rag-07",
+      "pregunta": "¿Cuál es el plazo mínimo del permiso municipal para instalaciones de recepción en bienes nacionales de uso público?",
+      "ids_relevantes": ["ley20920-articulo-23-c001"],
+      "criterio": "El segundo chunk del artículo 23 dice que el plazo no podrá ser inferior a cinco años; el primero solo introduce el permiso."
+    },
+    {
+      "id": "rag-08",
+      "pregunta": "¿Qué organismo fiscaliza las metas de residuos prioritarios y qué debe hacer el Ministerio si presume una infracción?",
+      "ids_relevantes": ["ley20920-articulo-38-c000"],
+      "criterio": "El primer chunk del artículo 38 contiene ambas atribuciones, no solo la definición general de Superintendencia."
+    },
+    {
+      "id": "rag-09",
+      "pregunta": "¿Qué confidencialidad debe asegurar el reglamento del registro y cómo se procura difundir su información?",
+      "ids_relevantes": ["ley20920-articulo-37-c001"],
+      "criterio": "El segundo chunk del artículo 37 exige confidencialidad comercial e industrial y difusión comprensible en el sitio del Ministerio."
+    },
+    {
+      "id": "rag-10",
+      "pregunta": "¿Cuál es la tasa del impuesto a la renta de las empresas chilenas para el año 2027?",
+      "ids_relevantes": [],
+      "criterio": "Ningún artículo de esta copia de Ley REP fija el impuesto a la renta de 2027. Recall no definido; también sirve para ensayar abstención."
+    }
+  ]
+}

@@ -14,6 +14,7 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 6. [Consultar Gemini desde terminal](#consultar-gemini-desde-terminal)
 7. [Orquestar consultas de Ley REP](#orquestar-consultas-de-ley-rep)
 8. [Agente con memoria y supervisión](#agente-con-memoria-y-supervisión)
+   - [Consultas RAG de Ley REP](#consultas-rag-de-ley-rep)
 9. [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
 10. [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
 11. [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
@@ -72,6 +73,9 @@ Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El
 | 21 | Agente con herramientas de lectura | [Uso](#agente-con-memoria-y-supervisión) y [entrega y evidencias](docs/entrega-bloques-21-23.md). |
 | 22 | Argumentos estructurados y memoria por sesión | [Guía de uso](docs/guia-completa.md#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). |
 | 23 | Supervisión humana y límites de autonomía | [Límites](docs/limites-autonomia-agente.md) y [estado de validación](docs/entrega-bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada). |
+| 24 y 25 | Indexación y persistencia en Chroma | [Uso del RAG](#consultas-rag-de-ley-rep) y [comparación de cortes](docs/evidencias/bloques-24-28/comparacion-chunking.md). |
+| 26 y 27 | Recuperación con citas y evaluación | [Recorrido de ejecución](docs/entrega-bloques-24-28.md#recorrido-de-ejecución) y [casos etiquetados](datos/evaluacion/recuperacion_rag.json). |
+| 28 | Latencia y costo del flujo RAG | [Actividad core, checklist y estado de evidencias reales](docs/entrega-bloques-24-28.md). |
 
 ## Comandos útiles
 
@@ -87,6 +91,8 @@ Ejecuta estos comandos desde la raíz del repositorio, después de configurar `.
 | Ver opciones de inicio | `uv run python main.py --help` |
 | Consultar Gemini | `uv run python -m src.clientes.gemini "¿Qué es una API?"` |
 | Orquestar una consulta de Ley REP | `uv run python -m src.orquestacion.enrutamiento "Resume el artículo 9"` |
+| Comparar chunking sin API | `uv run python -m scripts.indexar_corpus --comparar` |
+| Verificar el índice RAG sin API | `uv run python -m scripts.indexar_corpus --verificar` |
 | Ejecutar pruebas | `uv run python -m pytest tests -v` |
 | Revisar estilo | `uv run ruff check .` |
 | Revisar tipos | `uv run basedpyright` |
@@ -199,6 +205,40 @@ Consulta la [guía](docs/guia-completa.md#agente-con-herramientas-memoria-y-supe
 los [límites](docs/limites-autonomia-agente.md) y el
 [estado de validación y evidencias](docs/entrega-bloques-21-23.md).
 
+### Consultas RAG de Ley REP
+
+Entrada de terminal de los bloques 24–28: índice Chroma persistente de la copia
+local de 2016, recuperación semántica y respuesta con fuentes numeradas. No
+reemplaza la API ni el agente anterior. La implementación se puede probar sin red;
+el [cierre de la actividad 28](docs/entrega-bloques-24-28.md) requiere evidencias
+reales todavía pendientes.
+
+Preparación local, sin cuota:
+
+```bash
+uv run python -m scripts.indexar_corpus --comparar
+```
+
+Indexar una vez y consultar **sí consume cuota** y requiere `GEMINI_API_KEY`:
+
+```bash
+uv run python -m scripts.indexar_corpus --confirmar-consumo \
+  --salida output/rag/indexacion-01.json
+
+uv run python -m scripts.registro_rag \
+  "¿Qué productos prioritarios enumera la ley?" \
+  --salida output/rag/consulta-01.jsonl --confirmar-consumo
+```
+
+El índice queda en `vectorstore/` y las consultas completas en `output/rag/`,
+ambos ignorados por Git. Las salidas deben ser nuevas; no se sobrescriben. No
+introducir datos privados. El programa comprueba números de cita, no el respaldo
+semántico de cada afirmación. Los tokens de embeddings no informados permanecen
+desconocidos; no se presenta el costo de generación como costo total.
+
+Consulta los comandos de [evaluación y actividad 28](docs/entrega-bloques-24-28.md#recorrido-de-ejecución)
+y la [guía de estudio](docs/preguntas-bloques-24-28.md).
+
 ### Evaluaciones y ensayos
 
 Comparar modelos y evaluar prompts realiza consultas reales a Gemini. El ensayo con `--simulado` no usa red ni consume tokens. Elige un archivo de salida nuevo en cada ejecución para conservar las evidencias anteriores.
@@ -221,6 +261,7 @@ Para el ensayo contra el proveedor, consulta los [límites y comandos del ensayo
 | Ejecutar solo las pruebas del cliente HTTP | `uv run python -m pytest tests/clientes -v` |
 | Ejecutar solo las pruebas de costos | `uv run python -m pytest tests/costos -v` |
 | Ejecutar solo las pruebas de orquestación | `uv run python -m pytest tests/orquestacion -v` |
+| Ejecutar solo las pruebas del RAG | `uv run python -m pytest tests/rag -v` |
 | Ejecutar solo las pruebas de prompts | `uv run python -m pytest tests/prompts -v` |
 | Ejecutar solo las pruebas de scripts | `uv run python -m pytest tests/scripts -v` |
 | Usar el ejecutor alternativo de unittest | `uv run python -m tests -v` |
@@ -237,10 +278,11 @@ src/
 ├── evaluacion/         → Pipeline de texto y métricas léxicas
 ├── costos/             → Cálculo, registro de sesión y tipo de cambio
 ├── orquestacion/       → Chain, rutas y fallbacks con LangChain
+├── rag/                → Índice Chroma, recuperación, citas y mediciones
 ├── prompts/            → Banco, instrucciones y contexto documental
 ├── agentes.py          → Selección y ejecución del agente
 └── catalogo.py         → Modelos disponibles
-tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, prompts/ y scripts/
+tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, rag/, prompts/ y scripts/
 scripts/                → Evaluaciones, ensayos y herramientas auxiliares
 docs/                   → Guía, arquitectura y evidencias
 datos/                  → Documentos de Ley REP y casos de evaluación
@@ -257,6 +299,7 @@ de repaso están separadas de la documentación de uso:
 
 - [Bloques 18 a 20: chains, enrutamiento y manejo de errores](docs/preguntas-bloques-18-20.md).
 - [Bloques 21 a 23: herramientas, memoria y supervisión humana](docs/preguntas-bloques-21-23.md).
+- [Bloques 24 a 28: RAG, recuperación con citas, evaluación, latencia y costo](docs/preguntas-bloques-24-28.md).
 
 ## Documentación y evidencias
 
@@ -271,5 +314,7 @@ de repaso están separadas de la documentación de uso:
 - [Entrega de bloques 18 a 20: resultados y límites de la orquestación](docs/entrega-bloques-18-20.md).
 - [Agente de Ley REP: entrega y evidencias de los bloques 21 a 23](docs/entrega-bloques-21-23.md).
 - [Límites de autonomía y supervisión humana](docs/limites-autonomia-agente.md).
+- [PRD 04: plan y decisiones del RAG de Ley REP](docs/prd-04-rag-ley-rep.md).
+- [Bloques 24 a 28: entrega y evidencias pendientes de la actividad core 28](docs/entrega-bloques-24-28.md).
 - [Capturas y resultados de ejecución](docs/evidencias/mis-capturas/README.md).
 - [Propuesta del proyecto final: asistente RAG para Ley REP](docs/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

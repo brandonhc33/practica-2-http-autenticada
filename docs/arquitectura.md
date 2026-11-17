@@ -129,6 +129,44 @@ local, sin contacto con clientes. Los límites y el estado de la verificación h
 se detallan en [límites de autonomía](limites-autonomia-agente.md) y en
 [la entrega](entrega-bloques-21-23.md).
 
+## RAG medido: bloques 24 a 28
+
+Otra entrada de terminal, separada del agente y de la API. No ejecuta herramientas
+ni envía informes. `src/rag/corpus.py` carga los 50 documentos existentes y genera
+99 chunks con fuente, artículo, páginas, versión, ID y offset. La indexación con
+`scripts/indexar_corpus.py` calcula embeddings de documentos una vez y persiste
+vectores, textos y metadata en Chroma. Un manifiesto verifica configuración y
+contenido al recargar; no se crean índices vacíos durante una consulta.
+
+```mermaid
+flowchart TD
+    A["Pregunta e índice verificado"] --> B["Embedding de consulta una sola vez"]
+    B --> C["Búsqueda local por vector y distancia coseno"]
+    C --> D["Contexto numerado y mapa de fuentes"]
+    D --> E["Una generación sin fallback"]
+    E --> F["Revisión de números de cita"]
+    F --> G["JSONL con respuesta, fuentes, tiempos y consumo"]
+```
+
+`scripts/evaluacion_recuperacion.py` se detiene tras recuperar: compara los IDs con
+diez casos etiquetados y guarda precisión/recall. `scripts/registro_rag.py` ejecuta
+el flujo completo, cronometra las tres etapas y conserva tokens reales de
+generación. No se repite el embedding dentro de la búsqueda.
+
+Los registros distinguen tiempo de pared de la suma de etapas y costo conocido
+de generación del costo completo desconocido. El SDK de embeddings puede
+reintentar internamente; no se afirma una única petición HTTP ni se estima su
+consumo como cero. La indexación y la carga inicial no se incluyen en el tiempo
+de una consulta con el sistema ya cargado.
+
+Índice en `vectorstore/`, registros en `output/rag/`, ambos ignorados. Se
+deshabilita la telemetría anónima de Chroma; las pruebas bloquean red y usan
+embeddings/modelos falsos con Chroma real en temporales. Las consultas y respuestas
+se guardan completas: no se ha implementado anonimización ni operación pública.
+El texto sigue siendo una copia de 2016; citas existentes no prueban respaldo
+semántico o vigencia. Ver [PRD 04](prd-04-rag-ley-rep.md), [guía de estudio](preguntas-bloques-24-28.md)
+y [entrega con estado de las corridas reales](entrega-bloques-24-28.md).
+
 ## Alcance y entrega
 
 La imagen muestra el flujo base de `POST /consultar`; la selección opcional de prompts se describe arriba. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.
