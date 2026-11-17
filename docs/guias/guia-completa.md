@@ -1,6 +1,6 @@
 # Guía completa: consultas HTTP autenticadas con Gemini
 
-[Volver al inicio rápido](../README.md)
+[Volver al inicio rápido](../../README.md) · [Índice de documentación](../README.md)
 
 Miniaplicación de Skillnest para consultar Gemini desde Python y mediante una API local protegida con Bearer token. Incluye las actividades de conexión HTTP, arquitectura, comparación de modelos, prompts con salida JSON estructurada, reintentos ante fallos temporales, costos por sesión y pruebas automatizadas del cliente modular.
 
@@ -65,21 +65,21 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 
 | Actividad | Qué hacer | Entrega o evidencia |
 | --- | --- | --- |
-| Bloque 4: HTTP autenticada | [Consultar desde Python](#consultar-gemini-desde-python) y [probar la API local](#iniciar-la-api-local). | Función `obtener_dato_de_prueba(pregunta)`, colecciones HTTP y [evidencias de peticiones](../docs/). |
-| Bloque 8: arquitectura | Revisar el recorrido de la pregunta, las credenciales y el manejo de errores. | [Explicación](../docs/arquitectura.md), [diagrama](../docs/diagrama_arquitectura.png) y [fuente editable](../docs/diagrama_arquitectura.drawio). |
-| Bloque 9: elección de modelo | [Comparar costo y latencia](#comparar-costo-y-latencia-bloque-9) con las mismas preguntas. | [Decisión de arquitectura](../docs/decision-arquitectura.md) y [mediciones reales](../docs/evaluaciones/gemini-2026-10-20.json). |
-| Bloque 10: prompts y JSON | [Usar el banco y evaluar su consistencia](#banco-de-prompts-y-salida-estructurada-bloque-10). | [Banco](../src/prompts/banco.py), [evaluador](../scripts/evaluar_prompts.py), [resultados](../docs/evaluaciones/prompts-actual.json) y [guía de estudio](../docs/bloque-10-prompts.md). |
-| Bloque 12: cliente modular | [Revisar la política de reintentos](#cliente-con-reintentos-bloque-12) y ejecutar las pruebas simuladas. | [Errores](../src/clientes/errores.py), [política](../src/clientes/reintentos.py), [pruebas de la política](../tests/clientes/test_reintentos.py) e [integración](../tests/clientes/test_cliente_resiliente.py). |
-| Bloque 13: backoff y costo | [Revisar sesiones de costo y el ensayo](#costos-por-sesión-y-evidencias-bloques-13-y-14). | [Registro](../src/costos/registro.py), [ensayo real de HTTP 429](../docs/evidencias/mis-capturas/ensayo-real-01.json) y [capturas de terminal](../docs/evidencias/mis-capturas/README.md). |
-| Bloque 14: pruebas unitarias | [Revisar el checklist](#checklist-del-cliente-modular-bloque-14) y ejecutar `uv run python -m pytest tests -v`. | [Resultados y capturas](#resultados-y-capturas-de-las-pruebas), [cliente modular](../tests/clientes/test_cliente_modular.py), [registro de costos](../tests/costos/test_registro_costos.py) y [guía de entrega](../docs/entrega-bloques-13-14.md). |
-| Bloque 18: chain de tres pasos | [Revisar la chain](#orquestación-con-langchain-bloques-18-a-20) y sus pruebas. | [Chain](../src/orquestacion/cadena_tres_pasos.py), [pruebas](../tests/orquestacion/test_cadena_tres_pasos.py) y [entrega](../docs/entrega-bloques-18-20.md). |
-| Bloque 19: enrutamiento | [Revisar la clasificación y las rutas](#orquestación-con-langchain-bloques-18-a-20). | [Enrutamiento](../src/orquestacion/enrutamiento.py), [pruebas](../tests/orquestacion/test_enrutamiento.py) y [entrega](../docs/entrega-bloques-18-20.md). |
-| Bloque 20: manejo de errores | [Revisar los fallbacks](#orquestación-con-langchain-bloques-18-a-20) y ejecutar `uv run python -m pytest tests/orquestacion -v`. | [Pruebas de extremo a extremo](../tests/orquestacion/test_orquestacion.py) y [entrega con checklist y límites](../docs/entrega-bloques-18-20.md). |
-| Bloques 21 y 22: herramientas y memoria | [Consultar con el agente](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). | [Entrega y ensayos](entrega-bloques-21-23.md). |
-| Bloque 23: supervisión humana | Revisar y decidir sobre cada entrega simulada. | [Límites de autonomía](limites-autonomia-agente.md) y [verificación final con Gemini](entrega-bloques-21-23.md#verificación-final-del-bloque-23-con-gemini). |
-| Bloques 24 y 25: indexación | Comparar chunking, indexar con embeddings reales y recargar sin reindexar. | [Uso del RAG](#rag-de-ley-rep-bloques-24-a-28) y [comparación local](evidencias/bloques-24-28/comparacion-chunking.md). |
-| Bloques 26 y 27: recuperación y evaluación | Recuperar por significado, generar con citas y evaluar diez preguntas etiquetadas. | [Guía de estudio](preguntas-bloques-24-28.md) y [entrega](entrega-bloques-24-28.md). |
-| Bloque 28: actividad core de latencia y costo | Ejecutar cuatro corridas reales y revisar tiempos, tokens, costo conocido y límites. | [Comandos y checklist de cierre](entrega-bloques-24-28.md#recorrido-de-ejecución). |
+| Bloque 4: HTTP autenticada | [Consultar desde Python](#consultar-gemini-desde-python) y [probar la API local](#iniciar-la-api-local). | Función `obtener_dato_de_prueba(pregunta)`, colecciones HTTP y [evidencias de peticiones](../evidencias/http/). |
+| Bloque 8: arquitectura | Revisar el recorrido de la pregunta, las credenciales y el manejo de errores. | [Explicación](../arquitectura/vision-general.md), [diagrama](../arquitectura/diagramas/flujo-api.png) y [fuente editable](../arquitectura/diagramas/flujo-api.drawio). |
+| Bloque 9: elección de modelo | [Comparar costo y latencia](#comparar-costo-y-latencia-bloque-9) con las mismas preguntas. | [Decisión de arquitectura](../arquitectura/seleccion-modelo.md) y [mediciones reales](../evaluaciones/gemini-2026-10-20.json). |
+| Bloque 10: prompts y JSON | [Usar el banco y evaluar su consistencia](#banco-de-prompts-y-salida-estructurada-bloque-10). | [Banco](../../src/prompts/banco.py), [evaluador](../../scripts/evaluar_prompts.py), [resultados](../evaluaciones/prompts-actual.json) y [guía de estudio](../estudio/bloque-10-prompts.md). |
+| Bloque 12: cliente modular | [Revisar la política de reintentos](#cliente-con-reintentos-bloque-12) y ejecutar las pruebas simuladas. | [Errores](../../src/clientes/errores.py), [política](../../src/clientes/reintentos.py), [pruebas de la política](../../tests/clientes/test_reintentos.py) e [integración](../../tests/clientes/test_cliente_resiliente.py). |
+| Bloque 13: backoff y costo | [Revisar sesiones de costo y el ensayo](#costos-por-sesión-y-evidencias-bloques-13-y-14). | [Registro](../../src/costos/registro.py), [ensayo real de HTTP 429](../evidencias/mis-capturas/ensayo-real-01.json) y [capturas de terminal](../evidencias/mis-capturas/README.md). |
+| Bloque 14: pruebas unitarias | [Revisar el checklist](#checklist-del-cliente-modular-bloque-14) y ejecutar `uv run python -m pytest tests -v`. | [Resultados y capturas](#resultados-y-capturas-de-las-pruebas), [cliente modular](../../tests/clientes/test_cliente_modular.py), [registro de costos](../../tests/costos/test_registro_costos.py) y [guía de entrega](../entregas/bloques-13-14.md). |
+| Bloque 18: chain de tres pasos | [Revisar la chain](#orquestación-con-langchain-bloques-18-a-20) y sus pruebas. | [Chain](../../src/orquestacion/cadena_tres_pasos.py), [pruebas](../../tests/orquestacion/test_cadena_tres_pasos.py) y [entrega](../entregas/bloques-18-20.md). |
+| Bloque 19: enrutamiento | [Revisar la clasificación y las rutas](#orquestación-con-langchain-bloques-18-a-20). | [Enrutamiento](../../src/orquestacion/enrutamiento.py), [pruebas](../../tests/orquestacion/test_enrutamiento.py) y [entrega](../entregas/bloques-18-20.md). |
+| Bloque 20: manejo de errores | [Revisar los fallbacks](#orquestación-con-langchain-bloques-18-a-20) y ejecutar `uv run python -m pytest tests/orquestacion -v`. | [Pruebas de extremo a extremo](../../tests/orquestacion/test_orquestacion.py) y [entrega con checklist y límites](../entregas/bloques-18-20.md). |
+| Bloques 21 y 22: herramientas y memoria | [Consultar con el agente](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). | [Entrega y ensayos](../entregas/bloques-21-23.md). |
+| Bloque 23: supervisión humana | Revisar y decidir sobre cada entrega simulada. | [Límites de autonomía](../arquitectura/limites-autonomia-agente.md) y [verificación final con Gemini](../entregas/bloques-21-23.md#verificación-final-del-bloque-23-con-gemini). |
+| Bloques 24 y 25: indexación | Comparar chunking, indexar con embeddings reales y recargar sin reindexar. | [Uso del RAG](#rag-de-ley-rep-bloques-24-a-28) y [comparación local](../evidencias/bloques-24-28/comparacion-chunking.md). |
+| Bloques 26 y 27: recuperación y evaluación | Recuperar por significado, generar con citas y evaluar diez preguntas etiquetadas. | [Guía de estudio](../estudio/bloques-24-28.md) y [entrega](../entregas/bloques-24-28.md). |
+| Bloque 28: actividad core de latencia y costo | Ejecutar cuatro corridas reales y revisar tiempos, tokens, costo conocido y límites. | [Comandos y checklist de cierre](../entregas/bloques-24-28.md#recorrido-de-ejecución). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -225,7 +225,7 @@ Si no pasas una pregunta, el módulo llama a `obtener_dato_de_prueba(pregunta)` 
 
 La salida es un JSON con `respuesta`, `uso` y `costo_estimado`. En `respuesta` aparece una explicación con una analogía, el recorrido de la consulta, el uso de la API key y tres errores con sus soluciones. El texto y el consumo se generan en cada ejecución y pueden variar.
 
-La función está en [src/clientes/gemini.py](../src/clientes/gemini.py). Carga `.env`, resuelve el modelo seleccionado del catálogo (por defecto, `flash-lite`), realiza la consulta autenticada y devuelve un objeto `Resultado` con texto, tokens y costos. Al ejecutar el módulo, ese resultado se imprime como JSON en la terminal, con la misma estructura que `detalles` en la API.
+La función está en [src/clientes/gemini.py](../../src/clientes/gemini.py). Carga `.env`, resuelve el modelo seleccionado del catálogo (por defecto, `flash-lite`), realiza la consulta autenticada y devuelve un objeto `Resultado` con texto, tokens y costos. Al ejecutar el módulo, ese resultado se imprime como JSON en la terminal, con la misma estructura que `detalles` en la API.
 
 Esta prueba requiere `GEMINI_API_KEY`. Puedes ejecutarla sin iniciar la API local y sin configurar `API_BEARER_TOKEN`.
 
@@ -237,7 +237,7 @@ uv run python -m src.clientes.gemini "Explica la diferencia entre una API y una 
 
 La pregunta entre comillas reemplaza la predeterminada para esa ejecución. Las comillas permiten enviar varias palabras como un solo argumento. Una pregunta vacía o compuesta solo por espacios se rechaza antes de consultar Gemini.
 
-Para elegir un modelo, agrega `--modelo` con uno de los alias disponibles en [src/catalogo.py](../src/catalogo.py):
+Para elegir un modelo, agrega `--modelo` con uno de los alias disponibles en [src/catalogo.py](../../src/catalogo.py):
 
 | Alias para `--modelo` | Modelo del proveedor |
 | --- | --- |
@@ -290,7 +290,7 @@ Si la consulta falla, el comando muestra un mensaje de error y termina con un c�
 
 ### Cliente con reintentos: Bloque 12
 
-La API y el CLI reutilizan `consultar_gemini_raw()` y su política de [src/clientes/reintentos.py](../src/clientes/reintentos.py). El reintento ocurre dentro del cliente, antes de extraer texto, validar el contenido generado y calcular costos. No necesitas envolver la llamada con otro bucle.
+La API y el CLI reutilizan `consultar_gemini_raw()` y su política de [src/clientes/reintentos.py](../../src/clientes/reintentos.py). El reintento ocurre dentro del cliente, antes de extraer texto, validar el contenido generado y calcular costos. No necesitas envolver la llamada con otro bucle.
 
 | Situación | Comportamiento predeterminado |
 | --- | --- |
@@ -329,7 +329,7 @@ resultado = obtener_dato_de_prueba(
 
 El cliente usa `logging`: cada intento registra su categoría, código HTTP y duración a nivel INFO; cada reintento anuncia su espera a nivel WARNING. No registra prompts, claves ni cuerpos del proveedor. Los avisos del CLI salen por stderr y stdout conserva únicamente el JSON exitoso.
 
-Los errores públicos están en [src/clientes/errores.py](../src/clientes/errores.py). La API conserva su contrato JSON y publica `detalles.tipo_error`, `detalles.codigo_proveedor` cuando se conoce y `detalles.intentos` al agotar la política:
+Los errores públicos están en [src/clientes/errores.py](../../src/clientes/errores.py). La API conserva su contrato JSON y publica `detalles.tipo_error`, `detalles.codigo_proveedor` cuando se conoce y `detalles.intentos` al agotar la política:
 
 | HTTP local | Significado |
 | --- | --- |
@@ -345,7 +345,7 @@ El comparador de modelos y el evaluador de prompts pasan explícitamente `SIN_RE
 uv run python -m unittest tests.clientes.test_reintentos tests.clientes.test_cliente_resiliente -v
 ```
 
-Plan pendiente de implementación: [PRD 01: control de consumo de Gemini](../docs/prd-01-control-consumo-gemini.md). Propone espaciar las peticiones, limitar la concurrencia y compartir las pausas por HTTP 429 dentro de un proceso, conservando el presupuesto y la política de reintentos existentes.
+Plan pendiente de implementación: [PRD 01: control de consumo de Gemini](../planes/prd-01-control-consumo-gemini.md). Propone espaciar las peticiones, limitar la concurrencia y compartir las pausas por HTTP 429 dentro de un proceso, conservando el presupuesto y la política de reintentos existentes.
 
 ### Costos por sesión y evidencias: bloques 13 y 14
 
@@ -353,7 +353,7 @@ El Bloque 13 combina la recuperación ante límites de uso con el seguimiento de
 
 #### Registro de costo por sesión
 
-El [registro de costos](../src/costos/registro.py) observa el resultado de `consultar_gemini_raw()` después del bucle de reintentos. Acumula el costo conocido en USD una sola vez por respuesta, con `Decimal`, y cuenta por separado los intentos sin consumo reportado. Registra también una respuesta cuyos tokens llegaron pero cuyo contenido después se rechaza por truncamiento o por incumplir el esquema. Este registro no añade campos a las respuestas HTTP ni al JSON del CLI, y no realiza consultas al dólar.
+El [registro de costos](../../src/costos/registro.py) observa el resultado de `consultar_gemini_raw()` después del bucle de reintentos. Acumula el costo conocido en USD una sola vez por respuesta, con `Decimal`, y cuenta por separado los intentos sin consumo reportado. Registra también una respuesta cuyos tokens llegaron pero cuyo contenido después se rechaza por truncamiento o por incumplir el esquema. Este registro no añade campos a las respuestas HTTP ni al JSON del CLI, y no realiza consultas al dólar.
 
 Por defecto, el total vive en el proceso actual y se comparte entre sus consultas. Para separar un ensayo o sesión, usa un contexto explícito:
 
@@ -377,9 +377,9 @@ Para demostrar el backoff sin usar la red ni consumir tokens, el script sustituy
 uv run python -m scripts.ensayo_rate_limit --simulado --salida docs/evidencias/ensayo-nuevo.json
 ```
 
-La [ejecución simulada conservada](../docs/evidencias/mis-capturas/ensayo-simulado-01.json) completa primero una consulta y después se recupera de la secuencia **429 → 503 → 200**. Las esperas simuladas son de **1,125 y 2,125 segundos**. Termina con dos respuestas, cuatro envíos HTTP y **US$ 0.0106 de costo de prueba**, sumados una sola vez por respuesta. Estos tokens y costos son datos simulados.
+La [ejecución simulada conservada](../evidencias/mis-capturas/ensayo-simulado-01.json) completa primero una consulta y después se recupera de la secuencia **429 → 503 → 200**. Las esperas simuladas son de **1,125 y 2,125 segundos**. Termina con dos respuestas, cuatro envíos HTTP y **US$ 0.0106 de costo de prueba**, sumados una sola vez por respuesta. Estos tokens y costos son datos simulados.
 
-![Bloque 13: ensayo simulado con backoff, recuperación y costo acumulado](../docs/evidencias/mis-capturas/bloque-13/01-ensayo-simulado.png)
+![Bloque 13: ensayo simulado con backoff, recuperación y costo acumulado](../evidencias/mis-capturas/bloque-13/01-ensayo-simulado.png)
 
 #### Ensayo real de HTTP 429
 
@@ -397,7 +397,7 @@ uv run python -m scripts.ensayo_rate_limit \
 
 El script exige elegir `--real` o `--simulado` y no sobrescribe evidencias anteriores. Se detiene después de la primera consulta donde aparece un 429 o al alcanzar los límites del ensayo. El umbral de costo conocido se comprueba entre consultas y no constituye un tope estricto de facturación.
 
-La ejecución capturada desde la terminal el **28 de octubre de 2026** quedó registrada en el [JSON original del ensayo real](../docs/evidencias/mis-capturas/ensayo-real-01.json):
+La ejecución capturada desde la terminal el **28 de octubre de 2026** quedó registrada en el [JSON original del ensayo real](../evidencias/mis-capturas/ensayo-real-01.json):
 
 | Dato | Resultado observado |
 | --- | --- |
@@ -414,16 +414,16 @@ La ejecución capturada desde la terminal el **28 de octubre de 2026** quedó re
 
 La consulta 16 terminó con `ReintentosAgotados`, respetando el máximo de tres intentos y manteniendo el acumulado anterior. El mensaje `primer_429_observado` indica que el ensayo encontró el límite de uso; no implica que esa consulta haya terminado con éxito.
 
-![Bloque 13: HTTP 429 real, esperas, agotamiento de reintentos y resumen del costo conocido](../docs/evidencias/mis-capturas/bloque-13/03-ensayo-real-resultado.png)
+![Bloque 13: HTTP 429 real, esperas, agotamiento de reintentos y resumen del costo conocido](../evidencias/mis-capturas/bloque-13/03-ensayo-real-resultado.png)
 
 <details>
 <summary>Ver el comando y el inicio del ensayo real</summary>
 
-![Bloque 13: comando del ensayo real y primeras respuestas con costo acumulado](../docs/evidencias/mis-capturas/bloque-13/02-ensayo-real-inicio.png)
+![Bloque 13: comando del ensayo real y primeras respuestas con costo acumulado](../evidencias/mis-capturas/bloque-13/02-ensayo-real-inicio.png)
 
 </details>
 
-La [guía de entrega](../docs/entrega-bloques-13-14.md#recuperación-observada-en-la-ejecución-complementaria) conserva también una ejecución anterior que sí se recuperó en su tercer intento. Ambos desenlaces están previstos por la política. Las [evidencias y archivos de entrega](#evidencias-y-entrega-bloques-13-y-14) reúnen las capturas y registros de cada ejecución.
+La [guía de entrega](../entregas/bloques-13-14.md#recuperación-observada-en-la-ejecución-complementaria) conserva también una ejecución anterior que sí se recuperó en su tercer intento. Ambos desenlaces están previstos por la política. Las [evidencias y archivos de entrega](#evidencias-y-entrega-bloques-13-y-14) reúnen las capturas y registros de cada ejecución.
 
 ### Iniciar la API local
 
@@ -455,7 +455,7 @@ Usa las rutas sin una barra final. Un token ausente o incorrecto devuelve HTTP 4
 
 #### Consulta directa a Gemini
 
-1. Importa [gemini.postman_collection.json](../gemini.postman_collection.json).
+1. Importa [gemini.postman_collection.json](../../gemini.postman_collection.json).
 2. Configura la variable local `GEMINI_API_KEY` con tu clave de Google AI Studio.
 3. Revisa que la autenticación sea **Bearer Token** y use `{{GEMINI_API_KEY}}`.
 4. Envía **Consultar Gemini** y comprueba HTTP 200. El texto generado se encuentra en `choices[0].message.content`.
@@ -465,7 +465,7 @@ Esta colección realiza la petición directamente al proveedor.
 #### Consulta mediante la API Python
 
 1. Inicia el servidor y déjalo ejecutándose.
-2. Importa [api.postman_collection.json](../api.postman_collection.json). En Yaak puedes usar **Import Data**.
+2. Importa [api.postman_collection.json](../../api.postman_collection.json). En Yaak puedes usar **Import Data**.
 3. Configura `API_BEARER_TOKEN` en el cliente con el mismo valor de tu `.env`, sin el prefijo `Bearer`.
 4. Revisa **Auth → Bearer Token**. Si el importador no conserva la autenticación, selecciónala y coloca el token en ese campo.
 5. Envía **Estado de la API** y comprueba HTTP 200.
@@ -498,21 +498,21 @@ Necesita `GEMINI_API_KEY` en `.env` y hace **18 consultas reales**: tres casos, 
 
 El JSON se guarda después de cada intento y conserva preguntas, respuestas, consumo, costos, tiempos y errores. La salida **1** indica errores o respuestas incompletas; revisa la evidencia antes de interpretar los promedios. Se rechazan rutas de salida existentes para conservar las mediciones anteriores. Listar un modelo no garantiza cuota ni éxito al generar texto.
 
-La [decisión del Bloque 9](../docs/decision-arquitectura.md) documenta metodología, tarifas, resultados y limitaciones, incluida la exploración interrumpida de Flash 3.8. Las [mediciones originales](../docs/evaluaciones/gemini-2026-10-20.json) permiten auditar los números. Los costos son estimaciones a precios de pago, no comprobantes de facturación.
+La [decisión del Bloque 9](../arquitectura/seleccion-modelo.md) documenta metodología, tarifas, resultados y limitaciones, incluida la exploración interrumpida de Flash 3.8. Las [mediciones originales](../evaluaciones/gemini-2026-10-20.json) permiten auditar los números. Los costos son estimaciones a precios de pago, no comprobantes de facturación.
 
 ### Banco de prompts y salida estructurada: Bloque 10
 
-El [banco](../src/prompts/banco.py) centraliza seis tareas: tres educativas y tres para preparar el proyecto final de Ley REP. Cada una contiene nombre, versión, instrucciones de sistema, entrada de ejemplo y un modelo Pydantic que genera el JSON Schema y valida la respuesta.
+El [banco](../../src/prompts/banco.py) centraliza seis tareas: tres educativas y tres para preparar el proyecto final de Ley REP. Cada una contiene nombre, versión, instrucciones de sistema, entrada de ejemplo y un modelo Pydantic que genera el JSON Schema y valida la respuesta.
 
 El código se organiza por responsabilidad:
 
 | Archivo | Responsabilidad |
 | --- | --- |
-| [banco.py](../src/prompts/banco.py) | Punto de entrada: reúne los grupos en `BANCO_DE_PROMPTS` y exporta `NombrePrompt` y `Prompt`. |
-| [base.py](../src/prompts/base.py) | Tipos, contrato `Prompt`, modelo de salida base y reglas de formato compartidas. |
-| [educativos.py](../src/prompts/educativos.py) | Instrucciones, ejemplos y esquemas de las tres tareas educativas. |
-| [ley_rep.py](../src/prompts/ley_rep.py) | Instrucciones, ejemplo documental y esquemas de las tres tareas de Ley REP. |
-| [contexto_ley_rep.py](../src/prompts/contexto_ley_rep.py) | Carga la fuente local y prepara preguntas o artículos para los prompts de Ley REP. |
+| [banco.py](../../src/prompts/banco.py) | Punto de entrada: reúne los grupos en `BANCO_DE_PROMPTS` y exporta `NombrePrompt` y `Prompt`. |
+| [base.py](../../src/prompts/base.py) | Tipos, contrato `Prompt`, modelo de salida base y reglas de formato compartidas. |
+| [educativos.py](../../src/prompts/educativos.py) | Instrucciones, ejemplos y esquemas de las tres tareas educativas. |
+| [ley_rep.py](../../src/prompts/ley_rep.py) | Instrucciones, ejemplo documental y esquemas de las tres tareas de Ley REP. |
+| [contexto_ley_rep.py](../../src/prompts/contexto_ley_rep.py) | Carga la fuente local y prepara preguntas o artículos para los prompts de Ley REP. |
 
 Los clientes siguen importando el banco desde `src.prompts.banco`. Para agregar una tarea, define su esquema y su `Prompt` en el módulo del grupo e incorpora su nombre a `NombrePrompt` en `base.py`. `preparar_entrada` permite asociar una función que añada contexto documental antes de enviar el mensaje a Gemini. Si creas otro grupo, regístralo también en `banco.py`.
 
@@ -548,7 +548,7 @@ Al elegir un prompt, `detalles.respuesta` es un **objeto JSON validado**. `uso` 
 
 #### Prompts para el proyecto final de Ley REP
 
-La copia PDF aportada se convirtió a [texto completo](../datos/ley_rep/ley_20920.txt) y a [50 fragmentos con metadatos](../datos/ley_rep/ley_20920.json): 46 artículos y cuatro transitorios. Se conserva el [PDF original](../datos/ley_rep/Ley-20920_01-JUN-2016.pdf), sus páginas y hashes de integridad. La [guía de la fuente](../datos/ley_rep/README.md) explica el tratamiento del texto y cómo reproducir la conversión.
+La copia PDF aportada se convirtió a [texto completo](../../datos/ley_rep/ley_20920.txt) y a [50 fragmentos con metadatos](../../datos/ley_rep/ley_20920.json): 46 artículos y cuatro transitorios. Se conserva el [PDF original](../../datos/ley_rep/Ley-20920_01-JUN-2016.pdf), sus páginas y hashes de integridad. La [guía de la fuente](../../datos/ley_rep/README.md) explica el tratamiento del texto y cómo reproducir la conversión.
 
 La versión que declara el PDF es **01-JUN-2016**. Las respuestas se basan en esa copia; la extracción no incorpora decretos ni acredita vigencia actual. El banco obtiene de ella el artículo 1 completo como ejemplo, en lugar del extracto parcial anterior.
 
@@ -645,11 +645,17 @@ print(resultado.respuesta)
 
 Una pregunta normal envía todos los artículos y consume más tokens de entrada que una selección explícita. En la API local, el límite de 4.000 caracteres se aplica al `mensaje` recibido; la copia se añade después en el servidor. `--raw` también prepara el contexto, pero conserva la respuesta completa del proveedor.
 
-Esta integración utiliza contexto documental completo. La búsqueda de fragmentos relevantes y el RAG con múltiples fuentes siguen pendientes, al igual que la comprobación del respaldo de cada afirmación. Pydantic valida campos, tipos y coherencia básica del estado; no comprueba que una cita exista en el contexto, que sea literal o que respalde la respuesta. Los prompts de Ley REP y la carga documental tienen pruebas simuladas; las evidencias reales existentes corresponden a los tres educativos.
+Esta integración del banco utiliza contexto documental completo. La recuperación
+de fragmentos se implementó en el [flujo RAG separado](#rag-de-ley-rep-bloques-24-a-28);
+no modifica el comportamiento de estos prompts. El RAG multifuente y la
+comprobación automática del respaldo de cada afirmación siguen pendientes.
+Pydantic valida campos, tipos y coherencia básica del estado; no comprueba
+existencia, literalidad ni respaldo de una cita. Las evidencias reales de esta
+evaluación del banco corresponden a los tres prompts educativos, no al ensayo RAG.
 
 #### Evaluar el banco
 
-La [evidencia real de los tres prompts educativos](../docs/evaluaciones/prompts-actual.json) conserva tres repeticiones por prompt, las instrucciones y esquemas utilizados, el JSON original del proveedor, el contenido validado, consumo, costos, latencia HTTP y errores. Para una nueva evaluación de todo el banco:
+La [evidencia real de los tres prompts educativos](../evaluaciones/prompts-actual.json) conserva tres repeticiones por prompt, las instrucciones y esquemas utilizados, el JSON original del proveedor, el contenido validado, consumo, costos, latencia HTTP y errores. Para una nueva evaluación de todo el banco:
 
 ```bash
 uv run python -m scripts.evaluar_prompts --salida docs/evaluaciones/prompts-nueva-ejecucion.json
@@ -657,9 +663,9 @@ uv run python -m scripts.evaluar_prompts --salida docs/evaluaciones/prompts-nuev
 
 El script requiere `GEMINI_API_KEY`, realiza **18 llamadas reales** por defecto (seis prompts por tres repeticiones) con el modelo `flash-lite` y espera un segundo entre llamadas. `--repeticiones` permite aumentar la muestra (mínimo 3), `--modelo` elige un alias del catálogo y `--pausa` ajusta la espera. Conserva un registro después de cada intento y rechaza archivos de salida existentes. Termina con código 0 si todos los intentos son válidos, 1 si hubo fallos y 130 ante una interrupción.
 
-Se mide consistencia de estructura, no exactitud técnica del contenido. Un 3/3 describe esa muestra; no garantiza todos los casos futuros. La [guía del Bloque 10](../docs/bloque-10-prompts.md) explica los PDF con ejemplos del proyecto y ejercicios breves.
+Se mide consistencia de estructura, no exactitud técnica del contenido. Un 3/3 describe esa muestra; no garantiza todos los casos futuros. La [guía del Bloque 10](../estudio/bloque-10-prompts.md) explica los PDF con ejemplos del proyecto y ejercicios breves.
 
-La [ejecución inicial](../docs/evaluaciones/prompts-inicial.json) del 21 de octubre de 2026 obtuvo **3/3 por tarea (9/9 en total)** con `gemini-3.5-flash-lite`, sin errores de estructura y con un costo total estimado de **US$ 0.0041241**. La revisión de contenido llevó a precisar los ejemplos y el comportamiento del token local en dos prompts; la guía documenta esos ajustes y la evaluación posterior.
+La [ejecución inicial](../evaluaciones/prompts-inicial.json) del 21 de octubre de 2026 obtuvo **3/3 por tarea (9/9 en total)** con `gemini-3.5-flash-lite`, sin errores de estructura y con un costo total estimado de **US$ 0.0041241**. La revisión de contenido llevó a precisar los ejemplos y el comportamiento del token local en dos prompts; la guía documenta esos ajustes y la evaluación posterior.
 
 La evaluación posterior también obtuvo **9/9**, con un costo estimado de **US$ 0.0039965**. En sus textos ya no aparecieron los ejemplos de SDK ni la supuesta expiración del token local observados en la primera muestra. Las dos corridas suman **18 llamadas y US$ 0.0081206 estimados**; no constituyen una evaluación exhaustiva de exactitud.
 
@@ -689,7 +695,7 @@ Para ejecutar solo la chain del Bloque 18, sin clasificación ni fallbacks:
 uv run python -m src.orquestacion.cadena_tres_pasos "¿Quién fija las metas de recolección?"
 ```
 
-La respuesta es texto libre: nada verifica que los artículos citados respalden lo que dice. No es asesoría legal. Los resultados, el checklist y los límites están en la [entrega de los bloques 18 a 20](../docs/entrega-bloques-18-20.md), y la comparación con el cliente propio en la [arquitectura](../docs/arquitectura.md#flujo-orquestado-bloques-18-a-20).
+La respuesta es texto libre: nada verifica que los artículos citados respalden lo que dice. No es asesoría legal. Los resultados, el checklist y los límites están en la [entrega de los bloques 18 a 20](../entregas/bloques-18-20.md), y la comparación con el cliente propio en la [arquitectura](../arquitectura/vision-general.md#flujo-orquestado-bloques-18-a-20).
 
 ### Agente con herramientas, memoria y supervisión: bloques 21 a 23
 
@@ -714,7 +720,7 @@ o entrada no interactiva rechazan. El archivo aprobado se guarda localmente y no
 envía a nadie. La respuesta sale por stdout; herramientas y consumo, por stderr.
 
 El alumno ya comprobó una aprobación y un rechazo explícito con Gemini. La
-[verificación final](entrega-bloques-21-23.md#verificación-final-del-bloque-23-con-gemini)
+[verificación final](../entregas/bloques-21-23.md#verificación-final-del-bloque-23-con-gemini)
 conserva el resultado y sus controles; no hace falta repetir el ensayo. Cualquier
 nueva corrida real requiere autorización y no debe automatizar las respuestas.
 Para revisar las trazas sin llamar al modelo:
@@ -724,9 +730,9 @@ uv run python -m src.orquestacion.supervision
 ```
 
 Para estudiar los conceptos y la relación con la actividad, consulta la
-[guía de estudio de los bloques 21 a 23](preguntas-bloques-21-23.md).
-Ver también [entrega y evidencias](entrega-bloques-21-23.md) y
-[límites de autonomía](limites-autonomia-agente.md).
+[guía de estudio de los bloques 21 a 23](../estudio/bloques-21-23.md).
+Ver también [entrega y evidencias](../entregas/bloques-21-23.md) y
+[límites de autonomía](../arquitectura/limites-autonomia-agente.md).
 
 ### RAG de Ley REP: bloques 24 a 28
 
@@ -768,10 +774,12 @@ datos privados. El costo de generación utiliza tokens reales y tarifas de pago;
 el costo completo queda desconocido porque el conector de embeddings no informa
 tokens. La validación numérica de citas no garantiza fidelidad jurídica.
 
-La [guía de estudio](preguntas-bloques-24-28.md) explica cada concepto y los
-trade-offs. La [entrega](entrega-bloques-24-28.md) contiene el recorrido completo,
-abstención, revisión de una cita y criterios pendientes: la implementación local
-no sustituye las corridas reales ni significa que la actividad ya se envió.
+La [guía de estudio](../estudio/bloques-24-28.md) explica cada concepto y los
+trade-offs. La [entrega](../entregas/bloques-24-28.md) contiene el recorrido completo,
+abstención, revisión de una cita y criterios pendientes. Las
+[corridas reales ya conservadas](../evidencias/bloques-24-28/README.md) incluyen
+el incidente inicial, la evaluación repetida y las mediciones del B28. Tener
+esas evidencias no significa que la actividad ya se publicó o se envió.
 
 ## Pruebas y comprobaciones
 
@@ -808,12 +816,12 @@ El Bloque 14 convierte las verificaciones manuales del cliente en pruebas repeti
 
 | Responsabilidad del curso | Implementación en este proyecto | Escenarios comprobados |
 | --- | --- | --- |
-| `enviar_peticion` | `_enviar_peticion()` en [gemini.py](../src/clientes/gemini.py). | 401/403, 429 y 5xx recuperables; JSON exitoso sin transformaciones. |
-| `con_reintento` | [reintentos.py](../src/clientes/reintentos.py). | Recuperación, errores permanentes sin repetición, agotamiento, esperas, `Retry-After` y presupuesto. |
-| `registrar_costo` | [calculadora.py](../src/costos/calculadora.py) y [registro.py](../src/costos/registro.py). | Cálculo con tokens conocidos, acumulación, aislamiento entre sesiones, uso desconocido y ausencia de dobles registros. |
+| `enviar_peticion` | `_enviar_peticion()` en [gemini.py](../../src/clientes/gemini.py). | 401/403, 429 y 5xx recuperables; JSON exitoso sin transformaciones. |
+| `con_reintento` | [reintentos.py](../../src/clientes/reintentos.py). | Recuperación, errores permanentes sin repetición, agotamiento, esperas, `Retry-After` y presupuesto. |
+| `registrar_costo` | [calculadora.py](../../src/costos/calculadora.py) y [registro.py](../../src/costos/registro.py). | Cálculo con tokens conocidos, acumulación, aislamiento entre sesiones, uso desconocido y ausencia de dobles registros. |
 | `consultar_modelo` | `consultar_gemini()` y traducción de errores en API y CLI. | Propagación de la misma causa y resultado final comprensible al agotar intentos. |
 
-Se conservan las categorías propias `ErrorAutenticacion`, `ErrorTemporalProveedor` y `ReintentosAgotados`, en lugar de las excepciones genéricas del ejemplo del curso. La API y el CLI mantienen sus contratos existentes. Las [equivalencias y verificaciones de entrega](../docs/entrega-bloques-13-14.md#correspondencia-con-el-checklist-del-curso) explican esta correspondencia.
+Se conservan las categorías propias `ErrorAutenticacion`, `ErrorTemporalProveedor` y `ReintentosAgotados`, en lugar de las excepciones genéricas del ejemplo del curso. La API y el CLI mantienen sus contratos existentes. Las [equivalencias y verificaciones de entrega](../entregas/bloques-13-14.md#correspondencia-con-el-checklist-del-curso) explican esta correspondencia.
 
 Para ejecutar solo el conjunto seleccionado del checklist:
 
@@ -836,18 +844,18 @@ Las capturas tomadas desde la terminal el 28 de octubre de 2026 muestran:
 
 Los tiempos pueden variar entre ejecuciones. Las pruebas automáticas usan datos simulados; el ensayo real de HTTP 429 se ejecuta por separado.
 
-![Bloque 14: suite completa con 152 pruebas y 389 subcasos correctos](../docs/evidencias/mis-capturas/bloque-14/01-suite-completa.png)
+![Bloque 14: suite completa con 152 pruebas y 389 subcasos correctos](../evidencias/mis-capturas/bloque-14/01-suite-completa.png)
 
 <details>
 <summary>Ver las pruebas del checklist: comando, nombres y resultado</summary>
 
 Comando y primeras pruebas del transporte, la fachada y los reintentos:
 
-![Bloque 14: comando del checklist y primeras pruebas correctas](../docs/evidencias/mis-capturas/bloque-14/02-checklist-inicio.png)
+![Bloque 14: comando del checklist y primeras pruebas correctas](../evidencias/mis-capturas/bloque-14/02-checklist-inicio.png)
 
 Continuación, pruebas del registro de costos y resumen final:
 
-![Bloque 14: continuación del checklist y resumen de 36 pruebas correctas](../docs/evidencias/mis-capturas/bloque-14/03-checklist-resumen.png)
+![Bloque 14: continuación del checklist y resumen de 36 pruebas correctas](../evidencias/mis-capturas/bloque-14/03-checklist-resumen.png)
 
 </details>
 
@@ -861,7 +869,8 @@ Para verificar lo implementado:
 - Comprueba HTTP 401 al omitir el token y HTTP 422 al enviar campos inválidos.
 - Ejecuta la suite de pruebas automatizadas.
 
-La carpeta [docs](../docs/) contiene las evidencias de peticiones del proyecto, incluida la [captura del endpoint de consulta](../docs/evidencia_endpoint_consultar.png).
+La carpeta [evidencias HTTP](../evidencias/http/) contiene las peticiones iniciales
+del proyecto y la [captura del endpoint de consulta](../evidencias/http/endpoint-consultar.png).
 
 ### Evidencias y entrega: bloques 13 y 14
 
@@ -869,12 +878,12 @@ Las seis capturas de terminal se conservan en `docs/evidencias/mis-capturas/`, s
 
 | Recurso | Contenido |
 | --- | --- |
-| [Índice de evidencias](../docs/evidencias/mis-capturas/README.md) | Las seis capturas, su orden de lectura y qué demuestra cada imagen. |
-| [Registro simulado](../docs/evidencias/mis-capturas/ensayo-simulado-01.json) | Respuestas de prueba, errores, esperas y costo acumulado del ensayo sin red. |
-| [Registro real](../docs/evidencias/mis-capturas/ensayo-real-01.json) | Consultas a Gemini, tres HTTP 429, agotamiento y consumo conocido. |
-| [Manifiesto de las capturas](../docs/evidencias/mis-capturas/manifest.json) | Nombres originales, dimensiones y SHA-256 de las copias sin modificaciones. |
-| [Guía de entrega](../docs/entrega-bloques-13-14.md) | Checklist, correspondencia con el curso, comandos y ejecución complementaria con recuperación. |
-| [Paquete de entrega ZIP](../output/entrega-bloques-13-14.zip) | Código, pruebas, dependencias, documentación, capturas y registros originales. |
+| [Índice de evidencias](../evidencias/mis-capturas/README.md) | Las seis capturas, su orden de lectura y qué demuestra cada imagen. |
+| [Registro simulado](../evidencias/mis-capturas/ensayo-simulado-01.json) | Respuestas de prueba, errores, esperas y costo acumulado del ensayo sin red. |
+| [Registro real](../evidencias/mis-capturas/ensayo-real-01.json) | Consultas a Gemini, tres HTTP 429, agotamiento y consumo conocido. |
+| [Manifiesto de las capturas](../evidencias/mis-capturas/manifest.json) | Nombres originales, dimensiones y SHA-256 de las copias sin modificaciones. |
+| [Guía de entrega](../entregas/bloques-13-14.md) | Checklist, correspondencia con el curso, comandos y ejecución complementaria con recuperación. |
+| Paquete local `output/entrega-bloques-13-14.zip` | Artefacto histórico ignorado: no se incluye al clonar; la evidencia versionada está enlazada arriba. |
 
 ## Referencia de la API
 
@@ -959,7 +968,7 @@ Los límites son inclusivos y cuentan caracteres, no bytes. En la API, el texto 
 
 ### Agente y modelos habilitados
 
-El catálogo de [src/catalogo.py](../src/catalogo.py) contiene estas combinaciones para `POST /consultar` y `POST /consultar/raw`. La consulta directa con `src.clientes.gemini --modelo` utiliza los mismos alias de modelo:
+El catálogo de [src/catalogo.py](../../src/catalogo.py) contiene estas combinaciones para `POST /consultar` y `POST /consultar/raw`. La consulta directa con `src.clientes.gemini --modelo` utiliza los mismos alias de modelo:
 
 | Agente en el JSON | Modelo en el JSON | Modelo del proveedor | Credencial |
 | --- | --- | --- | --- |
@@ -995,7 +1004,7 @@ Envía el mismo formato de solicitud a `POST /consultar/raw`, con `Content-Type:
 
 Cuando Gemini responde HTTP 200, este endpoint devuelve su objeto JSON completo directamente en el cuerpo: puedes inspeccionar `choices`, `usage`, el modelo y cualquier otro metadato que incluya el proveedor. Se conservan los campos originales, los valores `null` y los espacios del texto. También se permiten respuestas sin texto generado para inspeccionar el motivo de finalización u otros campos disponibles.
 
-La respuesta corresponde al endpoint compatible con OpenAI que usa este proyecto, definido en [src/clientes/gemini.py](../src/clientes/gemini.py): `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`. Se conserva el contenido JSON; su formato de espacios y sangría puede cambiar al serializarlo.
+La respuesta corresponde al endpoint compatible con OpenAI que usa este proyecto, definido en [src/clientes/gemini.py](../../src/clientes/gemini.py): `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`. Se conserva el contenido JSON; su formato de espacios y sangría puede cambiar al serializarlo.
 
 Cada petición realiza una nueva consulta a Gemini. La respuesta exitosa de esta ruta contiene únicamente el JSON del proveedor: los costos calculados por la aplicación se obtienen mediante `/consultar`. La ruta raw realiza una sola llamada a Gemini y no consulta el tipo de cambio.
 
@@ -1032,7 +1041,7 @@ En los errores HTTP 422, `detalles.validaciones` identifica cada `campo` y sus `
 
 El consumo se obtiene del objeto `usage` de Gemini. `entrada` corresponde a `prompt_tokens`, `total` a `total_tokens` y `salida` se calcula como `total - entrada`. Así se incluyen los tokens de razonamiento aunque el proveedor los omita de `completion_tokens`, sin sumarlos dos veces. Este cliente realiza consultas de texto sin herramientas. `entrada_cache` corresponde a `prompt_tokens_details.cached_tokens` y forma parte de `entrada`; si ese detalle no aparece, se utiliza cero.
 
-Las tarifas están centralizadas por modelo en [src/costos/calculadora.py](../src/costos/calculadora.py). Para `gemini-3.5-flash-lite` se usan las [tarifas oficiales estándar de pago](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.5-flash-lite), verificadas el 20 de octubre de 2026, en USD por millón de tokens:
+Las tarifas están centralizadas por modelo en [src/costos/calculadora.py](../../src/costos/calculadora.py). Para `gemini-3.5-flash-lite` se usan las [tarifas oficiales estándar de pago](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.5-flash-lite), verificadas el 20 de octubre de 2026, en USD por millón de tokens:
 
 | Consumo | USD por 1.000.000 de tokens |
 | --- | --- |
@@ -1117,10 +1126,14 @@ Cuando el mensaje de la prueba Python o `detalles.causa` indique HTTP 400, 401 o
 │   ├── extraer_ley_rep.py    # Conversión del PDF
 │   └── capturar_evidencia.py # Capturas de resultados conservados
 ├── docs/
-│   ├── guia-completa.md      # Actividades, uso y referencia técnica
-│   ├── arquitectura.md      # Flujo de la aplicación
-│   ├── evaluaciones/        # Mediciones y resultados de prompts
-│   └── evidencias/          # Capturas y registros de entrega
+│   ├── README.md            # Índice por propósito y por bloques
+│   ├── guias/               # Instalación, uso y referencia técnica
+│   ├── arquitectura/        # Flujos, decisiones, límites y diagramas
+│   ├── estudio/             # Explicaciones y preguntas por bloques
+│   ├── planes/              # PRD y revisiones iniciales
+│   ├── entregas/            # Correspondencia, checklist y estado
+│   ├── evaluaciones/        # Resultados y límites de métricas
+│   └── evidencias/          # Capturas y registros conservados
 ├── datos/ley_rep/            # PDF, texto y artículos de referencia
 ├── api.postman_collection.json
 ├── gemini.postman_collection.json
@@ -1137,7 +1150,7 @@ La práctica permite comprobar el recorrido de una consulta desde Python hasta G
 
 La función `obtener_dato_de_prueba(pregunta)` demuestra la consulta directa desde Python. La respuesta procesada incluye `respuesta`, `uso` y `costo_estimado`; con un prompt seleccionado, el contenido generado se valida como un objeto JSON. El cálculo de importes se realiza en Python a partir del consumo informado por Gemini.
 
-El modelo predeterminado es `gemini-3.5-flash-lite`. La [decisión de arquitectura](../docs/decision-arquitectura.md) reúne la comparación real de costo y latencia, la elección del modelo y el [diagrama de la aplicación](../docs/arquitectura.md). Su alcance es la práctica actual; la [propuesta del proyecto final Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) explica qué falta validar para utilizar IA en consultas normativas.
+El modelo predeterminado es `gemini-3.5-flash-lite`. La [decisión de arquitectura](../arquitectura/seleccion-modelo.md) reúne la comparación real de costo y latencia, la elección del modelo y el [diagrama de la aplicación](../arquitectura/vision-general.md). Su alcance es la práctica actual; la [propuesta del proyecto final Ley REP](#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) explica qué falta validar para utilizar IA en consultas normativas.
 
 ### Tecnologías actuales
 
@@ -1150,9 +1163,13 @@ El modelo predeterminado es `gemini-3.5-flash-lite`. La [decisión de arquitectu
 
 ## Proyecto final de Skillnest: asistente RAG para Ley REP
 
-**Estado: primer RAG implementado para los bloques 24–28, pendiente de validación real.** La entrada por terminal usa Chroma y la copia local de Ley 20.920 de 2016; ver [entrega](entrega-bloques-24-28.md). La ampliación a múltiples fuentes y búsqueda híbrida sigue siendo un proyecto posterior. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
+**Estado: primer RAG implementado y medido con Gemini para los bloques 24–28.**
+La entrada por terminal usa Chroma y la copia local de Ley 20.920 de 2016;
+ver [entrega y pendientes de publicación](../entregas/bloques-24-28.md).
+La ampliación a múltiples fuentes y búsqueda híbrida sigue siendo un proyecto
+posterior. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
 
-El banco anterior conserva `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`. Utilizan el [PDF convertido a texto y artículos](../datos/ley_rep/README.md), además de permitir contexto explícito. El nuevo RAG recupera chunks y comprueba referencias numéricas; la verificación semántica de cada afirmación sigue pendiente y no se confunde con existencia de la cita.
+El banco anterior conserva `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`. Utilizan el [PDF convertido a texto y artículos](../../datos/ley_rep/README.md), además de permitir contexto explícito. El nuevo RAG recupera chunks y comprueba referencias numéricas; no verifica semánticamente cada afirmación. Las citas de la muestra real se contrastaron de forma asistida; eso no equivale a una garantía automática general.
 
 ### Objetivo y justificación
 
@@ -1208,11 +1225,11 @@ La salida incluirá respuesta, documento y artículo o sección, enlace oficial,
 
 | Función en el RAG | Modelo candidato | Estado |
 | --- | --- | --- |
-| Generar respuestas | `gemini-3.5-flash-lite` | Candidato por costo y latencia; falta validar calidad normativa. |
+| Generar respuestas | `gemini-3.5-flash-lite` | Utilizado en las cinco generaciones reales de B24–28; muestra inicial con citas contrastadas, no validación jurídica general. |
 | Comparar calidad de generación | `gemini-3.6-flash` | Alternativa para evaluar con el mismo contexto e instrucciones. |
-| Crear embeddings | `gemini-embedding-001` | Implementado en el RAG de bloques 24–28; pendiente de ejecución y evaluación real. |
+| Crear embeddings | `gemini-embedding-001` | Índice real de 99 chunks y evaluación k=3/5 completados; ver evidencia de B24–28. |
 
-El modelo de [embeddings](https://ai.google.dev/gemini-api/docs/embeddings) cumple una función distinta del generativo. Los documentos y las consultas deberán usar un espacio vectorial compatible.
+El modelo de [embeddings](https://ai.google.dev/gemini-api/docs/embeddings) cumple una función distinta del generativo. Los documentos y las consultas usan el mismo modelo y dimensión, con tipos de tarea de documento y consulta compatibles.
 
 **La elección final priorizará calidad y respaldo documental, después costo y latencia.** La comparación actual usó preguntas breves sin RAG; sus importes no estiman una consulta con historial y artículos. Se medirán recuperación de evidencia, fidelidad, citas, abstención y errores críticos con respuestas de referencia revisadas jurídicamente.
 

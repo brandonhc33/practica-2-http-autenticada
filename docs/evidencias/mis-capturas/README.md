@@ -58,4 +58,4 @@ mis-capturas/
     └── 03-checklist-resumen.png
 ```
 
-La [guía de entrega](../../entrega-bloques-13-14.md) usa estas capturas de terminal como evidencias principales y conserva la ejecución anterior como evidencia complementaria.
+La [guía de entrega](../../entregas/bloques-13-14.md) usa estas capturas de terminal como evidencias principales y conserva la ejecución anterior como evidencia complementaria.

@@ -23,7 +23,7 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 
 ## Inicio rápido
 
-Necesitas Python 3.12 y `uv`. Si no los tienes, sigue la [instalación](docs/guia-completa.md#instalación).
+Necesitas Python 3.12 y `uv`. Si no los tienes, sigue la [instalación](docs/guias/guia-completa.md#instalación).
 
 1. Desde la raíz del repositorio, instala las dependencias:
 
@@ -38,7 +38,7 @@ Necesitas Python 3.12 y `uv`. Si no los tienes, sigue la [instalación](docs/gui
    API_BEARER_TOKEN=tu_token_local
    ```
 
-   Puedes generar el token con `uv run python -c "import secrets; print(secrets.token_urlsafe(32))"`. [Detalles de configuración](docs/guia-completa.md#configuración).
+   Puedes generar el token con `uv run python -c "import secrets; print(secrets.token_urlsafe(32))"`. [Detalles de configuración](docs/guias/guia-completa.md#configuración).
 
 3. Inicia la API:
 
@@ -54,28 +54,28 @@ Necesitas Python 3.12 y `uv`. Si no los tienes, sigue la [instalación](docs/gui
    curl -H "Authorization: Bearer tu_token_local" http://127.0.0.1:8000/health
    ```
 
-   Debe responder HTTP 200. Sin token o con uno incorrecto responde HTTP 401. Esta comprobación no consulta Gemini. Para enviar preguntas, usa la [guía de peticiones](docs/guia-completa.md#consulta-mediante-la-api-python) o importa [la colección de Postman](api.postman_collection.json).
+   Debe responder HTTP 200. Sin token o con uno incorrecto responde HTTP 401. Esta comprobación no consulta Gemini. Para enviar preguntas, usa la [guía de peticiones](docs/guias/guia-completa.md#consulta-mediante-la-api-python) o importa [la colección de Postman](api.postman_collection.json).
 
 ## Actividades por bloque
 
-Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El detalle completo está en las [actividades de la guía](docs/guia-completa.md#actividades-del-curso).
+Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El detalle completo está en las [actividades de la guía](docs/guias/guia-completa.md#actividades-del-curso).
 
 | Bloque | Actividad | Dónde revisarla |
 | --- | --- | --- |
-| 4 | Consulta HTTP autenticada | [Desde Python](docs/guia-completa.md#consultar-gemini-desde-python) y [API local](docs/guia-completa.md#iniciar-la-api-local). |
-| 8 | Arquitectura de la aplicación | [Explicación](docs/arquitectura.md) y [diagrama](docs/diagrama_arquitectura.png). |
-| 9 | Elección de modelo | [Decisión de arquitectura](docs/decision-arquitectura.md). |
-| 10 | Prompts con salida JSON | [Guía de prompts](docs/bloque-10-prompts.md) y [uso del banco](docs/guia-completa.md#banco-de-prompts-y-salida-estructurada-bloque-10). |
-| 12 | Cliente con reintentos | [Política de reintentos](docs/guia-completa.md#cliente-con-reintentos-bloque-12). |
-| 13 y 14 | Costos, backoff y pruebas unitarias | [Entrega](docs/entrega-bloques-13-14.md) y [capturas](docs/evidencias/mis-capturas/README.md). |
-| 15 a 17 | Evaluación de respuestas de Ley REP | [Evaluación y resultados](docs/evaluacion-respuestas.md). |
-| 18 a 20 | Chain, enrutamiento y manejo de errores | [Uso](docs/guia-completa.md#orquestación-con-langchain-bloques-18-a-20), [entrega](docs/entrega-bloques-18-20.md) y [preguntas y respuestas](docs/preguntas-bloques-18-20.md). |
-| 21 | Agente con herramientas de lectura | [Uso](#agente-con-memoria-y-supervisión) y [entrega y evidencias](docs/entrega-bloques-21-23.md). |
-| 22 | Argumentos estructurados y memoria por sesión | [Guía de uso](docs/guia-completa.md#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). |
-| 23 | Supervisión humana y límites de autonomía | [Límites](docs/limites-autonomia-agente.md) y [estado de validación](docs/entrega-bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada). |
+| 4 | Consulta HTTP autenticada | [Desde Python](docs/guias/guia-completa.md#consultar-gemini-desde-python) y [API local](docs/guias/guia-completa.md#iniciar-la-api-local). |
+| 8 | Arquitectura de la aplicación | [Explicación](docs/arquitectura/vision-general.md) y [diagrama](docs/arquitectura/diagramas/flujo-api.png). |
+| 9 | Elección de modelo | [Decisión de arquitectura](docs/arquitectura/seleccion-modelo.md). |
+| 10 | Prompts con salida JSON | [Guía de prompts](docs/estudio/bloque-10-prompts.md) y [uso del banco](docs/guias/guia-completa.md#banco-de-prompts-y-salida-estructurada-bloque-10). |
+| 12 | Cliente con reintentos | [Política de reintentos](docs/guias/guia-completa.md#cliente-con-reintentos-bloque-12). |
+| 13 y 14 | Costos, backoff y pruebas unitarias | [Entrega](docs/entregas/bloques-13-14.md) y [capturas](docs/evidencias/mis-capturas/README.md). |
+| 15 a 17 | Evaluación de respuestas de Ley REP | [Evaluación y resultados](docs/evaluaciones/respuestas-ley-rep.md). |
+| 18 a 20 | Chain, enrutamiento y manejo de errores | [Uso](docs/guias/guia-completa.md#orquestación-con-langchain-bloques-18-a-20), [entrega](docs/entregas/bloques-18-20.md) y [preguntas y respuestas](docs/estudio/bloques-18-20.md). |
+| 21 | Agente con herramientas de lectura | [Uso](#agente-con-memoria-y-supervisión) y [entrega y evidencias](docs/entregas/bloques-21-23.md). |
+| 22 | Argumentos estructurados y memoria por sesión | [Guía de uso](docs/guias/guia-completa.md#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23). |
+| 23 | Supervisión humana y límites de autonomía | [Límites](docs/arquitectura/limites-autonomia-agente.md) y [estado de validación](docs/entregas/bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada). |
 | 24 y 25 | Indexación y persistencia en Chroma | [Uso del RAG](#consultas-rag-de-ley-rep) y [comparación de cortes](docs/evidencias/bloques-24-28/comparacion-chunking.md). |
-| 26 y 27 | Recuperación con citas y evaluación | [Recorrido de ejecución](docs/entrega-bloques-24-28.md#recorrido-de-ejecución) y [casos etiquetados](datos/evaluacion/recuperacion_rag.json). |
-| 28 | Latencia y costo del flujo RAG | [Actividad core, checklist y estado de evidencias reales](docs/entrega-bloques-24-28.md). |
+| 26 y 27 | Recuperación con citas y evaluación | [Recorrido de ejecución](docs/entregas/bloques-24-28.md#recorrido-de-ejecución) y [casos etiquetados](datos/evaluacion/recuperacion_rag.json). |
+| 28 | Latencia y costo del flujo RAG | [Actividad core, checklist y estado de evidencias reales](docs/entregas/bloques-24-28.md). |
 
 ## Comandos útiles
 
@@ -174,7 +174,7 @@ Flujo de terminal con LangChain de los bloques 18 a 20. Clasifica la consulta y 
 uv run python -m src.orquestacion.enrutamiento "Resume el artículo 9"
 ```
 
-La respuesta sale por stdout y el consumo por stderr. Una consulta normativa usa 4 llamadas y las otras rutas 2. Si Gemini falla, el flujo prueba con el modelo secundario y después entrega un texto de respaldo. Consulta la [guía de uso](docs/guia-completa.md#orquestación-con-langchain-bloques-18-a-20).
+La respuesta sale por stdout y el consumo por stderr. Una consulta normativa usa 4 llamadas y las otras rutas 2. Si Gemini falla, el flujo prueba con el modelo secundario y después entrega un texto de respaldo. Consulta la [guía de uso](docs/guias/guia-completa.md#orquestación-con-langchain-bloques-18-a-20).
 
 ### Agente con memoria y supervisión
 
@@ -201,17 +201,17 @@ ignorado por Git. Para revisar repeticiones, sin llamar a Gemini:
 uv run python -m src.orquestacion.supervision
 ```
 
-Consulta la [guía](docs/guia-completa.md#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23),
-los [límites](docs/limites-autonomia-agente.md) y el
-[estado de validación y evidencias](docs/entrega-bloques-21-23.md).
+Consulta la [guía](docs/guias/guia-completa.md#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23),
+los [límites](docs/arquitectura/limites-autonomia-agente.md) y el
+[estado de validación y evidencias](docs/entregas/bloques-21-23.md).
 
 ### Consultas RAG de Ley REP
 
 Entrada de terminal de los bloques 24–28: índice Chroma persistente de la copia
 local de 2016, recuperación semántica y respuesta con fuentes numeradas. No
 reemplaza la API ni el agente anterior. La implementación se puede probar sin red;
-el [cierre de la actividad 28](docs/entrega-bloques-24-28.md) requiere evidencias
-reales todavía pendientes.
+las [mediciones reales de la actividad 28](docs/entregas/bloques-24-28.md) ya están
+registradas. La publicación y el envío a la plataforma siguen pendientes.
 
 Preparación local, sin cuota:
 
@@ -236,8 +236,8 @@ introducir datos privados. El programa comprueba números de cita, no el respald
 semántico de cada afirmación. Los tokens de embeddings no informados permanecen
 desconocidos; no se presenta el costo de generación como costo total.
 
-Consulta los comandos de [evaluación y actividad 28](docs/entrega-bloques-24-28.md#recorrido-de-ejecución)
-y la [guía de estudio](docs/preguntas-bloques-24-28.md).
+Consulta los comandos de [evaluación y actividad 28](docs/entregas/bloques-24-28.md#recorrido-de-ejecución)
+y la [guía de estudio](docs/estudio/bloques-24-28.md).
 
 ### Evaluaciones y ensayos
 
@@ -250,7 +250,7 @@ Comparar modelos y evaluar prompts realiza consultas reales a Gemini. El ensayo 
 | Evaluar consistencia de prompts | `uv run python -m scripts.evaluar_prompts --salida docs/evaluaciones/prompts-nueva-ejecucion.json` |
 | Simular HTTP 429 y backoff | `uv run python -m scripts.ensayo_rate_limit --simulado --salida docs/evidencias/ensayo-nuevo.json` |
 
-Para el ensayo contra el proveedor, consulta los [límites y comandos del ensayo real](docs/guia-completa.md#ensayo-real-de-http-429).
+Para el ensayo contra el proveedor, consulta los [límites y comandos del ensayo real](docs/guias/guia-completa.md#ensayo-real-de-http-429).
 
 ### Pruebas y calidad del código
 
@@ -297,24 +297,21 @@ Las pruebas siguen las mismas áreas del código; `tests/conftest.py` bloquea la
 Las explicaciones conceptuales, la relación con las actividades y las preguntas
 de repaso están separadas de la documentación de uso:
 
-- [Bloques 18 a 20: chains, enrutamiento y manejo de errores](docs/preguntas-bloques-18-20.md).
-- [Bloques 21 a 23: herramientas, memoria y supervisión humana](docs/preguntas-bloques-21-23.md).
-- [Bloques 24 a 28: RAG, recuperación con citas, evaluación, latencia y costo](docs/preguntas-bloques-24-28.md).
+- [Bloque 10: prompts y salida JSON](docs/estudio/bloque-10-prompts.md).
+- [Bloques 18 a 20: chains, enrutamiento y manejo de errores](docs/estudio/bloques-18-20.md).
+- [Bloques 21 a 23: herramientas, memoria y supervisión humana](docs/estudio/bloques-21-23.md).
+- [Bloques 24 a 28: RAG, recuperación con citas, evaluación, latencia y costo](docs/estudio/bloques-24-28.md).
 
 ## Documentación y evidencias
 
-- [Guía completa: actividades del curso, comandos y referencia de la API](docs/guia-completa.md).
-- [Arquitectura y recorrido de una petición](docs/arquitectura.md).
-- [Comparación de modelos y decisión de arquitectura](docs/decision-arquitectura.md).
-- [Banco de prompts y salida estructurada](docs/bloque-10-prompts.md).
-- [Evaluación de respuestas de Ley REP: bloques 15–17](docs/evaluacion-respuestas.md).
-- [Límites de las métricas y hallazgos de la revisión](docs/limites_metrica.md).
-- [Entrega de bloques 13 y 14: pruebas, costos y backoff](docs/entrega-bloques-13-14.md).
-- [PRD 02: orquestación de consultas con LangChain](docs/prd-02-orquestacion-langchain.md).
-- [Entrega de bloques 18 a 20: resultados y límites de la orquestación](docs/entrega-bloques-18-20.md).
-- [Agente de Ley REP: entrega y evidencias de los bloques 21 a 23](docs/entrega-bloques-21-23.md).
-- [Límites de autonomía y supervisión humana](docs/limites-autonomia-agente.md).
-- [PRD 04: plan y decisiones del RAG de Ley REP](docs/prd-04-rag-ley-rep.md).
-- [Bloques 24 a 28: entrega y evidencias pendientes de la actividad core 28](docs/entrega-bloques-24-28.md).
-- [Capturas y resultados de ejecución](docs/evidencias/mis-capturas/README.md).
-- [Propuesta del proyecto final: asistente RAG para Ley REP](docs/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).
+La documentación está organizada por propósito y conectada por bloques en el
+[índice de `docs/`](docs/README.md).
+
+- [Guía de uso, comandos y referencia de la API](docs/guias/guia-completa.md).
+- [Arquitectura, modelos y límites](docs/arquitectura/vision-general.md).
+- [Evaluación de respuestas y límites de métricas](docs/evaluaciones/respuestas-ley-rep.md).
+- [Planes y decisiones: PRD 04 del RAG](docs/planes/prd-04-rag-ley-rep.md).
+- [Entrega 13–14](docs/entregas/bloques-13-14.md), [18–20](docs/entregas/bloques-18-20.md),
+  [21–23](docs/entregas/bloques-21-23.md) y [24–28 con evidencias reales](docs/entregas/bloques-24-28.md).
+- [Capturas de terminal conservadas](docs/evidencias/mis-capturas/README.md).
+- [Proyecto final: asistente RAG para Ley REP](docs/guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

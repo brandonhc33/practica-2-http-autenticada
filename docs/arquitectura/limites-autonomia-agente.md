@@ -5,7 +5,7 @@
 El agente puede buscar por palabras en la copia local de la Ley 20.920, leer un
 artículo completo y responder una consulta. No modifica la ley ni utiliza una
 búsqueda web. Estas son las herramientas `buscar_en_ley` y `obtener_articulo` de
-[herramientas.py](../src/orquestacion/herramientas.py).
+[herramientas.py](../../src/orquestacion/herramientas.py).
 
 El modelo decide qué herramienta usar. `AgentExecutor` limita cada consulta a
 cuatro iteraciones; no hay fallback a otro modelo ni reintento del flujo completo.
@@ -109,16 +109,16 @@ sesiones, las trazas y las repeticiones tienen pruebas sin red. Las corridas hum
 del Bloque 23 comprobaron una entrega aprobada y un rechazo explícito con Gemini,
 con su archivo presente y ausente respectivamente. En `rechazo-final-23`, la
 terminal leyó `n` tras 21,6 segundos, registró `false` y no creó el informe:
-ver [evidencia final](evidencias/bloques-21-23/rechazo-explicito-gemini.md).
+ver [evidencia final](../evidencias/bloques-21-23/rechazo-explicito-gemini.md).
 
 Los rechazos anteriores se conservan como no aprobados, sin atribuirles una `n`
 ni una causa que no quedó registrada. El
-[diagnóstico con modelo falso](evidencias/bloques-21-23/diagnostico-aprobacion.md)
+[diagnóstico con modelo falso](../evidencias/bloques-21-23/diagnostico-aprobacion.md)
 también leyó `s` y `n`, pero no sustituye esa evidencia con Gemini. El registro
 booleano por sí solo sigue sin distinguir una `n` de un timeout o EOF; se contrastó
 con la salida de terminal, la traza y el archivo ausente.
 El estado y los pasos de cierre están en
-[la entrega de los bloques 21 a 23](entrega-bloques-21-23.md).
+[la entrega de los bloques 21 a 23](../entregas/bloques-21-23.md).
 
 Para contrastar el control con el código:
 

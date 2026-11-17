@@ -4,7 +4,7 @@
 pruebas desde un clon de GitHub verificadas.** La rama `bloques-21-23` se conserva
 local. La validación funcional incluye la aprobación y el rechazo explícito con
 `n` usando Gemini, contrastados con sus archivos. Ver
-[publicación e instalación limpia](evidencias/bloques-21-23/verificacion-github.md).
+[publicación e instalación limpia](../evidencias/bloques-21-23/verificacion-github.md).
 Los intentos anteriores se conservan con sus diferencias, sin atribuirles
 retroactivamente una `n` ni una causa al rechazo inmediato.
 
@@ -12,13 +12,13 @@ retroactivamente una `n` ni una causa al rechazo inmediato.
 
 | Bloque | Implementación y revisión |
 | --- | --- |
-| 21 — agente con herramientas | [Herramientas](../src/orquestacion/herramientas.py), [agente](../src/orquestacion/agente_con_herramientas.py), límite de cuatro iteraciones y `intermediate_steps`. |
+| 21 — agente con herramientas | [Herramientas](../../src/orquestacion/herramientas.py), [agente](../../src/orquestacion/agente_con_herramientas.py), límite de cuatro iteraciones y `intermediate_steps`. |
 | 22 — herramienta estructurada y memoria | `ArgumentosArticulo`, validación como observación y memoria separada por `session_id`, en los mismos módulos. |
-| 23 — supervisión y límites | `entregar_informe`, [supervisión y registros](../src/orquestacion/supervision.py), [límites de autonomía](limites-autonomia-agente.md), aprobación y [rechazo explícito comprobado](evidencias/bloques-21-23/rechazo-explicito-gemini.md). |
+| 23 — supervisión y límites | `entregar_informe`, [supervisión y registros](../../src/orquestacion/supervision.py), [límites de autonomía](../arquitectura/limites-autonomia-agente.md), aprobación y [rechazo explícito comprobado](../evidencias/bloques-21-23/rechazo-explicito-gemini.md). |
 
 La API y el flujo de los bloques 18 a 20 no se reemplazan. El agente es una entrada
 adicional por terminal, con `langchain-classic` y el conector nativo de Gemini.
-La [guía de estudio](preguntas-bloques-21-23.md) explica los conceptos y cómo cada
+La [guía de estudio](../estudio/bloques-21-23.md) explica los conceptos y cómo cada
 implementación responde a la actividad.
 
 ## Uso
@@ -48,12 +48,12 @@ sesión, pero otro proceso empieza sin historial aunque use el mismo identificad
 
 | Bloque | Casos coincidentes | Llamadas | Tokens | USD |
 | --- | --- | --- | --- | --- |
-| [21](evidencias/bloques-21-23/ensayo-bloque-21.json) | 3 de 3 | 5 | 3.405 | 0,0019345 |
-| [22](evidencias/bloques-21-23/ensayo-bloque-22.json) | 3 de 3 | 5 | 3.696 | 0,0019624 |
-| [23, intento 1](evidencias/bloques-21-23/ensayo-bloque-23.json) | 0 de 2 | 5 intentos, uno sin uso informado | 4.320 registrados | 0,0023102 conocidos |
-| [23, intento 2](evidencias/bloques-21-23/ensayo-bloque-23-intento-02.json) | 2 de 2 automáticos; no prueba rechazo explícito | 6 | 6.656 | 0,0034708 |
-| [23, control de rechazo](evidencias/bloques-21-23/diagnostico-aprobacion.md) | No aprobado, sin `n` comprobada | 3 | 3.457 | 0,0020491 |
-| [23, rechazo final](evidencias/bloques-21-23/rechazo-explicito-gemini.md) | `n` explícita, registro negativo y archivo ausente | 3 | 3.402 | 0,0019512 |
+| [21](../evidencias/bloques-21-23/ensayo-bloque-21.json) | 3 de 3 | 5 | 3.405 | 0,0019345 |
+| [22](../evidencias/bloques-21-23/ensayo-bloque-22.json) | 3 de 3 | 5 | 3.696 | 0,0019624 |
+| [23, intento 1](../evidencias/bloques-21-23/ensayo-bloque-23.json) | 0 de 2 | 5 intentos, uno sin uso informado | 4.320 registrados | 0,0023102 conocidos |
+| [23, intento 2](../evidencias/bloques-21-23/ensayo-bloque-23-intento-02.json) | 2 de 2 automáticos; no prueba rechazo explícito | 6 | 6.656 | 0,0034708 |
+| [23, control de rechazo](../evidencias/bloques-21-23/diagnostico-aprobacion.md) | No aprobado, sin `n` comprobada | 3 | 3.457 | 0,0020491 |
+| [23, rechazo final](../evidencias/bloques-21-23/rechazo-explicito-gemini.md) | `n` explícita, registro negativo y archivo ausente | 3 | 3.402 | 0,0019512 |
 | Total registrado | Validación funcional completada; publicación y clon verificados | 27 intentos | 24.936 registrados | 0,0136782 conocidos |
 
 Los intentos del Bloque 23 fueron ejecutados por el alumno. En el primero hubo un
@@ -63,18 +63,18 @@ solo distingue `true` de `false`; los tiempos son compatibles con un timeout en
 el segundo aviso, y el alumno no reportó haber introducido `n` en ese caso.
 
 Se conservan ambos resultados sin corregirlos, junto con las
-[trazas y decisiones revisadas](evidencias/bloques-21-23/revision-bloque-23.md).
+[trazas y decisiones revisadas](../evidencias/bloques-21-23/revision-bloque-23.md).
 El intento fallido sin metadatos no se considera de costo cero; el total de USD es
-solo el costo conocido. La [prueba local de entrada](evidencias/bloques-21-23/prueba-entrada-terminal.md)
+solo el costo conocido. La [prueba local de entrada](../evidencias/bloques-21-23/prueba-entrada-terminal.md)
 sí leyó `s` y `n`, sin Gemini, pero no sustituye el rechazo de un informe del agente.
 
 El control final `rechazo-final-23` sí leyó una `n` con Gemini, tras 21,6 segundos
 de espera. Su decisión fue negativa y no existe el informe correspondiente. La
-[evidencia final](evidencias/bloques-21-23/rechazo-explicito-gemini.md) completa ese
+[evidencia final](../evidencias/bloques-21-23/rechazo-explicito-gemini.md) completa ese
 control sin modificar los resultados de los intentos previos.
 
 En el Bloque 21 se comprobaron búsqueda por tema, lectura de un artículo y una
-respuesta sin herramienta. El [consumo del conector](evidencias/bloques-21-23/consumo-gemini-bloque-21.json)
+respuesta sin herramienta. El [consumo del conector](../evidencias/bloques-21-23/consumo-gemini-bloque-21.json)
 coincide con el registro del ensayo.
 
 En el Bloque 22, `cliente-1` interpretó «el siguiente» como el segundo transitorio;
@@ -82,7 +82,7 @@ En el Bloque 22, `cliente-1` interpretó «el siguiente» como el segundo transi
 usaron 1.370, 1.771 y 555 tokens respectivamente. El segundo turno reenvía historial
 y además lee un artículo más largo, así que el aumento no mide solo la memoria.
 
-La [observación del conector del Bloque 22](evidencias/bloques-21-23/consumo-gemini-bloque-22.json)
+La [observación del conector del Bloque 22](../evidencias/bloques-21-23/consumo-gemini-bloque-22.json)
 registra dos llamadas a herramientas con firma y dos reenvíos de las firmas
 originales, sin comodín. Que Gemini aceptara los pedidos del Bloque 21 no probaba
 por sí solo ese reenvío. Gemini no informó tokens de razonamiento en esas diez
@@ -109,7 +109,7 @@ git diff --check
 `tests/conftest.py` bloquea la red para toda la suite. Los informes y registros de
 las pruebas se escriben en directorios temporales, no en `output/agente/`.
 Los resultados de esta revisión se conservan en
-[verificación local](evidencias/bloques-21-23/verificacion-local.md).
+[verificación local](../evidencias/bloques-21-23/verificacion-local.md).
 
 | Criterios del PRD 03 | Cobertura |
 | --- | --- |
@@ -120,7 +120,7 @@ Los resultados de esta revisión se conservan en
 | CA-15 y CA-16 | JSONL completo, error sin pasos, repeticiones dentro de un turno y entre turnos por sesión. |
 | CA-17 y CA-18 | Ensayos con modelo falso para los tres bloques y suite completa sin red. |
 | CA-19 | Ensayos reales de los tres bloques conservados; aprobación y `n` explícita con Gemini comprobadas, con archivo presente y ausente respectivamente. |
-| CA-20 | Control contrastado con las trazas reales: lecturas y propuestas de entrega presentes. Ver [revisión](evidencias/bloques-21-23/revision-bloque-23.md). |
+| CA-20 | Control contrastado con las trazas reales: lecturas y propuestas de entrega presentes. Ver [revisión](../evidencias/bloques-21-23/revision-bloque-23.md). |
 
 También se prueba el caso en que el modelo falla después de una entrega aprobada:
 no se repite el flujo y sobreviven el informe y la aprobación, aunque la traza
@@ -141,7 +141,7 @@ Resultado de aprobación: n recibida: rechazo explícito; espera: 21.6 s.
 Se comprobó una decisión `aprobado: false` con identificador
 `171c1f416a5349dfae1a3ff708696abc`, la traza sin error y la ausencia de
 `output/agente/informes_entregados/171c1f416a5349dfae1a3ff708696abc.md`.
-Se conservan la [salida, el consumo y los controles](evidencias/bloques-21-23/rechazo-explicito-gemini.md).
+Se conservan la [salida, el consumo y los controles](../evidencias/bloques-21-23/rechazo-explicito-gemini.md).
 
 Antes de esta corrida, el diagnóstico con modelo falso también leyó `s` y `n`.
 La nueva evidencia comprueba el recorrido con el conector real, pero no explica
@@ -181,7 +181,7 @@ llegar a pedir aprobación. No sobrescribir los dos JSON ya conservados.
   vacía, EOF, agotó el tiempo o encontró una condición de terminal inválida. Los
   JSONL conservan el contrato booleano; los motivos antiguos siguen siendo desconocidos.
 
-La explicación completa está en [límites de autonomía](limites-autonomia-agente.md).
+La explicación completa está en [límites de autonomía](../arquitectura/limites-autonomia-agente.md).
 
 ## Condiciones para marcar la entrega como cerrada
 
@@ -196,6 +196,6 @@ La explicación completa está en [límites de autonomía](limites-autonomia-age
 - [x] Merge autorizado en `main` y publicación únicamente de `main`; rama de bloques conservada local.
 - [x] Clonado desde GitHub, `uv sync --locked` y suite en una instalación limpia.
 
-El [registro de publicación](evidencias/bloques-21-23/verificacion-github.md)
+El [registro de publicación](../evidencias/bloques-21-23/verificacion-github.md)
 documenta el merge, el push y la comprobación desde un clon real de GitHub.
 La instalación local anterior se conserva como evidencia complementaria.

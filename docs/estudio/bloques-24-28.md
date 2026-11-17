@@ -7,11 +7,11 @@ significado → generar con fuentes → evaluar → medir**. No estamos entrenan
 Gemini ni convirtiendo el agente anterior en un modelo que «ya sabe la ley».
 
 Esta guía explica las lecciones y actividades de la Unidad 2.5 revisadas en la
-copia local de Skillnest. El [PRD 04](prd-04-rag-ley-rep.md#2-fuente-y-requisitos-del-curso)
+copia local de Skillnest. El [PRD 04](../planes/prd-04-rag-ley-rep.md#2-fuente-y-requisitos-del-curso)
 conserva sus enlaces originales y las adaptaciones del proyecto. No es una
 transcripción de los videos ni una rúbrica docente adicional.
-La [entrega](entrega-bloques-24-28.md) separa implementación, pruebas y evidencias
-reales todavía pendientes.
+La [entrega](../entregas/bloques-24-28.md) separa implementación, pruebas y
+[mediciones reales ya conservadas](../evidencias/bloques-24-28/README.md).
 
 ## Índice
 
@@ -79,7 +79,7 @@ Se compararon dos estrategias y dos tamaños sobre la misma copia:
 Los cortes fijos parten palabras en el artículo 9. Con recursivo 400, una misma
 obligación queda dividida en dos. **Recursivo 800 / 100 es el punto de partida
 elegido**, no un óptimo demostrado por las métricas.
-La [comparación local](evidencias/bloques-24-28/comparacion-chunking.md) conserva
+La [comparación local](../evidencias/bloques-24-28/comparacion-chunking.md) conserva
 la justificación y los límites, incluido un fragmento final corto.
 
 El tamaño se mide en **caracteres**, no tokens. El splitter recursivo intenta
@@ -250,7 +250,7 @@ contexto. Pero recuperarla tampoco garantiza que redacte bien. Son dos problemas
 distintos: **calidad del retrieval** y **fidelidad de la generación**.
 
 Se versionan diez casos en
-[`recuperacion_rag.json`](../datos/evaluacion/recuperacion_rag.json). Los IDs
+[`recuperacion_rag.json`](../../datos/evaluacion/recuperacion_rag.json). Los IDs
 relevantes se propusieron leyendo el corpus antes de cualquier recuperación. El
 archivo declara que el etiquetado inicial es del asistente y requiere revisión
 del alumno: no se finge una validación docente o jurídica.
@@ -295,6 +295,16 @@ en lugar de comparar IDs incompatibles.
 Diez casos son una referencia de estudio, no prueba de cobertura del dominio.
 Si elegimos k usando esos mismos casos, después necesitaremos preguntas
 independientes para evaluar esa elección sin sobreajuste.
+
+### ¿Qué ocurrió al medir nuestro índice?
+
+Las dos repeticiones reales fueron idénticas: precisión promedio 0,30 con k=3
+y 0,18 con k=5; recall 1,00 en ambos. Nueve preguntas tienen un único relevante
+etiquetado, recuperado en ambos k; la décima no tiene respuesta en el corpus y
+su recall es indefinido. No significa que el sistema sea «100 % correcto»:
+medimos recuperación contra un pequeño etiquetado inicial, no la respuesta legal
+ni todos los fragmentos posiblemente útiles. Se conserva también el intento
+previo interrumpido, sin inventarle métricas. Ver [resultados e incidente](../evidencias/bloques-24-28/README.md#b27-resultados-e-incidente-conservado).
 
 ## 6. Bloque 28: latencia, tokens y costo
 
@@ -358,6 +368,13 @@ Subir k suele aumentar tokens de entrada; la comparación real debe comprobarlo.
 El costo total de generación no aumenta en la misma proporción si cambia la
 longitud de la respuesta, y aún puede haber caché.
 
+En nuestra comparación real, la misma pregunta pasó de **1297 a 2540 tokens de
+entrada** al subir de k=3 a k=6: +1243 (+95,84 %). Las cuatro generaciones
+sumaron **USD 0,0032103 estimados**, sin incluir embeddings. La generación fue
+la etapa más lenta en las cuatro, pero sus tiempos variaron ampliamente: no
+podemos atribuir esa variación solo a k. Los [registros y conclusiones](../evidencias/bloques-24-28/README.md#actividad-28-tiempos-tokens-y-costo-observado)
+permiten comprobar los números y contrastarlos con el texto.
+
 ### ¿Qué ocurre si falla una corrida?
 
 Se guarda su registro parcial, con etapa y tipo de error, sin el cuerpo del
@@ -371,7 +388,7 @@ una única petición HTTP ni un costo conocido para esos intentos.
 
 ## 7. Laboratorio progresivo
 
-Todos los comandos están en la [entrega](entrega-bloques-24-28.md#recorrido-de-ejecución).
+Todos los comandos están en la [entrega](../entregas/bloques-24-28.md#recorrido-de-ejecución).
 Hazlos en este orden:
 
 1. **Sin cuota:** comparar cortes, leer el artículo 9 y revisar las etiquetas.

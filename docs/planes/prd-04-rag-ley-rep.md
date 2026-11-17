@@ -1,8 +1,10 @@
 # PRD 04: RAG de Ley REP — bloques 24 a 28
 
-**Estado:** implementación local de las fases 0–5, pendiente de la validación
-real de la fase 6. La actividad 28 no se declara entregada hasta tener mediciones
-reales, revisión de citas y publicación autorizada. Ver [entrega](entrega-bloques-24-28.md).
+**Estado:** fases 0–5 implementadas y validación real de la fase 6 registrada;
+índice, recarga, evaluación, actividad 28 y abstención ejecutados con Gemini.
+Las citas se contrastaron de forma asistida. Pendientes revisión del alumno,
+publicación autorizada y envío a la plataforma. Ver [entrega](../entregas/bloques-24-28.md)
+y [resultados reales](../evidencias/bloques-24-28/README.md).
 **Línea base:** `607c61f`, 263 pruebas y 481 subpruebas; revisión del 16-11-2026.
 
 ## 1. Objetivo y alcance
@@ -100,7 +102,7 @@ copias de esos módulos en la raíz solo para duplicar rutas.
 - [x] Ningún chunk vacío, IDs únicos, metadata completa y cobertura del texto
       no blanco original comprobada por offsets; espacios de borde omitidos
       registrados y overlap no confundido con duplicación accidental.
-- [ ] Indexar, cerrar proceso y recargar sin recalcular embeddings de documentos.
+- [x] Indexar, cerrar proceso y recargar sin recalcular embeddings de documentos.
 - [x] Reejecutar una configuración compatible no agrega duplicados ni gasta embeddings (prueba local).
 - [x] Índice ausente, vacío, incompatible o incompleto falla antes de consumir cuota.
 - [x] Recuperación por vector usa exactamente una invocación de embedding por pregunta.
@@ -115,9 +117,10 @@ copias de esos módulos en la raíz solo para duplicar rutas.
 - [x] Los fallos de consulta dejan registro parcial y salida no exitosa, sin repetir
       el flujo completo. No se confunde con los reintentos internos del SDK de embeddings.
 - [x] Suite completa, ruff, basedpyright, comandos documentados y `git diff --check`.
-      Ver [verificación local](evidencias/bloques-24-28/verificacion-local.md).
-- [ ] Ensayos reales de B24/26/27 y actividad 28, con conclusiones basadas en sus resultados.
-- [ ] Cita contrastada con el texto local y pregunta fuera de corpus revisada.
+      Ver [verificación local](../evidencias/bloques-24-28/verificacion-local.md).
+- [x] Ensayos reales de B24/26/27 y actividad 28, con conclusiones basadas en sus resultados.
+- [x] Cita contrastada de forma asistida con el texto local y pregunta fuera de corpus revisada.
+- [ ] Revisión del alumno de etiquetas y conclusiones; no se presupone por autorizar cuota.
 - [ ] Solo después: merge/push autorizado a `main` y validación desde instalación limpia.
 
 ## 7. Límites de interpretación

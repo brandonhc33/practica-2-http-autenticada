@@ -97,6 +97,6 @@ histórica y complementaria, no se cambia su procedencia.
 
 Junto con el [rechazo explícito con Gemini](rechazo-explicito-gemini.md) y los
 ensayos conservados de los bloques 21 y 22, completa los puntos del
-[checklist de entrega](../../entrega-bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada).
+[checklist de entrega](../../entregas/bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada).
 Los límites funcionales documentados siguen vigentes: entrega simulada, memoria
 no persistente, búsqueda léxica y ausencia de validación automática de citas.

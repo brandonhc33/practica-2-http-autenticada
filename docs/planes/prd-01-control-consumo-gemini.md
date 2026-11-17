@@ -16,7 +16,7 @@ La recuperación ante fallos seguiría a cargo de la política existente: hasta 
 
 ## 2. Problema y situación actual
 
-1. [consultar_gemini_raw()](../src/clientes/gemini.py) construye la petición y delega su ejecución en [con_reintento()](../src/clientes/reintentos.py).
+1. [consultar_gemini_raw()](../../src/clientes/gemini.py) construye la petición y delega su ejecución en [con_reintento()](../../src/clientes/reintentos.py).
 2. La política actual espera después de determinados fallos. Las consultas exitosas consecutivas pueden enviarse sin separación preventiva.
 3. Cada consulta tiene sus propios contadores y presupuesto. Tres intentos por consulta no limitan la cantidad total de peticiones por minuto.
 4. Varias consultas concurrentes al mismo modelo pueden iniciar peticiones al mismo tiempo. La espera por `Retry-After` solo afecta actualmente a la consulta que recibió el error.
@@ -172,8 +172,8 @@ La verificación combinará reloj, esperas y transporte simulados con coordinaci
 
 ## 10. Referencias
 
-1. [Arquitectura actual de la aplicación](arquitectura.md).
-2. [Cliente con reintentos en el README](guia-completa.md#cliente-con-reintentos-bloque-12).
+1. [Arquitectura actual de la aplicación](../arquitectura/vision-general.md).
+2. [Cliente con reintentos en la guía](../guias/guia-completa.md#cliente-con-reintentos-bloque-12).
 3. [Límites de Gemini y alcance por proyecto](https://ai.google.dev/gemini-api/docs/rate-limits).
 4. [Recomendaciones de Gemini sobre reintentos y jitter](https://ai.google.dev/gemini-api/docs/troubleshooting#retry-strategy).
 

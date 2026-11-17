@@ -12,7 +12,7 @@ artículo. Esta evaluación usa la copia local de la Ley 20.920 de 2016.
 
 ## Modos de falla conocidos
 
-En la [revisión registrada](evaluaciones/revision-rep-01.json) se observaron tres
+En la [revisión registrada](revision-rep-01.json) se observaron tres
 situaciones en las que el puntaje no representa bien la calidad de la respuesta:
 
 | Caso | F1 | Qué se observó |
@@ -34,7 +34,7 @@ no se observó una inversión de sentido en esos casos.
 
 ## Muestra revisada
 
-La [evaluación del 4 de noviembre de 2026](evaluaciones/texto-rep-01.json) contiene
+La [evaluación del 4 de noviembre de 2026](texto-rep-01.json) contiene
 20 respuestas de `gemini-3.5-flash-lite`, una por pregunta. Se seleccionaron diez:
 
 - Cinco F1 menores: `rep-18`, `rep-19`, `rep-17`, `rep-06` y `rep-12`.

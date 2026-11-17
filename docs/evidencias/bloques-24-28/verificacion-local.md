@@ -83,11 +83,38 @@ Al terminar seguían ausentes `.env`, `vectorstore/` y `output/rag/`. La prueba
 confirma instalación reproducible local sin secretos ni datos generados, no
 conexión real con Gemini. Después solo se añade esta constancia documental.
 
-## Pendiente, expresamente no verificado
+## Fuera del alcance de esta verificación inicial
 
-Índice real de la ley y su recarga; calidad semántica, evaluación real de los diez
-casos, abstención y respaldo de una cita; cuatro mediciones reales del B28 y sus
-costos conocidos. Tampoco se hizo merge/push ni clon desde GitHub de esta
-ampliación. No es evidencia de CI ni de actividad enviada en la plataforma.
+La revisión inicial no ejecutó índice real, evaluación semántica, abstención ni
+las cuatro mediciones del B28. Esos pasos se realizaron después y están en el
+[registro de corridas reales](README.md), separados de las pruebas con fakes.
+No se hizo merge/push ni clon desde GitHub de esta ampliación. Esta verificación
+no es evidencia de CI ni de actividad enviada en la plataforma.
 
-Ver el [checklist de entrega](../../entrega-bloques-24-28.md#evidencias-y-checklist-de-cierre).
+Ver el [checklist de entrega](../../entregas/bloques-24-28.md#evidencias-y-checklist-de-cierre).
+
+## Continuación: evidencias reales y orden documental
+
+Tras autorizar las corridas reales se reorganizó `docs/` por propósito, con
+un [índice por carpetas y bloques](../../README.md). Las mediciones no cambiaron
+`src/`, `scripts/`, `tests/`, el corpus, las etiquetas ni las dependencias respecto
+de `31c6af4`. Se conservaron los artefactos de evaluación y capturas históricas;
+las dos imágenes trasladadas conservan exactamente los bytes originales.
+
+Se repitieron las comprobaciones en esta continuación:
+
+| Comprobación | Resultado |
+| --- | --- |
+| `uv run python -m pytest tests -v` | 303 pruebas y 588 subpruebas aprobadas en 10,27 s; 11 avisos de deprecación heredados. |
+| `uv run python -m tests -v` | 303 pruebas, `OK`, 7,336 s. |
+| `uv run ruff check .` | Correcto. |
+| `uv run basedpyright` | 0 errores, 0 advertencias, 0 notas. |
+| `git diff --check` | Sin errores. |
+| Enlaces y anclas Markdown | Parseados con `MarkdownIt`; rutas locales y anclas de encabezados verificadas, sin enlaces rotos. |
+| Copias de evidencia real | Seis archivos cotejados byte a byte con `output/rag/` y con los tamaños y SHA-256 del manifiesto. |
+| Esquema de actividad 28 | Cuatro líneas reales exitosas, tres preguntas, k=3/3/3/6, uso informado y tres tiempos no negativos por corrida. |
+
+No se volvió a ejecutar una instalación desde GitHub: la rama de bloques
+continúa local y falta autorización para publicar esta ampliación. Los detalles
+del fallo real inicial y los límites de los costos están en el [reporte real](README.md);
+no se mezclan con resultados de la suite.

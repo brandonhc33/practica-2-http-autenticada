@@ -2,7 +2,7 @@
 
 Guía de estudio para defender la orquestación con LangChain. Intenta responder cada pregunta antes de leer su respuesta.
 
-Las respuestas se redactaron con ayuda de Claude y se comprobaron el 7 de noviembre de 2026 contra el commit `4a2622c`, con `langchain` 1.4.9, `langchain-core` 1.7.6, `langchain-google-genai` 4.4.3 y `google-genai` 2.34.0. Las mediciones de esta guía no usaron Gemini: se hicieron en una copia temporal del código y con un servidor local que siempre responde HTTP 503. Los resultados de las corridas reales están en la [entrega](entrega-bloques-18-20.md).
+Las respuestas se redactaron con ayuda de Claude y se comprobaron el 7 de noviembre de 2026 contra el commit `4a2622c`, con `langchain` 1.4.9, `langchain-core` 1.7.6, `langchain-google-genai` 4.4.3 y `google-genai` 2.34.0. Las mediciones de esta guía no usaron Gemini: se hicieron en una copia temporal del código y con un servidor local que siempre responde HTTP 503. Los resultados de las corridas reales están en la [entrega](../entregas/bloques-18-20.md).
 
 ## Índice
 

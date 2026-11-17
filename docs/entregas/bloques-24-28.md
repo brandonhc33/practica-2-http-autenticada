@@ -1,8 +1,12 @@
 # Entrega de bloques 24 a 28 — RAG y actividad core 28
 
-**Estado: implementación local; cierre real de la actividad 28 pendiente.**
-No se han ejecutado llamadas a Gemini para estos bloques ni se han publicado los
-cambios. Los tests no sustituyen las mediciones reales solicitadas por el curso.
+**Estado: implementación y mediciones reales completadas; entrega preparada para revisión.**
+El índice, recarga, evaluación y las cuatro corridas de la actividad 28 se
+ejecutaron con Gemini, más una prueba de abstención. Las citas se contrastaron
+de forma asistida. Falta la revisión del alumno, publicación autorizada y envío
+en la plataforma; no se declara enviada ni integrada en `main`.
+
+Resultados y conclusión: [evidencias reales](../evidencias/bloques-24-28/README.md).
 
 ## Entregables y correspondencia
 
@@ -14,8 +18,8 @@ cambios. Los tests no sustituyen las mediciones reales solicitadas por el curso.
 | 27 | `datos/evaluacion/recuperacion_rag.json`, `src/rag/evaluacion.py`, `scripts/evaluacion_recuperacion.py`: diez casos, precisión/recall por caso y promedio; TXT y JSON. |
 | 28 | `src/rag/registro.py`, `scripts/registro_rag.py`: tres etapas y JSONL real por consulta, con uso, fuentes, costos conocidos y desconocidos. |
 
-Plan y fuentes: [PRD 04](prd-04-rag-ley-rep.md).
-Explicaciones y ejercicios: [guía de estudio](preguntas-bloques-24-28.md).
+Plan y fuentes: [PRD 04](../planes/prd-04-rag-ley-rep.md).
+Explicaciones y ejercicios: [guía de estudio](../estudio/bloques-24-28.md).
 La API, las chains y el agente anterior no se reemplazan.
 
 ## Recorrido de ejecución
@@ -35,7 +39,7 @@ uv run basedpyright
 git diff --check
 ```
 
-Lee la [comparación de cortes](evidencias/bloques-24-28/comparacion-chunking.md) y
+Lee la [comparación de cortes](../evidencias/bloques-24-28/comparacion-chunking.md) y
 revisa los diez criterios de relevancia del JSON de evaluación **antes** del
 retrieval. El etiquetado inicial fue propuesto por el asistente leyendo el corpus.
 
@@ -49,8 +53,8 @@ uv run python -m scripts.indexar_corpus --confirmar-consumo \
   --salida output/rag/indexacion-01.json
 ```
 
-Resultado previsto, que todavía hay que contrastar con esa corrida: 99 chunks de
-3072 dimensiones, `estado: completo`, `reutilizado: false`.
+Resultado ya observado en la [indexación real](../evidencias/bloques-24-28/indexacion-01.json):
+99 chunks de 3072 dimensiones, `estado: completo`, `reutilizado: false`.
 En un proceso distinto, sin volver a generar embeddings:
 
 ```bash
@@ -89,6 +93,10 @@ uv run python -m scripts.evaluacion_recuperacion --k 3 5 --repeticiones 2 \
 Produce TXT y JSON del mismo nombre. Son **20 invocaciones de embedding de
 pregunta**, sin generación: diez preguntas por dos repeticiones; los dos k usan
 prefijos del mismo ranking. El SDK puede tener reintentos internos.
+
+En la ejecución conservada, la salida `-01` se interrumpió por un error del
+conector. La segunda, `-02`, completó ambas repeticiones sin cambiar etiquetas;
+ver [incidente y resultados](../evidencias/bloques-24-28/README.md#b27-resultados-e-incidente-conservado).
 
 Revisar precisión y recall por pregunta, promedios e igualdad de repeticiones.
 Un recall bajo se documenta; no se cambian etiquetas para que coincidan con los
@@ -160,6 +168,11 @@ Redactar la conclusión con los números observados:
 No deducir p95, rendimiento de producción ni un costo típico a partir de cuatro
 corridas. No declarar un resultado favorable antes de medirlo.
 
+La [conclusión con los números reales](../evidencias/bloques-24-28/README.md#actividad-28-tiempos-tokens-y-costo-observado)
+ya responde estas preguntas: entrada 1297 → 2540 tokens al subir k, generación
+dominante en las cuatro corridas y USD 0,0032103 de generación estimada, sin
+confundirlo con factura o costo completo.
+
 ### 5. Abstención y revisión de una cita del B26
 
 La actividad 28 ya proporciona tres preguntas y contextos que pueden compararse.
@@ -191,16 +204,37 @@ No mezclar resultados ficticios para completar el JSONL.
 - [x] Comparación local de cortes e integridad del corpus.
 - [x] Diez casos propuestos antes del retrieval; pendiente revisión del alumno.
 - [x] Tests con Chroma local, recarga en otro proceso y modelos falsos.
-- [ ] Revisión del alumno de las etiquetas y autorización para consumir cuota.
-- [ ] Índice real y recarga real del B24/25.
-- [ ] Evaluación real de diez preguntas, k=3/5 y dos repeticiones.
-- [ ] Cuatro líneas reales de la actividad 28 y comparación de tokens k=3/6.
-- [ ] Abstención real y cita contrastada; conclusiones con tiempos y costos.
-- [ ] Evidencias reales revisadas y versionadas; estado y checklist actualizados.
+- [x] Autorización del alumno para las pruebas reales, sin copiar ni mostrar su `.env`.
+- [ ] Revisión del alumno de las etiquetas iniciales y conclusiones.
+- [x] Índice real y recarga real del B24/25.
+- [x] Evaluación real de diez preguntas, k=3/5 y dos repeticiones.
+- [x] Cuatro líneas reales de la actividad 28 y comparación de tokens k=3/6.
+- [x] Abstención real y cita contrastada de forma asistida; conclusiones con tiempos y costos.
+- [x] Evidencias reales revisadas y conservadas con manifiesto; estado y checklist actualizados.
 - [ ] Merge/push autorizado de esta ampliación a `main`, sin publicar la rama de bloques.
 - [ ] Instalación desde clon limpio y enlace/entrega en la plataforma.
 
 Las comprobaciones automáticas de esta versión se detallan en
-[verificación local](evidencias/bloques-24-28/verificacion-local.md).
+[verificación local](../evidencias/bloques-24-28/verificacion-local.md).
 No se puede enviar la actividad desde la copia estática del curso; el alumno
 debe presentar el enlace o los archivos en la plataforma que corresponda.
+
+## Qué presentar en la actividad 28
+
+1. [`scripts/registro_rag.py`](../../scripts/registro_rag.py), dentro del proyecto:
+   importa módulos de `src/` y no se ejecuta como archivo aislado.
+2. [`registros_latencia_costo.jsonl`](../evidencias/bloques-24-28/registros_latencia_costo.jsonl),
+   con las cuatro corridas reales y los tokens informados por Gemini.
+3. [Conclusiones y trazabilidad](../evidencias/bloques-24-28/README.md), junto con
+   la [evaluación del B27](../evidencias/bloques-24-28/resultados-evaluacion-02.txt).
+
+Se prepara el ZIP local `output/entrega-bloques-24-28.zip` desde el árbol
+versionado del proyecto completo, con las evidencias revisadas. Está ignorado
+por Git y no contiene `.env`, `.venv`, `output/`, `.git` ni `vectorstore/`.
+La regla `export-ignore` de `.gitattributes` excluye `output/`, incluso el ZIP
+histórico del B13–14 que ya estaba versionado; no se borra ese antecedente.
+La actividad pide ejecución con una clave propia: el índice se reconstruye,
+no se distribuye el almacenamiento binario de Chroma.
+
+El paquete local no implica publicación ni envío. Para presentar un enlace de
+`main`, primero falta autorizar e integrar esta ampliación.

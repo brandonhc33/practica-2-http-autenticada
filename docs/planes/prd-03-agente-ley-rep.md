@@ -1,6 +1,6 @@
 # PRD 03: agente de consultas de Ley REP con herramientas, memoria y supervisión
 
-- **Estado:** implementación y entrega completadas; aprobación y `n` explícita con Gemini contrastadas con sus archivos, merge publicado solo en `main` e instalación desde GitHub verificada. La rama de bloques permanece local. Ver [estado de entrega](entrega-bloques-21-23.md).
+- **Estado:** implementación y entrega completadas; aprobación y `n` explícita con Gemini contrastadas con sus archivos, merge publicado solo en `main` e instalación desde GitHub verificada. La rama de bloques permanece local. Ver [estado de entrega](../entregas/bloques-21-23.md).
 - **Fecha:** 14 de noviembre de 2026.
 - **Bloques cubiertos:** 21, 22 y 23 (Unidad 2.4).
 - **Primera versión:** agente de terminal con tres herramientas, memoria por sesión, aprobación humana y trazas. La API y el flujo del PRD 02 no cambian.
@@ -38,11 +38,11 @@
 ## 2. Situación actual
 
 Esta sección describe la línea base al redactar el PRD, antes de implementar el
-agente. El avance posterior se registra en [la entrega](entrega-bloques-21-23.md).
+agente. El avance posterior se registra en [la entrega](../entregas/bloques-21-23.md).
 
-1. Los bloques 18 a 20 están cerrados: [modelo.py](../src/orquestacion/modelo.py) ofrece `crear_modelo()`, `RegistroLlamadas` y `exigir_texto()`, y [enrutamiento.py](../src/orquestacion/enrutamiento.py) clasifica entre tres rutas con fallbacks. La suite tiene 199 pruebas y 422 subpruebas en verde al 14 de noviembre.
+1. Los bloques 18 a 20 están cerrados: [modelo.py](../../src/orquestacion/modelo.py) ofrece `crear_modelo()`, `RegistroLlamadas` y `exigir_texto()`, y [enrutamiento.py](../../src/orquestacion/enrutamiento.py) clasifica entre tres rutas con fallbacks. La suite tiene 199 pruebas y 422 subpruebas en verde al 14 de noviembre.
 2. El enrutamiento elige entre rutas fijas. No hay agente, herramientas, memoria entre consultas ni aprobación humana.
-3. [obtener_fragmento_ley_rep()](../src/prompts/contexto_ley_rep.py) lee un artículo de la copia local, pero con un ordinal ("primero") siempre entrega el transitorio. Por eso `buscar_fragmento()` del PRD 02 rechaza esos casos.
+3. [obtener_fragmento_ley_rep()](../../src/prompts/contexto_ley_rep.py) lee un artículo de la copia local, pero con un ordinal ("primero") siempre entrega el transitorio. Por eso `buscar_fragmento()` del PRD 02 rechaza esos casos.
 4. No existe una búsqueda por tema: la ruta normativa envía los 50 artículos (52.727 caracteres) en cada consulta.
 5. `AgentExecutor` y `create_tool_calling_agent` no están instalados. Desde LangChain 1.x están en el paquete `langchain-classic`.
 
@@ -199,10 +199,10 @@ Si el agente falla después de usar una herramienta, la traza pierde esas accion
 | `scripts/ensayo_agente.py` — nuevo | Casos fijos por bloque y su resultado en JSON. |
 | `tests/orquestacion/` | `modelo_falso.py`, `test_herramientas.py`, `test_agente_con_herramientas.py` y `test_supervision.py`. |
 | `tests/scripts/test_ensayo_agente.py` — nuevo | Ensayo con el modelo falso. |
-| `docs/limites-autonomia-agente.md` — nuevo | Documento de límites de autonomía del Bloque 23. |
-| `docs/entrega-bloques-21-23.md` — nuevo | Checklist, resultados y límites. |
+| `docs/arquitectura/limites-autonomia-agente.md` — nuevo | Documento de límites de autonomía del Bloque 23. |
+| `docs/entregas/bloques-21-23.md` — nuevo | Checklist, resultados y límites. |
 | `docs/evidencias/bloques-21-23/` — nuevo | Ensayos, trazas y comprobaciones. |
-| `README.md`, `docs/guia-completa.md`, `docs/arquitectura.md` | Comando nuevo, enlaces y descripción del agente. Solo se agrega contenido. |
+| `README.md`, `docs/guias/guia-completa.md`, `docs/arquitectura/vision-general.md` | Comando nuevo, enlaces y descripción del agente. Solo se agrega contenido. |
 
 ### 7.2. Funciones principales
 
@@ -272,8 +272,8 @@ Cada fase termina con pruebas, `ruff` y `basedpyright` en verde, una revisión d
 
 ### Fase 4: cierre
 
-1. Escribir `docs/limites-autonomia-agente.md` y contrastarlo con el código (`grep -n "esperar_aprobacion(" src/orquestacion/herramientas.py`) y con las trazas (`wc -l` y `grep -c`).
-2. Escribir `docs/entrega-bloques-21-23.md` y agregar el agente al README, la guía y la arquitectura.
+1. Escribir `docs/arquitectura/limites-autonomia-agente.md` y contrastarlo con el código (`grep -n "esperar_aprobacion(" src/orquestacion/herramientas.py`) y con las trazas (`wc -l` y `grep -c`).
+2. Escribir `docs/entregas/bloques-21-23.md` y agregar el agente al README, la guía y la arquitectura.
 3. Guardar las evidencias de pruebas, ensayos y trazas.
 4. Después del push, clonar el repositorio desde GitHub en una carpeta temporal, instalar con `uv sync --locked` y ejecutar las pruebas, sin llamar a Gemini.
 
@@ -308,7 +308,7 @@ Cada fase termina con pruebas, `ruff` y `basedpyright` en verde, una revisión d
 | --- | --- | --- | --- |
 | 21 | Implementa tu agente con al menos dos herramientas. | `agente_con_herramientas.py`. | `src/orquestacion/herramientas.py`, `src/orquestacion/agente_con_herramientas.py`, `tests/orquestacion/test_agente_con_herramientas.py` y el ensayo del Bloque 21. |
 | 22 | Tu herramienta personalizada, ya construida e integrada. | No nombra archivos. | Los mismos archivos, con `ArgumentosArticulo`, la memoria y el ensayo del Bloque 22. |
-| 23 | Documenta los límites de autonomía de tu agente. | `limites_autonomia_agente.md` y `trazas_agente.jsonl`. | `docs/limites-autonomia-agente.md`, `src/orquestacion/supervision.py` y `docs/evidencias/bloques-21-23/trazas_agente.jsonl`. |
+| 23 | Documenta los límites de autonomía de tu agente. | `limites_autonomia_agente.md` y `trazas_agente.jsonl`. | `docs/arquitectura/limites-autonomia-agente.md`, `src/orquestacion/supervision.py` y `docs/evidencias/bloques-21-23/trazas_agente.jsonl`. |
 
 Si la revisión exige los archivos en la raíz del repositorio, habrá que confirmarlo con el equipo docente antes de entregar.
 
@@ -331,8 +331,8 @@ Si la revisión exige los archivos en la raíz del repositorio, habrá que confi
 
 1. Material del curso: B21.1 a B21.3, B22.1 a B22.3 y B23.1 a B23.3.
 2. [PRD 02: orquestación de consultas con LangChain](prd-02-orquestacion-langchain.md).
-3. [Entrega de los bloques 18 a 20](entrega-bloques-18-20.md).
-4. [Arquitectura actual de la aplicación](arquitectura.md).
-5. [Límites de las métricas](limites_metrica.md), el documento de límites del Módulo 2 que B23.3 toma como modelo.
+3. [Entrega de los bloques 18 a 20](../entregas/bloques-18-20.md).
+4. [Arquitectura actual de la aplicación](../arquitectura/vision-general.md).
+5. [Límites de las métricas](../evaluaciones/limites-metricas.md), el documento de límites del Módulo 2 que B23.3 toma como modelo.
 
 D-01, D-04, D-07, D-08, D-09 y D-10 se comprobaron sin red el 14 de noviembre de 2026, con `langchain-classic` 1.0.8 instalado en un entorno temporal sobre `langchain` 1.4.9, `langchain-core` 1.7.6 y `langchain-google-genai` 4.4.3. También se comprobó que `create_agent` devuelve solo `messages`. El proyecto no se modificó y no se hizo ninguna llamada real a Gemini para este documento.

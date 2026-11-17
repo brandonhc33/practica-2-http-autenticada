@@ -7,9 +7,9 @@ contexto de una conversación y necesita autorización humana para una acción
 sensible. El dominio sigue siendo la Ley REP; no se entrenó un modelo nuevo.
 
 Esta guía explica los requisitos del curso recogidos en el
-[PRD 03](prd-03-agente-ley-rep.md#10-entregables-por-bloque) y los contrasta con el
+[PRD 03](../planes/prd-03-agente-ley-rep.md#10-entregables-por-bloque) y los contrasta con el
 código. No es una transcripción de la clase ni una rúbrica docente adicional.
-Los resultados concretos están en la [entrega](entrega-bloques-21-23.md).
+Los resultados concretos están en la [entrega](../entregas/bloques-21-23.md).
 
 ## Mapa de la progresión
 
@@ -56,14 +56,14 @@ inconsistente.
 
 ### ¿Qué implementamos?
 
-En [herramientas.py](../src/orquestacion/herramientas.py#L86):
+En [herramientas.py](../../src/orquestacion/herramientas.py#L86):
 
 - `buscar_en_ley(consulta)`: busca por palabras en la copia local y devuelve hasta
   tres artículos. Los textos largos se recortan y se indica cómo leerlos completos.
 - `obtener_articulo(numero, transitorio=False)`: devuelve un artículo completo.
   El segundo parámetro y su esquema explícito se agregaron en el Bloque 22.
 
-En [agente_con_herramientas.py](../src/orquestacion/agente_con_herramientas.py#L65):
+En [agente_con_herramientas.py](../../src/orquestacion/agente_con_herramientas.py#L65):
 
 - `create_tool_calling_agent` conecta el modelo, las herramientas y el prompt.
 - `AgentExecutor` ejecuta las herramientas propuestas y vuelve a consultar al
@@ -117,7 +117,7 @@ el modelo en cada turno**.
 
 Define el contrato de entrada de una herramienta mediante Pydantic: nombres,
 tipos, valores por defecto y descripciones. Para
-[`ArgumentosArticulo`](../src/orquestacion/herramientas.py#L112) distinguimos:
+[`ArgumentosArticulo`](../../src/orquestacion/herramientas.py#L112) distinguimos:
 
 ```json
 {"numero": "1", "transitorio": false}
@@ -142,7 +142,7 @@ garantiza que el artículo sea pertinente ni que una afirmación sea verdadera.*
 No significa que Gemini aprendió ni que cambiamos sus pesos. El programa guarda
 mensajes y los vuelve a incluir en la siguiente llamada al modelo.
 
-[`RunnableWithMessageHistory`](../src/orquestacion/agente_con_herramientas.py#L107)
+[`RunnableWithMessageHistory`](../../src/orquestacion/agente_con_herramientas.py#L107)
 selecciona un `InMemoryChatMessageHistory` por `session_id`:
 
 ```text
@@ -162,7 +162,7 @@ con el mismo `--sesion` no recupera la conversación anterior.
 
 Gemini puede devolver bloques de contenido, mientras que nuestro historial
 necesita texto. Por eso
-[`salida_como_texto`](../src/orquestacion/agente_con_herramientas.py#L76) convierte
+[`salida_como_texto`](../../src/orquestacion/agente_con_herramientas.py#L76) convierte
 la respuesta **antes** de guardarla. También rechaza salidas vacías y traduce el
 aviso de límite de pasos.
 
@@ -193,7 +193,7 @@ solo crea un archivo local, nunca envía correos ni publica documentos.
 
 ### ¿Qué implementamos?
 
-[`entregar_informe`](../src/orquestacion/herramientas.py#L177):
+[`entregar_informe`](../../src/orquestacion/herramientas.py#L177):
 
 1. Recibe el título y el contenido, validados con Pydantic.
 2. Obtiene la sesión del contexto de ejecución, no de un argumento del modelo.
@@ -290,12 +290,12 @@ el comportamiento del conector real de Gemini ni una autorización para una
 entrega real. Se eliminaron los archivos temporales.
 
 La salida y su alcance están en el
-[diagnóstico conservado](evidencias/bloques-21-23/diagnostico-aprobacion.md#resultado-compartido-por-el-alumno).
+[diagnóstico conservado](../evidencias/bloques-21-23/diagnostico-aprobacion.md#resultado-compartido-por-el-alumno).
 
 Después el alumno ejecutó el agente con Gemini y la sesión `rechazo-final-23`.
 La terminal leyó `n` tras 21,6 segundos; se contrastaron la decisión negativa,
 la traza sin error y la ausencia del informe. Esta
-[evidencia real](evidencias/bloques-21-23/rechazo-explicito-gemini.md) completa el
+[evidencia real](../evidencias/bloques-21-23/rechazo-explicito-gemini.md) completa el
 control de rechazo. No explica la causa del incidente anterior ni exige otra
 consulta pagada.
 
@@ -319,7 +319,7 @@ La última validación de código registrada fue de **263 pruebas y 481 subprueb
 sin red, con `ruff` y `basedpyright` sin errores. Los avisos de memoria son
 deprecaciones: no invalidan esa ejecución, pero anticipan una migración futura.
 El detalle y la revisión de instalación local están en
-[verificación local](evidencias/bloques-21-23/verificacion-local.md).
+[verificación local](../evidencias/bloques-21-23/verificacion-local.md).
 
 ## Qué está hecho y qué falta
 
@@ -333,15 +333,15 @@ El detalle y la revisión de instalación local están en
 
 Las decisiones humanas de las corridas reales las tomó el alumno; no se
 automatizaron ni se hicieron nuevas llamadas para redactar esta guía.
-La [comprobación desde GitHub](evidencias/bloques-21-23/verificacion-github.md)
+La [comprobación desde GitHub](../evidencias/bloques-21-23/verificacion-github.md)
 completó el cierre sin usar claves ni consumir tokens.
-El [checklist de entrega](entrega-bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada)
+El [checklist de entrega](../entregas/bloques-21-23.md#condiciones-para-marcar-la-entrega-como-cerrada)
 es la referencia para declarar el trabajo cerrado.
 
 No son pendientes de esta actividad: embeddings y recuperación semántica,
 memoria persistente, un endpoint para el agente, envío real a clientes o migración
 a LangGraph. Son extensiones fuera del alcance actual, no funciones ya construidas.
-Los riesgos vigentes se detallan en [límites de autonomía](limites-autonomia-agente.md).
+Los riesgos vigentes se detallan en [límites de autonomía](../arquitectura/limites-autonomia-agente.md).
 
 ## Preguntas para comprobar que lo entendiste
 

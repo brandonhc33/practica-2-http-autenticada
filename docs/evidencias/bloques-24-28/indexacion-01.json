@@ -1,0 +1,31 @@
+{
+  "configuracion": {
+    "formato": 1,
+    "corpus": "ley-rep",
+    "corpus_sha256": "fa577eca361dcd917a1ed51779f7a3c1f2e86d3167c55b610b796f5da4517ee6",
+    "chunk_size": 800,
+    "chunk_overlap": 100,
+    "estrategia": "recursivo",
+    "modelo_embeddings": "models/gemini-embedding-001",
+    "dimensiones": 3072,
+    "distancia": "cosine",
+    "coleccion": "rag-ley-rep",
+    "chunks_sha256": "16db0a67715d21b66c3f34a61406866a7c19ff99947592b6487b8a1f655c0abf",
+    "cantidad_chunks": 99
+  },
+  "huella_indice": "43559c52b3c6cae8f14afb38aec54afc2488393bd5c9f725b0c4b4f86c88f794",
+  "integridad": {
+    "documentos": 50,
+    "chunks": 99,
+    "caracteres_corpus": 52727,
+    "caracteres_chunks": 53731,
+    "caracteres_sin_cubrir": 0,
+    "espacios_de_borde_no_indexados": 66,
+    "textos_duplicados": 0,
+    "longitud_minima": 37,
+    "longitud_maxima": 797
+  },
+  "estado": "completo",
+  "creado_utc": "2026-11-17T01:04:52.664901+00:00",
+  "reutilizado": false
+}
