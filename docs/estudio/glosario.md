@@ -3,7 +3,7 @@
 ## Cómo usar este glosario
 
 Este es el vocabulario de **lo trabajado en este proyecto**, especialmente de los
-bloques 18 a 28. Incluye las bases de HTTP, prompts, evaluación y desarrollo que
+bloques 18 a 30. Incluye las bases de HTTP, prompts, evaluación y desarrollo que
 aparecen en las explicaciones. No pretende abarcar toda la IA ni las unidades que
 todavía no hemos trabajado.
 
@@ -48,6 +48,7 @@ implementadas.
 | Un caso cotidiano que conecte todo. | [12. Ejemplo completo](#12-un-ejemplo-cotidiano-de-principio-a-fin). |
 | Python, dependencias, Git y herramientas de desarrollo. | [13. Vocabulario del repositorio](#13-vocabulario-para-leer-y-ejecutar-el-repositorio). |
 | Conceptos que se parecen, pero no son iguales. | [14. Confusiones frecuentes](#14-confusiones-frecuentes). |
+| Fine-tuning, PEFT, adapters, dataset de tuning y decisión de personalización. | [16. Personalización de modelos](#16-personalización-de-modelos). |
 | Practicar sin ejecutar programas. | [15. Repaso con respuestas](#15-repaso-sin-gemini). |
 
 ## Diez conceptos para empezar
@@ -108,7 +109,7 @@ automática universal de que toda respuesta sea verdadera.**
 | **Parámetros o pesos / weights** | Valores numéricos internos ajustados durante el entrenamiento. No son el historial de una conversación ni los archivos de Chroma. | La preparación adquirida antes de atender, frente a los papeles que se reciben hoy. La comparación es aproximada, no memoria humana literal. |
 | **Entrenamiento / training** | Proceso que ajusta los pesos usando datos y un objetivo de aprendizaje. **No lo estamos realizando aquí.** | Formar a alguien durante un curso, no darle una carpeta para una consulta puntual. |
 | **Inferencia / inference** | Uso de un modelo ya entrenado para obtener un resultado con una entrada. Nuestras llamadas a Gemini son inferencia. | Atender un pedido con la preparación que ya se tiene. |
-| **Fine-tuning / ajuste fino** | Entrenamiento adicional de un modelo para adaptar su comportamiento. Aparece para distinguirlo de RAG; **no está implementado en este proyecto**. | Un curso de especialización cambia la preparación; entregar un libro abierto para consultarlo no es ese curso. |
+| **Fine-tuning / ajuste fino** | Entrenamiento adicional de un modelo para adaptar su comportamiento. Aparece para distinguirlo de RAG; **no está implementado en este proyecto**. Ver [personalización](#16-personalización-de-modelos). | Un curso de especialización cambia la preparación; entregar un libro abierto para consultarlo no es ese curso. |
 | **Temperatura / temperature** | Parámetro que modifica la variación en la elección de tokens al generar. Un valor bajo suele reducir variación, pero no verifica hechos ni garantiza resultados idénticos. | Pedir una redacción más estable en vez de muchas variantes creativas. No equivale a pedir «100 % de verdad». |
 | **Alucinación / hallucination** | Contenido generado que parece plausible, pero es falso o no está respaldado por la evidencia disponible. Sirve como nombre de un tipo de fallo que debemos buscar. | Afirmar un horario de atención que no figura en ninguna página consultada. Puede estar bien redactado y seguir siendo inventado. |
 | **Determinista / determinism** | Un procedimiento es determinista si, dadas las mismas entradas y condiciones, produce el mismo resultado. Es útil para comprobar lógica local con resultados repetibles. | Ordenar fichas por un identificador fijo. No podemos asumir esa propiedad para toda la generación solo por usar temperatura baja. |
@@ -632,6 +633,9 @@ explican su uso real.
 | **Una invocación vs. una petición HTTP** | Un SDK puede reintentar dentro de una única invocación. |
 | **Autenticación vs. autorización** | Identificar el acceso no decide por sí solo si una acción específica está permitida. |
 | **Aprobación vs. acción completada** | Puede haber autorización y luego fallar el guardado. También puede completarse la acción y fallar la respuesta posterior. |
+| **RAG vs. fine-tuning** | RAG cambia lo que recibe el modelo en cada consulta; el fine-tuning cambia sus pesos. Uno resuelve información; el otro, comportamiento. |
+| **Validar el dataset vs. validar las etiquetas** | El validador comprueba forma y reglas; no demuestra que una persona experta etiquetaría igual. |
+| **Recomendación del método vs. decisión** | El puntaje acota opciones; empates y sensibilidad se resuelven con costos y criterio. |
 | **Pruebas verdes vs. calidad real** | Los contratos y controles comprobados funcionan en esos escenarios; la calidad semántica requiere otra evidencia. |
 | **Push a GitHub vs. entrega del curso** | Publicar el repositorio no presenta automáticamente la actividad en Skillnest. |
 
@@ -653,6 +657,8 @@ respuestas. Es estudio opcional, no una nueva entrega ni una aprobación pendien
 | El costo total figura como `null`. ¿La consulta fue gratis? | No se puede concluir. Falta información para calcular el total. |
 | La persona autorizó guardar y luego el disco falló. ¿El informe quedó entregado? | No. Autorización e intento de escritura no son confirmación de éxito. |
 | Pasaron todos los mocks. ¿Ya medí la recuperación semántica real? | No. Se comprobó lógica bajo sustitutos controlados; hacen falta datos y embeddings reales para esa medición. |
+| El modelo no conoce una norma publicada ayer. ¿Lo entreno? | No: falta información que cambia. Se indexa y se recupera con RAG. |
+| El clasificador responde con formatos distintos cada vez. ¿Le agrego documentos? | No: es un problema de comportamiento. Primero se mide; si falla mucho, se evalúa PEFT. |
 | ¿Más contexto, autonomía o pasos siempre mejoran el resultado? | No. Pueden aportar evidencia o flexibilidad, pero también ruido, costo y nuevos riesgos. Hay que medir y revisar. |
 
 **Una forma de saber que vas entendiendo:** toma cualquier término de la tabla y
@@ -662,4 +668,57 @@ recibe ___; devuelve ___; no demuestra ___». Luego ubícalo en uno de los diagr
 Para continuar: [mapa del módulo](modulo-2-desde-bloque-18.md#4-orden-recomendado-de-estudio)
 → [chains y rutas](bloques-18-20.md#1-qué-cambia-y-qué-debes-aprender)
 → [agente y supervisión](bloques-21-23.md#mapa-de-la-progresión)
-→ [RAG y medición](bloques-24-28.md#1-qué-cambia-respecto-de-los-bloques-anteriores).
+→ [RAG y medición](bloques-24-28.md#1-qué-cambia-respecto-de-los-bloques-anteriores)
+→ [personalización](bloques-29-30.md#1-qué-cambia-respecto-de-los-bloques-anteriores).
+
+## 16. Personalización de modelos
+
+Se aplican en la [guía de los bloques 29 y 30](bloques-29-30.md#2-bloque-29-cuatro-formas-de-personalizar).
+**En este proyecto no se entrena ningún modelo:** se prepara un dataset, se mide
+el sistema actual y se decide con evidencia.
+
+| Término y nombre habitual | Qué significa y para qué sirve | Ejemplo cotidiano y límite |
+| --- | --- | --- |
+| **Personalización / customization** | Adaptar un sistema a un caso: cambiando lo que recibe el modelo (prompt, RAG) o el modelo mismo (entrenamiento). | Adaptar la biblioteca a un barrio: cambiar las carpetas que se entregan o formar distinto al personal. |
+| **Fine-tuning completo / full fine-tuning** | Entrenamiento adicional que ajusta todos o casi todos los pesos con ejemplos propios. El cambio queda en el modelo. | Un curso largo para todo el personal. Caro y lento de repetir; no sirve para hechos que cambian. |
+| **PEFT — Parameter-Efficient Fine-Tuning** | Entrenar pocos parámetros nuevos y dejar el modelo base congelado. Mismo tipo de resultado que el fine-tuning, con menos datos y cómputo. | Una lámina transparente con correcciones sobre el manual: el manual no se toca. |
+| **Adapter** | La pieza pequeña y entrenable que agrega PEFT. Se pueden tener varios para un mismo modelo base. | Una lámina por cliente sobre el mismo manual. |
+| **LoRA — Low-Rank Adaptation** | La técnica de PEFT más conocida. Su adapter suele ser menos del 1 % de los parámetros. | Corregir con pocos trazos bien elegidos en vez de reescribir el libro. |
+| **Rank / `adapter_size`** | Capacidad del adapter: cuántas dimensiones nuevas puede usar. Más capacidad cuesta más y puede memorizar con pocos datos. | Una libreta enorme con pocos ejercicios invita a copiar respuestas. |
+| **Soft-prompting / prompt tuning** | Entrenar vectores numéricos que se anteponen a la entrada. No son palabras legibles. La API de Gemini no lo ofrece. | Un código que solo el redactor aprendió a interpretar. Se reconoce, no se implementa aquí. |
+| **Dataset de tuning / `TuningExample`** | Pares de entrada y salida exacta que el modelo aprendería a imitar, errores incluidos. | Un cuaderno de ejercicios resueltos: si la solución tiene una falta, se aprende la falta. |
+| **Etiquetado / labeling** | Escribir la salida correcta de cada ejemplo con reglas explícitas. Es trabajo humano que no aparece en la factura del proveedor. | Corregir cada ejercicio del cuaderno. 176 ejemplos más a 5 minutos son casi 15 horas. |
+| **Regla de etiquetado** | Criterio escrito antes de etiquetar para que dos personas decidan igual. En el proyecto, R1 a R3. | Un instructivo de corrección compartido. Sin él, el cuaderno enseña inconsistencia. |
+| **Balance de clases / class balance** | Cantidad de ejemplos por categoría. Un desbalance fuerte sesga hacia la categoría frecuente. | Si casi todos los ejercicios son de suma, el alumno contestará «suma» por costumbre. |
+| **Etiqueta contradictoria** | La misma entrada con dos salidas distintas. Enseña a responder al azar. | Dos correctores que califican distinto el mismo ejercicio. |
+| **Sobreajuste / overfitting** | Aprender de memoria los ejemplos y fallar con casos nuevos. Crece con más capacidad o más épocas sobre pocos datos. | Memorizar el ensayo en vez de entender la materia. |
+| **Época / `epoch_count`** | Una pasada completa por todo el dataset durante el entrenamiento. | Releer todo el cuaderno una vez. Releerlo diez veces no agrega ejercicios nuevos. |
+| **Tasa de aprendizaje / `learning_rate_multiplier`** | Cuánto se corrige en cada paso. En Gemini se ajusta con un multiplicador; excluye a `learning_rate`. | Corregir demasiado de golpe hace oscilar; muy poco no alcanza. |
+| **Lote / `batch_size`** | Ejemplos considerados antes de cada corrección. Solo aplica a modelos abiertos alojados. | Revisar cinco ejercicios antes de cambiar el método de estudio. |
+| **Trabajo de tuning / tuning job** | Entrenamiento asíncrono: `tune` lo crea y devuelve un nombre; `get` consulta su estado; `cancel` lo detiene. | El ticket de una lavandería: no se vuelve a dejar la ropa para preguntar si está lista. |
+| **Estado final de un trabajo** | `SUCCEEDED`, `FAILED`, `CANCELLED`, `PARTIALLY_SUCCEEDED` o `EXPIRED`. La lección omite `EXPIRED`; el proyecto lo agrega. | Lista, rechazada, retirada, parcial o vencida: en todos los casos se deja de esperar. |
+| **Ejemplo truncado** | Ejemplo recortado por la API por ser demasiado largo, sin error. Se ve en `total_truncated_example_count`. | Un formulario que se archiva con la última página cortada sin avisar. |
+| **API para desarrolladores vs. Agent Platform** | Gemini se usa con una clave de desarrollador o en Gemini Enterprise Agent Platform, antes Vertex AI. PEFT solo funciona en la segunda. | Dos ventanillas del mismo proveedor con servicios distintos. Tener clave no habilita todos los trámites. |
+| **Línea base / baseline** | Medición del sistema actual antes de cambiarlo, con los mismos casos y criterios. | Medir cuánto tardas hoy antes de cambiar de ruta al trabajo. |
+| **Criterio fijado antes de medir** | Decidir cómo se contará un incumplimiento antes de ver resultados, para no ajustarlo después. | Definir el puntaje para aprobar antes de corregir los exámenes. |
+| **Método de decisión puntuado** | Preguntas con pesos que suman puntos a cada técnica. Acota opciones; no reemplaza el criterio. | Una lista de verificación para elegir transporte. Si empata, deciden el costo y el tiempo. |
+| **Empate** | Dos o más técnicas con el puntaje máximo. Debe mostrarse, no resolverse por el orden de un diccionario. | Dos candidatos con igual votación no se desempatan por quién se inscribió primero. |
+| **Análisis de sensibilidad** | Invertir una respuesta a la vez para ver si cambia la recomendación. Señala qué respuesta necesita mejor evidencia. | Preguntarse: «si me equivoqué en este dato, ¿cambia mi elección?». |
+
+### Diagrama 6: información o comportamiento
+
+```mermaid
+flowchart TD
+    A["Problema observado"] --> B["Al modelo le falta información"]
+    A --> C["Su comportamiento no es consistente"]
+    B --> D["RAG: indexar documentos y recuperarlos"]
+    C --> E["Medir una línea base con criterios fijos"]
+    E --> F["Incumple poco: prompt, reglas y validación"]
+    E --> G["Incumple mucho: preparar dataset y evaluar PEFT"]
+    G --> H["Validar dataset y balance antes de entrenar"]
+    H --> I["Trabajo asíncrono: tune, get y cancel"]
+```
+
+RAG y PEFT pueden combinarse: el primero aporta lo que cambia; el segundo, el
+comportamiento estable. En el proyecto, el RAG existe desde el B24 y el
+entrenamiento queda como decisión documentada, no como función implementada.

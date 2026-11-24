@@ -31,5 +31,8 @@ output/agente/
 vectorstore/
 output/rag/
 
+# Mediciones y documentos base locales de la personalización (bloques 29 y 30)
+output/personalizacion/
+
 # Paquetes locales de entrega; el código y las evidencias se versionan por separado
 output/entrega-bloques-*.zip

@@ -3,7 +3,7 @@
 ## Para qué sirve esta guía
 
 Conectar las actividades con lo que construimos, sin tener que memorizar primero
-los nombres de LangChain. Este recorrido cubre **los bloques 18 a 28 ya trabajados
+los nombres de LangChain. Este recorrido cubre **los bloques 18 a 30 ya trabajados
 en el repositorio**; no pretende cubrir las unidades posteriores del módulo 2.
 
 Si aparecen demasiados términos nuevos, usa el
@@ -12,15 +12,16 @@ Puedes empezar por diez conceptos y volver al resto cuando aparezcan en una guí
 
 Las fuentes son los requisitos conservados en los
 [PRD 02](../planes/prd-02-orquestacion-langchain.md#10-entregables-por-bloque),
-[PRD 03](../planes/prd-03-agente-ley-rep.md#10-entregables-por-bloque) y
-[PRD 04](../planes/prd-04-rag-ley-rep.md#2-fuente-y-requisitos-del-curso), junto con
+[PRD 03](../planes/prd-03-agente-ley-rep.md#10-entregables-por-bloque),
+[PRD 04](../planes/prd-04-rag-ley-rep.md#2-fuente-y-requisitos-del-curso) y
+[PRD 05](../planes/prd-05-personalizacion-ley-rep.md#2-fuente-y-requisitos-del-curso), junto con
 el código y las evidencias enlazadas en cada guía. No es una nueva transcripción
 del curso ni cambia el estado de las entregas.
 
 ## Índice
 
 1. [El recorrido en una sola idea](#1-el-recorrido-en-una-sola-idea)
-2. [Seis conceptos que conviene separar](#2-seis-conceptos-que-conviene-separar)
+2. [Siete conceptos que conviene separar](#2-siete-conceptos-que-conviene-separar)
 3. [La misma consulta en tres sistemas](#3-la-misma-consulta-en-tres-sistemas)
 4. [Orden recomendado de estudio](#4-orden-recomendado-de-estudio)
 5. [Cómo saber qué parte no entendí](#5-cómo-saber-qué-parte-no-entendí)
@@ -28,8 +29,9 @@ del curso ni cambia el estado de las entregas.
 
 ## 1. El recorrido en una sola idea
 
-**Primero organizamos el trabajo, después permitimos elegir acciones y luego
-mejoramos cómo llega la evidencia.** Son problemas relacionados, no una lista de
+**Primero organizamos el trabajo, después permitimos elegir acciones, luego
+mejoramos cómo llega la evidencia y, al final, decidimos si hace falta cambiar
+el modelo mismo.** Son problemas relacionados, no una lista de
 librerías que haya que usar siempre juntas.
 
 | Bloques | Pregunta central | Qué construimos | Guía para profundizar |
@@ -44,13 +46,17 @@ librerías que haya que usar siempre juntas.
 | 26 | ¿Cómo respondo con lo que recuperé y dejo sus fuentes visibles? | Pregunta → recuperación → contexto numerado → generación y mapa de citas. | [Recuperación y citas](bloques-24-28.md#4-bloque-26-recuperación-contexto-y-citas). |
 | 27 | ¿Recuperé la evidencia que necesitaba? | Casos etiquetados, precisión y recall. | [Interpretación de métricas](bloques-24-28.md#5-bloque-27-precisión-y-recall). |
 | 28 | ¿Cuánto tarda y qué consumo tiene ese flujo? | Tiempos por etapa, tokens y costo conocido. | [Latencia y costo](bloques-24-28.md#6-bloque-28-latencia-tokens-y-costo). |
+| 29 | ¿Qué técnica responde a mi problema: RAG, fine-tuning, PEFT o soft-prompting? | Dataset validado para el clasificador de rutas; comprobación local de PEFT. | [Cuatro técnicas](bloques-29-30.md#2-bloque-29-cuatro-formas-de-personalizar) y [dataset](bloques-29-30.md#3-bloque-29-el-dataset-de-nuestro-proyecto). |
+| 30 | ¿Conviene entrenar, con qué costo y con qué evidencia? | Método puntuado, línea base del clasificador y documento de decisión. | [Costos](bloques-29-30.md#5-bloque-30-lo-que-cuesta-personalizar) y [método](bloques-29-30.md#6-bloque-30-el-método-de-decisión). |
 
 No reescribimos un único programa que se convierte en todo lo anterior.
 La API, el router, el agente y el RAG siguen siendo entradas diferentes.
 En particular, **nuestro RAG no fue añadido como herramienta del agente**:
 implementa un recorrido fijo separado. Esa integración sería otro trabajo.
+Tampoco entrenamos un modelo en los bloques 29 y 30: preparamos el dataset y
+decidimos con evidencia si convendría hacerlo.
 
-## 2. Seis conceptos que conviene separar
+## 2. Siete conceptos que conviene separar
 
 | Concepto | Qué significa aquí | No significa |
 | --- | --- | --- |
@@ -60,6 +66,7 @@ implementa un recorrido fijo separado. Esa integración sería otro trabajo.
 | Memoria de conversación | Mensajes anteriores que el programa vuelve a enviar. | Aprendizaje de pesos, persistencia automática ni fuente normativa. |
 | RAG | Recuperar documentos y aportarlos al generador como evidencia. | Fine-tuning ni autonomía para elegir acciones. |
 | Evaluación | Comparar un comportamiento con un criterio explícito. | Que una única cifra certifique todo el sistema. |
+| Fine-tuning o PEFT | Entrenar con ejemplos para cambiar el comportamiento del modelo. | Una forma de agregar información que cambia; para eso está RAG. |
 
 **Contexto** es la información que recibe el modelo en esa llamada. Puede incluir
 instrucciones, historial y documentos, pero no tienen la misma función:
@@ -116,6 +123,7 @@ opcional y no añaden requisitos de entrega.
 | 3. Separar decisión y ejecución | [Guía 21–23](bloques-21-23.md#bloque-21-del-flujo-fijo-al-agente). | Reconstruir una propuesta de herramienta, su observación y la respuesta. Separar historial, traza y aprobación. |
 | 4. Encontrar evidencia | [Guía 24–28, secciones 2 a 4](bloques-24-28.md#2-bloque-24-documentos-chunks-y-embeddings). | Dibujar documento → chunk → vector → índice, y pregunta → recuperación → contexto → cita. |
 | 5. Interpretar resultados | [Guía 24–28, secciones 5 a 8](bloques-24-28.md#5-bloque-27-precisión-y-recall). | Explicar por qué recall 1 y precisión 0,30 pueden coexistir; distinguir costo de generación y costo completo del RAG. |
+| 6. Decidir si personalizar | [Guía 29–30](bloques-29-30.md#1-qué-cambia-respecto-de-los-bloques-anteriores). | Clasificar tres problemas como información o comportamiento y explicar por qué un empate no se resuelve con `max()`. |
 
 En cada sesión usa este orden: **problema → ejemplo → código → evidencia →
 limitación**. Si puedes explicar el ejemplo con tus palabras, entonces los
@@ -133,6 +141,8 @@ nombres de las clases empiezan a tener un propósito.
 | «Aprobación verdadera significa archivo entregado». | [Estados de una entrega](bloques-21-23.md#leer-la-aprobación-como-un-proceso-no-como-un-solo-booleano). |
 | «Chroma recuerda mis conversaciones». | [Qué guarda el índice](bloques-24-28.md#qué-guarda-chroma). |
 | «Precisión 0,30 significa 70 % de respuestas falsas». | [Interpretación de los valores](bloques-24-28.md#cómo-se-interpretan-estos-valores). |
+| «Si entreno el modelo con la ley, la sabrá siempre». | [Información frente a comportamiento](bloques-29-30.md#la-pregunta-que-ordena-todo). |
+| «El método dio RAG, entonces al clasificador le faltan documentos». | [Cómo leer el resultado](bloques-29-30.md#8-cómo-interpretar-nuestro-resultado). |
 | «Pasaron las pruebas, entonces Gemini siempre elige bien». | [Alcance de las evidencias](bloques-21-23.md#costos-y-evidencia-qué-conclusiones-son-válidas). |
 
 ## 6. Qué significa haberlo comprendido

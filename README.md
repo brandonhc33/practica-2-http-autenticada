@@ -14,12 +14,13 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 6. [Consultar Gemini desde terminal](#consultar-gemini-desde-terminal)
 7. [Orquestar consultas de Ley REP](#orquestar-consultas-de-ley-rep)
 8. [Agente con memoria y supervisión](#agente-con-memoria-y-supervisión)
-   - [Consultas RAG de Ley REP](#consultas-rag-de-ley-rep)
-9. [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
-10. [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
-11. [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
-12. [Guías de estudio](#guías-de-estudio)
-13. [Documentación y evidencias](#documentación-y-evidencias)
+9. [Consultas RAG de Ley REP](#consultas-rag-de-ley-rep)
+10. [Personalización del clasificador de rutas](#personalización-del-clasificador-de-rutas)
+11. [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
+12. [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
+13. [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
+14. [Guías de estudio](#guías-de-estudio)
+15. [Documentación y evidencias](#documentación-y-evidencias)
 
 ## Inicio rápido
 
@@ -76,6 +77,8 @@ Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El
 | 24 y 25 | Indexación y persistencia en Chroma | [Uso del RAG](#consultas-rag-de-ley-rep) y [comparación de cortes](docs/evidencias/bloques-24-28/comparacion-chunking.md). |
 | 26 y 27 | Recuperación con citas y evaluación | [Recorrido de ejecución](docs/entregas/bloques-24-28.md#recorrido-de-ejecución) y [casos etiquetados](datos/evaluacion/recuperacion_rag.json). |
 | 28 | Latencia y costo del flujo RAG | [Actividad core, checklist y estado de evidencias reales](docs/entregas/bloques-24-28.md). |
+| 29 | Dataset validado para personalizar un modelo | [Uso](#personalización-del-clasificador-de-rutas), [entrega](docs/entregas/bloques-29-30.md) y [validación](docs/evidencias/bloques-29-30/dataset-validacion.txt). |
+| 30 | Decisión fundamentada de personalización | [Documento de decisión](docs/arquitectura/decision-personalizacion.md) y [recorrido y estado](docs/entregas/bloques-29-30.md#recorrido-de-ejecución). |
 
 ## Comandos útiles
 
@@ -93,6 +96,7 @@ Ejecuta estos comandos desde la raíz del repositorio, después de configurar `.
 | Orquestar una consulta de Ley REP | `uv run python -m src.orquestacion.enrutamiento "Resume el artículo 9"` |
 | Comparar chunking sin API | `uv run python -m scripts.indexar_corpus --comparar` |
 | Verificar el índice RAG sin API | `uv run python -m scripts.indexar_corpus --verificar` |
+| Validar el dataset de tuning sin API | `uv run python -m scripts.dataset_tuning` |
 | Ejecutar pruebas | `uv run python -m pytest tests -v` |
 | Revisar estilo | `uv run ruff check .` |
 | Revisar tipos | `uv run basedpyright` |
@@ -240,6 +244,33 @@ desconocidos; no se presenta el costo de generación como costo total.
 Consulta los comandos de [evaluación y actividad 28](docs/entregas/bloques-24-28.md#recorrido-de-ejecución)
 y la [guía de estudio](docs/estudio/bloques-24-28.md).
 
+### Personalización del clasificador de rutas
+
+Entrada de terminal de los bloques 29 y 30. Prepara y valida un dataset para
+personalizar el clasificador de rutas del bloque 19 y aplica un método para
+decidir si conviene entrenarlo. **No entrena ningún modelo:** la API para
+desarrolladores de Gemini no admite PEFT, y el comando lo comprueba sin red.
+
+Sin cuota ni clave:
+
+```bash
+uv run python -m scripts.dataset_tuning --comprobar-validador --comprobar-api
+uv run python -m scripts.linea_base_rutas --solo-regla-local
+uv run python -m scripts.decision_personalizacion
+```
+
+Medir el clasificador actual **sí consume cuota**: 24 llamadas a
+`gemini-3.5-flash-lite`.
+
+```bash
+uv run python -m scripts.linea_base_rutas --confirmar-consumo \
+  --salida output/personalizacion/linea-base-01.json
+```
+
+Las salidas quedan en `output/personalizacion/`, ignorado por Git. Consulta el
+[recorrido y el estado de la entrega](docs/entregas/bloques-29-30.md) y la
+[guía de estudio](docs/estudio/bloques-29-30.md).
+
 ### Evaluaciones y ensayos
 
 Comparar modelos y evaluar prompts realiza consultas reales a Gemini. El ensayo con `--simulado` no usa red ni consume tokens. Elige un archivo de salida nuevo en cada ejecución para conservar las evidencias anteriores.
@@ -263,6 +294,7 @@ Para el ensayo contra el proveedor, consulta los [límites y comandos del ensayo
 | Ejecutar solo las pruebas de costos | `uv run python -m pytest tests/costos -v` |
 | Ejecutar solo las pruebas de orquestación | `uv run python -m pytest tests/orquestacion -v` |
 | Ejecutar solo las pruebas del RAG | `uv run python -m pytest tests/rag -v` |
+| Ejecutar solo las pruebas de personalización | `uv run python -m pytest tests/personalizacion -v` |
 | Ejecutar solo las pruebas de prompts | `uv run python -m pytest tests/prompts -v` |
 | Ejecutar solo las pruebas de scripts | `uv run python -m pytest tests/scripts -v` |
 | Usar el ejecutor alternativo de unittest | `uv run python -m tests -v` |
@@ -280,13 +312,14 @@ src/
 ├── costos/             → Cálculo, registro de sesión y tipo de cambio
 ├── orquestacion/       → Chain, rutas y fallbacks con LangChain
 ├── rag/                → Índice Chroma, recuperación, citas y mediciones
+├── personalizacion/    → Dataset de tuning, línea base y método de decisión
 ├── prompts/            → Banco, instrucciones y contexto documental
 ├── agentes.py          → Selección y ejecución del agente
 └── catalogo.py         → Modelos disponibles
-tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, rag/, prompts/ y scripts/
+tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, rag/, personalizacion/, prompts/ y scripts/
 scripts/                → Evaluaciones, ensayos y herramientas auxiliares
 docs/                   → Guía, arquitectura y evidencias
-datos/                  → Documentos de Ley REP y casos de evaluación
+datos/                  → Ley REP, casos de evaluación y dataset de personalización
 ```
 
 Para evaluar el proyecto, comienza ejecutando `/health` y las pruebas. Luego sigue el flujo de código: [entrada](main.py) → [API y autenticación](src/api/app.py) → [selección del agente](src/agentes.py) → [cliente HTTP](src/clientes/gemini.py). Los [errores](src/clientes/errores.py) y los [reintentos](src/clientes/reintentos.py) se mantienen en módulos separados.
@@ -308,6 +341,7 @@ de repaso están separadas de la documentación de uso:
 - [Bloques 18 a 20: chains, enrutamiento y manejo de errores](docs/estudio/bloques-18-20.md).
 - [Bloques 21 a 23: herramientas, memoria y supervisión humana](docs/estudio/bloques-21-23.md).
 - [Bloques 24 a 28: RAG, recuperación con citas, evaluación, latencia y costo](docs/estudio/bloques-24-28.md).
+- [Bloques 29 y 30: RAG, fine-tuning, PEFT y cómo decidir si personalizar](docs/estudio/bloques-29-30.md).
 
 ## Documentación y evidencias
 
@@ -317,8 +351,10 @@ La documentación está organizada por propósito y conectada por bloques en el
 - [Guía de uso, comandos y referencia de la API](docs/guias/guia-completa.md).
 - [Arquitectura, modelos y límites](docs/arquitectura/vision-general.md).
 - [Evaluación de respuestas y límites de métricas](docs/evaluaciones/respuestas-ley-rep.md).
-- [Planes y decisiones: PRD 04 del RAG](docs/planes/prd-04-rag-ley-rep.md).
+- [Planes y decisiones: PRD 04 del RAG](docs/planes/prd-04-rag-ley-rep.md) y
+  [PRD 05 de personalización](docs/planes/prd-05-personalizacion-ley-rep.md).
 - [Entrega 13–14](docs/entregas/bloques-13-14.md), [18–20](docs/entregas/bloques-18-20.md),
-  [21–23](docs/entregas/bloques-21-23.md) y [24–28 con evidencias reales](docs/entregas/bloques-24-28.md).
+  [21–23](docs/entregas/bloques-21-23.md), [24–28 con evidencias reales](docs/entregas/bloques-24-28.md)
+  y [29–30](docs/entregas/bloques-29-30.md).
 - [Capturas de terminal conservadas](docs/evidencias/mis-capturas/README.md).
 - [Proyecto final: asistente RAG para Ley REP](docs/guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

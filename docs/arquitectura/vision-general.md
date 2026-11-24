@@ -167,6 +167,32 @@ El texto sigue siendo una copia de 2016; citas existentes no prueban respaldo
 semántico o vigencia. Ver [PRD 04](../planes/prd-04-rag-ley-rep.md), [guía de estudio](../estudio/bloques-24-28.md)
 y [entrega con estado de las corridas reales](../entregas/bloques-24-28.md).
 
+## Personalización evaluada: bloques 29 y 30
+
+El paquete `src/personalizacion/` no cambia ningún flujo en uso. Reúne lo
+necesario para decidir si conviene entrenar el clasificador de rutas del B19:
+
+```mermaid
+flowchart LR
+    A["Dataset etiquetado"] --> B["Validación y balance"]
+    A --> C["Línea base del clasificador actual"]
+    C --> D["Errores del modelo"]
+    C --> E["Errores de la regla local"]
+    B --> F["Método de decisión"]
+    D --> F
+    G["Hechos: fuentes, infraestructura y variantes"] --> F
+    F --> H["Documento de decisión"]
+```
+
+- El clasificador sigue siendo el prompt del B19; el dataset describe qué
+  aprendería un modelo afinado, con el contrato `{"ruta", "articulo"}`.
+- La línea base separa los errores del modelo de los de la expresión regular
+  que detecta el artículo: solo los primeros podría corregirlos un entrenamiento.
+- PEFT no está disponible con la API para desarrolladores. Usarlo implicaría
+  otra plataforma, otra facturación y otra forma de autenticación.
+
+Resultado: [decisión de personalización](decision-personalizacion.md). Plan: [PRD 05](../planes/prd-05-personalizacion-ley-rep.md).
+
 ## Alcance y entrega
 
 La imagen muestra el flujo base de `POST /consultar`; la selección opcional de prompts se describe arriba. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.
