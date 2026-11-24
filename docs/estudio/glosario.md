@@ -49,6 +49,7 @@ implementadas.
 | Python, dependencias, Git y herramientas de desarrollo. | [13. Vocabulario del repositorio](#13-vocabulario-para-leer-y-ejecutar-el-repositorio). |
 | Conceptos que se parecen, pero no son iguales. | [14. Confusiones frecuentes](#14-confusiones-frecuentes). |
 | Fine-tuning, PEFT, adapters, dataset de tuning y decisión de personalización. | [16. Personalización de modelos](#16-personalización-de-modelos). |
+| Registros, trazas, inyección, versiones de prompt, pausas y riesgos. | [17. Observabilidad, seguridad y gobernanza](#17-observabilidad-seguridad-y-gobernanza). |
 | Practicar sin ejecutar programas. | [15. Repaso con respuestas](#15-repaso-sin-gemini). |
 
 ## Diez conceptos para empezar
@@ -669,7 +670,8 @@ Para continuar: [mapa del módulo](modulo-2-desde-bloque-18.md#4-orden-recomenda
 → [chains y rutas](bloques-18-20.md#1-qué-cambia-y-qué-debes-aprender)
 → [agente y supervisión](bloques-21-23.md#mapa-de-la-progresión)
 → [RAG y medición](bloques-24-28.md#1-qué-cambia-respecto-de-los-bloques-anteriores)
-→ [personalización](bloques-29-30.md#1-qué-cambia-respecto-de-los-bloques-anteriores).
+→ [personalización](bloques-29-30.md#1-qué-cambia-respecto-de-los-bloques-anteriores)
+→ [observabilidad y gobernanza](bloques-31-32.md#1-qué-cambia-respecto-de-los-bloques-anteriores).
 
 ## 16. Personalización de modelos
 
@@ -722,3 +724,62 @@ flowchart TD
 RAG y PEFT pueden combinarse: el primero aporta lo que cambia; el segundo, el
 comportamiento estable. En el proyecto, el RAG existe desde el B24 y el
 entrenamiento queda como decisión documentada, no como función implementada.
+
+## 17. Observabilidad, seguridad y gobernanza
+
+Se aplican en la [guía de los bloques 31 y 32](bloques-31-32.md#1-qué-cambia-respecto-de-los-bloques-anteriores).
+En una frase: **observar** es poder saber qué pasó; **asegurar**, limitar el daño;
+**gobernar**, decidir quién autoriza y dejar constancia.
+
+| Término y nombre habitual | Qué significa y para qué sirve | Ejemplo cotidiano y límite |
+| --- | --- | --- |
+| **Observabilidad / observability** | Capacidad de explicar lo que ocurrió a partir de lo registrado. | El historial de un paquete enviado. Sin registros previos, no se puede reconstruir después. |
+| **Registro / log** | Anotación de algo que ocurrió en el programa. | El cuaderno de portería. |
+| **Registro estructurado / structured logging** | Un evento por línea con campos fijos, en JSON. Se filtra y se cuenta. | Una planilla con columnas, en vez de notas sueltas. |
+| **Nivel / level** | Gravedad del evento: `INFO`, `WARNING`, `ERROR`. | Verde, amarillo y rojo. Amarillo significa que el servicio siguió. |
+| **Evento** | Cada hecho registrado: consulta recibida, respuesta entregada. | Cada sello del recorrido del paquete. |
+| **`trace_id`** | Identificador común a todos los eventos de una consulta. | El número de ticket. Identifica el pedido, no a la persona. |
+| **`run_id` y `parent_run_id`** | Identificadores que LangChain crea para cada paso y para quien lo llamó. | Subtrámites con referencia al trámite principal. Solo cubren piezas de LangChain. |
+| **Callback / handler** | Función que se ejecuta sola cuando ocurre algo. | El timbre que suena al abrir la puerta. No ve las puertas sin timbre. |
+| **`contextvars`** | Variable con un valor propio por tarea. | Una pizarra por mesa, en vez de una para toda la sala. Un hilo nuevo empieza vacío. |
+| **PII / datos personales** | Información que identifica a alguien: correo, RUT, teléfono. | Una ficha con nombre. No debe copiarse «por si acaso». |
+| **Huella / hash** | Código corto calculado a partir de un texto. Mismo texto, misma huella. | Una huella dactilar. Con textos cortos se puede adivinar probando. |
+| **Lista cerrada / allowlist** | Solo se permite lo enumerado. | Lista de invitados: quien no está, no entra. |
+| **Lista negra / denylist** | Se prohíbe lo enumerado y pasa el resto. | Fotos de personas vetadas. Con un disfraz, se entra. |
+| **Inyección de prompt** | Texto que intenta que el modelo siga una orden ajena. | Un papel falso con membrete de la dirección. |
+| **Inyección indirecta** | La orden viene en un documento recuperado. | El papel estaba dentro de un libro; quien lo pidió no lo sabía. |
+| **Delimitar el contexto** | Marcar con etiquetas qué texto es dato. | Una carpeta rotulada «material». Ayuda, no garantiza. |
+| **Normalizar** | Llevar un texto a una forma común antes de comparar. | Comparar nombres sin importar mayúsculas ni tildes. |
+| **Falso positivo del filtro** | Descartar un texto legítimo. | La alarma que suena con el gato. |
+| **Auditoría** | Revisar después qué ocurrió y quién decidió, con constancias. | Revisar boletas. No evita el error; permite encontrarlo. |
+| **Versión de prompt** | Texto exacto con huella, nota, autor, fecha y modelo con que se probó. | Ediciones archivadas de un reglamento. |
+| **Versión activa** | La que se usa para responder. Es un dato aparte del registro. | La edición colgada en la pared. Archivar otra no la reemplaza. |
+| **Diff** | Líneas agregadas y quitadas entre dos versiones. | El control de cambios de un documento. Muestra qué cambió, no si mejoró. |
+| **Grafo / LangGraph** | Pasos conectados que guardan su estado. | Un trámite con etapas y expediente. |
+| **`interrupt()`** | Detiene el grafo hasta recibir una decisión. | El expediente en espera de firma. |
+| **`Command(resume=...)`** | Entrega la decisión y continúa el grafo. | La firma, o el rechazo. Debe ser un sí o no explícito. |
+| **Checkpointer** | Donde se guarda el estado pausado: memoria o SQLite. | El archivador. En memoria se vacía al cerrar. |
+| **`thread_id`** | Identificador de cada solicitud pausada. | El número de expediente. Repetirlo mezcla dos trámites. |
+| **Supervisión humana / human in the loop** | Una persona decide antes de una acción de alto riesgo. | Dos llaves para abrir la caja. Si se pide para todo, nadie lee. |
+| **Gobernanza** | Reglas sobre quién puede cambiar o autorizar, y su constancia. | Los estatutos. Un control que se puede saltar es un procedimiento, no una barrera. |
+| **Matriz de riesgos** | Riesgos puntuados por probabilidad × impacto, con sus controles. | Elegir qué reparar primero en una casa. |
+| **Mitigación** | Control que baja la probabilidad o el impacto. | El extintor. Cuenta si existe, no si se piensa comprar. |
+| **Al límite** | Un punto en P o I cambia la categoría. | Un 3,9 cuando se aprueba con 4,0: conviene revisar. |
+
+### Diagrama 7: pedir no es garantizar
+
+```mermaid
+flowchart TD
+    A["Documento o pregunta con una orden"] --> B["Python: filtro y lista cerrada"]
+    B --> C["Prompt: pide no obedecer"]
+    C --> D["Modelo: puede equivocarse"]
+    D --> E["Python: exige citas que existan"]
+    E --> F["Respuesta o abstención"]
+    F --> G["Registro sin contenido"]
+    H["Cambio de alto riesgo"] --> I["Pausa"]
+    I --> J["Persona: sí o no"]
+    J --> K["Python: recomprueba y aplica"]
+```
+
+Lo que hace Python se cumple siempre; lo que pide el prompt, casi siempre; lo que
+decide la persona queda registrado. Las tres partes se necesitan.

@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "revisado": "2026-11-24",
+  "sistema": "Asistente RAG de Ley REP: terminal, agente supervisado y medición local, con una sola norma indexada.",
+  "procedencia": "Estimaciones propuestas con asistencia de IA a partir de hechos registrados en el repositorio y revisadas: la revisión subió norma-desactualizada de P3 a P4.",
+  "riesgos": [
+    {
+      "id": "cita-sin-respaldo",
+      "riesgo": "La respuesta cita un artículo que existe, pero cambia lo que dice",
+      "probabilidad": 4,
+      "impacto": 4,
+      "por_que": "Ya ocurrió: en los bloques 18 a 20 un paso de la chain quitó condiciones del artículo 33, y en el 21 la respuesta agregó «previamente» a una condición del artículo 34. El control automático solo comprueba que la cita exista.",
+      "mitigaciones": [
+        {"control": "Citas obligatorias y existentes; si no, se abstiene", "bloque": 31, "archivo": "src/rag/servicio.py"},
+        {"control": "Prompt que pide usar solo el contexto", "bloque": 26, "archivo": "src/rag/recuperacion.py"}
+      ],
+      "supervision": {"control": "Aprobar cada informe antes de entregarlo al cliente", "bloque": 23, "archivo": "src/orquestacion/supervision.py"}
+    },
+    {
+      "id": "datos-personales",
+      "riesgo": "Una consulta con datos personales queda guardada o se publica como evidencia",
+      "probabilidad": 3,
+      "impacto": 5,
+      "por_que": "Las trazas del agente (B23) y las mediciones (B28) guardan la consulta completa en archivos locales, y el repositorio es público.",
+      "mitigaciones": [
+        {"control": "Eventos con lista cerrada de campos, sin contenido", "bloque": 31, "archivo": "src/observabilidad/trazas.py"},
+        {"control": "Salidas locales ignoradas por Git", "bloque": 28, "archivo": ".gitignore"},
+        {"control": "Detección de correos, RUT, teléfonos y claves antes de publicar", "bloque": 32, "archivo": "src/gobernanza/supervision.py"}
+      ],
+      "supervision": {"control": "Aprobar con interrupt() cada registro real antes de copiarlo a las evidencias públicas", "bloque": 32, "archivo": "scripts/grafo_supervision.py"}
+    },
+    {
+      "id": "cambio-de-prompt",
+      "riesgo": "Un cambio de prompt sin revisar altera todas las respuestas",
+      "probabilidad": 3,
+      "impacto": 4,
+      "por_que": "El prompt vivía como texto en el código. En los bloques 18 a 20 un cambio de redacción mejoró unas condiciones y perdió otras.",
+      "mitigaciones": [
+        {"control": "Versiones con huella, nota y diff", "bloque": 32, "archivo": "src/gobernanza/prompts.py"},
+        {"control": "La huella del prompt queda en cada traza", "bloque": 31, "archivo": "src/rag/servicio.py"}
+      ],
+      "supervision": {"control": "Aprobar la activación de cada versión con interrupt()", "bloque": 32, "archivo": "scripts/grafo_supervision.py"}
+    },
+    {
+      "id": "norma-desactualizada",
+      "riesgo": "Se presenta como vigente una norma modificada, anulada o que no está en el corpus",
+      "probabilidad": 4,
+      "impacto": 4,
+      "por_que": "El índice tiene una copia de 2016 y una sola norma. Una sentencia de agosto de 2026 anuló el decreto de aceites y el sistema no lo sabe. Con más normas habrá más textos que pueden cambiar.",
+      "mitigaciones": [
+        {"control": "El prompt distingue la copia de una comprobación de vigencia", "bloque": 26, "archivo": "src/rag/recuperacion.py"},
+        {"control": "Abstención medida fuera del corpus", "bloque": 28, "archivo": "docs/evidencias/bloques-24-28/fuera-corpus-01.jsonl"}
+      ],
+      "supervision": {"control": "Aprobar cada informe antes de entregarlo al cliente", "bloque": 23, "archivo": "src/orquestacion/supervision.py"}
+    },
+    {
+      "id": "inyeccion-en-fragmento",
+      "riesgo": "Un fragmento indexado contiene una orden para el modelo",
+      "probabilidad": 2,
+      "impacto": 4,
+      "por_que": "Hoy el corpus es el texto oficial de una ley y su huella se verifica al abrir el índice. La probabilidad sube si se agregan fuentes que otras personas puedan editar.",
+      "mitigaciones": [
+        {"control": "Filtro de patrones antes del prompt", "bloque": 31, "archivo": "src/observabilidad/inyeccion.py"},
+        {"control": "Índice comparado con el corpus al abrirlo", "bloque": 25, "archivo": "src/rag/indice.py"}
+      ],
+      "supervision": null
+    },
+    {
+      "id": "limite-de-cuota",
+      "riesgo": "El proveedor corta las llamadas por límite de frecuencia o no responde",
+      "probabilidad": 4,
+      "impacto": 2,
+      "por_que": "Ya ocurrió en el bloque 30: la medición se detuvo en la consulta 17.",
+      "mitigaciones": [
+        {"control": "Errores controlados y estado explícito", "bloque": 31, "archivo": "src/rag/servicio.py"},
+        {"control": "Continuación con pausa y sin repetir", "bloque": 30, "archivo": "scripts/linea_base_rutas.py"}
+      ],
+      "supervision": null
+    },
+    {
+      "id": "embeddings-incompatibles",
+      "riesgo": "El modelo de embeddings cambia o se retira y el índice deja de ser comparable",
+      "probabilidad": 2,
+      "impacto": 3,
+      "por_que": "El índice depende de un modelo externo. Mezclar vectores de dos modelos no produce un error por sí solo.",
+      "mitigaciones": [
+        {"control": "Manifiesto que rechaza otro modelo o dimensión", "bloque": 25, "archivo": "src/rag/indice.py"}
+      ],
+      "supervision": null
+    },
+    {
+      "id": "clave-expuesta",
+      "riesgo": "La clave de Gemini termina en el repositorio o en un registro",
+      "probabilidad": 1,
+      "impacto": 5,
+      "por_que": "El repositorio es público, aunque .env está ignorado y los errores del proveedor no se guardan en los eventos.",
+      "mitigaciones": [
+        {"control": ".env ignorado por Git", "bloque": 4, "archivo": ".gitignore"},
+        {"control": "Los eventos guardan solo el tipo de error", "bloque": 31, "archivo": "src/rag/servicio.py"}
+      ],
+      "supervision": null
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+8 riesgos, 0 problemas
+CRITICO  (16) - La respuesta cita un artículo que existe, pero cambia lo que dice [AL LIMITE]
+                supervisión: Aprobar cada informe antes de entregarlo al cliente (B23)
+CRITICO  (16) - Se presenta como vigente una norma modificada, anulada o que no está en el corpus [AL LIMITE]
+                supervisión: Aprobar cada informe antes de entregarlo al cliente (B23)
+CRITICO  (15) - Una consulta con datos personales queda guardada o se publica como evidencia [AL LIMITE]
+                supervisión: Aprobar con interrupt() cada registro real antes de copiarlo a las evidencias públicas (B32)
+ALTO     (12) - Un cambio de prompt sin revisar altera todas las respuestas [AL LIMITE]
+                supervisión: Aprobar la activación de cada versión con interrupt() (B32)
+MEDIO    ( 8) - Un fragmento indexado contiene una orden para el modelo [AL LIMITE]
+MEDIO    ( 8) - El proveedor corta las llamadas por límite de frecuencia o no responde [AL LIMITE]
+MEDIO    ( 6) - El modelo de embeddings cambia o se retira y el índice deja de ser comparable [AL LIMITE]
+MEDIO    ( 5) - La clave de Gemini termina en el repositorio o en un registro [AL LIMITE]
+
+Revisar con otra persona: cita-sin-respaldo, norma-desactualizada, datos-personales, cambio-de-prompt, inyeccion-en-fragmento, limite-de-cuota, embeddings-incompatibles, clave-expuesta
+Contraste (1 x 1): no está al límite

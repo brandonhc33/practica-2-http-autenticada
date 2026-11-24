@@ -1,0 +1,11 @@
+1) pausado, pendiente: {'motivo': 'activar una versión de prompt para todas las respuestas', 'objeto': {'huella': 'fa9063213deb', 'base': '18db60ea8163'}, 'huella': 'fa9063213deb'}
+   activo mientras espera: 18db60ea8163
+2) decisión simulada = False: rechazada: no se aplicó ningún cambio
+   activo después: 18db60ea8163
+3) segundo intento sobre el mismo hilo: Ese hilo no tiene ninguna aprobación pendiente.
+1) pausado, pendiente: {'motivo': 'activar una versión de prompt para todas las respuestas', 'objeto': {'huella': 'fa9063213deb', 'base': '18db60ea8163'}, 'huella': 'fa9063213deb'}
+   activo mientras espera: 18db60ea8163
+2) decisión simulada = True: activada: fa9063213deb reemplaza a 18db60ea8163
+   activo después: fa9063213deb
+3) segundo intento sobre el mismo hilo: Ese hilo no tiene ninguna aprobación pendiente.
+Demostración con copias temporales: el prompt del proyecto no cambió.

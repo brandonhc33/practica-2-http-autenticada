@@ -12,6 +12,8 @@ dependencies = [
     "langchain-classic>=1.0.8,<2",
     "langchain-google-genai>=4.4.3,<5",
     "langchain-text-splitters>=1.1.3,<2",
+    "langgraph>=1.2.20,<2",
+    "langgraph-checkpoint-sqlite>=3.1,<4",
     "python-dotenv>=1.0,<2",
     "requests>=2.32,<3",
     "urllib3>=2.8,<3",
@@ -32,7 +34,7 @@ dev = [
 ]
 
 [tool.basedpyright]
-include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py", "scripts/indexar_corpus.py", "scripts/evaluacion_recuperacion.py", "scripts/registro_rag.py", "scripts/rag_comun.py", "scripts/dataset_tuning.py", "scripts/linea_base_rutas.py", "scripts/decision_personalizacion.py"]
+include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py", "scripts/indexar_corpus.py", "scripts/evaluacion_recuperacion.py", "scripts/registro_rag.py", "scripts/rag_comun.py", "scripts/dataset_tuning.py", "scripts/linea_base_rutas.py", "scripts/decision_personalizacion.py", "scripts/logging_rag.py", "scripts/ensayo_inyeccion_indirecta.py", "scripts/registro_prompts.py", "scripts/grafo_supervision.py", "scripts/matriz_riesgos.py"]
 pythonVersion = "3.12"
 typeCheckingMode = "standard"
 venvPath = "."
