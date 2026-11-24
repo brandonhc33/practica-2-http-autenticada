@@ -1,0 +1,18 @@
+Caso: Clasificador de rutas del flujo de Ley REP (bloque 19)
+
+- informacion_cambia_seguido: False
+  0 cambios en 90 días. La copia local de la ley tiene una sola versión (2016-06-01), extraída el 2026-10-22. Las tres rutas y sus reglas no cambian desde el commit df14a2c (2026-11-06).
+- problema_de_formato_o_tono: pendiente
+  Pendiente: falta una línea base completa de al menos 20 respuestas.
+- dataset_grande_y_de_calidad: False
+  24 ejemplos etiquetados y 0 etiquetas contradictorias detectadas; el criterio pide al menos 200.
+- presupuesto_limitado_o_iterar_rapido: True
+  0 intentos de entrenamiento disponibles. En el inventario del 2026-10-20 ningún modelo de los 63 expone createTunedModel. google-genai 2.34.0 rechaza tuning_mode y adapter_size con la clave de la API para desarrolladores: PEFT requiere Gemini Enterprise Agent Platform.
+- necesita_multiples_variantes: False
+  1 variante necesaria. Un solo flujo, un idioma y un corpus. No hay clientes, idiomas ni líneas de producto que requieran comportamientos distintos.
+
+Para llegar a 200 ejemplos faltan 176: 15.84 horas (2.0 jornadas), con los supuestos orientativos del curso.
+
+Falta medir una respuesta. Lo que recomendaría el método con cada resultado:
+- problema_de_formato_o_tono = False: {'RAG': 2, 'Fine-tuning completo': 0, 'PEFT': 1} -> RAG
+- problema_de_formato_o_tono = True: {'RAG': 2, 'Fine-tuning completo': 1, 'PEFT': 3} -> PEFT

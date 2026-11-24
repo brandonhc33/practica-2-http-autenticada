@@ -10,8 +10,8 @@ comprobó. Para ejecutar la aplicación, empieza por el [README del proyecto](..
 | [`guias/`](guias/guia-completa.md) | Instalación, comandos, API y resolución de problemas. | Quiero usar o ejecutar el proyecto. |
 | [`arquitectura/`](arquitectura/vision-general.md) | Flujos, selección de modelo, límites de autonomía y diagramas editables. | Quiero entender cómo está diseñado y qué permite. |
 | [`estudio/`](estudio/modulo-2-desde-bloque-18.md) | Glosario con ejemplos y diagramas, mapa desde B18 y guías por bloque. | Quiero aprender, no solo copiar un comando. |
-| [`planes/`](planes/prd-04-rag-ley-rep.md) | PRD, decisiones, fases y revisiones iniciales. | Quiero entender el alcance y por qué se eligió una solución. |
-| [`entregas/`](entregas/bloques-24-28.md) | Correspondencia con las actividades, checklist y estado comprobado. | Quiero revisar o preparar una entrega. |
+| [`planes/`](planes/prd-05-personalizacion-ley-rep.md) | PRD, decisiones, fases y revisiones iniciales. | Quiero entender el alcance y por qué se eligió una solución. |
+| [`entregas/`](entregas/bloques-29-30.md) | Correspondencia con las actividades, checklist y estado comprobado. | Quiero revisar o preparar una entrega. |
 | [`evaluaciones/`](evaluaciones/respuestas-ley-rep.md) | Resultados de modelos/prompts/respuestas y límites de sus métricas. | Quiero analizar calidad y comparar resultados. |
 | [`evidencias/`](evidencias/) | Registros, capturas y verificaciones conservadas. | Quiero comprobar una afirmación o el resultado de una ejecución. |
 
@@ -23,7 +23,7 @@ Tiene una entrada corta de diez conceptos y el resto se puede leer por tema.
 
 Para estudiar el módulo 2 desde el bloque 18, empieza por el
 [mapa de progresión y orden de lectura](estudio/modulo-2-desde-bloque-18.md).
-Conecta chains, rutas, agentes y RAG; las guías por bloque desarrollan el código,
+Conecta chains, rutas, agentes, RAG y personalización; las guías por bloque desarrollan el código,
 los resultados y sus límites con ejercicios sin Gemini.
 
 | Bloques | Aprender o usar | Diseño y planificación | Entrega o evidencia |
@@ -36,6 +36,7 @@ los resultados y sus límites con ejercicios sin Gemini.
 | 18–20 | [Chains, rutas y errores](estudio/bloques-18-20.md) | [PRD 02](planes/prd-02-orquestacion-langchain.md) | [Entrega 18–20](entregas/bloques-18-20.md) |
 | 21–23 | [Herramientas, memoria y supervisión](estudio/bloques-21-23.md) | [PRD 03](planes/prd-03-agente-ley-rep.md) y [límites de autonomía](arquitectura/limites-autonomia-agente.md) | [Entrega 21–23](entregas/bloques-21-23.md) |
 | 24–28 | [RAG, evaluación, latencia y costo](estudio/bloques-24-28.md) | [PRD 04](planes/prd-04-rag-ley-rep.md) | [Entrega y actividad 28](entregas/bloques-24-28.md), con [mediciones reales](evidencias/bloques-24-28/README.md) |
+| 29–30 | [Personalización: RAG, fine-tuning y PEFT](estudio/bloques-29-30.md) | [PRD 05](planes/prd-05-personalizacion-ley-rep.md) | [Entrega y actividad 30](entregas/bloques-29-30.md), con [evidencias sin cuota](evidencias/bloques-29-30/README.md) |
 
 El estado de cada actividad se consulta en su entrega. Un PRD conserva el contexto
 de planificación: no demuestra por sí solo que algo esté implementado o validado.
@@ -56,6 +57,7 @@ El proyecto final se desarrolla progresivamente en la [guía completa](guias/gui
   hashes, fechas y comandos históricos no se reescriben al reorganizar docs.
 - Los enlaces y comandos de la documentación de uso apuntan a las rutas actuales.
   El corpus y los casos de entrada siguen en `datos/`; el runtime de RAG y los
-  índices siguen fuera de Git, en `output/rag/` y `vectorstore/`.
+  índices siguen fuera de Git, en `output/rag/` y `vectorstore/`. Las mediciones
+  locales de personalización quedan en `output/personalizacion/`.
 - No guardar `.env`, claves, binarios de Chroma ni consultas privadas. Versionar
   únicamente evidencia revisada y señalar si usó servicios reales o simulados.

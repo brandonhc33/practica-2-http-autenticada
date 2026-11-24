@@ -1,0 +1,32 @@
+Paso 1: dataset
+24 ejemplos construidos
+output='{"ruta": "normativa", "articulo": null}' text_input='¿Qué obligaciones tienen los productores de productos prioritarios?'
+huella sha256: a30841a8bf0bbd3b936f78ce3db8b5a942e0dcc371fcb7e58238aa5fa543b394
+
+Paso 2: balance por ruta
+normativa: 8
+resumen: 8
+aclaracion: 8
+razon max/min: 1.0x (umbral del proyecto: 2.0x)
+con articulo: 11; sin articulo: 13
+
+Paso 3: validación
+24 ejemplos, 0 problemas encontrados
+
+Comprobación del validador con copias rotas a propósito
+- text_input vacío: detectado: ejemplo 0: text_input vacio
+- output sin la clave articulo: detectado: ejemplo 0: output no tiene la clave "articulo"
+- comillas simples en lugar de JSON: detectado: ejemplo 0: output no es JSON valido
+- consulta duplicada: detectado: ejemplo 24: text_input duplicado del ejemplo 0
+- misma consulta con otra etiqueta: detectado: ejemplo 24: contradice la etiqueta del ejemplo 0
+- ruta fuera del contrato: detectado: ejemplo 0: ruta "otra" no es una de normativa, resumen, aclaracion
+- resumen sin artículo: detectado: ejemplo 0: una ruta resumen necesita un articulo (R1)
+- artículo inexistente: detectado: ejemplo 0: articulo "Artículo 60" no existe en la copia local
+- clave no prevista: detectado: ejemplo 0: output tiene la clave no prevista "motivo"
+- dataset con menos de 10 ejemplos: detectado: dataset: tiene 9 ejemplos y se piden al menos 10
+
+Paso 4 sin red: configuración PEFT demostrativa
+tuning_mode=TuningMode.TUNING_MODE_PEFT_ADAPTER, adapter_size=AdapterSize.ADAPTER_SIZE_FOUR, epoch_count=5
+La API para desarrolladores la rechazaría antes de enviar:
+  adapter_size parameter is only supported in Gemini Enterprise Agent Platform mode, not in Gemini Developer API mode.
+No se envía ningún trabajo: PEFT requiere Gemini Enterprise Agent Platform.

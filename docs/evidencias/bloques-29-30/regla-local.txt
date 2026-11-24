@@ -1,0 +1,3 @@
+Regla local de artículos: 23 de 24 coinciden con la etiqueta.
+- r08: esperado Artículo 27, detectado None
+Ninguna respuesta del modelo llevaría a la ruta etiquetada en: r08

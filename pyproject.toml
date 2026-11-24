@@ -32,7 +32,7 @@ dev = [
 ]
 
 [tool.basedpyright]
-include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py", "scripts/indexar_corpus.py", "scripts/evaluacion_recuperacion.py", "scripts/registro_rag.py", "scripts/rag_comun.py"]
+include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py", "scripts/indexar_corpus.py", "scripts/evaluacion_recuperacion.py", "scripts/registro_rag.py", "scripts/rag_comun.py", "scripts/dataset_tuning.py", "scripts/linea_base_rutas.py", "scripts/decision_personalizacion.py"]
 pythonVersion = "3.12"
 typeCheckingMode = "standard"
 venvPath = "."
