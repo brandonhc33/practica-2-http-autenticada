@@ -82,7 +82,7 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloques 26 y 27: recuperación y evaluación | Recuperar por significado, generar con citas y evaluar diez preguntas etiquetadas. | [Guía de estudio](../estudio/bloques-24-28.md) y [entrega](../entregas/bloques-24-28.md). |
 | Bloque 28: actividad core de latencia y costo | Ejecutar cuatro corridas reales y revisar tiempos, tokens, costo conocido y límites. | [Comandos y checklist de cierre](../entregas/bloques-24-28.md#recorrido-de-ejecución). |
 | Bloque 29: laboratorio de personalización | [Validar el dataset de tuning](#personalización-del-clasificador-bloques-29-y-30) y comprobar que el validador detecta errores. | [`dataset_tuning.py`](../../scripts/dataset_tuning.py), [dataset](../../datos/personalizacion/rutas_ley_rep.json) y [validación](../evidencias/bloques-29-30/dataset-validacion.txt). |
-| Bloque 30: actividad core de decisión | Medir el clasificador actual, aplicar el método y redactar la decisión. | [Recorrido y checklist](../entregas/bloques-29-30.md#recorrido-de-ejecución). |
+| Bloque 30: actividad core de decisión | Medir el clasificador actual, aplicar el método y redactar la decisión. | [Decisión](../arquitectura/decision-personalizacion.md), [recorrido y checklist](../entregas/bloques-29-30.md#recorrido-de-ejecución). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -1207,6 +1207,9 @@ La entrada por terminal usa Chroma y la copia local de Ley 20.920 de 2016;
 ver [entrega publicada y pendientes de envío](../entregas/bloques-24-28.md).
 La ampliación a múltiples fuentes y búsqueda híbrida sigue siendo un proyecto
 posterior. El análisis del prototipo Laravel se realizó el 20 de octubre de 2026.
+El corpus, el alcance y las etapas se proponen en el
+[PRD 06](../planes/prd-06-mvp-gate-3.md), que actualiza esta sección: hasta el Gate 3
+se mantiene Chroma y se trabaja con cinco normas.
 
 El banco anterior conserva `preparar_consulta_rep`, `resumir_fragmento_rep` y `responder_ley_rep`. Utilizan el [PDF convertido a texto y artículos](../../datos/ley_rep/README.md), además de permitir contexto explícito. El nuevo RAG recupera chunks y comprueba referencias numéricas; no verifica semánticamente cada afirmación. Las citas de la muestra real se contrastaron de forma asistida; eso no equivale a una garantía automática general.
 
@@ -1222,9 +1225,9 @@ Python permitirá aprovechar la API, validaciones, cliente Gemini, pruebas y med
 
 El prototipo **`leyrep-agente` es un proyecto Laravel externo**. Los archivos e insumos siguientes pertenecen a ese proyecto y deberán revisarse antes de incorporarlos aquí:
 
-- **Corpus:** 116 documentos y 12.340 fragmentos en `app/knowledge/`, con búsqueda léxica mediante SQLite FTS5 y relaciones entre normas.
+- **Corpus:** documentos normativos en `app/knowledge/`, con búsqueda léxica mediante SQLite FTS5 y relaciones entre normas.
 - **Reglas:** preguntas frecuentes, estado conversacional, aplicabilidad parcial y verificación de referencias.
-- **Pruebas:** 145 casos de recuperación en `tests/Evaluacion/rag-gold.json` y 50 preguntas en `tests/gold_dataset/benchmark_50.json`; se depurarán rúbricas pendientes o contradictorias.
+- **Pruebas:** casos de recuperación y preguntas de referencia propios, que no se incorporan a este repositorio.
 
 Las referencias del análisis son `CONTEXTO-DEL-PROYECTO.md` y los servicios `KnowledgeRetriever`, `LeyRepAgent` y `VerificadorDeRespuesta` del prototipo. La calidad y el rendimiento se medirán nuevamente en Python.
 

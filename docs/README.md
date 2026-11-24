@@ -36,7 +36,8 @@ los resultados y sus límites con ejercicios sin Gemini.
 | 18–20 | [Chains, rutas y errores](estudio/bloques-18-20.md) | [PRD 02](planes/prd-02-orquestacion-langchain.md) | [Entrega 18–20](entregas/bloques-18-20.md) |
 | 21–23 | [Herramientas, memoria y supervisión](estudio/bloques-21-23.md) | [PRD 03](planes/prd-03-agente-ley-rep.md) y [límites de autonomía](arquitectura/limites-autonomia-agente.md) | [Entrega 21–23](entregas/bloques-21-23.md) |
 | 24–28 | [RAG, evaluación, latencia y costo](estudio/bloques-24-28.md) | [PRD 04](planes/prd-04-rag-ley-rep.md) | [Entrega y actividad 28](entregas/bloques-24-28.md), con [mediciones reales](evidencias/bloques-24-28/README.md) |
-| 29–30 | [Personalización: RAG, fine-tuning y PEFT](estudio/bloques-29-30.md) | [PRD 05](planes/prd-05-personalizacion-ley-rep.md) | [Entrega y actividad 30](entregas/bloques-29-30.md), con [evidencias sin cuota](evidencias/bloques-29-30/README.md) |
+| 29–30 | [Personalización: RAG, fine-tuning y PEFT](estudio/bloques-29-30.md) | [PRD 05](planes/prd-05-personalizacion-ley-rep.md) y [decisión](arquitectura/decision-personalizacion.md) | [Entrega y actividad 30](entregas/bloques-29-30.md), con [línea base real](evidencias/bloques-29-30/README.md) |
+| Proyecto final | [Proyecto final en la guía](guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) | [PRD 06: MVP del Gate 3, sin implementar](planes/prd-06-mvp-gate-3.md) | Sin entrega todavía |
 
 El estado de cada actividad se consulta en su entrega. Un PRD conserva el contexto
 de planificación: no demuestra por sí solo que algo esté implementado o validado.

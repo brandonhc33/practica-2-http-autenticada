@@ -1,0 +1,26 @@
+Caso: Clasificador de rutas del flujo de Ley REP (bloque 19)
+
+- informacion_cambia_seguido: False
+  0 cambios en 90 días. La copia local de la ley tiene una sola versión (2016-06-01), extraída el 2026-10-22. Las tres rutas y sus reglas no cambian desde el commit df14a2c (2026-11-06).
+- problema_de_formato_o_tono: False
+  3 de 24 respuestas del clasificador actual incumplen (12.5%); el umbral es 15 %.
+- dataset_grande_y_de_calidad: False
+  24 ejemplos etiquetados y 0 etiquetas contradictorias detectadas; el criterio pide al menos 200.
+- presupuesto_limitado_o_iterar_rapido: True
+  0 intentos de entrenamiento disponibles. El proyecto no costearía ningún entrenamiento. Además, en el inventario del 2026-10-20 ningún modelo de los 63 expone createTunedModel. google-genai 2.34.0 rechaza tuning_mode y adapter_size con la clave de la API para desarrolladores: PEFT requiere Gemini Enterprise Agent Platform.
+- necesita_multiples_variantes: False
+  1 variante necesaria. Hoy basta un asistente en español para la Ley REP chilena. Ampliarlo a Latinoamérica es una posibilidad futura, no un requisito actual.
+
+Para llegar a 200 ejemplos faltan 176: 15.84 horas (2.0 jornadas), con los supuestos orientativos del curso.
+
+Puntos: {'RAG': 2, 'Fine-tuning completo': 0, 'PEFT': 1}
+Candidatas: ['RAG']
+
+Sensibilidad:
+- informacion_cambia_seguido -> True: ['RAG'] [igual]
+- problema_de_formato_o_tono -> True: ['PEFT'] [CAMBIA]
+- dataset_grande_y_de_calidad -> True: ['RAG', 'Fine-tuning completo', 'PEFT'] [CAMBIA]
+- presupuesto_limitado_o_iterar_rapido -> False: ['RAG', 'Fine-tuning completo', 'PEFT'] [CAMBIA]
+- necesita_multiples_variantes -> True: ['PEFT'] [CAMBIA]
+
+Documento base guardado en output/personalizacion/decision-base-01.md.

@@ -37,10 +37,10 @@ class TestReglas(unittest.TestCase):
         self.assertEqual(categorias_que_llegan("aclaracion", False), ["resumen", "aclaracion"])
         self.assertEqual(categorias_que_llegan("resumen", False), [])
 
-    def test_solo_tres_ejemplos_aceptan_otra_palabra_y_esa_palabra_llega_a_la_ruta(self):
+    def test_solo_dos_ejemplos_aceptan_otra_palabra_y_esa_palabra_llega_a_la_ruta(self):
         ejemplos = cargar_dataset()["ejemplos"]
         con_excepcion = [e["id"] for e in ejemplos if "categorias_modelo" in e]
-        self.assertEqual(con_excepcion, ["a03", "a04", "a05"])
+        self.assertEqual(con_excepcion, ["a03", "a04"])
         for e in ejemplos:
             with self.subTest(e["id"]):
                 salida = e["salida"]
@@ -53,11 +53,12 @@ class TestReglas(unittest.TestCase):
         self.assertEqual(origen_discrepancia(False, True), "regla_local")
         self.assertEqual(origen_discrepancia(False, False), "modelo")
 
-    def test_regla_local_sin_gemini_detecta_el_limite_de_art_sin_punto(self):
+    def test_regla_local_sin_gemini_muestra_sus_dos_limites(self):
         evaluacion = evaluar_regla_articulos(cargar_dataset())
         self.assertEqual(evaluacion["total"], 24)
-        self.assertEqual(evaluacion["rutas_inalcanzables"], ["r08"])
-        self.assertEqual(evaluacion["articulos_correctos"], 23)
+        # r08: «art» sin punto. a05: el router trata «artículo primero» como ambiguo.
+        self.assertEqual(evaluacion["rutas_inalcanzables"], ["r08", "a05"])
+        self.assertEqual(evaluacion["articulos_correctos"], 22)
 
 
 class TestMedicion(unittest.TestCase):
@@ -133,6 +134,29 @@ class TestMedicion(unittest.TestCase):
         self.assertEqual(len(resultado["registros"]), 1)
         self.assertEqual(resultado["error"], {"id": "r01", "tipo_error": "TimeoutError"})
         self.assertIsNone(resultado["resumen"]["supera_umbral"])
+
+    def test_continuar_conserva_lo_respondido_y_solo_consulta_lo_que_falta(self):
+        primero = medir_linea_base(
+            {"ejemplos": self.dataset["ejemplos"][:2]},
+            crear_modelo_falso([respuesta("resumen"), respuesta("resumen")]),
+            "gemini-3.5-flash-lite",
+        )["registros"]
+        modelo = crear_modelo_falso([respuesta("resumen")] * 3)
+        pausas: list[float] = []
+        resultado = medir_linea_base(
+            self.dataset,
+            modelo,
+            "gemini-3.5-flash-lite",
+            previos=primero,
+            pausa_segundos=5,
+            dormir=pausas.append,
+        )
+        self.assertEqual(len(modelo.recibidos), 3)
+        self.assertEqual(pausas, [5, 5])
+        self.assertEqual(resultado["registros"][:2], primero)
+        self.assertEqual(
+            [r["id"] for r in resultado["registros"]], ["n01", "r01", "r08", "a01", "a03"]
+        )
 
     def test_muestra_completa_aplica_el_umbral(self):
         dataset = cargar_dataset()

@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "revisado": "2026-11-23",
+  "version": 2,
+  "revisado": "2026-11-24",
   "caso": "Clasificador de rutas del flujo de Ley REP (bloque 19)",
   "problema": "El flujo de Ley REP depende de que cada consulta se envíe a la ruta correcta (normativa, resumen o aclaración) y de que la salida tenga siempre el mismo formato. Hay que decidir si conviene entrenar un modelo para esa clasificación o mantenerla sin entrenamiento.",
   "hechos": {
@@ -10,11 +10,11 @@
     },
     "intentos_entrenamiento_disponibles": {
       "valor": 0,
-      "evidencia": "En el inventario del 2026-10-20 ningún modelo de los 63 expone createTunedModel. google-genai 2.34.0 rechaza tuning_mode y adapter_size con la clave de la API para desarrolladores: PEFT requiere Gemini Enterprise Agent Platform."
+      "evidencia": "El proyecto no costearía ningún entrenamiento. Además, en el inventario del 2026-10-20 ningún modelo de los 63 expone createTunedModel. google-genai 2.34.0 rechaza tuning_mode y adapter_size con la clave de la API para desarrolladores: PEFT requiere Gemini Enterprise Agent Platform."
     },
     "variantes_necesarias": {
       "valor": 1,
-      "evidencia": "Un solo flujo, un idioma y un corpus. No hay clientes, idiomas ni líneas de producto que requieran comportamientos distintos."
+      "evidencia": "Hoy basta un asistente en español para la Ley REP chilena. Ampliarlo a Latinoamérica es una posibilidad futura, no un requisito actual."
     }
   },
   "supuestos_etiquetado": {

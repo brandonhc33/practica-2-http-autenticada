@@ -1,8 +1,7 @@
 # PRD 05: personalización del clasificador de rutas — bloques 29 y 30
 
-**Estado:** fases 0 a 3 implementadas y probadas sin Gemini. Falta la línea base
-real (fase 4) y, con su resultado, redactar el documento de decisión. El estado
-de cierre se mantiene en el checklist de la [entrega](../entregas/bloques-29-30.md).
+**Estado:** fases 0 a 4 ejecutadas: etiquetas revisadas, línea base real completa
+y documento de decisión revisado. Falta la fase 5. El estado de cierre se mantiene en el checklist de la [entrega](../entregas/bloques-29-30.md).
 **Línea base del repositorio:** `c3a4746`, 303 pruebas y 588 subpruebas; revisión del 23-11-2026.
 
 ## 1. Objetivo y alcance
@@ -35,12 +34,12 @@ La vista incrustada de la actividad 30 solo ofrece subir un archivo o un enlace.
 | --- | --- | --- |
 | Caso | El clasificador de rutas del B19: decide entre normativa, resumen y aclaración. Es una clasificación con formato fijo. | Responder preguntas de la ley es un problema de información; ya lo resuelve el RAG. Usarlo sería el error conceptual que advierte la lección. |
 | Contrato | `{"ruta": ..., "articulo": ...}`: ruta y artículo único nombrado, referencia exacta de la copia local o `null`. | Una sola palabra, como hoy, no aprovecharía el formato JSON que valida la actividad. Agregar un campo libre como «motivo» haría inexactas las salidas. |
-| Etiquetas | 24 consultas sintéticas, 8 por ruta, con reglas R1 a R3 escritas antes de etiquetar. Propuestas con asistencia de IA; revisión del alumno en el checklist. | Usar consultas reales de usuarios exigiría datos que no tenemos y podría exponer información privada. |
+| Etiquetas | 24 consultas sintéticas (normativa 8, resumen 9, aclaración 7), con reglas R1 a R3 escritas antes de etiquetar. Propuestas con asistencia de IA y revisadas antes de medir. | Usar consultas reales de usuarios exigiría datos que no tenemos y podría exponer información privada. |
 | Validación | Formato del curso más reglas del proyecto: claves exactas, rutas válidas, artículo existente, coherencia ruta-artículo, duplicados normalizados, contradicciones y longitud máxima. | El validador del curso no detecta etiquetas contradictorias ni artículos inexistentes. |
 | Envío del trabajo | No se envía. Se construye la configuración PEFT y se comprueba localmente que la API para desarrolladores la rechaza. | El inventario del 20-10-2026 no muestra modelos con `createTunedModel`, y `google-genai` 2.34.0 rechaza `tuning_mode` y `adapter_size` con clave de desarrollador. Un tuning completo sí saldría a la red; no se intenta sin autorización ni modelo compatible. |
 | Espera asíncrona | `esperar_a_que_termine` usa `get`, intervalo y espera máxima configurables, y trata `EXPIRED` como estado final. | El código de la lección omite `EXPIRED`: un trabajo vencido se consultaría para siempre. |
-| Línea base | 24 llamadas al prompt real del B19 con `gemini-3.5-flash-lite`, sin reintentos. Separar errores del modelo de errores de la regla local de artículos. | Responder la pregunta de formato «por intuición» invertiría el método. La regla local se evalúa gratis y por separado. |
-| Criterio de formato | Fijado antes de medir: incumple si la salida normalizada no es la ruta etiquetada; en a03 a a05 también se acepta «resumen», excepción escrita en el dataset. Umbral del curso, 15 % sobre al menos 20 respuestas. | Contar solo el formato estricto penalizaría «Normativa.», que el flujo normaliza. Contar la ruta final culparía al modelo de fallos de la expresión regular y daría por bueno obedecer una consulta que intenta cambiar las instrucciones. |
+| Línea base | 24 llamadas al prompt real del B19 con `gemini-3.5-flash-lite`, una respuesta por consulta. Una interrupción se puede continuar solo con las que faltan y las mismas huellas. Separar errores del modelo de errores de la regla local de artículos. | Responder la pregunta de formato «por intuición» invertiría el método. La regla local se evalúa gratis y por separado. |
+| Criterio de formato | Fijado antes de medir: incumple si la salida normalizada no es la ruta etiquetada; en a03 y a04 también se acepta «resumen», excepción escrita en el dataset. Umbral del curso, 15 % sobre al menos 20 respuestas. | Contar solo el formato estricto penalizaría «Normativa.», que el flujo normaliza. Contar la ruta final culparía al modelo de fallos de la expresión regular y daría por bueno obedecer una consulta que intenta cambiar las instrucciones. |
 | Decisión | Respuestas derivadas de hechos versionados y de la línea base, con huellas del dataset y del prompt. Empates y sensibilidad visibles. El documento final se redacta después de medir. | Elegir la técnica primero y justificarla después es el error que la actividad pide evitar. |
 | Git | Rama local `bloques-29-30`. Merge y push solo de `main`, con autorización específica. | Publicar la rama de bloques no corresponde al flujo acordado del repositorio. |
 
@@ -82,7 +81,7 @@ corresponde a `dataset_tuning.py`, y `scripts/decision_personalizacion.py` al
 ## 6. Criterios de aceptación
 
 - [x] Tarea de comportamiento consistente, justificada frente a RAG.
-- [x] Al menos 10 ejemplos y tres rutas; balance 8/8/8 revisado.
+- [x] Al menos 10 ejemplos y tres rutas; balance 8/9/7 revisado.
 - [x] Validación sin problemas en el dataset real; salidas JSON con comillas dobles.
 - [x] Diez copias rotas a propósito, todas detectadas; el validador reporta todos los problemas.
 - [x] Configuración PEFT construida con tipos reales del SDK; rechazo local sin red.
@@ -92,10 +91,11 @@ corresponde a `dataset_tuning.py`, y `scripts/decision_personalizacion.py` al
 - [x] Escenarios del método registrados antes de medir.
 - [x] Línea base: prompt real, una llamada por consulta, sin reintentos, huellas de dataset y prompt; un error detiene la medición y queda registrado.
 - [x] Suite completa, ruff, basedpyright y `git diff --check`.
-- [ ] Revisión de las etiquetas del dataset.
-- [ ] Confirmación de los hechos del proyecto: intentos de entrenamiento y variantes.
-- [ ] Línea base real completa y revisada.
-- [ ] Documento de decisión con las cuatro secciones, sensibilidad y números.
+- [x] Revisión de las etiquetas del dataset.
+- [x] Confirmación de los hechos del proyecto: intentos de entrenamiento y variantes.
+- [x] Línea base real completa, en dos tramos conservados.
+- [x] Documento de decisión con las cuatro secciones, sensibilidad y números.
+- [x] Revisión del documento de decisión.
 - [ ] Integración y publicación en `main`; instalación desde un clon limpio.
 - [ ] Presentación de las actividades en Skillnest.
 

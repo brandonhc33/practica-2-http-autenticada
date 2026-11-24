@@ -28,7 +28,7 @@ from src.personalizacion.linea_base import (
 
 CRITERIO = (
     "Incumple si la salida, normalizada, no es la ruta etiquetada. Única excepción, escrita en el "
-    "dataset: en a03 a a05 también se acepta «resumen», porque la persona pide un resumen que el "
+    "dataset: en a03 y a04 también se acepta «resumen», porque la persona pide un resumen que el "
     "flujo convierte en aclaración. Los fallos de la regla de artículos se cuentan aparte. Fijado "
     f"antes de medir: {UMBRAL_INCUMPLIMIENTO:.0%} o más sobre al menos {MUESTRA_MINIMA} respuestas."
 )
@@ -52,6 +52,33 @@ def imprimir_regla_local(evaluacion: dict[str, Any]) -> None:
         )
 
 
+def cargar_tramo(
+    ruta: Path, dataset: Path, nombre_modelo: str
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Solo continúa una medición interrumpida con el mismo dataset, prompt, modelo y criterio."""
+    informe = json.loads(ruta.read_text(encoding="utf-8"))
+    esperado = {
+        "huella_dataset": huella_archivo(dataset),
+        "huella_prompt": huella_prompt(),
+        "modelo": nombre_modelo,
+        "criterio": CRITERIO,
+    }
+    distintos = [clave for clave, valor in esperado.items() if informe[clave] != valor]
+    if distintos:
+        raise ValueError(f"cambió {', '.join(distintos)} desde el tramo anterior.")
+    if informe["resultado"]["error"] is None:
+        raise ValueError("la medición anterior no se interrumpió.")
+    registros = informe["resultado"]["registros"]
+    return registros, {
+        "archivo": ruta.name,
+        "sha256": huella_archivo(ruta),
+        "inicio_utc": informe["inicio_utc"],
+        "fin_utc": informe["fin_utc"],
+        "respuestas": len(registros),
+        "error": informe["resultado"]["error"],
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=RUTA_DATASET)
@@ -61,6 +88,14 @@ def main(argv: list[str] | None = None) -> int:
         help="Evalúa la detección de artículos sin Gemini ni clave.",
     )
     parser.add_argument("--salida", type=Path, help="JSON nuevo con la medición real.")
+    parser.add_argument(
+        "--continuar",
+        type=Path,
+        help="Medición interrumpida: conserva sus respuestas y consulta solo las que faltan.",
+    )
+    parser.add_argument(
+        "--pausa", type=float, default=5.0, help="Segundos entre llamadas (5 por defecto)."
+    )
     parser.add_argument("--confirmar-consumo", action="store_true")
     args = parser.parse_args(argv)
     try:
@@ -80,6 +115,13 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("Indica --salida para la medición con Gemini o usa --solo-regla-local.")
 
     nombre_modelo = AGENTES["gemini"]["modelos"]["flash-lite"]
+    previos: list[dict[str, Any]] = []
+    tramo_anterior: dict[str, Any] | None = None
+    if args.continuar is not None:
+        try:
+            previos, tramo_anterior = cargar_tramo(args.continuar, args.dataset, nombre_modelo)
+        except (OSError, ValueError, KeyError) as error:
+            parser.exit(1, f"No se puede continuar: {error}\n")
     try:
         exigir_consumo(args.confirmar_consumo)
         archivo = abrir_salida_nueva(args.salida)
@@ -94,11 +136,17 @@ def main(argv: list[str] | None = None) -> int:
         "huella_prompt": huella_prompt(),
         "criterio": CRITERIO,
         "regla_local": regla_local,
+        "pausa_segundos": args.pausa,
+        "tramo_anterior": tramo_anterior,
     }
     with archivo:
         try:
             informe["resultado"] = medir_linea_base(
-                dataset, crear_modelo("flash-lite"), nombre_modelo
+                dataset,
+                crear_modelo("flash-lite"),
+                nombre_modelo,
+                previos=previos,
+                pausa_segundos=args.pausa,
             )
         finally:
             informe["fin_utc"] = ahora_utc()

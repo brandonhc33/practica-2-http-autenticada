@@ -78,7 +78,7 @@ Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El
 | 26 y 27 | Recuperación con citas y evaluación | [Recorrido de ejecución](docs/entregas/bloques-24-28.md#recorrido-de-ejecución) y [casos etiquetados](datos/evaluacion/recuperacion_rag.json). |
 | 28 | Latencia y costo del flujo RAG | [Actividad core, checklist y estado de evidencias reales](docs/entregas/bloques-24-28.md). |
 | 29 | Dataset validado para personalizar un modelo | [Uso](#personalización-del-clasificador-de-rutas), [entrega](docs/entregas/bloques-29-30.md) y [validación](docs/evidencias/bloques-29-30/dataset-validacion.txt). |
-| 30 | Decisión fundamentada de personalización | [Recorrido y estado](docs/entregas/bloques-29-30.md#recorrido-de-ejecución). |
+| 30 | Decisión fundamentada de personalización | [Documento de decisión](docs/arquitectura/decision-personalizacion.md) y [recorrido y estado](docs/entregas/bloques-29-30.md#recorrido-de-ejecución). |
 
 ## Comandos útiles
 

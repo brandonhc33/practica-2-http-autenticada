@@ -1,14 +1,14 @@
 Paso 1: dataset
 24 ejemplos construidos
 output='{"ruta": "normativa", "articulo": null}' text_input='¿Qué obligaciones tienen los productores de productos prioritarios?'
-huella sha256: a30841a8bf0bbd3b936f78ce3db8b5a942e0dcc371fcb7e58238aa5fa543b394
+huella sha256: 905faaca62cb289cbd282999d31bb06ecfbd053b72d663c4562a01fdc3ab89e5
 
 Paso 2: balance por ruta
 normativa: 8
-resumen: 8
-aclaracion: 8
-razon max/min: 1.0x (umbral del proyecto: 2.0x)
-con articulo: 11; sin articulo: 13
+resumen: 9
+aclaracion: 7
+razon max/min: 1.3x (umbral del proyecto: 2.0x)
+con articulo: 12; sin articulo: 12
 
 Paso 3: validación
 24 ejemplos, 0 problemas encontrados

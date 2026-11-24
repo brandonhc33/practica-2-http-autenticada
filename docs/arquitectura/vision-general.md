@@ -191,7 +191,7 @@ flowchart LR
 - PEFT no está disponible con la API para desarrolladores. Usarlo implicaría
   otra plataforma, otra facturación y otra forma de autenticación.
 
-Plan y decisiones: [PRD 05](../planes/prd-05-personalizacion-ley-rep.md).
+Resultado: [decisión de personalización](decision-personalizacion.md). Plan: [PRD 05](../planes/prd-05-personalizacion-ley-rep.md).
 
 ## Alcance y entrega
 

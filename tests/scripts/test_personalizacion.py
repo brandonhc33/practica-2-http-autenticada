@@ -45,7 +45,7 @@ class TestComandosPersonalizacion(unittest.TestCase):
         with patch("scripts.linea_base_rutas.crear_modelo") as crear:
             self.assertEqual(linea_base_rutas.main(["--solo-regla-local"]), 0)
         crear.assert_not_called()
-        self.assertIn("23 de 24", self.salida.getvalue())
+        self.assertIn("22 de 24", self.salida.getvalue())
 
     def test_sin_consentimiento_o_sin_clave_no_mide_ni_crea_archivo(self):
         destino = self.temporal / "linea.json"
@@ -90,7 +90,9 @@ class TestComandosPersonalizacion(unittest.TestCase):
                 "scripts.linea_base_rutas.crear_modelo", return_value=crear_modelo_falso(respuestas)
             ),
         ):
-            return linea_base_rutas.main(["--salida", str(destino), "--confirmar-consumo"])
+            return linea_base_rutas.main(
+                ["--salida", str(destino), "--confirmar-consumo", "--pausa", "0"]
+            )
 
     def test_medicion_guarda_huellas_y_decision_genera_documento(self):
         linea = self.temporal / "linea.json"
@@ -99,7 +101,9 @@ class TestComandosPersonalizacion(unittest.TestCase):
         self.assertEqual(informe["huella_dataset"], huella_archivo(RUTA_DATASET))
         self.assertEqual(informe["huella_prompt"], huella_prompt())
         self.assertTrue(informe["resultado"]["resumen"]["completa"])
-        self.assertEqual(informe["resultado"]["resumen"]["discrepancias_regla_local"], ["r08"])
+        self.assertEqual(
+            informe["resultado"]["resumen"]["discrepancias_regla_local"], ["r08", "a05"]
+        )
 
         documento = self.temporal / "decision.md"
         codigo = decision_personalizacion.main(
@@ -111,6 +115,26 @@ class TestComandosPersonalizacion(unittest.TestCase):
         self.assertIn("## 4. Qué se necesitaría para ejecutarla", texto)
         with self.assertRaises(SystemExit):
             decision_personalizacion.main(["--linea-base", str(linea), "--salida", str(documento)])
+
+    def test_continuar_rechaza_otro_dataset_o_una_medicion_terminada(self):
+        completa = self.temporal / "completa.json"
+        self.assertEqual(self.medir_con_modelo_falso(completa), 0)
+        otra = self.temporal / "otra.json"
+        informe = json.loads(completa.read_text(encoding="utf-8"))
+        otra.write_text(json.dumps({**informe, "huella_dataset": "x"}), encoding="utf-8")
+        for anterior in (completa, otra):
+            destino = self.temporal / "nueva.json"
+            with (
+                self.subTest(anterior.name),
+                patch.dict(os.environ, {"GEMINI_API_KEY": "ficticia"}),
+                patch("scripts.linea_base_rutas.crear_modelo") as crear,
+                self.assertRaises(SystemExit),
+            ):
+                linea_base_rutas.main(
+                    ["--continuar", str(anterior), "--salida", str(destino), "--confirmar-consumo"]
+                )
+            crear.assert_not_called()
+            self.assertFalse(destino.exists())
 
     def test_decision_sin_medicion_muestra_escenarios_y_no_escribe(self):
         documento = self.temporal / "decision.md"

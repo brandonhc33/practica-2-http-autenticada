@@ -1,7 +1,7 @@
 # Verificación local — bloques 29 y 30
 
 **Alcance:** dataset, validación, método de decisión y mecánica de la línea base
-con modelos falsos. No mide el comportamiento real de Gemini. Revisión del
+con modelos falsos. La medición real está en el [índice](README.md#b30-línea-base-real). Revisión del
 24-11-2026 sobre `c3a4746`, en la rama local `bloques-29-30`, con Python 3.12.13,
 `google-genai` 2.34.0 y `langchain-google-genai` 4.4.3.
 
@@ -9,19 +9,19 @@ con modelos falsos. No mide el comportamiento real de Gemini. Revisión del
 
 | Comando | Resultado |
 | --- | --- |
-| `uv run python -m pytest tests -v` | **344 pruebas y 628 subpruebas aprobadas**; 11 avisos de deprecación de la memoria del agente, ya conocidos. |
-| `uv run python -m tests` | **344 pruebas aprobadas**, ejecutor alternativo. |
+| `uv run python -m pytest tests -v` | **346 pruebas y 630 subpruebas aprobadas**; 11 avisos de deprecación de la memoria del agente, ya conocidos. |
+| `uv run python -m tests` | **346 pruebas aprobadas**, ejecutor alternativo. |
 | `uv run ruff check .` | Sin errores. |
 | `uv run basedpyright` | 0 errores, 0 advertencias, 0 notas. |
 | `git diff --check` | Sin errores de espacios. |
 | `uv run python -m scripts.dataset_tuning --comprobar-validador --comprobar-api` | Sin clave: 0 problemas, 10 copias rotas detectadas, rechazo local de PEFT. |
-| `uv run python -m scripts.linea_base_rutas --solo-regla-local` | Sin clave: 23 de 24 artículos detectados. |
+| `uv run python -m scripts.linea_base_rutas --solo-regla-local` | Sin clave: 22 de 24 artículos detectados. |
 | `uv run python -m scripts.linea_base_rutas --salida ...` sin `--confirmar-consumo` | Termina con error antes de crear el modelo o el archivo. |
 | `uv run python -m scripts.decision_personalizacion` | Sin clave: respuestas, horas faltantes y escenarios. |
 | `git check-ignore output/personalizacion/...` | Ruta ignorada. |
 
 La línea base del repositorio tenía 303 pruebas y 588 subpruebas. Se agregan
-**41 pruebas y 40 subpruebas**. No se cambiaron dependencias: `google-genai` ya
+**43 pruebas y 42 subpruebas**. No se cambiaron dependencias: `google-genai` ya
 estaba instalado como dependencia de `langchain-google-genai`.
 
 ## Qué prueban las comprobaciones nuevas
@@ -42,6 +42,7 @@ estaba instalado como dependencia de `langchain-google-genai`.
   regla local, registra tokens y costo, y se detiene en el primer error. Obedecer
   una consulta que intenta cambiar las instrucciones cuenta como incumplimiento.
 - Los comandos no crean modelos sin consentimiento o sin clave, conservan una
-  salida existente y rechazan una línea base de otro dataset.
+  salida existente y rechazan una línea base de otro dataset. Una medición
+  interrumpida se continúa sin repetir lo respondido; una terminada, no.
 
 Los modelos y clientes falsos comprueban la mecánica, no la calidad real.

@@ -6,6 +6,8 @@ solo los primeros podrían corregirse entrenando un modelo.
 """
 
 import hashlib
+import time
+from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any
 
@@ -81,12 +83,26 @@ def huella_prompt() -> str:
 
 
 def medir_linea_base(
-    dataset: dict[str, Any], modelo: BaseChatModel, nombre_modelo: str
+    dataset: dict[str, Any],
+    modelo: BaseChatModel,
+    nombre_modelo: str,
+    *,
+    previos: list[dict[str, Any]] | None = None,
+    pausa_segundos: float = 0,
+    dormir: Callable[[float], None] = time.sleep,
 ) -> dict[str, Any]:
-    """Una llamada por consulta, sin reintentos; se detiene en el primer error."""
-    registros: list[dict[str, Any]] = []
+    """Una respuesta por consulta; se detiene en el primer error.
+
+    Con `previos` conserva las respuestas de un tramo interrumpido y solo consulta las que
+    faltan: repetir todo permitiría elegir entre dos corridas.
+    """
+    registros: list[dict[str, Any]] = list(previos or [])
+    respondidas = {r["id"] for r in registros}
+    pendientes = [e for e in dataset["ejemplos"] if e["id"] not in respondidas]
     error: dict[str, str] | None = None
-    for ejemplo in dataset["ejemplos"]:
+    for numero, ejemplo in enumerate(pendientes):
+        if numero and pausa_segundos:
+            dormir(pausa_segundos)
         consulta = ejemplo["consulta"]
         esperado = ejemplo["salida"]
         try:
