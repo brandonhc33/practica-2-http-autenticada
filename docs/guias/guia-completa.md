@@ -36,6 +36,7 @@ El recorrido de este README es: actividades del curso, instalación, preparació
     10. [Agente con herramientas, memoria y supervisión: bloques 21 a 23](#agente-con-herramientas-memoria-y-supervisión-bloques-21-a-23)
     11. [RAG de Ley REP: bloques 24 a 28](#rag-de-ley-rep-bloques-24-a-28)
     12. [Personalización del clasificador: bloques 29 y 30](#personalización-del-clasificador-bloques-29-y-30)
+    13. [Observabilidad y gobernanza: bloques 31 y 32](#observabilidad-y-gobernanza-bloques-31-y-32)
 6. [Pruebas y comprobaciones](#pruebas-y-comprobaciones)
     1. [Pruebas automatizadas](#pruebas-automatizadas)
         1. [Checklist del cliente modular: Bloque 14](#checklist-del-cliente-modular-bloque-14)
@@ -83,6 +84,8 @@ Sigue estas actividades después de instalar y configurar el proyecto:
 | Bloque 28: actividad core de latencia y costo | Ejecutar cuatro corridas reales y revisar tiempos, tokens, costo conocido y límites. | [Comandos y checklist de cierre](../entregas/bloques-24-28.md#recorrido-de-ejecución). |
 | Bloque 29: laboratorio de personalización | [Validar el dataset de tuning](#personalización-del-clasificador-bloques-29-y-30) y comprobar que el validador detecta errores. | [`dataset_tuning.py`](../../scripts/dataset_tuning.py), [dataset](../../datos/personalizacion/rutas_ley_rep.json) y [validación](../evidencias/bloques-29-30/dataset-validacion.txt). |
 | Bloque 30: actividad core de decisión | Medir el clasificador actual, aplicar el método y redactar la decisión. | [Decisión](../arquitectura/decision-personalizacion.md), [recorrido y checklist](../entregas/bloques-29-30.md#recorrido-de-ejecución). |
+| Bloque 31: actividad core de registros | [Consultar con traza, consumo y filtro](#observabilidad-y-gobernanza-bloques-31-y-32) y reconstruir la consulta desde sus eventos. | [`logging_rag.py`](../../scripts/logging_rag.py) y [salida conservada](../evidencias/bloques-31-32/logging-ensayo.txt). |
+| Bloque 32: prompts, supervisión y riesgos | Versionar el prompt, pausar antes de activarlo y completar la matriz. | [Matriz](../arquitectura/matriz-riesgos.md), [recorrido y checklist](../entregas/bloques-31-32.md#recorrido-de-ejecución). |
 
 Las comprobaciones de cada actividad están en [Pruebas y comprobaciones](#pruebas-y-comprobaciones).
 
@@ -819,6 +822,38 @@ trabajo de tuning no se envía; `--comprobar-api` lo demuestra sin red ni clave.
 decisión rechaza una línea base medida con otro dataset u otro prompt. La
 [guía de estudio](../estudio/bloques-29-30.md) explica las técnicas, los costos y
 el método; la [entrega](../entregas/bloques-29-30.md) lleva el estado y el checklist.
+
+### Observabilidad y gobernanza: bloques 31 y 32
+
+Camino RAG auditable por terminal: `src/rag/servicio.py` usa `src/observabilidad/`
+para registrar y filtrar, y `src/gobernanza/` para saber qué prompt está autorizado.
+
+```bash
+# Sin API: seis comprobaciones con índice, embeddings y modelo de prueba.
+uv run python -m scripts.logging_rag
+
+# Sin API: versiones del prompt, la activa y su diferencia.
+uv run python -m scripts.registro_prompts
+
+# Sin API: pausa, rechazo y aprobación simulados sobre copias temporales.
+uv run python -m scripts.grafo_supervision demo
+
+# Sin API: validar y ordenar la matriz de riesgos.
+uv run python -m scripts.matriz_riesgos
+
+# Con API y cuota: un embedding y una generación por pregunta.
+uv run python -m scripts.logging_rag --confirmar-consumo \
+  --registro output/observabilidad/eventos-01.jsonl --consultar "PREGUNTA"
+```
+
+`--prompt HUELLA` prueba una versión registrada sin activarla. Para activarla,
+`proponer-prompt HUELLA` deja la solicitud pausada y `decidir HILO` pregunta `[s/n]`
+en la terminal. `output/observabilidad/` y `output/gobernanza/` están ignorados.
+
+Los eventos no contienen la pregunta, la respuesta ni los fragmentos. El filtro
+reconoce frases conocidas; una cita existente no prueba que la respuesta sea fiel. La
+[guía de estudio](../estudio/bloques-31-32.md) explica los conceptos; la
+[entrega](../entregas/bloques-31-32.md) lleva el estado y el checklist.
 
 ## Pruebas y comprobaciones
 

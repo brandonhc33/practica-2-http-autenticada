@@ -10,8 +10,8 @@ comprobó. Para ejecutar la aplicación, empieza por el [README del proyecto](..
 | [`guias/`](guias/guia-completa.md) | Instalación, comandos, API y resolución de problemas. | Quiero usar o ejecutar el proyecto. |
 | [`arquitectura/`](arquitectura/vision-general.md) | Flujos, selección de modelo, límites de autonomía y diagramas editables. | Quiero entender cómo está diseñado y qué permite. |
 | [`estudio/`](estudio/modulo-2-desde-bloque-18.md) | Glosario con ejemplos y diagramas, mapa desde B18 y guías por bloque. | Quiero aprender, no solo copiar un comando. |
-| [`planes/`](planes/prd-05-personalizacion-ley-rep.md) | PRD, decisiones, fases y revisiones iniciales. | Quiero entender el alcance y por qué se eligió una solución. |
-| [`entregas/`](entregas/bloques-29-30.md) | Correspondencia con las actividades, checklist y estado comprobado. | Quiero revisar o preparar una entrega. |
+| [`planes/`](planes/prd-07-observabilidad-gobernanza.md) | PRD, decisiones, fases y revisiones iniciales. | Quiero entender el alcance y por qué se eligió una solución. |
+| [`entregas/`](entregas/bloques-31-32.md) | Correspondencia con las actividades, checklist y estado comprobado. | Quiero revisar o preparar una entrega. |
 | [`evaluaciones/`](evaluaciones/respuestas-ley-rep.md) | Resultados de modelos/prompts/respuestas y límites de sus métricas. | Quiero analizar calidad y comparar resultados. |
 | [`evidencias/`](evidencias/) | Registros, capturas y verificaciones conservadas. | Quiero comprobar una afirmación o el resultado de una ejecución. |
 
@@ -23,7 +23,7 @@ Tiene una entrada corta de diez conceptos y el resto se puede leer por tema.
 
 Para estudiar el módulo 2 desde el bloque 18, empieza por el
 [mapa de progresión y orden de lectura](estudio/modulo-2-desde-bloque-18.md).
-Conecta chains, rutas, agentes, RAG y personalización; las guías por bloque desarrollan el código,
+Conecta chains, rutas, agentes, RAG, personalización y gobernanza; las guías por bloque desarrollan el código,
 los resultados y sus límites con ejercicios sin Gemini.
 
 | Bloques | Aprender o usar | Diseño y planificación | Entrega o evidencia |
@@ -37,6 +37,7 @@ los resultados y sus límites con ejercicios sin Gemini.
 | 21–23 | [Herramientas, memoria y supervisión](estudio/bloques-21-23.md) | [PRD 03](planes/prd-03-agente-ley-rep.md) y [límites de autonomía](arquitectura/limites-autonomia-agente.md) | [Entrega 21–23](entregas/bloques-21-23.md) |
 | 24–28 | [RAG, evaluación, latencia y costo](estudio/bloques-24-28.md) | [PRD 04](planes/prd-04-rag-ley-rep.md) | [Entrega y actividad 28](entregas/bloques-24-28.md), con [mediciones reales](evidencias/bloques-24-28/README.md) |
 | 29–30 | [Personalización: RAG, fine-tuning y PEFT](estudio/bloques-29-30.md) | [PRD 05](planes/prd-05-personalizacion-ley-rep.md) y [decisión](arquitectura/decision-personalizacion.md) | [Entrega y actividad 30](entregas/bloques-29-30.md), con [línea base real](evidencias/bloques-29-30/README.md) |
+| 31–32 | [Registros, inyección, supervisión y riesgos](estudio/bloques-31-32.md) | [PRD 07](planes/prd-07-observabilidad-gobernanza.md) y [matriz de riesgos](arquitectura/matriz-riesgos.md) | [Entrega 31–32](entregas/bloques-31-32.md), con [evidencias y prueba real](evidencias/bloques-31-32/README.md) |
 | Proyecto final | [Proyecto final en la guía](guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) | [PRD 06: MVP del Gate 3, sin implementar](planes/prd-06-mvp-gate-3.md) | Sin entrega todavía |
 
 El estado de cada actividad se consulta en su entrega. Un PRD conserva el contexto

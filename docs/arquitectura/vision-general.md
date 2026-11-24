@@ -193,6 +193,36 @@ flowchart LR
 
 Resultado: [decisión de personalización](decision-personalizacion.md). Plan: [PRD 05](../planes/prd-05-personalizacion-ley-rep.md).
 
+## RAG auditable: bloques 31 y 32
+
+`src/rag/servicio.py` es un camino nuevo por terminal. La API, el agente y la medición
+del B28 no cambian.
+
+```mermaid
+flowchart LR
+    A["Pregunta"] --> B["Recuperar"]
+    B --> C["Filtrar"]
+    C --> D["Generar con el prompt activo"]
+    D --> E["Exigir citas"]
+    E --> F["Respuesta o abstención"]
+    B --> G["Eventos con trace_id"]
+    C --> G
+    D --> G
+    E --> G
+    H["Propuesta de prompt"] --> I["Pausa en SQLite"]
+    I --> J["Decisión humana"]
+    J --> K["Versión activa"]
+    K --> D
+```
+
+- `src/observabilidad/` acepta una lista cerrada de eventos y campos, sin contenido.
+- `src/gobernanza/` guarda versiones de prompt con huella y pausa las acciones de alto
+  riesgo. El estado pausado sobrevive a cerrar el programa.
+- El servicio no propaga excepciones y no entrega texto sin citas existentes. Eso no
+  demuestra que la respuesta sea fiel al artículo.
+
+Riesgos y controles: [matriz](matriz-riesgos.md). Plan: [PRD 07](../planes/prd-07-observabilidad-gobernanza.md).
+
 ## Alcance y entrega
 
 La imagen muestra el flujo base de `POST /consultar`; la selección opcional de prompts se describe arriba. La ruta `POST /consultar/raw` devuelve el JSON del proveedor sin extraer texto ni calcular costos. La entrada por terminal reutiliza el cliente Gemini; el diagrama se centra en la entrada HTTP de la miniaplicación.

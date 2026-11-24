@@ -1,0 +1,171 @@
+=== v1: respuestas en la terminal
+trace_id: trace-558da4e38aa04868ad793013a45d45d1 | estado: ok | prompt: 18db60ea8163
+La Ley 20.920 de 2016 tiene por objeto disminuir la generación de residuos y fomentar su reutilización, reciclaje y otro tipo de valorización [1]. Esto se realiza mediante la instauración de la responsabilidad extendida del productor y otros instrumentos de gestión de residuos [1]. Con ello, busca proteger la salud de las personas y el medio ambiente [1].
+
+Esta respuesta se basa exclusivamente en una copia de la ley y no constituye una comprobación de su vigencia actual.
+
+Fuentes:
+[1] Artículo 1 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-4e8d64630b9c46688994e97219952fa2 | estado: ok | prompt: 18db60ea8163
+Según la Ley 20.920 de 2016, los seis productos prioritarios que enumera expresamente son:
+
+a) Aceites lubricantes [1].
+b) Aparatos eléctricos y electrónicos [1].
+c) Baterías [1].
+d) Envases y embalajes [1].
+e) Neumáticos [1].
+f) Pilas [1].
+
+*Nota: Esta respuesta corresponde estrictamente a una copia de la versión de la ley de fecha 2016-06-01 contenida en el documento, y no constituye una comprobación de su vigencia actual.*
+
+Fuentes:
+[1] Artículo 10 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-96c9a59ca2664cbe9ca8fba0e8caf442 | estado: ok | prompt: 18db60ea8163
+Según la Ley 20.920 de 2016, las metas de recolección y de valorización de los residuos de productos prioritarios se establecen mediante decretos supremos dictados por el Ministerio [1]. 
+
+Para el establecimiento de dichas metas se consideran los siguientes criterios y principios:
+* La relación con la cantidad de productos prioritarios introducidos en el mercado nacional por cada productor [1].
+* La aplicación de los principios de gradualismo y de jerarquía en el manejo de residuos [1].
+* Las mejores técnicas disponibles y las mejores prácticas ambientales [1].
+* Consideraciones demográficas, geográficas y de conectividad, las cuales pueden servir de base para establecer diferencias en las metas mediante dichos decretos [1].
+
+*Nota: Esta respuesta corresponde estrictamente a una copia de la normativa contenida en los fragmentos provistos de la Ley 20.920 de 2016 y no constituye una comprobación de su vigencia actual.*
+
+Fuentes:
+[1] Artículo 12 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-b846aa1de4a94eb08b645e62c6e4ce76 | estado: abstencion | prompt: 18db60ea8163
+No hay información suficiente y citada para responder esta consulta.
+
+Fragmentos consultados:
+[1] Artículo 4 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+[2] Artículo 27 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+[3] Artículo 15 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-94f796c28a224f8f91ab5aeae798721b | estado: ok | prompt: 18db60ea8163
+La presente respuesta corresponde estrictamente a una copia de la Ley 20.920 de 2016 según el contexto proporcionado, y no constituye una comprobación de vigencia actual.
+
+Los productos prioritarios enumerados en la ley son:
+- Aceites lubricantes [1].
+- Aparatos eléctricos y electrónicos [1].
+- Baterías [1].
+- Envases y embalajes [1].
+- Neumáticos [1].
+- Pilas [1].
+
+Fuentes:
+[1] Artículo 10 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+=== v1: eventos
+{"ts": "2026-11-24T23:05:52.916+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-558da4e38aa04868ad793013a45d45d1", "pregunta_len": 57, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T23:05:53.336+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-558da4e38aa04868ad793013a45d45d1", "n_documentos": 3}
+{"ts": "2026-11-24T23:05:53.336+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-558da4e38aa04868ad793013a45d45d1", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:05:54.891+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-558da4e38aa04868ad793013a45d45d1", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1297, "output_tokens": 105, "total_tokens": 1402, "costo_usd": "0.0006516"}
+{"ts": "2026-11-24T23:05:54.891+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-558da4e38aa04868ad793013a45d45d1", "estado": "ok", "respuesta_len": 554, "requiere_revision": false, "ms": 1975.6}
+{"ts": "2026-11-24T23:05:54.891+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-4e8d64630b9c46688994e97219952fa2", "pregunta_len": 61, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T23:05:55.796+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-4e8d64630b9c46688994e97219952fa2", "n_documentos": 3}
+{"ts": "2026-11-24T23:05:55.796+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-4e8d64630b9c46688994e97219952fa2", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:05:57.512+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-4e8d64630b9c46688994e97219952fa2", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1402, "output_tokens": 136, "total_tokens": 1538, "costo_usd": "0.0007606"}
+{"ts": "2026-11-24T23:05:57.512+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-4e8d64630b9c46688994e97219952fa2", "estado": "ok", "respuesta_len": 509, "requiere_revision": false, "ms": 2621.1}
+{"ts": "2026-11-24T23:05:57.513+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-96c9a59ca2664cbe9ca8fba0e8caf442", "pregunta_len": 110, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T23:05:57.861+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-96c9a59ca2664cbe9ca8fba0e8caf442", "n_documentos": 3}
+{"ts": "2026-11-24T23:05:57.861+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-96c9a59ca2664cbe9ca8fba0e8caf442", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:05:59.751+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-96c9a59ca2664cbe9ca8fba0e8caf442", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1237, "output_tokens": 209, "total_tokens": 1446, "costo_usd": "0.0008936"}
+{"ts": "2026-11-24T23:05:59.751+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-96c9a59ca2664cbe9ca8fba0e8caf442", "estado": "ok", "respuesta_len": 1011, "requiere_revision": false, "ms": 2238.3}
+{"ts": "2026-11-24T23:05:59.751+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-b846aa1de4a94eb08b645e62c6e4ce76", "pregunta_len": 83, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T23:06:00.067+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-b846aa1de4a94eb08b645e62c6e4ce76", "n_documentos": 3}
+{"ts": "2026-11-24T23:06:00.068+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-b846aa1de4a94eb08b645e62c6e4ce76", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:06:00.925+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-b846aa1de4a94eb08b645e62c6e4ce76", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1279, "output_tokens": 63, "total_tokens": 1342, "costo_usd": "0.0005412"}
+{"ts": "2026-11-24T23:06:00.925+00:00", "level": "INFO", "evento": "respuesta_bloqueada", "trace_id": "trace-b846aa1de4a94eb08b645e62c6e4ce76", "motivo": "sin_citas", "n_citas": 0}
+{"ts": "2026-11-24T23:06:00.926+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-b846aa1de4a94eb08b645e62c6e4ce76", "estado": "abstencion", "respuesta_len": 302, "requiere_revision": false, "ms": 1174.7}
+{"ts": "2026-11-24T23:06:00.926+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-94f796c28a224f8f91ab5aeae798721b", "pregunta_len": 170, "patrones_en_pregunta": 2, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T23:06:01.249+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-94f796c28a224f8f91ab5aeae798721b", "n_documentos": 3}
+{"ts": "2026-11-24T23:06:01.249+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-94f796c28a224f8f91ab5aeae798721b", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:06:02.179+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-94f796c28a224f8f91ab5aeae798721b", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1386, "output_tokens": 106, "total_tokens": 1492, "costo_usd": "0.0006808"}
+{"ts": "2026-11-24T23:06:02.179+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-94f796c28a224f8f91ab5aeae798721b", "estado": "ok", "respuesta_len": 447, "requiere_revision": false, "ms": 1253.8}
+=== v2: respuestas en la terminal
+Versión en prueba: fa9063213deb. La activa sigue siendo 18db60ea8163.
+trace_id: trace-2c8654b6d31c4d96a1beeb7ab774b46c | estado: ok | prompt: fa9063213deb
+El objeto de la Ley 20.920 de 2016 es disminuir la generación de residuos y fomentar su reutilización, reciclaje y otro tipo de valorización mediante la instauración de la responsabilidad extendida del productor y otros instrumentos de gestión de residuos [1]. Con ello, busca proteger la salud de las personas y el medio ambiente [1].
+
+*Nota: Esta respuesta corresponde estrictamente a una copia de los fragmentos provistos de la ley y no constituye una comprobación de su vigencia actual.*
+
+Fuentes:
+[1] Artículo 1 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-a02382a92dd24c00bbdfc3605c7743f4 | estado: ok | prompt: fa9063213deb
+Los seis productos prioritarios que enumera expresamente la ley son:
+
+a) Aceites lubricantes [1].
+b) Aparatos eléctricos y electrónicos [1].
+c) Baterías [1].
+d) Envases y embalajes [1].
+e) Neumáticos [1].
+f) Pilas [1].
+
+*Nota: Esta respuesta se basa exclusivamente en una copia de la Ley 20.920 de 2016 y no constituye una comprobación de su vigencia actual.*
+
+Fuentes:
+[1] Artículo 10 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-c9c959bbc75e4e7baa9f9f56263f89f3 | estado: ok | prompt: fa9063213deb
+Las metas de recolección y valorización de los residuos de productos prioritarios se establecen mediante decretos supremos dictados por el Ministerio [1]. 
+
+Su establecimiento se efectúa considerando la cantidad de productos prioritarios introducidos en el mercado nacional por cada productor, aplicando los principios de gradualismo y de jerarquía en el manejo de residuos, y tomando como criterio las mejores técnicas disponibles y las mejores prácticas ambientales [1]. Además, estos decretos pueden fijar diferencias en las metas basándose en consideraciones demográficas, geográficas y de conectividad [1].
+
+*Nota: Esta respuesta se basa estrictamente en una copia de la Ley 20.920 de 2016 y no constituye una comprobación de su vigencia actual.*
+
+Fuentes:
+[1] Artículo 12 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-1feea9d5ce2d402eb8484ad09733a8dc | estado: abstencion | prompt: fa9063213deb
+No hay información suficiente y citada para responder esta consulta.
+
+Fragmentos consultados:
+[1] Artículo 4 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+[2] Artículo 27 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+[3] Artículo 15 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+trace_id: trace-c90d97760d42483f8edde7bc0d372175 | estado: ok | prompt: fa9063213deb
+Esta respuesta corresponde a una copia de la Ley 20.920 de 2016 (versión 2016-06-01), la cual constituye únicamente una reproducción del texto documental proporcionado y no una comprobación de vigencia actual.
+
+Los productos prioritarios que enumera la ley son:
+a) Aceites lubricantes [1].
+b) Aparatos eléctricos y electrónicos [1].
+c) Baterías [1].
+d) Envases y embalajes [1].
+e) Neumáticos [1].
+f) Pilas [1].
+
+Fuentes:
+[1] Artículo 10 — https://www.bcn.cl/leychile/navegar?idNorma=1090894
+
+=== v2: eventos
+{"ts": "2026-11-24T23:06:14.253+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-2c8654b6d31c4d96a1beeb7ab774b46c", "pregunta_len": 57, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "fa9063213deb"}
+{"ts": "2026-11-24T23:06:15.206+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-2c8654b6d31c4d96a1beeb7ab774b46c", "n_documentos": 3}
+{"ts": "2026-11-24T23:06:15.206+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-2c8654b6d31c4d96a1beeb7ab774b46c", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:06:17.058+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-2c8654b6d31c4d96a1beeb7ab774b46c", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1345, "output_tokens": 109, "total_tokens": 1454, "costo_usd": "0.000676"}
+{"ts": "2026-11-24T23:06:17.059+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-2c8654b6d31c4d96a1beeb7ab774b46c", "estado": "ok", "respuesta_len": 570, "requiere_revision": false, "ms": 2805.8}
+{"ts": "2026-11-24T23:06:17.059+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-a02382a92dd24c00bbdfc3605c7743f4", "pregunta_len": 61, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "fa9063213deb"}
+{"ts": "2026-11-24T23:06:17.419+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-a02382a92dd24c00bbdfc3605c7743f4", "n_documentos": 3}
+{"ts": "2026-11-24T23:06:17.420+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-a02382a92dd24c00bbdfc3605c7743f4", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:06:18.606+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-a02382a92dd24c00bbdfc3605c7743f4", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1450, "output_tokens": 112, "total_tokens": 1562, "costo_usd": "0.000715"}
+{"ts": "2026-11-24T23:06:18.606+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-a02382a92dd24c00bbdfc3605c7743f4", "estado": "ok", "respuesta_len": 439, "requiere_revision": false, "ms": 1547.0}
+{"ts": "2026-11-24T23:06:18.606+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-c9c959bbc75e4e7baa9f9f56263f89f3", "pregunta_len": 110, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "fa9063213deb"}
+{"ts": "2026-11-24T23:06:19.482+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-c9c959bbc75e4e7baa9f9f56263f89f3", "n_documentos": 3}
+{"ts": "2026-11-24T23:06:19.482+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-c9c959bbc75e4e7baa9f9f56263f89f3", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:06:20.575+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-c9c959bbc75e4e7baa9f9f56263f89f3", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1285, "output_tokens": 158, "total_tokens": 1443, "costo_usd": "0.0007805"}
+{"ts": "2026-11-24T23:06:20.575+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-c9c959bbc75e4e7baa9f9f56263f89f3", "estado": "ok", "respuesta_len": 831, "requiere_revision": false, "ms": 1968.8}
+{"ts": "2026-11-24T23:06:20.575+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-1feea9d5ce2d402eb8484ad09733a8dc", "pregunta_len": 83, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "fa9063213deb"}
+{"ts": "2026-11-24T23:06:20.933+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-1feea9d5ce2d402eb8484ad09733a8dc", "n_documentos": 3}
+{"ts": "2026-11-24T23:06:20.933+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-1feea9d5ce2d402eb8484ad09733a8dc", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:06:22.522+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-1feea9d5ce2d402eb8484ad09733a8dc", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1327, "output_tokens": 66, "total_tokens": 1393, "costo_usd": "0.0005631"}
+{"ts": "2026-11-24T23:06:22.522+00:00", "level": "INFO", "evento": "respuesta_bloqueada", "trace_id": "trace-1feea9d5ce2d402eb8484ad09733a8dc", "motivo": "sin_citas", "n_citas": 0}
+{"ts": "2026-11-24T23:06:22.522+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-1feea9d5ce2d402eb8484ad09733a8dc", "estado": "abstencion", "respuesta_len": 302, "requiere_revision": false, "ms": 1947.6}
+{"ts": "2026-11-24T23:06:22.522+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-c90d97760d42483f8edde7bc0d372175", "pregunta_len": 170, "patrones_en_pregunta": 2, "k": 3, "huella_prompt": "fa9063213deb"}
+{"ts": "2026-11-24T23:06:22.879+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-c90d97760d42483f8edde7bc0d372175", "n_documentos": 3}
+{"ts": "2026-11-24T23:06:22.880+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-c90d97760d42483f8edde7bc0d372175", "n_limpios": 3, "n_descartados": 0}
+{"ts": "2026-11-24T23:06:23.846+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-c90d97760d42483f8edde7bc0d372175", "modelo": "gemini-3.5-flash-lite", "input_tokens": 1434, "output_tokens": 128, "total_tokens": 1562, "costo_usd": "0.0007502"}
+{"ts": "2026-11-24T23:06:23.846+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-c90d97760d42483f8edde7bc0d372175", "estado": "ok", "respuesta_len": 490, "requiere_revision": false, "ms": 1323.4}

@@ -16,11 +16,12 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 8. [Agente con memoria y supervisión](#agente-con-memoria-y-supervisión)
 9. [Consultas RAG de Ley REP](#consultas-rag-de-ley-rep)
 10. [Personalización del clasificador de rutas](#personalización-del-clasificador-de-rutas)
-11. [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
-12. [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
-13. [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
-14. [Guías de estudio](#guías-de-estudio)
-15. [Documentación y evidencias](#documentación-y-evidencias)
+11. [Observabilidad y gobernanza del RAG](#observabilidad-y-gobernanza-del-rag)
+12. [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
+13. [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
+14. [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
+15. [Guías de estudio](#guías-de-estudio)
+16. [Documentación y evidencias](#documentación-y-evidencias)
 
 ## Inicio rápido
 
@@ -79,6 +80,8 @@ Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El
 | 28 | Latencia y costo del flujo RAG | [Actividad core, checklist y estado de evidencias reales](docs/entregas/bloques-24-28.md). |
 | 29 | Dataset validado para personalizar un modelo | [Uso](#personalización-del-clasificador-de-rutas), [entrega](docs/entregas/bloques-29-30.md) y [validación](docs/evidencias/bloques-29-30/dataset-validacion.txt). |
 | 30 | Decisión fundamentada de personalización | [Documento de decisión](docs/arquitectura/decision-personalizacion.md) y [recorrido y estado](docs/entregas/bloques-29-30.md#recorrido-de-ejecución). |
+| 31 | Registros con traza, consumo y filtro de inyección | [Uso](#observabilidad-y-gobernanza-del-rag), [entrega](docs/entregas/bloques-31-32.md) y [salida](docs/evidencias/bloques-31-32/logging-ensayo.txt). |
+| 32 | Versiones de prompt, supervisión y matriz de riesgos | [Matriz](docs/arquitectura/matriz-riesgos.md) y [recorrido y estado](docs/entregas/bloques-31-32.md#recorrido-de-ejecución). |
 
 ## Comandos útiles
 
@@ -271,6 +274,35 @@ Las salidas quedan en `output/personalizacion/`, ignorado por Git. Consulta el
 [recorrido y el estado de la entrega](docs/entregas/bloques-29-30.md) y la
 [guía de estudio](docs/estudio/bloques-29-30.md).
 
+### Observabilidad y gobernanza del RAG
+
+Entrada de terminal de los bloques 31 y 32. Responde con el RAG dejando eventos JSON
+con `trace_id`, sin la pregunta ni la respuesta; descarta fragmentos con instrucciones
+sospechosas y no entrega texto sin citas. Activar otra versión del prompt requiere una
+decisión humana.
+
+Sin cuota ni clave:
+
+```bash
+uv run python -m scripts.logging_rag
+uv run python -m scripts.registro_prompts
+uv run python -m scripts.grafo_supervision demo
+uv run python -m scripts.matriz_riesgos
+```
+
+Una consulta real **sí consume cuota** y necesita el índice en `vectorstore/`:
+
+```bash
+uv run python -m scripts.logging_rag --confirmar-consumo \
+  --registro output/observabilidad/eventos-01.jsonl \
+  --consultar "¿Qué es un productor de un producto prioritario?"
+```
+
+El filtro reconoce frases conocidas y una cita existente no prueba que la respuesta sea
+fiel. Consulta el [recorrido y el estado](docs/entregas/bloques-31-32.md), la
+[matriz de riesgos](docs/arquitectura/matriz-riesgos.md) y la
+[guía de estudio](docs/estudio/bloques-31-32.md).
+
 ### Evaluaciones y ensayos
 
 Comparar modelos y evaluar prompts realiza consultas reales a Gemini. El ensayo con `--simulado` no usa red ni consume tokens. Elige un archivo de salida nuevo en cada ejecución para conservar las evidencias anteriores.
@@ -295,6 +327,7 @@ Para el ensayo contra el proveedor, consulta los [límites y comandos del ensayo
 | Ejecutar solo las pruebas de orquestación | `uv run python -m pytest tests/orquestacion -v` |
 | Ejecutar solo las pruebas del RAG | `uv run python -m pytest tests/rag -v` |
 | Ejecutar solo las pruebas de personalización | `uv run python -m pytest tests/personalizacion -v` |
+| Ejecutar solo las pruebas de observabilidad y gobernanza | `uv run python -m pytest tests/observabilidad tests/gobernanza -v` |
 | Ejecutar solo las pruebas de prompts | `uv run python -m pytest tests/prompts -v` |
 | Ejecutar solo las pruebas de scripts | `uv run python -m pytest tests/scripts -v` |
 | Usar el ejecutor alternativo de unittest | `uv run python -m tests -v` |
@@ -311,15 +344,17 @@ src/
 ├── evaluacion/         → Pipeline de texto y métricas léxicas
 ├── costos/             → Cálculo, registro de sesión y tipo de cambio
 ├── orquestacion/       → Chain, rutas y fallbacks con LangChain
-├── rag/                → Índice Chroma, recuperación, citas y mediciones
+├── rag/                → Índice Chroma, recuperación, citas, mediciones y servicio auditable
 ├── personalizacion/    → Dataset de tuning, línea base y método de decisión
+├── observabilidad/     → Eventos JSON, trazas y filtro de inyección
+├── gobernanza/         → Versiones de prompt, supervisión y riesgos
 ├── prompts/            → Banco, instrucciones y contexto documental
 ├── agentes.py          → Selección y ejecución del agente
 └── catalogo.py         → Modelos disponibles
-tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, rag/, personalizacion/, prompts/ y scripts/
+tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, rag/, personalizacion/, observabilidad/, gobernanza/, prompts/ y scripts/
 scripts/                → Evaluaciones, ensayos y herramientas auxiliares
 docs/                   → Guía, arquitectura y evidencias
-datos/                  → Ley REP, casos de evaluación y dataset de personalización
+datos/                  → Ley REP, casos de evaluación, dataset de personalización, prompts y riesgos
 ```
 
 Para evaluar el proyecto, comienza ejecutando `/health` y las pruebas. Luego sigue el flujo de código: [entrada](main.py) → [API y autenticación](src/api/app.py) → [selección del agente](src/agentes.py) → [cliente HTTP](src/clientes/gemini.py). Los [errores](src/clientes/errores.py) y los [reintentos](src/clientes/reintentos.py) se mantienen en módulos separados.
@@ -342,6 +377,7 @@ de repaso están separadas de la documentación de uso:
 - [Bloques 21 a 23: herramientas, memoria y supervisión humana](docs/estudio/bloques-21-23.md).
 - [Bloques 24 a 28: RAG, recuperación con citas, evaluación, latencia y costo](docs/estudio/bloques-24-28.md).
 - [Bloques 29 y 30: RAG, fine-tuning, PEFT y cómo decidir si personalizar](docs/estudio/bloques-29-30.md).
+- [Bloques 31 y 32: registros, inyección de prompt, supervisión y riesgos](docs/estudio/bloques-31-32.md).
 
 ## Documentación y evidencias
 
@@ -351,10 +387,11 @@ La documentación está organizada por propósito y conectada por bloques en el
 - [Guía de uso, comandos y referencia de la API](docs/guias/guia-completa.md).
 - [Arquitectura, modelos y límites](docs/arquitectura/vision-general.md).
 - [Evaluación de respuestas y límites de métricas](docs/evaluaciones/respuestas-ley-rep.md).
-- [Planes y decisiones: PRD 04 del RAG](docs/planes/prd-04-rag-ley-rep.md) y
-  [PRD 05 de personalización](docs/planes/prd-05-personalizacion-ley-rep.md).
+- [Planes y decisiones: PRD 04 del RAG](docs/planes/prd-04-rag-ley-rep.md),
+  [PRD 05 de personalización](docs/planes/prd-05-personalizacion-ley-rep.md) y
+  [PRD 07 de observabilidad y gobernanza](docs/planes/prd-07-observabilidad-gobernanza.md).
 - [Entrega 13–14](docs/entregas/bloques-13-14.md), [18–20](docs/entregas/bloques-18-20.md),
-  [21–23](docs/entregas/bloques-21-23.md), [24–28 con evidencias reales](docs/entregas/bloques-24-28.md)
-  y [29–30](docs/entregas/bloques-29-30.md).
+  [21–23](docs/entregas/bloques-21-23.md), [24–28 con evidencias reales](docs/entregas/bloques-24-28.md),
+  [29–30](docs/entregas/bloques-29-30.md) y [31–32](docs/entregas/bloques-31-32.md).
 - [Capturas de terminal conservadas](docs/evidencias/mis-capturas/README.md).
 - [Proyecto final: asistente RAG para Ley REP](docs/guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

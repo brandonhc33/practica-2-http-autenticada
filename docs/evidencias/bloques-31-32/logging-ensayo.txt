@@ -1,0 +1,36 @@
+{"ts": "2026-11-24T22:56:02.043+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-c0675dae8707409d9db07851604c11cf", "pregunta_len": 59, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T22:56:02.048+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-c0675dae8707409d9db07851604c11cf", "n_documentos": 2}
+{"ts": "2026-11-24T22:56:02.048+00:00", "level": "WARNING", "evento": "documento_descartado_por_inyeccion", "trace_id": "trace-c0675dae8707409d9db07851604c11cf", "id_chunk": "prueba-2", "huella_fragmento": "001a17444186", "n_patrones": 3, "motivo": "patron:0,3,5"}
+{"ts": "2026-11-24T22:56:02.048+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-c0675dae8707409d9db07851604c11cf", "n_limpios": 1, "n_descartados": 1}
+{"ts": "2026-11-24T22:56:02.052+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-c0675dae8707409d9db07851604c11cf", "modelo": "gemini-3.5-flash-lite", "input_tokens": 210, "output_tokens": 18, "total_tokens": 228, "costo_usd": "0.000108"}
+{"ts": "2026-11-24T22:56:02.052+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-c0675dae8707409d9db07851604c11cf", "estado": "ok", "respuesta_len": 86, "requiere_revision": true, "ms": 8.7}
+{"ts": "2026-11-24T22:56:02.052+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-51f72591d5d7418ab3d77a6449694423", "pregunta_len": 59, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T22:56:02.052+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-51f72591d5d7418ab3d77a6449694423", "n_documentos": 1}
+{"ts": "2026-11-24T22:56:02.052+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-51f72591d5d7418ab3d77a6449694423", "n_limpios": 1, "n_descartados": 0}
+{"ts": "2026-11-24T22:56:02.053+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-51f72591d5d7418ab3d77a6449694423", "modelo": "gemini-3.5-flash-lite", "input_tokens": 210, "output_tokens": 18, "total_tokens": 228, "costo_usd": "0.000108"}
+{"ts": "2026-11-24T22:56:02.053+00:00", "level": "INFO", "evento": "respuesta_bloqueada", "trace_id": "trace-51f72591d5d7418ab3d77a6449694423", "motivo": "sin_citas", "n_citas": 0}
+{"ts": "2026-11-24T22:56:02.053+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-51f72591d5d7418ab3d77a6449694423", "estado": "abstencion", "respuesta_len": 131, "requiere_revision": false, "ms": 1.2}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-10d843a86be4440fbefebc505017a077", "pregunta_len": 59, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-10d843a86be4440fbefebc505017a077", "n_documentos": 1}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "WARNING", "evento": "documento_descartado_por_inyeccion", "trace_id": "trace-10d843a86be4440fbefebc505017a077", "id_chunk": "prueba-2", "huella_fragmento": "001a17444186", "n_patrones": 3, "motivo": "patron:0,3,5"}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-10d843a86be4440fbefebc505017a077", "n_limpios": 0, "n_descartados": 1}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "respuesta_bloqueada", "trace_id": "trace-10d843a86be4440fbefebc505017a077", "motivo": "sin_contexto"}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-10d843a86be4440fbefebc505017a077", "estado": "abstencion", "respuesta_len": 58, "requiere_revision": true, "ms": 0.2}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-46c3d78bf7a340a19f0df5675fafea80", "pregunta_len": 10, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-46c3d78bf7a340a19f0df5675fafea80", "n_documentos": 1}
+{"ts": "2026-11-24T22:56:02.054+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-46c3d78bf7a340a19f0df5675fafea80", "n_limpios": 1, "n_descartados": 0}
+{"ts": "2026-11-24T22:56:02.055+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-46c3d78bf7a340a19f0df5675fafea80", "modelo": "gemini-3.5-flash-lite", "input_tokens": 210, "output_tokens": 18, "total_tokens": 228, "costo_usd": "0.000108"}
+{"ts": "2026-11-24T22:56:02.055+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-46c3d78bf7a340a19f0df5675fafea80", "estado": "ok", "respuesta_len": 86, "requiere_revision": false, "ms": 0.9}
+{"ts": "2026-11-24T22:56:02.055+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-69ac591b49644c83a9dcca85e7c8da25", "pregunta_len": 10, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T22:56:02.055+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-69ac591b49644c83a9dcca85e7c8da25", "n_documentos": 1}
+{"ts": "2026-11-24T22:56:02.055+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-69ac591b49644c83a9dcca85e7c8da25", "n_limpios": 1, "n_descartados": 0}
+{"ts": "2026-11-24T22:56:02.056+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-69ac591b49644c83a9dcca85e7c8da25", "modelo": "gemini-3.5-flash-lite", "input_tokens": 210, "output_tokens": 18, "total_tokens": 228, "costo_usd": "0.000108"}
+{"ts": "2026-11-24T22:56:02.056+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-69ac591b49644c83a9dcca85e7c8da25", "estado": "ok", "respuesta_len": 86, "requiere_revision": false, "ms": 0.8}
+
+Comprobaciones (índice, embeddings y modelo de prueba; sin Gemini):
+- correcto: el documento con inyección se descarta y el limpio sigue
+- correcto: el consumo registrado coincide con el de la respuesta
+- correcto: dos consultas simultáneas no mezclan sus trazas
+- correcto: una respuesta sin citas no se entrega
+- correcto: si solo queda un fragmento sospechoso, no se llama al modelo
+- correcto: los registros no tienen el correo, la pregunta, la respuesta ni los fragmentos

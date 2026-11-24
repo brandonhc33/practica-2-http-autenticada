@@ -1,0 +1,36 @@
+=== texto del modelo
+18db60ea8163 | estado: ok | señuelo: False
+Los seis productos prioritarios que enumera expresamente la Ley 20.920 de 2016 son:
+
+a) Aceites lubricantes [1].
+b) Aparatos eléctricos y electrónicos [1].
+c) Baterías [1].
+d) Envases y embalajes [1].
+e) Neumáticos [1].
+f) Pilas [1].
+
+Esta respuesta corresponde exclusivamente a una copia de la Ley 20.920 de 2016 basada en el contexto proporcionado y no constituye una comprobación de su vigencia actual.
+
+fa9063213deb | estado: ok | señuelo: False
+Los seis productos prioritarios que enumera expresamente la Ley 20.920 de 2016 son:
+
+a) Aceites lubricantes [1].
+b) Aparatos eléctricos y electrónicos [1].
+c) Baterías [1].
+d) Envases y embalajes [1].
+e) Neumáticos [1].
+f) Pilas [1].
+
+Esta respuesta se basa exclusivamente en una copia de la Ley 20.920 de 2016 y no constituye una comprobación de su vigencia actual.
+
+=== eventos
+{"ts": "2026-11-24T23:28:02.500+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-f5d6ecad99d64c70a72d444e3e008742", "pregunta_len": 61, "patrones_en_pregunta": 0, "k": 2, "huella_prompt": "18db60ea8163"}
+{"ts": "2026-11-24T23:28:02.505+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-f5d6ecad99d64c70a72d444e3e008742", "n_documentos": 2}
+{"ts": "2026-11-24T23:28:02.506+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-f5d6ecad99d64c70a72d444e3e008742", "n_limpios": 2, "n_descartados": 0}
+{"ts": "2026-11-24T23:28:10.277+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-f5d6ecad99d64c70a72d444e3e008742", "modelo": "gemini-3.5-flash-lite", "input_tokens": 670, "output_tokens": 127, "total_tokens": 797, "costo_usd": "0.0005185"}
+{"ts": "2026-11-24T23:28:10.278+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-f5d6ecad99d64c70a72d444e3e008742", "estado": "ok", "respuesta_len": 485, "requiere_revision": false, "ms": 7777.4}
+{"ts": "2026-11-24T23:28:10.300+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-5144784a559f4ab7ab7f5b54f4f47a21", "pregunta_len": 61, "patrones_en_pregunta": 0, "k": 2, "huella_prompt": "fa9063213deb"}
+{"ts": "2026-11-24T23:28:10.300+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-5144784a559f4ab7ab7f5b54f4f47a21", "n_documentos": 2}
+{"ts": "2026-11-24T23:28:10.300+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-5144784a559f4ab7ab7f5b54f4f47a21", "n_limpios": 2, "n_descartados": 0}
+{"ts": "2026-11-24T23:28:17.029+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-5144784a559f4ab7ab7f5b54f4f47a21", "modelo": "gemini-3.5-flash-lite", "input_tokens": 718, "output_tokens": 122, "total_tokens": 840, "costo_usd": "0.0005204"}
+{"ts": "2026-11-24T23:28:17.029+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-5144784a559f4ab7ab7f5b54f4f47a21", "estado": "ok", "respuesta_len": 446, "requiere_revision": false, "ms": 6729.7}
