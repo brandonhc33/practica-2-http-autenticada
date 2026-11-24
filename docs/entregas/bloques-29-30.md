@@ -112,8 +112,8 @@ copian a `docs/evidencias/bloques-29-30/` las mediciones reales revisadas.
 - [x] Documento de decisión con cuatro secciones, sensibilidad y números.
 - [x] Evidencias reales conservadas con huellas; estado actualizado.
 - [x] Revisión del documento de decisión.
-- [ ] Ampliación integrada y publicada en `main`, sin publicar la rama de bloques.
-- [ ] Instalación desde un clon limpio de GitHub.
+- [x] Ampliación integrada y publicada en `main`, sin publicar la rama de bloques.
+- [x] Instalación desde un clon limpio de GitHub: [verificación](../evidencias/bloques-29-30/verificacion-github.md).
 - [ ] Presentación de las actividades en Skillnest.
 
 Las comprobaciones de esta versión se detallan en la

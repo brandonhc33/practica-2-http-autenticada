@@ -15,6 +15,7 @@ sin Gemini, sin clave y sin red. Cada archivo es la salida completa del comando.
 | [`linea-base-02.json`](linea-base-02.json) | **Gemini real**, `--continuar` | Las 24 respuestas: 16 conservadas y 8 nuevas. |
 | [`decision-resultado.txt`](decision-resultado.txt) | `scripts.decision_personalizacion --linea-base` | Puntaje y sensibilidad con la medición completa. |
 | [`verificacion-local.md`](verificacion-local.md) | Pruebas, ruff, basedpyright y unittest | Comprobaciones de la implementación. |
+| [`verificacion-github.md`](verificacion-github.md) | Merge, push de `main` y clon limpio | Publicación e instalación. |
 
 | Archivo | SHA-256 |
 | --- | --- |

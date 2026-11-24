@@ -1,7 +1,7 @@
 # PRD 05: personalización del clasificador de rutas — bloques 29 y 30
 
-**Estado:** fases 0 a 4 ejecutadas: etiquetas revisadas, línea base real completa
-y documento de decisión revisado. Falta la fase 5. El estado de cierre se mantiene en el checklist de la [entrega](../entregas/bloques-29-30.md).
+**Estado:** fases 0 a 5 ejecutadas: etiquetas revisadas, línea base real completa,
+documento de decisión revisado y `main` publicado. El estado de cierre se mantiene en el checklist de la [entrega](../entregas/bloques-29-30.md).
 **Línea base del repositorio:** `c3a4746`, 303 pruebas y 588 subpruebas; revisión del 23-11-2026.
 
 ## 1. Objetivo y alcance
@@ -96,7 +96,7 @@ corresponde a `dataset_tuning.py`, y `scripts/decision_personalizacion.py` al
 - [x] Línea base real completa, en dos tramos conservados.
 - [x] Documento de decisión con las cuatro secciones, sensibilidad y números.
 - [x] Revisión del documento de decisión.
-- [ ] Integración y publicación en `main`; instalación desde un clon limpio.
+- [x] Integración y publicación en `main`; instalación desde un clon limpio.
 - [ ] Presentación de las actividades en Skillnest.
 
 ## 7. Límites de interpretación
