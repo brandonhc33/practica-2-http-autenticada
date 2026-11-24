@@ -18,6 +18,7 @@ red, con consultas, documentos y decisiones de prueba.
 | [`prueba-prompts-registro.txt`](prueba-prompts-registro.txt) | Publicado con `proponer-evidencia` y decisión en la terminal | Respuestas y eventos de esas 10 consultas. |
 | [`orden-escondida-criterio.md`](orden-escondida-criterio.md) , [resultado](orden-escondida-resultado.md) y [registro](orden-escondida-registro.txt) | **Gemini real**, `scripts.ensayo_inyeccion_indirecta` | 2 generaciones con una orden que el filtro no reconoce. |
 | [`verificacion-local.md`](verificacion-local.md) | Pruebas, ruff, basedpyright y unittest | Comprobaciones de la implementación. |
+| [`verificacion-github.md`](verificacion-github.md) | Merge, push de `main` y clon limpio | Publicación e instalación. |
 
 | Archivo | SHA-256 |
 | --- | --- |

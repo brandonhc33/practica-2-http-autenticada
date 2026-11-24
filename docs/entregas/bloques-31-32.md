@@ -1,8 +1,8 @@
 # Entrega de bloques 31 y 32 — observabilidad, seguridad y gobernanza
 
 **Estado: implementación, pruebas y medición de las dos versiones del prompt
-completadas.** La matriz está revisada y la segunda versión del prompt, activa.
-Pendiente: publicación en `main`.
+completadas.** La matriz está revisada, la segunda versión del prompt, activa, y
+`main`, publicado. Actividades listas para presentar.
 
 Plan y fuentes: [PRD 07](../planes/prd-07-observabilidad-gobernanza.md).
 Explicaciones y ejercicios: [guía de estudio](../estudio/bloques-31-32.md).
@@ -116,8 +116,8 @@ otros datos personales: por eso decide una persona.
 - [x] Prueba real de las dos versiones del prompt, con el criterio escrito antes.
 - [x] Orden escondida que el filtro no reconoce, probada con ambas versiones.
 - [x] Decisión sobre la versión 2 en la terminal: aprobada y activa.
-- [ ] Ampliación integrada y publicada en `main`, sin publicar la rama de bloques.
-- [ ] Instalación desde un clon limpio de GitHub.
+- [x] Ampliación integrada y publicada en `main`, sin publicar la rama de bloques.
+- [x] Instalación desde un clon limpio de GitHub: [verificación](../evidencias/bloques-31-32/verificacion-github.md).
 - [ ] Presentación de las actividades en Skillnest.
 
 Las comprobaciones de esta versión se detallan en la

@@ -1,7 +1,7 @@
 # PRD 07: observabilidad, seguridad y gobernanza — bloques 31 y 32
 
-**Estado:** fases 0 a 4 ejecutadas: matriz revisada, versiones medidas y v2 activa. Falta
-la publicación. El estado de cierre se
+**Estado:** fases 0 a 5 ejecutadas: matriz revisada, versiones medidas, v2 activa y
+`main` publicado. El estado de cierre se
 mantiene en el checklist de la [entrega](../entregas/bloques-31-32.md).
 **Línea base del repositorio:** `92679d7`, 346 pruebas y 630 subpruebas; 24-11-2026.
 
@@ -98,7 +98,7 @@ flowchart TD
 - [x] Prueba real de v1 y v2, con el criterio escrito antes.
 - [x] Decisión sobre v2: aprobada y activa.
 - [x] Orden escondida que el filtro no reconoce, probada con ambas versiones.
-- [ ] Integración y publicación en `main`; instalación desde un clon limpio.
+- [x] Integración y publicación en `main`; instalación desde un clon limpio.
 - [ ] Presentación de las actividades en Skillnest.
 
 ## 7. Límites de interpretación
