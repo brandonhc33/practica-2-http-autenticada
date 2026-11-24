@@ -34,5 +34,9 @@ output/rag/
 # Mediciones y documentos base locales de la personalización (bloques 29 y 30)
 output/personalizacion/
 
+# Eventos locales, aprobaciones pendientes y decisiones (bloques 31 y 32)
+output/observabilidad/
+output/gobernanza/
+
 # Paquetes locales de entrega; el código y las evidencias se versionan por separado
 output/entrega-bloques-*.zip
