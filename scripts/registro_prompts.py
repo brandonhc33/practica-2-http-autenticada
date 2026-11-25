@@ -27,11 +27,11 @@ def main(argv: list[str] | None = None) -> int:
         print("última registrada:", ultima.huella if ultima else "ninguna")
         print("activa:", registro.buscar(activa).huella)
         if args.diff:
-            par = [registro.buscar(h) for h in args.diff]
+            cambios = [[registro.buscar(h) for h in args.diff]]
         else:
-            par = versiones[-2:]
-        if len(par) == 2:
-            print("\n" + "\n".join(diff_prompts(par[0], par[1])))
+            cambios = [list(par) for par in zip(versiones, versiones[1:], strict=False)]
+        for anterior, nueva in cambios:
+            print("\n" + "\n".join(diff_prompts(anterior, nueva)))
         return 0
     except (OSError, ValueError, KeyError, TypeError) as error:
         parser.exit(1, f"Registro de prompts no válido: {error}\n")

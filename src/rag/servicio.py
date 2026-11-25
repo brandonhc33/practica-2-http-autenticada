@@ -14,6 +14,7 @@ from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 
 from src.gobernanza.prompts import VersionPrompt
+from src.observabilidad.datos_sensibles import ocultar_datos_sensibles
 from src.observabilidad.inyeccion import detectar_inyeccion, filtrar_documentos
 from src.observabilidad.trazas import nueva_traza, registrar_evento
 from src.orquestacion.modelo import exigir_texto
@@ -32,15 +33,20 @@ ERROR_CONTROLADO = "No se pudo completar la consulta. Conserva el trace_id para 
 
 def _fuentes_publicas(fuentes: dict[int, dict[str, Any]]) -> list[dict[str, Any]]:
     """Datos para citar; el texto completo queda en el índice, no en la respuesta."""
-    campos = ("id_chunk", "referencia", "fuente", "version", "url")
+    campos = ("id_chunk", "documento", "referencia", "fuente", "version", "url")
     return [
         {"cita": n, **{c: f[c] for c in campos if c in f}} for n, f in fuentes.items()
     ]
 
 
+def nombre_fuente(fuente: dict[str, Any]) -> str:
+    """Norma y artículo: con más de una norma, el artículo solo no identifica la fuente."""
+    return ", ".join(fuente[c] for c in ("documento", "referencia") if c in fuente)
+
+
 def _lista_de_fuentes(titulo: str, fuentes: list[dict[str, Any]]) -> str:
     lineas = [
-        f"[{f['cita']}] {f['referencia']} — {f.get('url', f['fuente'])}" for f in fuentes
+        f"[{f['cita']}] {nombre_fuente(f)} — {f.get('url', f['fuente'])}" for f in fuentes
     ]
     return "\n".join([titulo, *lineas])
 
@@ -72,17 +78,28 @@ def responder(
         }
         etapa = "validacion"
         try:
+            # El proveedor tampoco necesita el correo o el RUT de quien pregunta.
+            pregunta, ocultados = ocultar_datos_sensibles(pregunta)
             registrar_evento(
                 "consulta_recibida",
                 pregunta_len=len(pregunta),
+                datos_ocultados=ocultados,
                 patrones_en_pregunta=len(detectar_inyeccion(pregunta)),
                 k=k,
                 huella_prompt=prompt.huella,
             )
             validar_consulta(pregunta, k)
             etapa = "recuperacion"
-            recuperados = buscar_por_vector(indice, embeddings.embed_query(pregunta), k)
-            registrar_evento("documentos_recuperados", n_documentos=len(recuperados))
+            desde = perf_counter()
+            vector = embeddings.embed_query(pregunta)
+            buscado = perf_counter()
+            recuperados = buscar_por_vector(indice, vector, k)
+            registrar_evento(
+                "documentos_recuperados",
+                n_documentos=len(recuperados),
+                ms_embedding=round((buscado - desde) * 1000, 1),
+                ms_busqueda=round((perf_counter() - buscado) * 1000, 1),
+            )
             etapa = "filtro"
             limpios, descartados = filtrar_documentos(recuperados)
             # Un fragmento sospechoso no responde en silencio: queda marcado para revisión.
@@ -94,6 +111,7 @@ def responder(
                 registrar_evento("respuesta_bloqueada", motivo="sin_contexto")
             else:
                 etapa = "generacion"
+                desde = perf_counter()
                 mensaje = modelo.invoke(
                     prompt.plantilla().invoke({"pregunta": pregunta, "contexto": contexto})
                 )
@@ -104,6 +122,7 @@ def responder(
                 registrar_evento(
                     "consumo_llm",
                     modelo=nombre_modelo,
+                    ms=round((perf_counter() - desde) * 1000, 1),
                     input_tokens=tokens.get("input_tokens"),
                     output_tokens=tokens.get("output_tokens"),
                     total_tokens=tokens.get("total_tokens"),

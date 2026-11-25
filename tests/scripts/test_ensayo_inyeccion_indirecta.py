@@ -67,7 +67,7 @@ class TestEnsayoInyeccionIndirecta(unittest.TestCase):
         ):
             self.assertEqual(
                 ensayo.main(["--registro", str(self.registro), "--confirmar-consumo"]), 0)
-        self.assertEqual(creado.call_count, 2)
+        self.assertEqual(creado.call_count, len(RegistroDePrompts.cargar().versiones))
         self.assertNotIn("Pilas", self.registro.read_text())
 
 

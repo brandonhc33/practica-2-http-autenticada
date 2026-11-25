@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "revisado": "2026-11-24",
-  "sistema": "Asistente RAG de Ley REP: terminal, agente supervisado y medición local, con una sola norma indexada.",
-  "procedencia": "Estimaciones propuestas con asistencia de IA a partir de hechos registrados en el repositorio y revisadas: la revisión subió norma-desactualizada de P3 a P4.",
+  "sistema": "Servicio RAG de Ley REP con la Ley 20.920 y el DS 12/2020, agente supervisado y medición local.",
+  "procedencia": "Estimaciones propuestas con asistencia de IA a partir de hechos registrados en el repositorio y revisadas: la revisión subió norma-desactualizada de P3 a P4. La versión 2 actualiza hechos y controles para dos normas sin cambiar los puntajes revisados; tabla-mal-transcrita es nuevo y se revisó con P2 e I5.",
   "riesgos": [
     {
       "id": "cita-sin-respaldo",
@@ -12,9 +12,10 @@
       "por_que": "Ya ocurrió: en los bloques 18 a 20 un paso de la chain quitó condiciones del artículo 33, y en el 21 la respuesta agregó «previamente» a una condición del artículo 34. El control automático solo comprueba que la cita exista.",
       "mitigaciones": [
         {"control": "Citas obligatorias y existentes; si no, se abstiene", "bloque": 31, "archivo": "src/rag/servicio.py"},
-        {"control": "Prompt que pide usar solo el contexto", "bloque": 26, "archivo": "src/rag/recuperacion.py"}
+        {"control": "Prompt que pide usar solo el contexto", "bloque": 26, "archivo": "src/rag/recuperacion.py"},
+        {"control": "La fuente nombra norma y artículo", "bloque": "S1", "archivo": "src/rag/servicio.py"}
       ],
-      "supervision": {"control": "Aprobar cada informe antes de entregarlo al cliente", "bloque": 23, "archivo": "src/orquestacion/supervision.py"}
+      "supervision": {"control": "Pausar con interrupt() la entrega de cada respuesta a un cliente, con el texto completo de sus fuentes", "bloque": "S1", "archivo": "servicio_rag.py"}
     },
     {
       "id": "datos-personales",
@@ -25,7 +26,8 @@
       "mitigaciones": [
         {"control": "Eventos con lista cerrada de campos, sin contenido", "bloque": 31, "archivo": "src/observabilidad/trazas.py"},
         {"control": "Salidas locales ignoradas por Git", "bloque": 28, "archivo": ".gitignore"},
-        {"control": "Detección de correos, RUT, teléfonos y claves antes de publicar", "bloque": 32, "archivo": "src/gobernanza/supervision.py"}
+        {"control": "Detección de correos, RUT, teléfonos y claves antes de publicar", "bloque": 32, "archivo": "src/gobernanza/supervision.py"},
+        {"control": "Ocultar correos, RUT, teléfonos y claves antes de enviar la consulta al proveedor", "bloque": "S1", "archivo": "src/observabilidad/datos_sensibles.py"}
       ],
       "supervision": {"control": "Aprobar con interrupt() cada registro real antes de copiarlo a las evidencias públicas", "bloque": 32, "archivo": "scripts/grafo_supervision.py"}
     },
@@ -46,12 +48,25 @@
       "riesgo": "Se presenta como vigente una norma modificada, anulada o que no está en el corpus",
       "probabilidad": 4,
       "impacto": 4,
-      "por_que": "El índice tiene una copia de 2016 y una sola norma. Una sentencia de agosto de 2026 anuló el decreto de aceites y el sistema no lo sabe. Con más normas habrá más textos que pueden cambiar.",
+      "por_que": "El índice tiene la copia de 2016 de la ley y la publicación de 2021 del DS 12. Una sentencia de agosto de 2026 anuló el decreto de aceites, y una interpretación de 2025 del DS 12 está en un procedimiento de invalidación: el sistema no sabe ninguna de las dos cosas. Con más normas habrá más textos que pueden cambiar.",
       "mitigaciones": [
         {"control": "El prompt distingue la copia de una comprobación de vigencia", "bloque": 26, "archivo": "src/rag/recuperacion.py"},
-        {"control": "Abstención medida fuera del corpus", "bloque": 28, "archivo": "docs/evidencias/bloques-24-28/fuera-corpus-01.jsonl"}
+        {"control": "Abstención medida fuera del corpus", "bloque": 28, "archivo": "docs/evidencias/bloques-24-28/fuera-corpus-01.jsonl"},
+        {"control": "El índice solo abre si coincide con las normas aprobadas; una norma se puede retirar", "bloque": "S1", "archivo": "src/rag/indice_normas.py"}
       ],
-      "supervision": {"control": "Aprobar cada informe antes de entregarlo al cliente", "bloque": 23, "archivo": "src/orquestacion/supervision.py"}
+      "supervision": {"control": "Pausar con interrupt() la activación y el retiro de cada norma, y la entrega de cada respuesta", "bloque": "S1", "archivo": "scripts/grafo_supervision.py"}
+    },
+    {
+      "id": "tabla-mal-transcrita",
+      "riesgo": "Una meta se responde con un número equivocado porque la tabla se transcribió o se cortó mal",
+      "probabilidad": 2,
+      "impacto": 5,
+      "por_que": "Las cuatro tablas del DS 12/2020 están publicadas como imágenes: el texto extraído del PDF no las trae. Se transcribieron con asistencia de IA y el OCR local solo confirmó parte de las celdas.",
+      "mitigaciones": [
+        {"control": "Transcripción en un archivo aparte, con página, huella y dos lecturas", "bloque": "S1", "archivo": "datos/ds_12_2020/tablas.json"},
+        {"control": "Pruebas: ninguna fila cortada y ninguna meta baja de un año al siguiente", "bloque": "S1", "archivo": "tests/rag/test_ds12.py"}
+      ],
+      "supervision": {"control": "Contrastar las tablas con la publicación antes de aprobar la norma con interrupt()", "bloque": "S1", "archivo": "scripts/grafo_supervision.py"}
     },
     {
       "id": "inyeccion-en-fragmento",

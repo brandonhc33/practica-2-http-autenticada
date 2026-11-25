@@ -70,7 +70,7 @@ class TestComandosGobernanza(unittest.TestCase):
 
     def test_matriz_valida_y_rota(self):
         self.assertEqual(matriz_riesgos.main([]), 0)
-        self.assertIn("8 riesgos, 0 problemas", self.salida.getvalue())
+        self.assertIn("9 riesgos, 0 problemas", self.salida.getvalue())
         rota = self.temporal / "m.json"
         rota.write_text(json.dumps({"riesgos": []}), encoding="utf-8")
         self.assertEqual(matriz_riesgos.main(["--matriz", str(rota)]), 1)

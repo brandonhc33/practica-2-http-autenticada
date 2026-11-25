@@ -1,0 +1,16 @@
+{
+  "normas": {
+    "ley-20920": {
+      "huella": "e8f65f5bab8db5fd7a6b04ee425f3d0bc20b87406e4afd8661dce96fcc394a53",
+      "version": "2016-06-01",
+      "autorizacion": "línea base: corpus usado desde los bloques 24 a 28",
+      "fecha": "2026-11-24"
+    },
+    "ds-12-2020": {
+      "huella": "a66b7d1e5e25bc738b03819cebecacdcfadffac015450237b77e33654188dd2d",
+      "version": "2021-03-16",
+      "autorizacion": "activar_norma-02a1e3917417",
+      "fecha": "2026-11-25"
+    }
+  }
+}

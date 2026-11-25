@@ -1,0 +1,42 @@
+{
+  "fecha": "2026-11-25",
+  "procedencia": "Puntajes propuestos con asistencia de IA a partir de las evidencias y revisados. No son la evaluación del programa.",
+  "dimensiones": {
+    "pipeline_funcional": {
+      "peso": 0.25, "puntaje": 95,
+      "a_favor": "Indexa dos normas, actualiza solo lo que cambia, se recupera de un corte real y corre desde una instalación limpia.",
+      "en_contra": "Es una entrada de terminal: todavía no hay API ni contenedor.",
+      "evidencia": "docs/evidencias/gate-2/README.md"
+    },
+    "recuperacion_citacion": {
+      "peso": 0.15, "puntaje": 85,
+      "a_favor": "Evidencia entre los 5 primeros en 21 de 21 preguntas de una norma; sin cita válida no se entrega texto.",
+      "en_contra": "Las preguntas que cruzan normas quedan en 2 de 4 y el criterio era 3. Una cita válida no prueba fidelidad.",
+      "evidencia": "docs/evidencias/gate-2/evaluacion-gemini.txt"
+    },
+    "costo_latencia": {
+      "peso": 0.10, "puntaje": 90,
+      "a_favor": "Tiempo por etapa, tokens y costo en cada consulta, con corridas reales.",
+      "en_contra": "El costo de los embeddings no se conoce y no hay pruebas de carga.",
+      "evidencia": "docs/evidencias/gate-2/prueba-prompts-resultado.md"
+    },
+    "personalizacion": {
+      "peso": 0.15, "puntaje": 88,
+      "a_favor": "Matriz propia entre RAG, fine-tuning y PEFT, con línea base real medida.",
+      "en_contra": "La línea base tiene pocos ejemplos y la API elegida no admite PEFT.",
+      "evidencia": "docs/arquitectura/decision-personalizacion.md"
+    },
+    "observabilidad": {
+      "peso": 0.15, "puntaje": 92,
+      "a_favor": "Eventos JSON con lista cerrada de campos, trace_id, consumo y huella del prompt.",
+      "en_contra": "Son archivos locales: no hay panel, alertas ni plazo de retención.",
+      "evidencia": "docs/evidencias/gate-2/ensayo.txt"
+    },
+    "seguridad_gobernanza": {
+      "peso": 0.20, "puntaje": 92,
+      "a_favor": "Filtro, datos personales ocultos, prompts y normas con huella, pausas reales y nueve riesgos con control.",
+      "en_contra": "El filtro reconoce frases conocidas y quien aprueba no se autentica.",
+      "evidencia": "docs/arquitectura/matriz-riesgos.md"
+    }
+  }
+}

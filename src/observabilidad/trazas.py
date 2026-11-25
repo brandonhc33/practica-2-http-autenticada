@@ -39,6 +39,7 @@ EVENTOS = frozenset({
 CAMPOS: dict[str, type | tuple[type, ...]] = {
     "pregunta_len": int,
     "patrones_en_pregunta": int,
+    "datos_ocultados": int,
     "k": int,
     "n_documentos": int,
     "n_limpios": int,
@@ -60,6 +61,8 @@ CAMPOS: dict[str, type | tuple[type, ...]] = {
     "estado": str,
     "requiere_revision": bool,
     "ms": (int, float),
+    "ms_embedding": (int, float),
+    "ms_busqueda": (int, float),
 }
 LARGO_MAXIMO_TEXTO = 80
 
