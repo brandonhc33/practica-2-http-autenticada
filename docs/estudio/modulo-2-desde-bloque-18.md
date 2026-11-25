@@ -50,6 +50,7 @@ librerías que haya que usar siempre juntas.
 | 30 | ¿Conviene entrenar, con qué costo y con qué evidencia? | Método puntuado, línea base del clasificador y documento de decisión. | [Costos](bloques-29-30.md#5-bloque-30-lo-que-cuesta-personalizar) y [método](bloques-29-30.md#6-bloque-30-el-método-de-decisión). |
 | 31 | ¿Puedo saber qué pasó en una consulta y limitar una orden escondida en un documento? | Eventos JSON con `trace_id`, consumo, filtro de inyección y citas obligatorias. | [Registros](bloques-31-32.md#2-bloque-31-registros-que-se-pueden-consultar) e [inyección](bloques-31-32.md#4-bloque-31-inyección-de-prompt). |
 | 32 | ¿Quién autoriza un cambio y qué riesgos quedan? | Versiones de prompt, pausa con decisión humana y matriz de riesgos. | [Pausar](bloques-31-32.md#7-bloque-32-pausar-antes-de-actuar) y [riesgos](bloques-31-32.md#8-bloque-32-matriz-de-riesgos). |
+| Gate 2 | ¿Funciona todo junto, desde cero y con más de una norma? | Servicio completo, índice incremental y dos puertas con firma. | [Guía del Gate 2](gate-2.md#1-la-idea-en-una-imagen). |
 
 No reescribimos un único programa que se convierte en todo lo anterior.
 La API, el router, el agente y el RAG siguen siendo entradas diferentes.
@@ -128,6 +129,7 @@ opcional y no añaden requisitos de entrega.
 | 5. Interpretar resultados | [Guía 24–28, secciones 5 a 8](bloques-24-28.md#5-bloque-27-precisión-y-recall). | Explicar por qué recall 1 y precisión 0,30 pueden coexistir; distinguir costo de generación y costo completo del RAG. |
 | 6. Decidir si personalizar | [Guía 29–30](bloques-29-30.md#1-qué-cambia-respecto-de-los-bloques-anteriores). | Clasificar tres problemas como información o comportamiento y explicar por qué un empate no se resuelve con `max()`. |
 | 7. Observar y gobernar | [Guía 31–32](bloques-31-32.md#1-qué-cambia-respecto-de-los-bloques-anteriores). | Reconstruir una consulta con su `trace_id` y explicar qué controles son de Python, cuáles del prompt y cuáles de una persona. |
+| 8. Integrar y comprobar | [Guía del Gate 2](gate-2.md#1-la-idea-en-una-imagen). | Explicar por qué un promedio de 88,8 puede no aprobar y por qué una norma a medias no debe responder. |
 
 En cada sesión usa este orden: **problema → ejemplo → código → evidencia →
 limitación**. Si puedes explicar el ejemplo con tus palabras, entonces los

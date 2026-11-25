@@ -37,7 +37,8 @@ uv run basedpyright
 git diff --check
 ```
 
-Resultados observados:
+Resultados observados el 24-11-2026. El [Gate 2](gate-2.md) agregó después una tercera
+versión del prompt y un noveno riesgo:
 
 - `logging_rag`: 6 comprobaciones correctas. Usa el servicio real con un índice,
   embeddings y modelo de prueba.

@@ -10,8 +10,8 @@ comprobó. Para ejecutar la aplicación, empieza por el [README del proyecto](..
 | [`guias/`](guias/guia-completa.md) | Instalación, comandos, API y resolución de problemas. | Quiero usar o ejecutar el proyecto. |
 | [`arquitectura/`](arquitectura/vision-general.md) | Flujos, selección de modelo, límites de autonomía y diagramas editables. | Quiero entender cómo está diseñado y qué permite. |
 | [`estudio/`](estudio/modulo-2-desde-bloque-18.md) | Glosario con ejemplos y diagramas, mapa desde B18 y guías por bloque. | Quiero aprender, no solo copiar un comando. |
-| [`planes/`](planes/prd-07-observabilidad-gobernanza.md) | PRD, decisiones, fases y revisiones iniciales. | Quiero entender el alcance y por qué se eligió una solución. |
-| [`entregas/`](entregas/bloques-31-32.md) | Correspondencia con las actividades, checklist y estado comprobado. | Quiero revisar o preparar una entrega. |
+| [`planes/`](planes/prd-08-gate-2.md) | PRD, decisiones, fases y revisiones iniciales. | Quiero entender el alcance y por qué se eligió una solución. |
+| [`entregas/`](entregas/gate-2.md) | Correspondencia con las actividades, checklist y estado comprobado. | Quiero revisar o preparar una entrega. |
 | [`evaluaciones/`](evaluaciones/respuestas-ley-rep.md) | Resultados de modelos/prompts/respuestas y límites de sus métricas. | Quiero analizar calidad y comparar resultados. |
 | [`evidencias/`](evidencias/) | Registros, capturas y verificaciones conservadas. | Quiero comprobar una afirmación o el resultado de una ejecución. |
 
@@ -38,6 +38,7 @@ los resultados y sus límites con ejercicios sin Gemini.
 | 24–28 | [RAG, evaluación, latencia y costo](estudio/bloques-24-28.md) | [PRD 04](planes/prd-04-rag-ley-rep.md) | [Entrega y actividad 28](entregas/bloques-24-28.md), con [mediciones reales](evidencias/bloques-24-28/README.md) |
 | 29–30 | [Personalización: RAG, fine-tuning y PEFT](estudio/bloques-29-30.md) | [PRD 05](planes/prd-05-personalizacion-ley-rep.md) y [decisión](arquitectura/decision-personalizacion.md) | [Entrega y actividad 30](entregas/bloques-29-30.md), con [línea base real](evidencias/bloques-29-30/README.md) |
 | 31–32 | [Registros, inyección, supervisión y riesgos](estudio/bloques-31-32.md) | [PRD 07](planes/prd-07-observabilidad-gobernanza.md) y [matriz de riesgos](arquitectura/matriz-riesgos.md) | [Entrega 31–32](entregas/bloques-31-32.md), con [evidencias y prueba real](evidencias/bloques-31-32/README.md) |
+| Gate 2 | [Integrar, actualizar y supervisar](estudio/gate-2.md) | [PRD 08](planes/prd-08-gate-2.md) | [Entrega del Gate 2](entregas/gate-2.md), con [evidencias reales](evidencias/gate-2/README.md) |
 | Proyecto final | [Proyecto final en la guía](guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep) | [PRD 06: MVP del Gate 3, sin implementar](planes/prd-06-mvp-gate-3.md) | Sin entrega todavía |
 
 El estado de cada actividad se consulta en su entrega. Un PRD conserva el contexto
@@ -59,7 +60,7 @@ El proyecto final se desarrolla progresivamente en la [guía completa](guias/gui
   hashes, fechas y comandos históricos no se reescriben al reorganizar docs.
 - Los enlaces y comandos de la documentación de uso apuntan a las rutas actuales.
   El corpus y los casos de entrada siguen en `datos/`; el runtime de RAG y los
-  índices siguen fuera de Git, en `output/rag/` y `vectorstore/`. Las mediciones
+  índices siguen fuera de Git, en `output/rag/`, `vectorstore/` e `indice_normas/`. Las mediciones
   locales de personalización quedan en `output/personalizacion/`.
 - No guardar `.env`, claves, binarios de Chroma ni consultas privadas. Versionar
   únicamente evidencia revisada y señalar si usó servicios reales o simulados.

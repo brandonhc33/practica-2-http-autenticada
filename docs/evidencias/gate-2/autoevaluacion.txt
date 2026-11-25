@@ -1,0 +1,32 @@
+Puntajes propuestos con asistencia de IA a partir de las evidencias y revisados. No son la evaluación del programa.
+
+pipeline_funcional: 95 x 0.25 = 23.75
+  a favor: Indexa dos normas, actualiza solo lo que cambia, se recupera de un corte real y corre desde una instalación limpia.
+  en contra: Es una entrada de terminal: todavía no hay API ni contenedor.
+
+recuperacion_citacion: 85 x 0.15 = 12.75
+  a favor: Evidencia entre los 5 primeros en 21 de 21 preguntas de una norma; sin cita válida no se entrega texto.
+  en contra: Las preguntas que cruzan normas quedan en 2 de 4 y el criterio era 3. Una cita válida no prueba fidelidad.
+
+costo_latencia: 90 x 0.10 = 9.00
+  a favor: Tiempo por etapa, tokens y costo en cada consulta, con corridas reales.
+  en contra: El costo de los embeddings no se conoce y no hay pruebas de carga.
+
+personalizacion: 88 x 0.15 = 13.20
+  a favor: Matriz propia entre RAG, fine-tuning y PEFT, con línea base real medida.
+  en contra: La línea base tiene pocos ejemplos y la API elegida no admite PEFT.
+
+observabilidad: 92 x 0.15 = 13.80
+  a favor: Eventos JSON con lista cerrada de campos, trace_id, consumo y huella del prompt.
+  en contra: Son archivos locales: no hay panel, alertas ni plazo de retención.
+
+seguridad_gobernanza: 92 x 0.20 = 18.40
+  a favor: Filtro, datos personales ocultos, prompts y normas con huella, pausas reales y nueve riesgos con control.
+  en contra: El filtro reconoce frases conocidas y quien aprueba no se autentica.
+
+promedio: 90.9 (umbral 80)
+- cumple: pipeline_corre_de_punta_a_punta
+- cumple: respuestas_citan_fuente
+- cumple: logs_sin_contenido_crudo
+- cumple: supervision_humana_funciona
+listo para entregar: sí
