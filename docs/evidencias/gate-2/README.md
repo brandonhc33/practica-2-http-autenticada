@@ -14,6 +14,7 @@ Generadas el 24 y 25-11-2026 en la rama local `gate-2`, con Python 3.12.13, `chr
 | [`corrida-final.md`](corrida-final.md) | **Gemini real**, resumen | Entorno, consulta, cuatro pruebas y entrega aprobada. |
 | [`autoevaluacion.txt`](autoevaluacion.txt) | `scripts.autoevaluacion_gate2` | Puntajes revisados y no compensables ejecutados. |
 | [`verificacion-local.md`](verificacion-local.md) | Pruebas, ruff, basedpyright y clon con `pip` | Comprobaciones de la implementación. |
+| [`verificacion-github.md`](verificacion-github.md) | Merge, push de `main` y clon limpio | Publicación e instalación. |
 
 | Archivo | SHA-256 |
 | --- | --- |

@@ -120,7 +120,7 @@ empeora ninguno que la versión 2 cumpla.
 - [x] Prompts comparados y decisión humana: versión 3 activa.
 - [x] Corrida real documentada y `test_gate2.py` con Gemini.
 - [x] Autoevaluación con la rúbrica: 90,9.
-- [ ] Integración y publicación de `main`; clon limpio.
+- [x] Integración y publicación de `main`; clon limpio.
 
 ## 7. Límites de interpretación
 

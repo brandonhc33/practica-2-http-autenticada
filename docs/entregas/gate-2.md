@@ -1,8 +1,8 @@
 # Entrega del Gate 2 — integración y orquestación
 
 **Estado: servicio implementado, medido con Gemini y probado desde una instalación limpia.**
-Norma y prompt aprobados, una respuesta entregada con revisión y corrida final correcta. La
-publicación se registra en el [checklist](#checklist-de-cierre).
+Norma y prompt aprobados, una respuesta entregada con revisión y corrida final correcta.
+`main`, publicado. Listo para presentar.
 
 Plan y criterios: [PRD 08](../planes/prd-08-gate-2.md). Explicaciones:
 [guía de estudio](../estudio/gate-2.md). Instalación y uso:
@@ -100,7 +100,7 @@ Gate 3 con preguntas nuevas.
 - [x] [Corrida final](../evidencias/gate-2/corrida-final.md) y `test_gate2.py` con Gemini.
 - [x] Entrega real pausada, revisada y aprobada en la terminal.
 - [x] [Autoevaluación](../evidencias/gate-2/autoevaluacion.txt) revisada: 90,9 y los cuatro no compensables.
-- [ ] Integración y publicación de `main`; clon limpio.
+- [x] Integración y publicación de `main`; [clon limpio](../evidencias/gate-2/verificacion-github.md).
 - [ ] Presentación en Skillnest.
 
 El alcance, las fuentes y las evidencias se prepararon con asistencia de IA.
