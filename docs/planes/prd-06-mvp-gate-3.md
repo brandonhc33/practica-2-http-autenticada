@@ -1,6 +1,7 @@
 # PRD 06: MVP del asistente Ley REP para el Gate 3
 
-**Estado:** alcance de cinco normas definido. No hay nada implementado.
+**Estado:** alcance de cinco normas definido. El DS 12/2020 y los requisitos del Gate 2 se
+implementan según el [PRD 08](prd-08-gate-2.md); el resto del MVP no está implementado.
 
 **Fecha:** 24 de noviembre de 2026.
 

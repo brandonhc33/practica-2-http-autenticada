@@ -5,14 +5,17 @@ demás comandos trabajan con el estado real guardado en output/gobernanza/.
 """
 
 import argparse
+import json
 import shutil
 import sys
 import tempfile
 from pathlib import Path
+from typing import Any
 
 from langgraph.checkpoint.memory import InMemorySaver
 
 from src.gobernanza.prompts import (
+    RAIZ,
     RUTA_ACTIVO,
     RUTA_PROMPTS,
     RegistroDePrompts,
@@ -29,6 +32,8 @@ from src.gobernanza.supervision import (
     registrar_decision,
     resolver,
 )
+from src.rag.normas import MARCA_TABLA, NORMAS, cargar_norma, preparar_norma
+from src.rag.servicio import nombre_fuente
 
 
 def demo() -> int:
@@ -59,6 +64,31 @@ def demo() -> int:
     return 0
 
 
+def mostrar_objeto(espera: dict[str, Any], raiz: Path = RAIZ) -> None:
+    """Todo lo que la persona necesita para decidir, sin abrir otros archivos."""
+    objeto = espera["objeto"]
+    if "base" in objeto:
+        registro = RegistroDePrompts.cargar()
+        print("\n".join(diff_prompts(
+            registro.buscar(objeto["base"]), registro.buscar(espera["huella"])
+        )))
+    if "borrador" in objeto:
+        borrador = json.loads((raiz / objeto["borrador"]).read_text(encoding="utf-8"))
+        print(f"\nConsulta: {borrador['pregunta']}\n\n{borrador['respuesta']}\n")
+        for fuente in borrador["fuentes"]:
+            print(f"--- Texto de [{fuente['cita']}] {nombre_fuente(fuente)}\n{fuente['texto']}\n")
+        print("Comprueba que cada afirmación, número, condición y categoría esté en su fuente.")
+    if "norma" in objeto:
+        for articulo in cargar_norma(objeto["norma"], raiz):
+            # Lo transcrito es lo que más necesita una revisión contra la publicación.
+            if MARCA_TABLA in articulo.page_content:
+                tabla = articulo.page_content.split(MARCA_TABLA, 1)[1].split("\n\n", 1)[0]
+                print(f"{articulo.metadata['referencia']} {MARCA_TABLA}{tabla}\n")
+        for campo, valor in preparar_norma(objeto["norma"], raiz)[1].items():
+            print(f"{campo}: {valor}")
+        print("Comprueba la fuente oficial, la fecha, las tablas y si hubo cambios posteriores.")
+
+
 def leer_decision() -> bool | None:
     """Solo s o n en una terminal deciden; lo demás deja la solicitud pendiente."""
     if not sys.stdin.isatty():
@@ -79,6 +109,12 @@ def main(argv: list[str] | None = None) -> int:
     p = comandos.add_parser("proponer-evidencia", help="Pausar la copia a docs/evidencias/.")
     p.add_argument("origen")
     p.add_argument("destino")
+    for nombre, ayuda in (
+        ("proponer-norma", "Pausar la activación de una norma."),
+        ("proponer-retiro", "Pausar el retiro de una norma."),
+    ):
+        p = comandos.add_parser(nombre, help=ayuda)
+        p.add_argument("norma", choices=sorted(NORMAS))
     comandos.add_parser("pendientes", help="Listar lo que espera una decisión.")
     p = comandos.add_parser("decidir", help="Revisar y decidir en la terminal.")
     p.add_argument("hilo")
@@ -101,11 +137,7 @@ def main(argv: list[str] | None = None) -> int:
             if espera is None:
                 raise ValueError("Ese hilo no tiene ninguna aprobación pendiente.")
             print(f"Acción: {espera['motivo']}\nObjeto: {espera['objeto']}\nHuella: {espera['huella']}")
-            if "base" in espera["objeto"]:
-                registro = RegistroDePrompts.cargar()
-                print("\n".join(diff_prompts(
-                    registro.buscar(espera["objeto"]["base"]), registro.buscar(espera["huella"])
-                )))
+            mostrar_objeto(espera)
             decision = leer_decision()
             if decision is None:
                 print("Sin decisión explícita: la acción sigue pendiente.")
@@ -116,6 +148,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.comando == "proponer-prompt":
             accion = "activar_prompt"
             objeto = {"huella": args.huella, "base": leer_activo()["huella"]}
+        elif args.comando in ("proponer-norma", "proponer-retiro"):
+            accion = "activar_norma" if args.comando == "proponer-norma" else "retirar_norma"
+            objeto = {"norma": args.norma}
         else:
             accion = "publicar_evidencia"
             objeto = {"origen": args.origen, "destino": args.destino}

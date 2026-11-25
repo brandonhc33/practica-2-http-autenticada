@@ -34,7 +34,7 @@ dev = [
 ]
 
 [tool.basedpyright]
-include = ["main.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py", "scripts/indexar_corpus.py", "scripts/evaluacion_recuperacion.py", "scripts/registro_rag.py", "scripts/rag_comun.py", "scripts/dataset_tuning.py", "scripts/linea_base_rutas.py", "scripts/decision_personalizacion.py", "scripts/logging_rag.py", "scripts/ensayo_inyeccion_indirecta.py", "scripts/registro_prompts.py", "scripts/grafo_supervision.py", "scripts/matriz_riesgos.py"]
+include = ["main.py", "servicio_rag.py", "verificar_entorno.py", "test_gate2.py", "src", "tests", "scripts/comparar_modelos.py", "scripts/ensayo_agente.py", "scripts/evaluar_prompts.py", "scripts/evaluar_texto.py", "scripts/indexar_corpus.py", "scripts/evaluacion_recuperacion.py", "scripts/registro_rag.py", "scripts/rag_comun.py", "scripts/dataset_tuning.py", "scripts/linea_base_rutas.py", "scripts/decision_personalizacion.py", "scripts/logging_rag.py", "scripts/ensayo_inyeccion_indirecta.py", "scripts/registro_prompts.py", "scripts/grafo_supervision.py", "scripts/matriz_riesgos.py", "scripts/evaluar_normas.py", "scripts/autoevaluacion_gate2.py"]
 pythonVersion = "3.12"
 typeCheckingMode = "standard"
 venvPath = "."

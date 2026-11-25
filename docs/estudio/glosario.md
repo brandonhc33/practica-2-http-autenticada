@@ -50,6 +50,7 @@ implementadas.
 | Conceptos que se parecen, pero no son iguales. | [14. Confusiones frecuentes](#14-confusiones-frecuentes). |
 | Fine-tuning, PEFT, adapters, dataset de tuning y decisión de personalización. | [16. Personalización de modelos](#16-personalización-de-modelos). |
 | Registros, trazas, inyección, versiones de prompt, pausas y riesgos. | [17. Observabilidad, seguridad y gobernanza](#17-observabilidad-seguridad-y-gobernanza). |
+| No compensables, índice incremental, normas aprobadas y preguntas cruzadas. | [18. Gate 2](#18-gate-2-integrar-y-actualizar). |
 | Practicar sin ejecutar programas. | [15. Repaso con respuestas](#15-repaso-sin-gemini). |
 
 ## Diez conceptos para empezar
@@ -783,3 +784,49 @@ flowchart TD
 
 Lo que hace Python se cumple siempre; lo que pide el prompt, casi siempre; lo que
 decide la persona queda registrado. Las tres partes se necesitan.
+
+## 18. Gate 2: integrar y actualizar
+
+Se aplican en la [guía del Gate 2](gate-2.md#1-la-idea-en-una-imagen). En una frase:
+**integrar** es hacer funcionar juntas las piezas; **actualizar**, cambiar una sin romper ni
+pagar de nuevo las demás.
+
+| Término y nombre habitual | Qué significa y para qué sirve | Ejemplo cotidiano y límite |
+| --- | --- | --- |
+| **Gate** | Hito que certifica condiciones mínimas para avanzar. | La revisión técnica. No dice que el auto sea el mejor. |
+| **Rúbrica y promedio ponderado** | Notas con distinto peso que se suman. | Un examen donde el ensayo vale más que el dictado. |
+| **No compensable** | Condición obligatoria que un buen promedio no reemplaza. | Los frenos del auto. |
+| **De punta a punta / end to end** | Recorrer todo el flujo, desde la entrada hasta el resultado. | La noche de ensayo del restaurante. |
+| **Interfaz** | Forma de datos que una pieza espera o entrega. | El enchufe y el tomacorriente. |
+| **Desacople de interfaz** | Dos piezas correctas cuyas formas no coinciden. | Un enchufe de otro país. |
+| **Entorno limpio** | Instalación nueva, solo con lo declarado. | Cocinar en casa ajena con la receta escrita. |
+| **Índice incremental** | Índice que agrega, reemplaza o retira solo lo que cambió. | Sumar una carpeta sin fotocopiar el archivador. |
+| **Idempotente** | Repetir la operación no cambia el resultado. | Apretar dos veces el botón del ascensor. |
+| **Manifiesto** | Ficha que dice qué contiene el índice y si está completo. | La guía de despacho de una caja. |
+| **Lote / batch** | Grupo que se procesa junto. | Subir las compras en varios viajes. Si se corta, no se repite lo ya subido. |
+| **Límite de frecuencia / rate limit** | Máximo de llamadas por minuto. | Una caja que atiende a cien por hora. Se espera y se continúa. |
+| **Norma activa** | Norma aprobada, con la huella del texto revisado. | Reglamento con timbre. Si cambia una coma, se timbra de nuevo. |
+| **Transcripción** | Pasar a texto lo que estaba en una imagen. | Copiar una pizarra. Se revisa contra el original. |
+| **OCR** | Reconocimiento automático de texto en imágenes. | Un lector apurado: confunde celdas pequeñas. |
+| **Falla silenciosa** | Error que no avisa y parece un resultado normal. | Un libro al que le falta una página y nadie lo nota. |
+| **Borrador y entrega** | Lo que se prepara y lo que sale hacia el cliente. | Medir una muestra y emitir el certificado. |
+| **Ocultar datos / redaction** | Reemplazar un dato personal antes de usar el texto. | Tachar el RUT en una fotocopia. Solo lo que se reconoce. |
+| **Línea base léxica** | Búsqueda por palabras usada como comparación. | Buscar con el índice alfabético antes de pagar un asesor. |
+| **Pregunta cruzada** | Necesita evidencia de más de un documento. | Saber el precio y el horario: están en hojas distintas. |
+| **Cupo por fuente** | Reservar lugares para cada documento al recuperar. | Que ambos equipos tengan jugadores en la cancha. No está implementado. |
+| **Ajustarse al examen / overfitting** | Corregir mirando las mismas preguntas con que se mide. | Memorizar la prueba del año pasado. |
+| **Vigencia** | Que una norma esté en vigor hoy. | La fecha de un pase. Tener el texto no lo demuestra. |
+
+### Diagrama 8: dos puertas con firma
+
+```mermaid
+flowchart TD
+    A["Norma nueva"] --> B{"Firma 1: ¿texto y tablas correctos?"}
+    B -- No --> C["No entra"]
+    B -- Sí --> D["Índice"]
+    D --> E["Consulta automática y registrada"]
+    E --> F["Borrador con citas"]
+    F --> G{"Firma 2: ¿dice lo que dice la fuente?"}
+    G -- No --> H["No sale"]
+    G -- Sí --> I["Cliente"]
+```

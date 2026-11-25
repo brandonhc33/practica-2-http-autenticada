@@ -1,0 +1,954 @@
+{
+  "timestamp": "2026-11-25T00:46:18.358947+00:00",
+  "huella_indice": "1e214ae608fb0d8f5d616f7a165aba59549c9fa4411b75229a17555b74ad7a2d",
+  "configuracion_indice": {
+    "formato": 2,
+    "coleccion": "normas-rep",
+    "chunk_size": 800,
+    "chunk_overlap": 100,
+    "estrategia": "recursivo",
+    "modelo_embeddings": "models/gemini-embedding-001",
+    "dimensiones": 3072,
+    "distancia": "cosine"
+  },
+  "ks": [
+    3,
+    5
+  ],
+  "repeticiones": 1,
+  "repeticiones_identicas": null,
+  "corridas": [
+    {
+      "resultados": [
+        {
+          "id": "rag-01",
+          "grupo": "ley",
+          "pregunta": "¿Cuál es el objeto de la Ley 20.920 y qué busca proteger?",
+          "ids_relevantes": [
+            "ley20920-articulo-1-c000"
+          ],
+          "criterio": "El artículo 1 completo vincula disminución y valorización de residuos con salud y medio ambiente.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-1-c000",
+                "ds12-articulo-1-c000",
+                "ds12-articulo-2-c007"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-1-c000",
+                "ds12-articulo-1-c000",
+                "ds12-articulo-2-c007",
+                "ds12-articulo-2-c000",
+                "ley20920-articulo-46-c003"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-02",
+          "grupo": "ley",
+          "pregunta": "¿Qué seis productos prioritarios enumera expresamente la ley?",
+          "ids_relevantes": [
+            "ley20920-articulo-10-c000"
+          ],
+          "criterio": "El primer chunk del artículo 10 contiene la lista completa a–f; el siguiente trata la ampliación, no enumera esos seis.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-10-c000",
+                "ley20920-articulo-11-c001",
+                "ley20920-articulo-11-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-10-c000",
+                "ley20920-articulo-11-c001",
+                "ley20920-articulo-11-c000",
+                "ley20920-articulo-10-c001",
+                "ley20920-articulo-3-c005"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-03",
+          "grupo": "ley",
+          "pregunta": "¿Mediante qué instrumento se establecen las metas de recolección y valorización y qué criterios se consideran?",
+          "ids_relevantes": [
+            "ley20920-articulo-12-c000"
+          ],
+          "criterio": "El artículo 12 contiene instrumento, autoridad y criterios para fijar las metas; no permite inventar porcentajes.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-12-c000",
+                "ds12-articulo-23-c003",
+                "ds12-articulo-19-c002"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-12-c000",
+                "ds12-articulo-23-c003",
+                "ds12-articulo-19-c002",
+                "ds12-articulo-21-c004",
+                "ds12-transitorio-primero-c000"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-04",
+          "grupo": "ley",
+          "pregunta": "¿A quién debe entregar sus residuos un generador y qué sucede con los residuos domiciliarios?",
+          "ids_relevantes": [
+            "ley20920-articulo-5-c000"
+          ],
+          "criterio": "El artículo 5 distingue entrega a gestor autorizado, manejo propio y residuos domiciliarios.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-5-c000",
+                "ds12-articulo-42-c001",
+                "ley20920-articulo-3-c002"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-5-c000",
+                "ds12-articulo-42-c001",
+                "ley20920-articulo-3-c002",
+                "ley20920-articulo-34-c000",
+                "ds12-articulo-35-c004"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-05",
+          "grupo": "ley",
+          "pregunta": "¿Puede un consumidor industrial valorizar sus propios residuos prioritarios y a quién debe informar?",
+          "ids_relevantes": [
+            "ley20920-articulo-34-c000"
+          ],
+          "criterio": "El segundo párrafo del primer chunk del artículo 34 da la excepción y el deber de informar mediante el RETC.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-24-c001",
+                "ley20920-articulo-34-c000",
+                "ds12-articulo-40-c003"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-24-c001",
+                "ley20920-articulo-34-c000",
+                "ds12-articulo-40-c003",
+                "ds12-articulo-40-c000",
+                "ds12-articulo-40-c002"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-06",
+          "grupo": "ley",
+          "pregunta": "¿Quién diseña los programas de educación ambiental y quiénes pueden colaborar en implementarlos?",
+          "ids_relevantes": [
+            "ley20920-articulo-29-c000"
+          ],
+          "criterio": "El artículo 29 completo atribuye el diseño al Ministerio y nombra los colaboradores.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-29-c000",
+                "ley20920-articulo-46-c001",
+                "ley20920-articulo-14-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-29-c000",
+                "ley20920-articulo-46-c001",
+                "ley20920-articulo-14-c001",
+                "ds12-articulo-42-c000",
+                "ley20920-articulo-30-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-07",
+          "grupo": "ley",
+          "pregunta": "¿Cuál es el plazo mínimo del permiso municipal para instalaciones de recepción en bienes nacionales de uso público?",
+          "ids_relevantes": [
+            "ley20920-articulo-23-c001"
+          ],
+          "criterio": "El segundo chunk del artículo 23 dice que el plazo no podrá ser inferior a cinco años; el primero solo introduce el permiso.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-23-c001",
+                "ley20920-articulo-23-c000",
+                "ds12-articulo-43-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-23-c001",
+                "ley20920-articulo-23-c000",
+                "ds12-articulo-43-c000",
+                "ds12-articulo-35-c003",
+                "ds12-articulo-35-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-08",
+          "grupo": "ley",
+          "pregunta": "¿Qué organismo fiscaliza las metas de residuos prioritarios y qué debe hacer el Ministerio si presume una infracción?",
+          "ids_relevantes": [
+            "ley20920-articulo-38-c000"
+          ],
+          "criterio": "El primer chunk del artículo 38 contiene ambas atribuciones, no solo la definición general de Superintendencia.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-39-c001",
+                "ley20920-articulo-22-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-39-c001",
+                "ley20920-articulo-22-c001",
+                "ley20920-articulo-39-c000",
+                "ley20920-articulo-46-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-09",
+          "grupo": "ley",
+          "pregunta": "¿Qué confidencialidad debe asegurar el reglamento del registro y cómo se procura difundir su información?",
+          "ids_relevantes": [
+            "ley20920-articulo-37-c001"
+          ],
+          "criterio": "El segundo chunk del artículo 37 exige confidencialidad comercial e industrial y difusión comprensible en el sitio del Ministerio.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-37-c001",
+                "ds12-articulo-17-c002",
+                "ds12-articulo-39-c002"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-37-c001",
+                "ds12-articulo-17-c002",
+                "ds12-articulo-39-c002",
+                "ley20920-articulo-37-c000",
+                "ds12-articulo-38-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "rag-10",
+          "grupo": "fuera",
+          "pregunta": "¿Cuál es la tasa del impuesto a la renta de las empresas chilenas para el año 2027?",
+          "ids_relevantes": [],
+          "criterio": "Ningún artículo de esta copia de Ley REP fija el impuesto a la renta de 2027. Recall no definido; también sirve para ensayar abstención.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-47-c000",
+                "ds12-articulo-32-c000",
+                "ds12-articulo-39-c002"
+              ],
+              "precision": 0.0,
+              "recall": null
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-47-c000",
+                "ds12-articulo-32-c000",
+                "ds12-articulo-39-c002",
+                "ds12-articulo-10-c002",
+                "ley20920-articulo-4-c002"
+              ],
+              "precision": 0.0,
+              "recall": null
+            }
+          }
+        },
+        {
+          "id": "ds12-01",
+          "grupo": "ds12",
+          "pregunta": "¿Qué meta tienen los envases domiciliarios de plástico el tercer año?",
+          "ids_relevantes": [
+            "ds12-articulo-21-c001"
+          ],
+          "criterio": "La fila del tercer año está en el primer fragmento de la tabla del artículo 21: 8 %.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-21-c002",
+                "ds12-articulo-23-c002",
+                "ds12-articulo-21-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-21-c002",
+                "ds12-articulo-23-c002",
+                "ds12-articulo-21-c001",
+                "ds12-articulo-21-c003",
+                "ds12-articulo-23-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-02",
+          "grupo": "ds12",
+          "pregunta": "¿Cuál es la meta de papel y cartón no domiciliario a contar del noveno año?",
+          "ids_relevantes": [
+            "ds12-articulo-23-c002"
+          ],
+          "criterio": "Solo el segundo fragmento de la tabla del artículo 23 tiene esa fila: 85 %.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-23-c002",
+                "ds12-articulo-23-c001",
+                "ds12-articulo-21-c002"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-23-c002",
+                "ds12-articulo-23-c001",
+                "ds12-articulo-21-c002",
+                "ds12-articulo-21-c003",
+                "ds12-articulo-21-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-03",
+          "grupo": "ds12",
+          "pregunta": "¿Bajo qué cantidad anual de envases un productor no está obligado a cumplir metas?",
+          "ids_relevantes": [
+            "ds12-articulo-7-c001"
+          ],
+          "criterio": "El inciso final del artículo 7 fija menos de 300 kilogramos; el artículo 10 trata la información, no la exención de metas.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-7-c001",
+                "ds12-articulo-23-c003",
+                "ds12-articulo-21-c004"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-7-c001",
+                "ds12-articulo-23-c003",
+                "ds12-articulo-21-c004",
+                "ds12-articulo-10-c000",
+                "ds12-articulo-11-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-04",
+          "grupo": "ds12",
+          "pregunta": "¿Las microempresas están sujetas a la responsabilidad extendida del productor de envases?",
+          "ids_relevantes": [
+            "ds12-articulo-7-c000"
+          ],
+          "criterio": "El segundo inciso del artículo 7 las excluye.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-7-c000",
+                "ley20920-articulo-3-c006",
+                "ds12-articulo-7-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-7-c000",
+                "ley20920-articulo-3-c006",
+                "ds12-articulo-7-c001",
+                "ley20920-articulo-20-c001",
+                "ds12-articulo-10-c002"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-05",
+          "grupo": "ds12",
+          "pregunta": "¿De qué color deben ser los contenedores para recolectar plástico desde los domicilios?",
+          "ids_relevantes": [
+            "ds12-articulo-36-c004",
+            "ds12-articulo-36-c005"
+          ],
+          "criterio": "Ambos fragmentos del artículo 36 contienen «Plástico: amarillo» por el solape.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-36-c004",
+                "ds12-articulo-36-c005",
+                "ds12-articulo-13-c006"
+              ],
+              "precision": 0.6666666666666666,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-36-c004",
+                "ds12-articulo-36-c005",
+                "ds12-articulo-13-c006",
+                "ds12-articulo-36-c003",
+                "ds12-articulo-21-c001"
+              ],
+              "precision": 0.4,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-06",
+          "grupo": "ds12",
+          "pregunta": "¿Qué es un GRANSIC y cuántos productores no relacionados debe integrar?",
+          "ids_relevantes": [
+            "ds12-articulo-2-c006"
+          ],
+          "criterio": "La definición 17 del artículo 2.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-2-c006",
+                "ds12-articulo-11-c001",
+                "ds12-articulo-13-c005"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-2-c006",
+                "ds12-articulo-11-c001",
+                "ds12-articulo-13-c005",
+                "ds12-articulo-35-c004",
+                "ds12-articulo-36-c006"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-07",
+          "grupo": "ds12",
+          "pregunta": "¿Cuándo entran en vigencia los Títulos III y IV del decreto de envases?",
+          "ids_relevantes": [
+            "ds12-articulo-47-c000"
+          ],
+          "criterio": "El artículo 47 da el plazo de 30 meses y su excepción.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-transitorio-tercero-c000",
+                "ds12-articulo-47-c000",
+                "ds12-articulo-3-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-transitorio-tercero-c000",
+                "ds12-articulo-47-c000",
+                "ds12-articulo-3-c000",
+                "ds12-transitorio-quinto-c000",
+                "ds12-articulo-36-c003"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-08",
+          "grupo": "ds12",
+          "pregunta": "¿Qué garantía debe acompañar un sistema colectivo a su primer plan de gestión?",
+          "ids_relevantes": [
+            "ds12-articulo-19-c004"
+          ],
+          "criterio": "El fragmento con 1.000 UTM del artículo 19.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-19-c004",
+                "ds12-articulo-19-c000",
+                "ds12-articulo-13-c003"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-19-c004",
+                "ds12-articulo-19-c000",
+                "ds12-articulo-13-c003",
+                "ley20920-articulo-26-c001",
+                "ley20920-articulo-22-c000"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-09",
+          "grupo": "ds12",
+          "pregunta": "¿A qué subcategoría pertenece un envase compuesto por varios materiales?",
+          "ids_relevantes": [
+            "ds12-articulo-6-c000"
+          ],
+          "criterio": "El artículo 6 fija la regla del 85 % de la masa y su excepción.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-5-c000",
+                "ds12-articulo-6-c000",
+                "ds12-articulo-2-c003"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-5-c000",
+                "ds12-articulo-6-c000",
+                "ds12-articulo-2-c003",
+                "ds12-articulo-2-c005",
+                "ds12-articulo-2-c009"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-10",
+          "grupo": "ds12",
+          "pregunta": "¿En qué comunas deben operar instalaciones de recepción los GRANSIC durante el segundo año?",
+          "ids_relevantes": [
+            "ds12-articulo-35-c001"
+          ],
+          "criterio": "La tabla del artículo 35: población corregida superior a 100.000.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-35-c001",
+                "ds12-articulo-35-c000",
+                "ds12-articulo-35-c004"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-35-c001",
+                "ds12-articulo-35-c000",
+                "ds12-articulo-35-c004",
+                "ds12-articulo-36-c001",
+                "ds12-articulo-36-c006"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-11",
+          "grupo": "ds12",
+          "pregunta": "¿Qué porcentaje de las viviendas debe cubrir la recolección domiciliaria el quinto año?",
+          "ids_relevantes": [
+            "ds12-articulo-36-c001"
+          ],
+          "criterio": "La fila del quinto año está en el primer fragmento de la tabla del artículo 36: 45 %.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-36-c002",
+                "ds12-articulo-36-c001",
+                "ds12-articulo-21-c001"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-36-c002",
+                "ds12-articulo-36-c001",
+                "ds12-articulo-21-c001",
+                "ds12-articulo-21-c002",
+                "ds12-articulo-23-c001"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "ds12-12",
+          "grupo": "ds12",
+          "pregunta": "¿Los envases de vidrio pueden ser considerados no domiciliarios?",
+          "ids_relevantes": [
+            "ds12-articulo-5-c000"
+          ],
+          "criterio": "El artículo 5 dice que el vidrio siempre es domiciliario.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-5-c000",
+                "ds12-articulo-4-c000",
+                "ds12-articulo-2-c003"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-5-c000",
+                "ds12-articulo-4-c000",
+                "ds12-articulo-2-c003",
+                "ds12-articulo-21-c002",
+                "ds12-articulo-2-c004"
+              ],
+              "precision": 0.2,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "cruce-01",
+          "grupo": "cruce",
+          "pregunta": "¿Qué opciones tiene un consumidor industrial con sus residuos según la ley y según el decreto de envases?",
+          "ids_relevantes": [
+            "ley20920-articulo-34-c000",
+            "ds12-articulo-24-c000",
+            "ds12-articulo-24-c001"
+          ],
+          "criterio": "La regla general está en el artículo 34 de la ley y sus opciones para envases, en el 24 del decreto.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-24-c000",
+                "ds12-articulo-40-c000",
+                "ds12-articulo-44-c000"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 0.3333333333333333
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-24-c000",
+                "ds12-articulo-40-c000",
+                "ds12-articulo-44-c000",
+                "ley20920-articulo-34-c001",
+                "ds12-articulo-24-c001"
+              ],
+              "precision": 0.4,
+              "recall": 0.6666666666666666
+            }
+          }
+        },
+        {
+          "id": "cruce-02",
+          "grupo": "cruce",
+          "pregunta": "¿Quién fiscaliza el cumplimiento de las metas según la Ley 20.920 y según el DS 12/2020?",
+          "ids_relevantes": [
+            "ley20920-articulo-38-c000",
+            "ds12-articulo-45-c000"
+          ],
+          "criterio": "Artículo 38 de la ley y 45 del decreto.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-4-c002",
+                "ds12-articulo-45-c000"
+              ],
+              "precision": 0.6666666666666666,
+              "recall": 1.0
+            },
+            "5": {
+              "ids_recuperados": [
+                "ley20920-articulo-38-c000",
+                "ley20920-articulo-4-c002",
+                "ds12-articulo-45-c000",
+                "ley20920-articulo-22-c001",
+                "ley20920-articulo-12-c000"
+              ],
+              "precision": 0.4,
+              "recall": 1.0
+            }
+          }
+        },
+        {
+          "id": "cruce-03",
+          "grupo": "cruce",
+          "pregunta": "¿Cómo participan los recicladores de base según la ley y qué agrega el decreto de envases?",
+          "ids_relevantes": [
+            "ley20920-articulo-32-c000",
+            "ds12-articulo-41-c000",
+            "ds12-articulo-41-c001",
+            "ds12-articulo-41-c002",
+            "ds12-articulo-41-c003"
+          ],
+          "criterio": "Artículo 32 de la ley y los cuatro fragmentos del 41 del decreto.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-41-c000",
+                "ley20920-articulo-32-c000",
+                "ds12-articulo-41-c001"
+              ],
+              "precision": 1.0,
+              "recall": 0.6
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-41-c000",
+                "ley20920-articulo-32-c000",
+                "ds12-articulo-41-c001",
+                "ds12-articulo-41-c002",
+                "ley20920-articulo-3-c007"
+              ],
+              "precision": 0.8,
+              "recall": 0.8
+            }
+          }
+        },
+        {
+          "id": "cruce-04",
+          "grupo": "cruce",
+          "pregunta": "¿Cómo se establecen las metas de los productos prioritarios y cuáles son las de envases domiciliarios el primer año?",
+          "ids_relevantes": [
+            "ley20920-articulo-12-c000",
+            "ds12-articulo-21-c001"
+          ],
+          "criterio": "El artículo 12 de la ley dice cómo se fijan; la tabla del 21 del decreto da los valores.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-21-c001",
+                "ds12-articulo-21-c002",
+                "ds12-articulo-21-c004"
+              ],
+              "precision": 0.3333333333333333,
+              "recall": 0.5
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-21-c001",
+                "ds12-articulo-21-c002",
+                "ds12-articulo-21-c004",
+                "ds12-articulo-23-c002",
+                "ds12-articulo-21-c003"
+              ],
+              "precision": 0.2,
+              "recall": 0.5
+            }
+          }
+        },
+        {
+          "id": "fuera-02",
+          "grupo": "fuera",
+          "pregunta": "¿Qué metas de recolección tienen los neumáticos fuera de uso?",
+          "ids_relevantes": [],
+          "criterio": "El decreto de neumáticos no está en el corpus.",
+          "por_k": {
+            "3": {
+              "ids_recuperados": [
+                "ds12-articulo-23-c001",
+                "ds12-articulo-23-c003",
+                "ley20920-articulo-12-c000"
+              ],
+              "precision": 0.0,
+              "recall": null
+            },
+            "5": {
+              "ids_recuperados": [
+                "ds12-articulo-23-c001",
+                "ds12-articulo-23-c003",
+                "ley20920-articulo-12-c000",
+                "ds12-articulo-21-c004",
+                "ds12-articulo-21-c001"
+              ],
+              "precision": 0.0,
+              "recall": null
+            }
+          }
+        }
+      ],
+      "promedios": {
+        "3": {
+          "precision": 0.35802469135802467,
+          "recall": 0.9373333333333334
+        },
+        "5": {
+          "precision": 0.22962962962962963,
+          "recall": 0.9586666666666666
+        }
+      }
+    }
+  ],
+  "alcance": "Relevancia por chunk; no mide veracidad ni calidad de la respuesta generada.",
+  "motor": "gemini",
+  "por_grupo": {
+    "3": {
+      "ley": {
+        "casos": 9,
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "con_evidencia": 9,
+        "con_todas_las_normas": 9
+      },
+      "ds12": {
+        "casos": 12,
+        "precision": 0.3611111111111111,
+        "recall": 1.0,
+        "con_evidencia": 12,
+        "con_todas_las_normas": 12
+      },
+      "una_norma": {
+        "casos": 21,
+        "precision": 0.3492063492063492,
+        "recall": 1.0,
+        "con_evidencia": 21,
+        "con_todas_las_normas": 21
+      },
+      "cruce": {
+        "casos": 4,
+        "precision": 0.5833333333333333,
+        "recall": 0.6083333333333333,
+        "con_evidencia": 4,
+        "con_todas_las_normas": 2
+      }
+    },
+    "5": {
+      "ley": {
+        "casos": 9,
+        "precision": 0.2,
+        "recall": 1.0,
+        "con_evidencia": 9,
+        "con_todas_las_normas": 9
+      },
+      "ds12": {
+        "casos": 12,
+        "precision": 0.21666666666666667,
+        "recall": 1.0,
+        "con_evidencia": 12,
+        "con_todas_las_normas": 12
+      },
+      "una_norma": {
+        "casos": 21,
+        "precision": 0.20952380952380953,
+        "recall": 1.0,
+        "con_evidencia": 21,
+        "con_todas_las_normas": 21
+      },
+      "cruce": {
+        "casos": 4,
+        "precision": 0.45,
+        "recall": 0.7416666666666667,
+        "con_evidencia": 4,
+        "con_todas_las_normas": 2
+      }
+    }
+  },
+  "criterios": {
+    "una norma: evidencia entre los 5 primeros": {
+      "minimo": 0.9,
+      "obtenido": 1.0,
+      "cumple": true
+    },
+    "cruce: evidencia de todas las normas entre los 5 primeros": {
+      "minimo": 0.75,
+      "obtenido": 0.5,
+      "cumple": false
+    }
+  }
+}

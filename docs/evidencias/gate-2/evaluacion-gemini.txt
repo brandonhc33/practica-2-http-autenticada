@@ -1,0 +1,48 @@
+Motor: gemini | huella del índice: 1e214ae608fb
+Fecha UTC: 2026-11-25T00:46:18.358947+00:00
+
+k=3 | casos | precisión | exhaustividad | con evidencia | todas las normas
+ley | 9 | 0.333 | 1.000 | 9 | 9
+ds12 | 12 | 0.361 | 1.000 | 12 | 12
+una_norma | 21 | 0.349 | 1.000 | 21 | 21
+cruce | 4 | 0.583 | 0.608 | 4 | 2
+
+k=5 | casos | precisión | exhaustividad | con evidencia | todas las normas
+ley | 9 | 0.200 | 1.000 | 9 | 9
+ds12 | 12 | 0.217 | 1.000 | 12 | 12
+una_norma | 21 | 0.210 | 1.000 | 21 | 21
+cruce | 4 | 0.450 | 0.742 | 4 | 2
+
+Detalle con k=5: exhaustividad | precisión | caso | pregunta
+1.00 | 0.20 | rag-01 | ¿Cuál es el objeto de la Ley 20.920 y qué busca proteger?
+1.00 | 0.20 | rag-02 | ¿Qué seis productos prioritarios enumera expresamente la ley?
+1.00 | 0.20 | rag-03 | ¿Mediante qué instrumento se establecen las metas de recolección y valorización y qué criterios se consideran?
+1.00 | 0.20 | rag-04 | ¿A quién debe entregar sus residuos un generador y qué sucede con los residuos domiciliarios?
+1.00 | 0.20 | rag-05 | ¿Puede un consumidor industrial valorizar sus propios residuos prioritarios y a quién debe informar?
+1.00 | 0.20 | rag-06 | ¿Quién diseña los programas de educación ambiental y quiénes pueden colaborar en implementarlos?
+1.00 | 0.20 | rag-07 | ¿Cuál es el plazo mínimo del permiso municipal para instalaciones de recepción en bienes nacionales de uso público?
+1.00 | 0.20 | rag-08 | ¿Qué organismo fiscaliza las metas de residuos prioritarios y qué debe hacer el Ministerio si presume una infracción?
+1.00 | 0.20 | rag-09 | ¿Qué confidencialidad debe asegurar el reglamento del registro y cómo se procura difundir su información?
+n/a | 0.00 | rag-10 | ¿Cuál es la tasa del impuesto a la renta de las empresas chilenas para el año 2027?
+1.00 | 0.20 | ds12-01 | ¿Qué meta tienen los envases domiciliarios de plástico el tercer año?
+1.00 | 0.20 | ds12-02 | ¿Cuál es la meta de papel y cartón no domiciliario a contar del noveno año?
+1.00 | 0.20 | ds12-03 | ¿Bajo qué cantidad anual de envases un productor no está obligado a cumplir metas?
+1.00 | 0.20 | ds12-04 | ¿Las microempresas están sujetas a la responsabilidad extendida del productor de envases?
+1.00 | 0.40 | ds12-05 | ¿De qué color deben ser los contenedores para recolectar plástico desde los domicilios?
+1.00 | 0.20 | ds12-06 | ¿Qué es un GRANSIC y cuántos productores no relacionados debe integrar?
+1.00 | 0.20 | ds12-07 | ¿Cuándo entran en vigencia los Títulos III y IV del decreto de envases?
+1.00 | 0.20 | ds12-08 | ¿Qué garantía debe acompañar un sistema colectivo a su primer plan de gestión?
+1.00 | 0.20 | ds12-09 | ¿A qué subcategoría pertenece un envase compuesto por varios materiales?
+1.00 | 0.20 | ds12-10 | ¿En qué comunas deben operar instalaciones de recepción los GRANSIC durante el segundo año?
+1.00 | 0.20 | ds12-11 | ¿Qué porcentaje de las viviendas debe cubrir la recolección domiciliaria el quinto año?
+1.00 | 0.20 | ds12-12 | ¿Los envases de vidrio pueden ser considerados no domiciliarios?
+0.67 | 0.40 | cruce-01 | ¿Qué opciones tiene un consumidor industrial con sus residuos según la ley y según el decreto de envases?
+1.00 | 0.40 | cruce-02 | ¿Quién fiscaliza el cumplimiento de las metas según la Ley 20.920 y según el DS 12/2020?
+0.80 | 0.80 | cruce-03 | ¿Cómo participan los recicladores de base según la ley y qué agrega el decreto de envases?
+0.50 | 0.20 | cruce-04 | ¿Cómo se establecen las metas de los productos prioritarios y cuáles son las de envases domiciliarios el primer año?
+n/a | 0.00 | fuera-02 | ¿Qué metas de recolección tienen los neumáticos fuera de uso?
+
+Criterios fijados antes de medir:
+- cumple: una norma: evidencia entre los 5 primeros: 1.00, mínimo 0.90
+- NO CUMPLE: cruce: evidencia de todas las normas entre los 5 primeros: 0.50, mínimo 0.75
+Mide los fragmentos recuperados, no la veracidad de la respuesta.

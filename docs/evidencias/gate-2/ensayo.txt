@@ -1,0 +1,48 @@
+== 1. Indexar la Ley 20.920 y reutilizar el índice ==
+fragmentos: 99; segunda corrida convierte 0 textos
+
+== 2. Agregar el DS 12/2020 con aprobación (decisión simulada) ==
+pausado: {'motivo': 'usar una norma en todas las respuestas', 'objeto': {'norma': 'ds-12-2020'}, 'huella': 'a66b7d1e5e25bc738b03819cebecacdcfadffac015450237b77e33654188dd2d'}
+activada: ds-12-2020. Falta actualizar el índice
+cambios: {'ds-12-2020': {'agregar': 134}, 'ley-20920': {'sin_cambios': 99}}
+
+== 3. Recuperar, filtrar, responder y citar ==
+trace_id: trace-aa5b282505584e3bad8df87201273d6f | estado: ok
+Respuesta simulada: b) Metal: gris claro. c) Papel y cartón: azul. d) Plástico: amarillo. e) Vidrio: verde. En caso de que el GRANSIC reciba residuos mezclados de distintas subcategorías, entre los cuales se encuentre el [1]
+
+Fuentes:
+[1] DS 12/2020, Artículo 36 — https://www.diariooficial.interior.gob.cl/publicaciones/2021/03/16/42906/01/1910141.pdf
+
+== 4. Entregar la respuesta: pausa, rechazo y aprobación (simulados) ==
+decisión simulada = False: rechazada: no se aplicó ningún cambio
+decisión simulada = True: entregada: output/servicio/entregadas/trace-aa5b282505584e3bad8df87201273d6f.md
+
+== Eventos ==
+{"ts": "2026-11-25T01:26:10.478+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-aa5b282505584e3bad8df87201273d6f", "pregunta_len": 82, "datos_ocultados": 1, "patrones_en_pregunta": 0, "k": 5, "huella_prompt": "0142aa289d94"}
+{"ts": "2026-11-25T01:26:10.480+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-aa5b282505584e3bad8df87201273d6f", "n_documentos": 5, "ms_embedding": 0.2, "ms_busqueda": 1.8}
+{"ts": "2026-11-25T01:26:10.481+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-aa5b282505584e3bad8df87201273d6f", "n_limpios": 5, "n_descartados": 0}
+{"ts": "2026-11-25T01:26:10.482+00:00", "level": "INFO", "evento": "consumo_llm", "trace_id": "trace-aa5b282505584e3bad8df87201273d6f", "modelo": "simulado", "ms": 1.2, "input_tokens": null, "output_tokens": null, "total_tokens": null, "costo_usd": null}
+{"ts": "2026-11-25T01:26:10.482+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-aa5b282505584e3bad8df87201273d6f", "estado": "ok", "respuesta_len": 352, "requiere_revision": false, "ms": 4.1}
+{"ts": "2026-11-25T01:26:10.482+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-3dd4c2f907774536a117fd3a6c326b85", "pregunta_len": 24, "datos_ocultados": 0, "patrones_en_pregunta": 0, "k": 3, "huella_prompt": "0142aa289d94"}
+{"ts": "2026-11-25T01:26:10.562+00:00", "level": "INFO", "evento": "documentos_recuperados", "trace_id": "trace-3dd4c2f907774536a117fd3a6c326b85", "n_documentos": 1, "ms_embedding": 79.7, "ms_busqueda": 0.0}
+{"ts": "2026-11-25T01:26:10.562+00:00", "level": "WARNING", "evento": "documento_descartado_por_inyeccion", "trace_id": "trace-3dd4c2f907774536a117fd3a6c326b85", "id_chunk": "prueba-2", "huella_fragmento": "001a17444186", "n_patrones": 3, "motivo": "patron:0,3,5"}
+{"ts": "2026-11-25T01:26:10.562+00:00", "level": "INFO", "evento": "contexto_filtrado", "trace_id": "trace-3dd4c2f907774536a117fd3a6c326b85", "n_limpios": 0, "n_descartados": 1}
+{"ts": "2026-11-25T01:26:10.562+00:00", "level": "INFO", "evento": "respuesta_bloqueada", "trace_id": "trace-3dd4c2f907774536a117fd3a6c326b85", "motivo": "sin_contexto"}
+{"ts": "2026-11-25T01:26:10.562+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-3dd4c2f907774536a117fd3a6c326b85", "estado": "abstencion", "respuesta_len": 58, "requiere_revision": true, "ms": 80.1}
+{"ts": "2026-11-25T01:26:10.563+00:00", "level": "INFO", "evento": "consulta_recibida", "trace_id": "trace-fbbb3ae608e740d987bd09490cb8443e", "pregunta_len": 18, "datos_ocultados": 0, "patrones_en_pregunta": 0, "k": 0, "huella_prompt": "0142aa289d94"}
+{"ts": "2026-11-25T01:26:10.563+00:00", "level": "ERROR", "evento": "consulta_con_error", "trace_id": "trace-fbbb3ae608e740d987bd09490cb8443e", "etapa": "validacion", "tipo_error": "ValueError"}
+{"ts": "2026-11-25T01:26:10.563+00:00", "level": "INFO", "evento": "respuesta_entregada", "trace_id": "trace-fbbb3ae608e740d987bd09490cb8443e", "estado": "error", "respuesta_len": 70, "requiere_revision": false, "ms": 0.1}
+
+Comprobaciones (normas reales; embeddings y modelo simulados, sin Gemini):
+- correcto: el índice persistido se reutiliza sin convertir texto otra vez
+- correcto: una norma no se usa antes de aprobarla
+- correcto: agregar una norma solo convierte la nueva y conserva los demás vectores
+- correcto: el servicio completa la consulta sin excepciones
+- correcto: la respuesta nombra la norma y el artículo que cita
+- correcto: si todo el contexto es sospechoso, no se llama al modelo
+- correcto: un error queda controlado y con traza
+- correcto: cada consulta tiene su traza y ninguna queda abierta
+- correcto: la entrega se pausa, se rechaza sin efectos y solo sale al aprobar
+- correcto: ni los eventos ni los archivos guardan el correo de prueba
+- correcto: los eventos no tienen la pregunta ni la respuesta
+Proceso terminado sin errores.

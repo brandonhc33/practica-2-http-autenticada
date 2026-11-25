@@ -7,7 +7,6 @@ en SQLite: quien propone y quien decide pueden ser procesos distintos.
 import getpass
 import hashlib
 import json
-import re
 import sqlite3
 import uuid
 from collections.abc import Callable
@@ -30,6 +29,8 @@ from src.gobernanza.prompts import (
     guardar_json,
     leer_activo,
 )
+from src.observabilidad.datos_sensibles import detectar_datos_sensibles
+from src.rag.normas import RUTA_NORMAS_ACTIVAS, leer_normas_activas, preparar_norma
 
 DIRECTORIO_GOBERNANZA = RAIZ / "output" / "gobernanza"
 RUTA_CHECKPOINTS = DIRECTORIO_GOBERNANZA / "aprobaciones.sqlite"
@@ -37,15 +38,12 @@ RUTA_DECISIONES = DIRECTORIO_GOBERNANZA / "decisiones.jsonl"
 MOTIVOS = {
     "activar_prompt": "activar una versión de prompt para todas las respuestas",
     "publicar_evidencia": "copiar un archivo local a las evidencias públicas",
+    "entregar_respuesta": "entregar a un cliente una respuesta sobre la normativa",
+    "activar_norma": "usar una norma en todas las respuestas",
+    "retirar_norma": "dejar de usar una norma en todas las respuestas",
 }
-
-# Señales de datos personales o claves. Ayuda a quien revisa; no prueba que no existan.
-PATRONES_SENSIBLES = {
-    "correo": re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+"),
-    "rut": re.compile(r"\b\d{1,2}\.?\d{3}\.?\d{3}-[\dkK]\b"),
-    "telefono": re.compile(r"(?<!\d)(?:\+?56[\s-]?)?9[\s-]?\d{4}[\s-]?\d{4}(?!\d)"),
-    "clave": re.compile(r"AIza[0-9A-Za-z_-]{20,}|(?i:bearer\s+[\w.-]{20,})"),
-}
+BORRADORES = "output/servicio/borradores"
+ENTREGADAS = "output/servicio/entregadas"
 
 
 class EstadoAccion(TypedDict):
@@ -54,12 +52,6 @@ class EstadoAccion(TypedDict):
     huella: str
     aprobado: bool
     resultado: str
-
-
-def detectar_datos_sensibles(texto: str) -> dict[str, int]:
-    """Cuenta señales por tipo, sin devolver los valores encontrados."""
-    conteos = {tipo: len(patron.findall(texto)) for tipo, patron in PATRONES_SENSIBLES.items()}
-    return {tipo: n for tipo, n in conteos.items() if n}
 
 
 def _ruta_dentro(raiz: Path, relativa: str, carpeta: str) -> Path:
@@ -78,10 +70,12 @@ class Acciones:
         ruta_prompts: Path = RUTA_PROMPTS,
         ruta_activo: Path = RUTA_ACTIVO,
         raiz: Path = RAIZ,
+        ruta_normas: Path = RUTA_NORMAS_ACTIVAS,
     ):
         self.ruta_prompts = ruta_prompts
         self.ruta_activo = ruta_activo
         self.raiz = raiz
+        self.ruta_normas = ruta_normas
 
     def huella(self, accion: str, objeto: dict[str, str]) -> str:
         """Identifica lo que se revisa. Se recalcula al aplicar: si cambió, no se aplica."""
@@ -104,7 +98,65 @@ class Acciones:
             if sensibles:
                 raise ValueError(f"El archivo tiene posibles datos sensibles: {sensibles}.")
             return hashlib.sha256(contenido).hexdigest()
+        if accion == "entregar_respuesta":
+            borrador = _ruta_dentro(self.raiz, objeto["borrador"], BORRADORES)
+            contenido = borrador.read_bytes()
+            datos = json.loads(contenido)
+            if datos["estado"] != "ok":
+                raise ValueError("Solo se entrega una respuesta con citas comprobadas.")
+            if datos["huella_prompt"] != leer_activo(self.ruta_activo)["huella"]:
+                raise ValueError("El borrador usó una versión de prompt que no está activa.")
+            if self._entregada(borrador).exists():
+                raise ValueError("Esa respuesta ya fue entregada.")
+            return hashlib.sha256(contenido).hexdigest()
+        if accion == "activar_norma":
+            resumen = preparar_norma(objeto["norma"], self.raiz)[1]
+            activa = leer_normas_activas(self.ruta_normas).get(objeto["norma"], {}).get("huella")
+            if activa == resumen["huella"]:
+                raise ValueError("Esa norma ya está activa con el mismo texto.")
+            return resumen["huella"]
+        if accion == "retirar_norma":
+            normas = leer_normas_activas(self.ruta_normas)
+            if objeto["norma"] not in normas:
+                raise ValueError("Esa norma no está activa.")
+            if len(normas) == 1:
+                raise ValueError("No se puede retirar la única norma activa.")
+            return normas[objeto["norma"]]["huella"]
         raise ValueError(f"Acción no prevista: {accion}.")
+
+    def _entregada(self, borrador: Path) -> Path:
+        return self.raiz / ENTREGADAS / f"{borrador.stem}.md"
+
+    def _entregar(self, objeto: dict[str, str], hilo: str) -> str:
+        borrador = _ruta_dentro(self.raiz, objeto["borrador"], BORRADORES)
+        datos = json.loads(borrador.read_text(encoding="utf-8"))
+        destino = self._entregada(borrador)
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        with destino.open("x", encoding="utf-8") as archivo:
+            archivo.write(
+                f"# Respuesta revisada\n\n**Consulta:** {datos['pregunta']}\n\n"
+                f"{datos['respuesta']}\n\n"
+                f"Revisión: {hilo}. Traza: {datos['trace_id']}. No es asesoría legal ni una "
+                "comprobación de vigencia.\n"
+            )
+        return f"entregada: {destino.relative_to(self.raiz)}"
+
+    def _cambiar_normas(self, accion: str, objeto: dict[str, str], hilo: str) -> str:
+        normas = leer_normas_activas(self.ruta_normas)
+        norma = objeto["norma"]
+        if accion == "activar_norma":
+            resumen = preparar_norma(norma, self.raiz)[1]
+            normas[norma] = {
+                "huella": resumen["huella"],
+                "version": resumen["version"],
+                "autorizacion": hilo,
+                "fecha": datetime.now(UTC).date().isoformat(),
+            }
+        else:
+            del normas[norma]
+        guardar_json(self.ruta_normas, {"normas": normas})
+        hecho = "activada" if accion == "activar_norma" else "retirada"
+        return f"{hecho}: {norma}. Falta actualizar el índice"
 
     def aplicar(self, accion: str, objeto: dict[str, str], hilo: str) -> str:
         if accion == "activar_prompt":
@@ -115,6 +167,10 @@ class Acciones:
                 "fecha": datetime.now(UTC).date().isoformat(),
             })
             return f"activada: {objeto['huella']} reemplaza a {objeto['base']}"
+        if accion == "entregar_respuesta":
+            return self._entregar(objeto, hilo)
+        if accion in ("activar_norma", "retirar_norma"):
+            return self._cambiar_normas(accion, objeto, hilo)
         origen = _ruta_dentro(self.raiz, objeto["origen"], "output")
         destino = _ruta_dentro(self.raiz, objeto["destino"], "docs/evidencias")
         destino.parent.mkdir(parents=True, exist_ok=True)

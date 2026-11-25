@@ -1,0 +1,78 @@
+{
+  "procedencia": "Las cuatro tablas del decreto están publicadas como imágenes. Se transcribieron con asistencia de IA en dos lecturas visuales de la imagen original a distinto tamaño, que coincidieron. El OCR local confirmó solo parte de las celdas.",
+  "tablas": [
+    {
+      "articulo": "21",
+      "despues_de": "introducidos por ellos en el mercado nacional:",
+      "paginas": [11, 12],
+      "titulo": "Metas de recolección y valorización de envases domiciliarios, por subcategoría",
+      "fila": "Meta de envases domiciliarios, {0}: cartón para líquidos {1}, metal {2}, papel y cartón {3}, plástico {4}, vidrio {5}.",
+      "filas": [
+        ["primer año", "5 %", "6 %", "5 %", "3 %", "11 %"],
+        ["segundo año", "8 %", "9 %", "9 %", "6 %", "15 %"],
+        ["tercer año", "11 %", "12 %", "14 %", "8 %", "19 %"],
+        ["cuarto año", "15 %", "15 %", "18 %", "11 %", "22 %"],
+        ["quinto año", "19 %", "17 %", "23 %", "14 %", "26 %"],
+        ["sexto año", "23 %", "21 %", "28 %", "17 %", "31 %"],
+        ["séptimo año", "27 %", "25 %", "34 %", "20 %", "37 %"],
+        ["octavo año", "31 %", "29 %", "39 %", "23 %", "42 %"],
+        ["noveno año", "36 %", "32 %", "45 %", "27 %", "47 %"],
+        ["décimo año", "40 %", "36 %", "50 %", "30 %", "52 %"],
+        ["undécimo año", "50 %", "45 %", "60 %", "37 %", "58 %"],
+        ["a contar del duodécimo año", "60 %", "55 %", "70 %", "45 %", "65 %"]
+      ]
+    },
+    {
+      "articulo": "23",
+      "despues_de": "introducidos por ellos en el mercado nacional:",
+      "paginas": [12],
+      "titulo": "Metas de recolección y valorización de envases no domiciliarios, por subcategoría",
+      "fila": "Meta de envases no domiciliarios, {0}: metal {1}, papel y cartón {2}, plástico {3}.",
+      "filas": [
+        ["primer año", "23 %", "48 %", "13 %"],
+        ["segundo año", "32 %", "54 %", "19 %"],
+        ["tercer año", "42 %", "60 %", "25 %"],
+        ["cuarto año", "51 %", "65 %", "32 %"],
+        ["quinto año", "61 %", "71 %", "38 %"],
+        ["sexto año", "64 %", "74 %", "42 %"],
+        ["séptimo año", "66 %", "78 %", "46 %"],
+        ["octavo año", "68 %", "81 %", "51 %"],
+        ["a contar del noveno año", "70 %", "85 %", "55 %"]
+      ]
+    },
+    {
+      "articulo": "35",
+      "despues_de": "en los plazos que la misma señala:",
+      "paginas": [16],
+      "titulo": "Comunas donde los GRANSIC deben instalar y operar instalaciones de recepción y almacenamiento",
+      "fila": "Instalaciones de recepción, {0}: comunas con población corregida {1}.",
+      "filas": [
+        ["primer año", "superior a 250.000"],
+        ["segundo año", "superior a 100.000"],
+        ["tercer año", "superior a 30.000"],
+        ["a contar del cuarto año", "superior a 15.000"]
+      ]
+    },
+    {
+      "articulo": "36",
+      "despues_de": "en los plazos que la siguiente tabla establece:",
+      "paginas": [17],
+      "titulo": "Recolección selectiva domiciliaria que deben realizar los GRANSIC",
+      "fila": "Recolección domiciliaria, {0}: {1} de las viviendas del país.",
+      "filas": [
+        ["primer año", "10 %"],
+        ["segundo año", "20 %"],
+        ["tercer año", "30 %"],
+        ["cuarto año", "40 %"],
+        ["quinto año", "45 %"],
+        ["sexto año", "50 %"],
+        ["séptimo año", "55 %"],
+        ["octavo año", "60 %"],
+        ["noveno año", "65 %"],
+        ["décimo año", "70 %"],
+        ["undécimo año", "75 %"],
+        ["a contar del duodécimo año", "80 %"]
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Práctica 2: consultas HTTP autenticadas con Gemini
 
-API local en Python para consultar Gemini con autenticación Bearer, validación de datos, manejo de errores HTTP, reintentos con backoff y cálculo de costos.
+API local en Python para consultar Gemini con autenticación Bearer, validación de datos, manejo de errores HTTP, reintentos con backoff y cálculo de costos. Incluye un [servicio RAG sobre la Ley REP](#servicio-rag-del-gate-2) con citas, registros y supervisión humana.
 
 **Empieza por [main.py](main.py):** inicia la API desde la raíz del repositorio. Los endpoints están en [src/api/app.py](src/api/app.py) y el cliente HTTP en [src/clientes/gemini.py](src/clientes/gemini.py).
 
@@ -17,11 +17,12 @@ API local en Python para consultar Gemini con autenticación Bearer, validación
 9. [Consultas RAG de Ley REP](#consultas-rag-de-ley-rep)
 10. [Personalización del clasificador de rutas](#personalización-del-clasificador-de-rutas)
 11. [Observabilidad y gobernanza del RAG](#observabilidad-y-gobernanza-del-rag)
-12. [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
-13. [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
-14. [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
-15. [Guías de estudio](#guías-de-estudio)
-16. [Documentación y evidencias](#documentación-y-evidencias)
+12. [Servicio RAG del Gate 2](#servicio-rag-del-gate-2)
+13. [Evaluaciones y ensayos](#evaluaciones-y-ensayos)
+14. [Pruebas y calidad del código](#pruebas-y-calidad-del-código)
+15. [Estructura y recorrido de revisión](#estructura-y-recorrido-de-revisión)
+16. [Guías de estudio](#guías-de-estudio)
+17. [Documentación y evidencias](#documentación-y-evidencias)
 
 ## Inicio rápido
 
@@ -82,6 +83,7 @@ Cada fila lleva a la explicación de la actividad y a su entrega o evidencia. El
 | 30 | Decisión fundamentada de personalización | [Documento de decisión](docs/arquitectura/decision-personalizacion.md) y [recorrido y estado](docs/entregas/bloques-29-30.md#recorrido-de-ejecución). |
 | 31 | Registros con traza, consumo y filtro de inyección | [Uso](#observabilidad-y-gobernanza-del-rag), [entrega](docs/entregas/bloques-31-32.md) y [salida](docs/evidencias/bloques-31-32/logging-ensayo.txt). |
 | 32 | Versiones de prompt, supervisión y matriz de riesgos | [Matriz](docs/arquitectura/matriz-riesgos.md) y [recorrido y estado](docs/entregas/bloques-31-32.md#recorrido-de-ejecución). |
+| Gate 2 | Servicio RAG completo con dos normas | [Uso](#servicio-rag-del-gate-2), [entrega y autoevaluación](docs/entregas/gate-2.md) y [evidencias](docs/evidencias/gate-2/README.md). |
 
 ## Comandos útiles
 
@@ -303,6 +305,77 @@ fiel. Consulta el [recorrido y el estado](docs/entregas/bloques-31-32.md), la
 [matriz de riesgos](docs/arquitectura/matriz-riesgos.md) y la
 [guía de estudio](docs/estudio/bloques-31-32.md).
 
+### Servicio RAG del Gate 2
+
+Responde sobre la **Ley 20.920** y el **DS 12/2020** (envases y embalajes), y cita norma y
+artículo. Funciona con `pip` o con `uv`, desde la raíz del repositorio.
+
+**1. Instalar en un entorno nuevo**
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Con `uv`, usa `uv sync --locked` y antepone `uv run` a cada comando `python`.
+
+**2. Ensayar todo sin clave, red ni cuota**
+
+```bash
+python servicio_rag.py
+python -m pytest test_gate2.py -v
+```
+
+Usa las dos normas reales con embeddings y modelo locales. Indexa, agrega una norma,
+responde, filtra, registra y pausa la entrega. Deben verse 11 comprobaciones correctas y
+4 pruebas aprobadas.
+
+**3. Indexar con Gemini** (consume cuota; requiere `GEMINI_API_KEY` en `.env`)
+
+```bash
+python servicio_rag.py estado
+python servicio_rag.py indexar --confirmar-consumo
+python verificar_entorno.py
+```
+
+Son 233 fragmentos. Con el límite gratuito por minuto se corta una o dos veces: espera un
+minuto y repite el mismo comando, que continúa donde quedó. El índice queda en
+`indice_normas/` y no se reconstruye en cada corrida.
+
+**4. Consultar** (consume cuota)
+
+```bash
+python servicio_rag.py preguntar --confirmar-consumo \
+  "¿Qué meta tienen los envases domiciliarios de vidrio el primer año?"
+```
+
+Muestra el borrador con sus fuentes. Los eventos, sin la pregunta ni la respuesta, quedan en
+`output/servicio/eventos.jsonl`.
+
+**5. Entregar una respuesta: decide una persona**
+
+```bash
+python servicio_rag.py entregar TRACE_ID
+python -m scripts.grafo_supervision decidir HILO
+```
+
+El primer comando pausa y escribe el `HILO`. El segundo muestra la respuesta y el texto
+completo de sus fuentes, y pregunta `[s/n]`. Así también se aprueba agregar o retirar una
+norma (`proponer-norma`, `proponer-retiro`) y activar un prompt (`proponer-prompt`).
+
+| Otro objetivo | Comando |
+| --- | --- |
+| Medir la recuperación por palabras, sin cuota | `python -m scripts.evaluar_normas` |
+| Medir la recuperación con Gemini | `python -m scripts.evaluar_normas --motor gemini --confirmar-consumo` |
+| Autoevaluación con la rúbrica | `python -m scripts.autoevaluacion_gate2` |
+| Cuatro pruebas con Gemini y el índice real | `GATE2_REAL=1 python -m pytest test_gate2.py -v` |
+
+**Límites:** una cita que existe no prueba que la respuesta sea fiel; las normas son copias y
+no demuestran vigencia; las preguntas que cruzan ambas normas recuperan evidencia de las dos
+en 2 de 4 casos. Consulta el [estado](docs/entregas/gate-2.md), la
+[fuente del decreto](datos/ds_12_2020/README.md) y la [guía de estudio](docs/estudio/gate-2.md).
+
 ### Evaluaciones y ensayos
 
 Comparar modelos y evaluar prompts realiza consultas reales a Gemini. El ensayo con `--simulado` no usa red ni consume tokens. Elige un archivo de salida nuevo en cada ejecución para conservar las evidencias anteriores.
@@ -338,15 +411,18 @@ Para el ensayo contra el proveedor, consulta los [límites y comandos del ensayo
 
 ```text
 main.py                 → Inicio de la API
+servicio_rag.py         → Servicio RAG del Gate 2
+test_gate2.py           → Las cuatro pruebas no compensables
+verificar_entorno.py    → Comprobación previa a la corrida real
 src/
 ├── api/                → Endpoints, autenticación y esquemas
 ├── clientes/           → Gemini, errores, reintentos y salida JSON
 ├── evaluacion/         → Pipeline de texto y métricas léxicas
 ├── costos/             → Cálculo, registro de sesión y tipo de cambio
 ├── orquestacion/       → Chain, rutas y fallbacks con LangChain
-├── rag/                → Índice Chroma, recuperación, citas, mediciones y servicio auditable
+├── rag/                → Índices Chroma, normas, recuperación, citas, mediciones y servicio auditable
 ├── personalizacion/    → Dataset de tuning, línea base y método de decisión
-├── observabilidad/     → Eventos JSON, trazas y filtro de inyección
+├── observabilidad/     → Eventos JSON, trazas, filtro de inyección y datos sensibles
 ├── gobernanza/         → Versiones de prompt, supervisión y riesgos
 ├── prompts/            → Banco, instrucciones y contexto documental
 ├── agentes.py          → Selección y ejecución del agente
@@ -354,7 +430,7 @@ src/
 tests/                  → api/, clientes/, costos/, evaluacion/, orquestacion/, rag/, personalizacion/, observabilidad/, gobernanza/, prompts/ y scripts/
 scripts/                → Evaluaciones, ensayos y herramientas auxiliares
 docs/                   → Guía, arquitectura y evidencias
-datos/                  → Ley REP, casos de evaluación, dataset de personalización, prompts y riesgos
+datos/                  → Ley REP, DS 12/2020, casos de evaluación, dataset de personalización, prompts y riesgos
 ```
 
 Para evaluar el proyecto, comienza ejecutando `/health` y las pruebas. Luego sigue el flujo de código: [entrada](main.py) → [API y autenticación](src/api/app.py) → [selección del agente](src/agentes.py) → [cliente HTTP](src/clientes/gemini.py). Los [errores](src/clientes/errores.py) y los [reintentos](src/clientes/reintentos.py) se mantienen en módulos separados.
@@ -378,6 +454,7 @@ de repaso están separadas de la documentación de uso:
 - [Bloques 24 a 28: RAG, recuperación con citas, evaluación, latencia y costo](docs/estudio/bloques-24-28.md).
 - [Bloques 29 y 30: RAG, fine-tuning, PEFT y cómo decidir si personalizar](docs/estudio/bloques-29-30.md).
 - [Bloques 31 y 32: registros, inyección de prompt, supervisión y riesgos](docs/estudio/bloques-31-32.md).
+- [Gate 2: integrar, actualizar y supervisar](docs/estudio/gate-2.md).
 
 ## Documentación y evidencias
 
@@ -389,9 +466,11 @@ La documentación está organizada por propósito y conectada por bloques en el
 - [Evaluación de respuestas y límites de métricas](docs/evaluaciones/respuestas-ley-rep.md).
 - [Planes y decisiones: PRD 04 del RAG](docs/planes/prd-04-rag-ley-rep.md),
   [PRD 05 de personalización](docs/planes/prd-05-personalizacion-ley-rep.md) y
-  [PRD 07 de observabilidad y gobernanza](docs/planes/prd-07-observabilidad-gobernanza.md).
+  [PRD 07 de observabilidad y gobernanza](docs/planes/prd-07-observabilidad-gobernanza.md) y
+  [PRD 08 del Gate 2](docs/planes/prd-08-gate-2.md).
 - [Entrega 13–14](docs/entregas/bloques-13-14.md), [18–20](docs/entregas/bloques-18-20.md),
   [21–23](docs/entregas/bloques-21-23.md), [24–28 con evidencias reales](docs/entregas/bloques-24-28.md),
-  [29–30](docs/entregas/bloques-29-30.md) y [31–32](docs/entregas/bloques-31-32.md).
+  [29–30](docs/entregas/bloques-29-30.md), [31–32](docs/entregas/bloques-31-32.md) y
+  [Gate 2](docs/entregas/gate-2.md).
 - [Capturas de terminal conservadas](docs/evidencias/mis-capturas/README.md).
 - [Proyecto final: asistente RAG para Ley REP](docs/guias/guia-completa.md#proyecto-final-de-skillnest-asistente-rag-para-ley-rep).

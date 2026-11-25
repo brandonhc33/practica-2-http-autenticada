@@ -34,6 +34,9 @@ red, con consultas, documentos y decisiones de prueba.
 | `datos/gobernanza/prompt_activo.json` | `4e6e891e483dfe6fb49eb09c8cbd441e96d3d51d88b35a290967943f66f09347` |
 | `datos/gobernanza/matriz_riesgos.json` | `ef507a4d8878ee4f445a4c1a7e6e8d19eeb2dd62718ec6af4130e4d78a1cf898` |
 
+Las huellas de `datos/gobernanza/` corresponden al commit `02fd04f`. El
+[Gate 2](../gate-2/README.md) modificó después esos archivos.
+
 ## B31: qué se observa
 
 - **Filtro:** de dos documentos, uno limpio y uno con inyección, el segundo se descarta
